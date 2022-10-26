@@ -202,6 +202,10 @@ public class SfusRepository implements RepositoryStorageMetrics {
         ));
     }
 
+    void checkCollidingEntries() {
+        this.storage.checkCollidingEntries();
+    }
+
     private Sfu wrapSfu(Models.Sfu model) {
         var result = new Sfu(
                 model,

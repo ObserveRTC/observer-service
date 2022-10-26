@@ -167,6 +167,10 @@ public class SfuOutboundRtpPadsRepository implements RepositoryStorageMetrics {
         ));
     }
 
+    void checkCollidingEntries() {
+        this.storage.checkCollidingEntries();
+    }
+
     SfuOutboundRtpPad wrapSfuOutboundRtpPad(Models.SfuOutboundRtpPad model) {
         var result = new SfuOutboundRtpPad(
                 model,

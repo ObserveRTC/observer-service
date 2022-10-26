@@ -147,17 +147,6 @@ public class SfuMediaSinksRepository implements RepositoryStorageMetrics {
         return this.fetched.getAll(set);
     }
 
-    SfuMediaSink wrapSfuSink(Models.SfuMediaSink model) {
-        var result = new SfuMediaSink(
-                model,
-                this,
-                this.sfuTransportsRepositoryBeanProvider.get(),
-                this.sfuOutboundRtpPadsRepositoryBeanProvider.get()
-        );
-        this.fetched.add(result.getSfuSinkId(), result);
-        return result;
-    }
-
     private SfuMediaSink fetchOne(String sfuMediaSinkId) {
         var model = Try.wrap(() -> this.storage.get(sfuMediaSinkId), null);
         if (model == null) {
@@ -179,5 +168,20 @@ public class SfuMediaSinksRepository implements RepositoryStorageMetrics {
                     return this.wrapSfuSink(model);
                 }
         ));
+    }
+
+    void checkCollidingEntries() {
+        this.storage.checkCollidingEntries();
+    }
+
+    SfuMediaSink wrapSfuSink(Models.SfuMediaSink model) {
+        var result = new SfuMediaSink(
+                model,
+                this,
+                this.sfuTransportsRepositoryBeanProvider.get(),
+                this.sfuOutboundRtpPadsRepositoryBeanProvider.get()
+        );
+        this.fetched.add(result.getSfuSinkId(), result);
+        return result;
     }
 }

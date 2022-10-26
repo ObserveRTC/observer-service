@@ -12,6 +12,7 @@ import jakarta.inject.Singleton;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.hamokendpoints.HamokEndpoint;
 import org.observertc.observer.hamokendpoints.HamokEndpointBuilderService;
+import org.observertc.observer.repositories.RepositorySweeper;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,9 @@ public class HamokService  implements InfoSource {
 
     @Inject
     ObserverConfig.HamokConfig config;
+
+    @Inject
+    BeanProvider<RepositorySweeper> repositorySweeperBeanProvider;
 
     @Inject
     BeanProvider<CoreV1Api> coreV1ApiProvider;
@@ -55,15 +59,15 @@ public class HamokService  implements InfoSource {
                 .withRequestTimeoutInMs(storageGridConfig.requestTimeoutInMs)
                 .withSendingHelloTimeoutInMs(storageGridConfig.sendingHelloTimeoutInMs)
                 .withLocalEndpointId(localEndpointId)
-                .withAutoDiscovery(true)
+                .withAutoDiscovery(false)
                 .build();
 
-        this.storageGrid.joinedRemoteEndpoints()
+        this.storageGrid.events().joinedRemoteEndpoints()
                 .subscribe(endpointId -> {
                     logger.info("Endpoint {} joined to StorageGrid", endpointId);
                     remotePeers.add(endpointId);
                 });
-        this.storageGrid.detachedRemoteEndpoints()
+        this.storageGrid.events().detachedRemoteEndpoints()
                 .subscribe(endpointId -> {
                     logger.info("Endpoint {} detached from StorageGrid", endpointId);
                     remotePeers.remove(endpointId);
@@ -75,6 +79,9 @@ public class HamokService  implements InfoSource {
 
     @PreDestroy
     private void teardown() {
+        if (this.repositorySweeperBeanProvider.get().isStarted()) {
+            this.repositorySweeperBeanProvider.get().stop();
+        }
         logger.info("Closed");
     }
 
@@ -90,6 +97,12 @@ public class HamokService  implements InfoSource {
             if (this.endpoint != null) {
                 this.endpoint.inboundChannel().subscribe(this.storageGrid.transport().getReceiver());
                 this.storageGrid.transport().getSender().subscribe(this.endpoint.outboundChannel());
+                this.endpoint.remoteEndpointJoined().subscribe(remoteEndpointId -> {
+                    this.storageGrid.addRemoteEndpointId(remoteEndpointId);
+                });
+                this.endpoint.remoteEndpointDetached().subscribe(remoteEndpointId -> {
+                    this.storageGrid.removeRemoteEndpointId(remoteEndpointId);
+                });
                 this.endpoint.start();
             } else {
                 logger.warn("Endpoint for hamok has not been built, the server cannot share its internal data with other instances in the grid");
@@ -149,11 +162,11 @@ public class HamokService  implements InfoSource {
             return false;
         }
         if ((this.alreadyLoggedFlags & 4) == 0) {
-            logger.info("Number of remote endpoints {}, leader {}", this.remotePeers.size(), this.storageGrid.getLeaderId());
+            logger.info("Number of remote endpoints {}, leader {}", this.remotePeers.size(), this.storageGrid.endpoints().getLeaderEndpointId());
             this.alreadyLoggedFlags += 4;
         }
 
-        if (0 < this.remotePeers.size() && this.storageGrid.getLeaderId() == null) {
+        if (0 < this.remotePeers.size() && this.storageGrid.endpoints().getLeaderEndpointId() == null) {
             return false;
         }
         if ((this.alreadyLoggedFlags & 8) == 0) {
@@ -161,10 +174,13 @@ public class HamokService  implements InfoSource {
             this.alreadyLoggedFlags += 8;
         }
         this.alreadyLoggedFlags = this.alreadyLoggedFlags & 0xFE;
+        if (!this.repositorySweeperBeanProvider.get().isStarted()) {
+            this.repositorySweeperBeanProvider.get().start();
+        }
         return true;
     }
 
-    public String getRandomMemberName() {
+    private String getRandomMemberName() {
         var memberNamesPool = this.config.memberNamesPool;
         if (memberNamesPool == null || memberNamesPool.size() < 1) {
             return "The One";
@@ -172,5 +188,9 @@ public class HamokService  implements InfoSource {
         int index = Math.abs(((int)  UUID.randomUUID().getMostSignificantBits()) % memberNamesPool.size());
         var result = this.config.memberNamesPool.get(index);
         return result;
+    }
+
+    private void checkCollidingEntries() {
+
     }
 }

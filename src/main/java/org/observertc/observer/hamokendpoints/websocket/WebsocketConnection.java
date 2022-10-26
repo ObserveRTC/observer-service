@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -24,11 +25,25 @@ public class WebsocketConnection {
 
     private static final int CLOSE_WITHOUT_RECONNECT_CODE = 7887;
 
+    public enum EndpointState {
+        JOINED,
+        DETACHED
+    }
+
+    public record EndpointStateChange(
+            EndpointState state,
+            UUID endpointId
+    ){
+
+    }
+
     private final AtomicReference<Disposable> connecting = new AtomicReference<>(null);
     private final AtomicReference<WebSocketClient> client = new AtomicReference<>(null);
     private final Subject<RemoteIdentifiers> remoteEndpointIdsSubject = PublishSubject.create();
+    private final Subject<EndpointStateChange> endpointStateChangedSubject = PublishSubject.create();
     private volatile boolean disposed = false;
     private volatile boolean opened = false;
+    private volatile boolean joined = false;
 
     private RemoteIdentifiers remoteIdentifiers = null;
 
@@ -104,20 +119,41 @@ public class WebsocketConnection {
         return this.remoteEndpointIdsSubject;
     }
 
+    public Observable<EndpointStateChange> endpointStateChanged() {
+        return this.endpointStateChangedSubject;
+    }
+
     private WebSocketClient createClient() {
         return new WebSocketClient(URI.create(this.serverUri)) {
             @Override
             public void onOpen(ServerHandshake handshakedata) {
                 logger.info("Connected to {}, address is {}", this.uri, this.getRemoteSocketAddress());
+                if (!joined && remoteIdentifiers != null) {
+                    // join!
+                    joined = true;
+                    endpointStateChangedSubject.onNext(new EndpointStateChange(
+                            EndpointState.JOINED,
+                            remoteIdentifiers.endpointId
+                    ));
+                }
             }
 
             @Override
             public void onMessage(String data) {
                 try {
+                    var remoteIdentifierWasNull = remoteIdentifiers == null;
                     var remoteIdentifiersHolder = mapper.readValue(data, RemoteIdentifiers.class);
                     if (remoteIdentifiersHolder.endpointId != null && remoteIdentifiersHolder.serverUri != null) {
                         remoteIdentifiers = remoteIdentifiersHolder;
                         remoteEndpointIdsSubject.onNext(remoteIdentifiersHolder);
+                        if (!joined && remoteIdentifierWasNull) {
+                            // join!
+                            joined = true;
+                            endpointStateChangedSubject.onNext(new EndpointStateChange(
+                                    EndpointState.JOINED,
+                                    remoteIdentifiers.endpointId
+                            ));
+                        }
                     }
 
                 } catch (JsonProcessingException e) {
@@ -129,6 +165,14 @@ public class WebsocketConnection {
             @Override
             public void onClose(int code, String reason, boolean remote) {
                 logger.info("Connection to {} is closed with code: {}, reason: {}, byremote: {}", uri, code, reason, remote);
+                if (joined && remoteIdentifiers != null) {
+                    // detach
+                    joined = false;
+                    endpointStateChangedSubject.onNext(new EndpointStateChange(
+                            EndpointState.DETACHED,
+                            remoteIdentifiers.endpointId
+                    ));
+                }
                 if (disposed || code == CLOSE_WITHOUT_RECONNECT_CODE) {
                     // goodbye
                     return;

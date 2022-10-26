@@ -80,6 +80,10 @@ public class PeerConnectionsRepository implements RepositoryStorageMetrics {
         this.deleted = new HashSet<>();
     }
 
+    void checkCollidingEntries() {
+        this.storage.checkCollidingEntries();
+    }
+
     Observable<List<ModifiedStorageEntry<String, Models.PeerConnection>>> observableDeletedEntries() {
         return this.storage.collectedEvents().deletedEntries();
     }

@@ -198,6 +198,10 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
         ));
     }
 
+    void checkCollidingEntries() {
+        this.storage.checkCollidingEntries();
+    }
+
     Client wrapClient(Models.Client model) {
         var result = new Client(
                 this.callsProvider.get(),

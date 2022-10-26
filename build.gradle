@@ -47,7 +47,7 @@ dependencies {
 
     // --------- Hamok -----
 //    implementation group: 'io.github.balazskreith.hamok', name: 'hamok-java-core', version: '0.9.0-SNAPSHOT'
-    implementation group: 'io.github.balazskreith.hamok', name: 'hamok-java-core', version: '0.9.1-beta'
+    implementation group: 'io.github.balazskreith.hamok', name: 'hamok-java-core', version: '0.9.2-beta'
 
 
     implementation 'org.java-websocket:Java-WebSocket:1.5.3'

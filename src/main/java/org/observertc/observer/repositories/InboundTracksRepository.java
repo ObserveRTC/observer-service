@@ -162,6 +162,10 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
         return result;
     }
 
+    void checkCollidingEntries() {
+        this.storage.checkCollidingEntries();
+    }
+
     private InboundTrack fetchOne(String trackId) {
         var model = Try.wrap(() -> this.storage.get(trackId), null);
         if (model == null) {

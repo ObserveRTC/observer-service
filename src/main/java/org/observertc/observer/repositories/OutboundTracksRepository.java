@@ -152,16 +152,6 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
         return this.storage.localSize();
     }
 
-    OutboundTrack wrapOutboundAudioTrack(Models.OutboundTrack model) {
-        var result = new OutboundTrack(
-                this.peerConnectionsRepositoryBeanProvider.get(),
-                model,
-                this
-        );
-        this.fetched.add(result.getTrackId(), result);
-        return result;
-    }
-
     private OutboundTrack fetchOne(String trackId) {
         var model = this.storage.get(trackId);
         if (model == null) {
@@ -184,6 +174,20 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
                     return this.wrapOutboundAudioTrack(model);
                 }
         ));
+    }
+
+    void checkCollidingEntries() {
+        this.storage.checkCollidingEntries();
+    }
+
+    OutboundTrack wrapOutboundAudioTrack(Models.OutboundTrack model) {
+        var result = new OutboundTrack(
+                this.peerConnectionsRepositoryBeanProvider.get(),
+                model,
+                this
+        );
+        this.fetched.add(result.getTrackId(), result);
+        return result;
     }
 
 }

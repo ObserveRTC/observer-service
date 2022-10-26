@@ -34,6 +34,9 @@ public class WebsocketEndpoint implements HamokEndpoint {
 
     private final PublishSubject<Message> inboundChannel = PublishSubject.create();
     private final PublishSubject<Message> outboundChannel = PublishSubject.create();
+    private final PublishSubject<UUID> remoteEndpointJoinedSubject = PublishSubject.create();
+    private final PublishSubject<UUID> remoteEndpointDetachedSubject = PublishSubject.create();
+
 
     private final AtomicReference<WebSocketServer> server = new AtomicReference<>(null);
     private final Map<UUID, String> addresses = new ConcurrentHashMap<>();
@@ -106,6 +109,12 @@ public class WebsocketEndpoint implements HamokEndpoint {
                                 connection.getServerUri()
                         );
                     });
+                    connection.endpointStateChanged().subscribe(endpointStateChange -> {
+                        switch (endpointStateChange.state()) {
+                            case JOINED -> remoteEndpointJoinedSubject.onNext(endpointStateChange.endpointId());
+                            case DETACHED -> remoteEndpointDetachedSubject.onNext(endpointStateChange.endpointId());
+                        }
+                    });
                     this.connections.put(connection.getServerUri(), connection);
                     connection.open();
                 }
@@ -136,6 +145,16 @@ public class WebsocketEndpoint implements HamokEndpoint {
     @Override
     public int elapsedSecSinceReady() {
         return (int) (Instant.now().getEpochSecond() - createdTimestampInSec);
+    }
+
+    @Override
+    public Observable<UUID> remoteEndpointJoined() {
+        return this.remoteEndpointJoinedSubject;
+    }
+
+    @Override
+    public Observable<UUID> remoteEndpointDetached() {
+        return this.remoteEndpointDetachedSubject;
     }
 
     @Override

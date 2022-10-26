@@ -144,16 +144,6 @@ public class SfuSctpStreamsRepository implements RepositoryStorageMetrics {
         return this.fetched.getAll(set);
     }
 
-    SfuSctpStream wrapSfuSctpStream(Models.SfuSctpStream model) {
-        var result = new SfuSctpStream(
-                model,
-                this,
-                this.sfuTransportsRepositoryBeanProvider.get()
-        );
-        this.fetched.add(result.getSfuSctpStreamId(), result);
-        return result;
-    }
-
     private SfuSctpStream fetchOne(String sfuSctpStreamId) {
         var model = Try.wrap(() -> this.storage.get(sfuSctpStreamId), null);
         if (model == null) {
@@ -175,5 +165,19 @@ public class SfuSctpStreamsRepository implements RepositoryStorageMetrics {
                     return this.wrapSfuSctpStream(model);
                 }
         ));
+    }
+
+    void checkCollidingEntries() {
+        this.storage.checkCollidingEntries();
+    }
+
+    SfuSctpStream wrapSfuSctpStream(Models.SfuSctpStream model) {
+        var result = new SfuSctpStream(
+                model,
+                this,
+                this.sfuTransportsRepositoryBeanProvider.get()
+        );
+        this.fetched.add(result.getSfuSctpStreamId(), result);
+        return result;
     }
 }

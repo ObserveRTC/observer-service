@@ -198,6 +198,10 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
         ));
     }
 
+    void checkCollidingEntries() {
+        this.storage.checkCollidingEntries();
+    }
+
     SfuTransport wrapSfuTransport(Models.SfuTransport model) {
         var result = new SfuTransport(
                 model,
