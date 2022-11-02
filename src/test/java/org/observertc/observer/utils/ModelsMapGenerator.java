@@ -37,7 +37,7 @@ public class ModelsMapGenerator {
                         this.callDTO.getStarted()
                 )
         ));
-        var call = hamokStorages.getCallsRepository().get(serviceRoomId);
+        var call = hamokStorages.getCallsRepository().get(this.callDTO.getCallId());
 
         // clients
 
@@ -148,8 +148,7 @@ public class ModelsMapGenerator {
 
     public ModelsMapGenerator deleteFrom(HamokStorages hamokStorages) {
         if (this.callDTO != null) {
-            ServiceRoomId serviceRoomId = ServiceRoomId.make(this.callDTO.getServiceId(), this.callDTO.getRoomId());
-            hamokStorages.getCallsRepository().removeAll(Set.of(serviceRoomId));
+            hamokStorages.getCallsRepository().removeAll(Set.of(this.callDTO.getCallId()));
         }
 
         if (this.sfuDTOs.size() < 1) {

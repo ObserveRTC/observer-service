@@ -47,7 +47,7 @@ class PeerConnectionRepositoryTest {
         ));
         Assertions.assertEquals(0, alreadyInsertedCalls.size());
 
-        var call = this.callsRepository.get(serviceRoomId);
+        var call = this.callsRepository.get(callModel.getCallId());
         var clientModels = modelsMapGenerator.getClientModels();
         for (var clientModel : clientModels.values()) {
             call.addClient(

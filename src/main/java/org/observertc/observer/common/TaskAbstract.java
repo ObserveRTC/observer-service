@@ -31,6 +31,7 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 	private Supplier<String> errorMessageSupplier = () -> "";
 	private Logger onLogger = DEFAULT_LOGGER;
 	private Logger defaultLogger = DEFAULT_LOGGER;
+	private Consumer<Throwable> exceptionHandler = null;
 	private boolean rethrowException = false;
 	private boolean succeeded = false;
 	private int maxRetry = 1;
@@ -62,6 +63,9 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 					break;
 				} catch (Throwable ex) {
 					thrown = ex;
+					if (exceptionHandler != null) {
+						exceptionHandler.accept(ex);
+					}
 					if (run < this.maxRetry - 1) {
 						this.onLogger.warn("Unexpected error occurred Retry now.", ex);
 					}
@@ -160,6 +164,11 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 
 	public TaskAbstract<T> withRethrowingExceptions(boolean value) {
 		this.rethrowException = value;
+		return this;
+	}
+
+	public TaskAbstract<T> withExceptionHandler(Consumer<Throwable> exceptionHandler) {
+		this.exceptionHandler = exceptionHandler;
 		return this;
 	}
 

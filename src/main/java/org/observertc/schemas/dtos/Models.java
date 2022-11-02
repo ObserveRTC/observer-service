@@ -14,6 +14,997 @@ public final class Models {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
+  public interface RoomOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:org.observertc.schemas.dtos.Room)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required string serviceId = 1;</code>
+     * @return Whether the serviceId field is set.
+     */
+    boolean hasServiceId();
+    /**
+     * <code>required string serviceId = 1;</code>
+     * @return The serviceId.
+     */
+    java.lang.String getServiceId();
+    /**
+     * <code>required string serviceId = 1;</code>
+     * @return The bytes for serviceId.
+     */
+    com.google.protobuf.ByteString
+        getServiceIdBytes();
+
+    /**
+     * <code>required string roomId = 2;</code>
+     * @return Whether the roomId field is set.
+     */
+    boolean hasRoomId();
+    /**
+     * <code>required string roomId = 2;</code>
+     * @return The roomId.
+     */
+    java.lang.String getRoomId();
+    /**
+     * <code>required string roomId = 2;</code>
+     * @return The bytes for roomId.
+     */
+    com.google.protobuf.ByteString
+        getRoomIdBytes();
+
+    /**
+     * <code>required string callId = 3;</code>
+     * @return Whether the callId field is set.
+     */
+    boolean hasCallId();
+    /**
+     * <code>required string callId = 3;</code>
+     * @return The callId.
+     */
+    java.lang.String getCallId();
+    /**
+     * <code>required string callId = 3;</code>
+     * @return The bytes for callId.
+     */
+    com.google.protobuf.ByteString
+        getCallIdBytes();
+  }
+  /**
+   * Protobuf type {@code org.observertc.schemas.dtos.Room}
+   */
+  public static final class Room extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:org.observertc.schemas.dtos.Room)
+      RoomOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use Room.newBuilder() to construct.
+    private Room(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Room() {
+      serviceId_ = "";
+      roomId_ = "";
+      callId_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Room();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Room(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              serviceId_ = bs;
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              roomId_ = bs;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              callId_ = bs;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_Room_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_Room_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.observertc.schemas.dtos.Models.Room.class, org.observertc.schemas.dtos.Models.Room.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int SERVICEID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object serviceId_;
+    /**
+     * <code>required string serviceId = 1;</code>
+     * @return Whether the serviceId field is set.
+     */
+    @java.lang.Override
+    public boolean hasServiceId() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>required string serviceId = 1;</code>
+     * @return The serviceId.
+     */
+    @java.lang.Override
+    public java.lang.String getServiceId() {
+      java.lang.Object ref = serviceId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          serviceId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string serviceId = 1;</code>
+     * @return The bytes for serviceId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getServiceIdBytes() {
+      java.lang.Object ref = serviceId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        serviceId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ROOMID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object roomId_;
+    /**
+     * <code>required string roomId = 2;</code>
+     * @return Whether the roomId field is set.
+     */
+    @java.lang.Override
+    public boolean hasRoomId() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <code>required string roomId = 2;</code>
+     * @return The roomId.
+     */
+    @java.lang.Override
+    public java.lang.String getRoomId() {
+      java.lang.Object ref = roomId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          roomId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string roomId = 2;</code>
+     * @return The bytes for roomId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getRoomIdBytes() {
+      java.lang.Object ref = roomId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        roomId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CALLID_FIELD_NUMBER = 3;
+    private volatile java.lang.Object callId_;
+    /**
+     * <code>required string callId = 3;</code>
+     * @return Whether the callId field is set.
+     */
+    @java.lang.Override
+    public boolean hasCallId() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <code>required string callId = 3;</code>
+     * @return The callId.
+     */
+    @java.lang.Override
+    public java.lang.String getCallId() {
+      java.lang.Object ref = callId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          callId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string callId = 3;</code>
+     * @return The bytes for callId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getCallIdBytes() {
+      java.lang.Object ref = callId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        callId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasServiceId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasRoomId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasCallId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, serviceId_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, roomId_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, callId_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, serviceId_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, roomId_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, callId_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.observertc.schemas.dtos.Models.Room)) {
+        return super.equals(obj);
+      }
+      org.observertc.schemas.dtos.Models.Room other = (org.observertc.schemas.dtos.Models.Room) obj;
+
+      if (hasServiceId() != other.hasServiceId()) return false;
+      if (hasServiceId()) {
+        if (!getServiceId()
+            .equals(other.getServiceId())) return false;
+      }
+      if (hasRoomId() != other.hasRoomId()) return false;
+      if (hasRoomId()) {
+        if (!getRoomId()
+            .equals(other.getRoomId())) return false;
+      }
+      if (hasCallId() != other.hasCallId()) return false;
+      if (hasCallId()) {
+        if (!getCallId()
+            .equals(other.getCallId())) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasServiceId()) {
+        hash = (37 * hash) + SERVICEID_FIELD_NUMBER;
+        hash = (53 * hash) + getServiceId().hashCode();
+      }
+      if (hasRoomId()) {
+        hash = (37 * hash) + ROOMID_FIELD_NUMBER;
+        hash = (53 * hash) + getRoomId().hashCode();
+      }
+      if (hasCallId()) {
+        hash = (37 * hash) + CALLID_FIELD_NUMBER;
+        hash = (53 * hash) + getCallId().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.observertc.schemas.dtos.Models.Room parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.observertc.schemas.dtos.Models.Room parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.observertc.schemas.dtos.Models.Room parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.observertc.schemas.dtos.Models.Room parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.observertc.schemas.dtos.Models.Room parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.observertc.schemas.dtos.Models.Room parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.observertc.schemas.dtos.Models.Room parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.observertc.schemas.dtos.Models.Room parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.observertc.schemas.dtos.Models.Room parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static org.observertc.schemas.dtos.Models.Room parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.observertc.schemas.dtos.Models.Room parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.observertc.schemas.dtos.Models.Room parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.observertc.schemas.dtos.Models.Room prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code org.observertc.schemas.dtos.Room}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:org.observertc.schemas.dtos.Room)
+        org.observertc.schemas.dtos.Models.RoomOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_Room_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_Room_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.observertc.schemas.dtos.Models.Room.class, org.observertc.schemas.dtos.Models.Room.Builder.class);
+      }
+
+      // Construct using org.observertc.schemas.dtos.Models.Room.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        serviceId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        roomId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        callId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_Room_descriptor;
+      }
+
+      @java.lang.Override
+      public org.observertc.schemas.dtos.Models.Room getDefaultInstanceForType() {
+        return org.observertc.schemas.dtos.Models.Room.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public org.observertc.schemas.dtos.Models.Room build() {
+        org.observertc.schemas.dtos.Models.Room result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public org.observertc.schemas.dtos.Models.Room buildPartial() {
+        org.observertc.schemas.dtos.Models.Room result = new org.observertc.schemas.dtos.Models.Room(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.serviceId_ = serviceId_;
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.roomId_ = roomId_;
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.callId_ = callId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.observertc.schemas.dtos.Models.Room) {
+          return mergeFrom((org.observertc.schemas.dtos.Models.Room)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.observertc.schemas.dtos.Models.Room other) {
+        if (other == org.observertc.schemas.dtos.Models.Room.getDefaultInstance()) return this;
+        if (other.hasServiceId()) {
+          bitField0_ |= 0x00000001;
+          serviceId_ = other.serviceId_;
+          onChanged();
+        }
+        if (other.hasRoomId()) {
+          bitField0_ |= 0x00000002;
+          roomId_ = other.roomId_;
+          onChanged();
+        }
+        if (other.hasCallId()) {
+          bitField0_ |= 0x00000004;
+          callId_ = other.callId_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        if (!hasServiceId()) {
+          return false;
+        }
+        if (!hasRoomId()) {
+          return false;
+        }
+        if (!hasCallId()) {
+          return false;
+        }
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        org.observertc.schemas.dtos.Models.Room parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (org.observertc.schemas.dtos.Models.Room) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object serviceId_ = "";
+      /**
+       * <code>required string serviceId = 1;</code>
+       * @return Whether the serviceId field is set.
+       */
+      public boolean hasServiceId() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>required string serviceId = 1;</code>
+       * @return The serviceId.
+       */
+      public java.lang.String getServiceId() {
+        java.lang.Object ref = serviceId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            serviceId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string serviceId = 1;</code>
+       * @return The bytes for serviceId.
+       */
+      public com.google.protobuf.ByteString
+          getServiceIdBytes() {
+        java.lang.Object ref = serviceId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          serviceId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string serviceId = 1;</code>
+       * @param value The serviceId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setServiceId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        serviceId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string serviceId = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearServiceId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        serviceId_ = getDefaultInstance().getServiceId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string serviceId = 1;</code>
+       * @param value The bytes for serviceId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setServiceIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        serviceId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object roomId_ = "";
+      /**
+       * <code>required string roomId = 2;</code>
+       * @return Whether the roomId field is set.
+       */
+      public boolean hasRoomId() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <code>required string roomId = 2;</code>
+       * @return The roomId.
+       */
+      public java.lang.String getRoomId() {
+        java.lang.Object ref = roomId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            roomId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string roomId = 2;</code>
+       * @return The bytes for roomId.
+       */
+      public com.google.protobuf.ByteString
+          getRoomIdBytes() {
+        java.lang.Object ref = roomId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          roomId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string roomId = 2;</code>
+       * @param value The roomId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRoomId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        roomId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string roomId = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearRoomId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        roomId_ = getDefaultInstance().getRoomId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string roomId = 2;</code>
+       * @param value The bytes for roomId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRoomIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        roomId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object callId_ = "";
+      /**
+       * <code>required string callId = 3;</code>
+       * @return Whether the callId field is set.
+       */
+      public boolean hasCallId() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <code>required string callId = 3;</code>
+       * @return The callId.
+       */
+      public java.lang.String getCallId() {
+        java.lang.Object ref = callId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            callId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string callId = 3;</code>
+       * @return The bytes for callId.
+       */
+      public com.google.protobuf.ByteString
+          getCallIdBytes() {
+        java.lang.Object ref = callId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          callId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string callId = 3;</code>
+       * @param value The callId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCallId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        callId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string callId = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCallId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        callId_ = getDefaultInstance().getCallId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string callId = 3;</code>
+       * @param value The bytes for callId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCallIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        callId_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:org.observertc.schemas.dtos.Room)
+    }
+
+    // @@protoc_insertion_point(class_scope:org.observertc.schemas.dtos.Room)
+    private static final org.observertc.schemas.dtos.Models.Room DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.observertc.schemas.dtos.Models.Room();
+    }
+
+    public static org.observertc.schemas.dtos.Models.Room getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<Room>
+        PARSER = new com.google.protobuf.AbstractParser<Room>() {
+      @java.lang.Override
+      public Room parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Room(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Room> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Room> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public org.observertc.schemas.dtos.Models.Room getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface CallOrBuilder extends
       // @@protoc_insertion_point(interface_extends:org.observertc.schemas.dtos.Call)
       com.google.protobuf.MessageOrBuilder {
@@ -98,28 +1089,40 @@ public final class Models {
         getMarkerBytes();
 
     /**
-     * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
+     * <code>optional uint64 touched = 6;</code>
+     * @return Whether the touched field is set.
      */
-    java.util.List<org.observertc.schemas.dtos.Models.Call.ClientLog> 
-        getClientLogsList();
+    boolean hasTouched();
     /**
-     * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
+     * <code>optional uint64 touched = 6;</code>
+     * @return The touched.
      */
-    org.observertc.schemas.dtos.Models.Call.ClientLog getClientLogs(int index);
+    long getTouched();
+
     /**
-     * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
+     * <code>repeated string clientIds = 7;</code>
+     * @return A list containing the clientIds.
      */
-    int getClientLogsCount();
+    java.util.List<java.lang.String>
+        getClientIdsList();
     /**
-     * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
+     * <code>repeated string clientIds = 7;</code>
+     * @return The count of clientIds.
      */
-    java.util.List<? extends org.observertc.schemas.dtos.Models.Call.ClientLogOrBuilder> 
-        getClientLogsOrBuilderList();
+    int getClientIdsCount();
     /**
-     * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
+     * <code>repeated string clientIds = 7;</code>
+     * @param index The index of the element to return.
+     * @return The clientIds at the given index.
      */
-    org.observertc.schemas.dtos.Models.Call.ClientLogOrBuilder getClientLogsOrBuilder(
-        int index);
+    java.lang.String getClientIds(int index);
+    /**
+     * <code>repeated string clientIds = 7;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the clientIds at the given index.
+     */
+    com.google.protobuf.ByteString
+        getClientIdsBytes(int index);
   }
   /**
    * Protobuf type {@code org.observertc.schemas.dtos.Call}
@@ -138,7 +1141,7 @@ public final class Models {
       roomId_ = "";
       callId_ = "";
       marker_ = "";
-      clientLogs_ = java.util.Collections.emptyList();
+      clientIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
 
     @java.lang.Override
@@ -201,13 +1204,18 @@ public final class Models {
               marker_ = bs;
               break;
             }
-            case 50: {
-              if (!((mutable_bitField0_ & 0x00000020) != 0)) {
-                clientLogs_ = new java.util.ArrayList<org.observertc.schemas.dtos.Models.Call.ClientLog>();
-                mutable_bitField0_ |= 0x00000020;
+            case 48: {
+              bitField0_ |= 0x00000020;
+              touched_ = input.readUInt64();
+              break;
+            }
+            case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              if (!((mutable_bitField0_ & 0x00000040) != 0)) {
+                clientIds_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000040;
               }
-              clientLogs_.add(
-                  input.readMessage(org.observertc.schemas.dtos.Models.Call.ClientLog.PARSER, extensionRegistry));
+              clientIds_.add(bs);
               break;
             }
             default: {
@@ -225,8 +1233,8 @@ public final class Models {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000020) != 0)) {
-          clientLogs_ = java.util.Collections.unmodifiableList(clientLogs_);
+        if (((mutable_bitField0_ & 0x00000040) != 0)) {
+          clientIds_ = clientIds_.getUnmodifiableView();
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -243,915 +1251,6 @@ public final class Models {
       return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_Call_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               org.observertc.schemas.dtos.Models.Call.class, org.observertc.schemas.dtos.Models.Call.Builder.class);
-    }
-
-    public interface ClientLogOrBuilder extends
-        // @@protoc_insertion_point(interface_extends:org.observertc.schemas.dtos.Call.ClientLog)
-        com.google.protobuf.MessageOrBuilder {
-
-      /**
-       * <code>required string clientId = 1;</code>
-       * @return Whether the clientId field is set.
-       */
-      boolean hasClientId();
-      /**
-       * <code>required string clientId = 1;</code>
-       * @return The clientId.
-       */
-      java.lang.String getClientId();
-      /**
-       * <code>required string clientId = 1;</code>
-       * @return The bytes for clientId.
-       */
-      com.google.protobuf.ByteString
-          getClientIdBytes();
-
-      /**
-       * <code>required uint64 timestamp = 2;</code>
-       * @return Whether the timestamp field is set.
-       */
-      boolean hasTimestamp();
-      /**
-       * <code>required uint64 timestamp = 2;</code>
-       * @return The timestamp.
-       */
-      long getTimestamp();
-
-      /**
-       * <code>required string event = 3;</code>
-       * @return Whether the event field is set.
-       */
-      boolean hasEvent();
-      /**
-       * <code>required string event = 3;</code>
-       * @return The event.
-       */
-      java.lang.String getEvent();
-      /**
-       * <code>required string event = 3;</code>
-       * @return The bytes for event.
-       */
-      com.google.protobuf.ByteString
-          getEventBytes();
-    }
-    /**
-     * Protobuf type {@code org.observertc.schemas.dtos.Call.ClientLog}
-     */
-    public static final class ClientLog extends
-        com.google.protobuf.GeneratedMessageV3 implements
-        // @@protoc_insertion_point(message_implements:org.observertc.schemas.dtos.Call.ClientLog)
-        ClientLogOrBuilder {
-    private static final long serialVersionUID = 0L;
-      // Use ClientLog.newBuilder() to construct.
-      private ClientLog(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
-      }
-      private ClientLog() {
-        clientId_ = "";
-        event_ = "";
-      }
-
-      @java.lang.Override
-      @SuppressWarnings({"unused"})
-      protected java.lang.Object newInstance(
-          UnusedPrivateParameter unused) {
-        return new ClientLog();
-      }
-
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
-      private ClientLog(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        this();
-        if (extensionRegistry == null) {
-          throw new java.lang.NullPointerException();
-        }
-        int mutable_bitField0_ = 0;
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-            com.google.protobuf.UnknownFieldSet.newBuilder();
-        try {
-          boolean done = false;
-          while (!done) {
-            int tag = input.readTag();
-            switch (tag) {
-              case 0:
-                done = true;
-                break;
-              case 10: {
-                com.google.protobuf.ByteString bs = input.readBytes();
-                bitField0_ |= 0x00000001;
-                clientId_ = bs;
-                break;
-              }
-              case 16: {
-                bitField0_ |= 0x00000002;
-                timestamp_ = input.readUInt64();
-                break;
-              }
-              case 26: {
-                com.google.protobuf.ByteString bs = input.readBytes();
-                bitField0_ |= 0x00000004;
-                event_ = bs;
-                break;
-              }
-              default: {
-                if (!parseUnknownField(
-                    input, unknownFields, extensionRegistry, tag)) {
-                  done = true;
-                }
-                break;
-              }
-            }
-          }
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.setUnfinishedMessage(this);
-        } catch (java.io.IOException e) {
-          throw new com.google.protobuf.InvalidProtocolBufferException(
-              e).setUnfinishedMessage(this);
-        } finally {
-          this.unknownFields = unknownFields.build();
-          makeExtensionsImmutable();
-        }
-      }
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_Call_ClientLog_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_Call_ClientLog_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                org.observertc.schemas.dtos.Models.Call.ClientLog.class, org.observertc.schemas.dtos.Models.Call.ClientLog.Builder.class);
-      }
-
-      private int bitField0_;
-      public static final int CLIENTID_FIELD_NUMBER = 1;
-      private volatile java.lang.Object clientId_;
-      /**
-       * <code>required string clientId = 1;</code>
-       * @return Whether the clientId field is set.
-       */
-      @java.lang.Override
-      public boolean hasClientId() {
-        return ((bitField0_ & 0x00000001) != 0);
-      }
-      /**
-       * <code>required string clientId = 1;</code>
-       * @return The clientId.
-       */
-      @java.lang.Override
-      public java.lang.String getClientId() {
-        java.lang.Object ref = clientId_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            clientId_ = s;
-          }
-          return s;
-        }
-      }
-      /**
-       * <code>required string clientId = 1;</code>
-       * @return The bytes for clientId.
-       */
-      @java.lang.Override
-      public com.google.protobuf.ByteString
-          getClientIdBytes() {
-        java.lang.Object ref = clientId_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          clientId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-
-      public static final int TIMESTAMP_FIELD_NUMBER = 2;
-      private long timestamp_;
-      /**
-       * <code>required uint64 timestamp = 2;</code>
-       * @return Whether the timestamp field is set.
-       */
-      @java.lang.Override
-      public boolean hasTimestamp() {
-        return ((bitField0_ & 0x00000002) != 0);
-      }
-      /**
-       * <code>required uint64 timestamp = 2;</code>
-       * @return The timestamp.
-       */
-      @java.lang.Override
-      public long getTimestamp() {
-        return timestamp_;
-      }
-
-      public static final int EVENT_FIELD_NUMBER = 3;
-      private volatile java.lang.Object event_;
-      /**
-       * <code>required string event = 3;</code>
-       * @return Whether the event field is set.
-       */
-      @java.lang.Override
-      public boolean hasEvent() {
-        return ((bitField0_ & 0x00000004) != 0);
-      }
-      /**
-       * <code>required string event = 3;</code>
-       * @return The event.
-       */
-      @java.lang.Override
-      public java.lang.String getEvent() {
-        java.lang.Object ref = event_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            event_ = s;
-          }
-          return s;
-        }
-      }
-      /**
-       * <code>required string event = 3;</code>
-       * @return The bytes for event.
-       */
-      @java.lang.Override
-      public com.google.protobuf.ByteString
-          getEventBytes() {
-        java.lang.Object ref = event_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          event_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-
-      private byte memoizedIsInitialized = -1;
-      @java.lang.Override
-      public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (isInitialized == 1) return true;
-        if (isInitialized == 0) return false;
-
-        if (!hasClientId()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-        if (!hasTimestamp()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-        if (!hasEvent()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-        memoizedIsInitialized = 1;
-        return true;
-      }
-
-      @java.lang.Override
-      public void writeTo(com.google.protobuf.CodedOutputStream output)
-                          throws java.io.IOException {
-        if (((bitField0_ & 0x00000001) != 0)) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 1, clientId_);
-        }
-        if (((bitField0_ & 0x00000002) != 0)) {
-          output.writeUInt64(2, timestamp_);
-        }
-        if (((bitField0_ & 0x00000004) != 0)) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 3, event_);
-        }
-        unknownFields.writeTo(output);
-      }
-
-      @java.lang.Override
-      public int getSerializedSize() {
-        int size = memoizedSize;
-        if (size != -1) return size;
-
-        size = 0;
-        if (((bitField0_ & 0x00000001) != 0)) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, clientId_);
-        }
-        if (((bitField0_ & 0x00000002) != 0)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeUInt64Size(2, timestamp_);
-        }
-        if (((bitField0_ & 0x00000004) != 0)) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, event_);
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-      }
-
-      @java.lang.Override
-      public boolean equals(final java.lang.Object obj) {
-        if (obj == this) {
-         return true;
-        }
-        if (!(obj instanceof org.observertc.schemas.dtos.Models.Call.ClientLog)) {
-          return super.equals(obj);
-        }
-        org.observertc.schemas.dtos.Models.Call.ClientLog other = (org.observertc.schemas.dtos.Models.Call.ClientLog) obj;
-
-        if (hasClientId() != other.hasClientId()) return false;
-        if (hasClientId()) {
-          if (!getClientId()
-              .equals(other.getClientId())) return false;
-        }
-        if (hasTimestamp() != other.hasTimestamp()) return false;
-        if (hasTimestamp()) {
-          if (getTimestamp()
-              != other.getTimestamp()) return false;
-        }
-        if (hasEvent() != other.hasEvent()) return false;
-        if (hasEvent()) {
-          if (!getEvent()
-              .equals(other.getEvent())) return false;
-        }
-        if (!unknownFields.equals(other.unknownFields)) return false;
-        return true;
-      }
-
-      @java.lang.Override
-      public int hashCode() {
-        if (memoizedHashCode != 0) {
-          return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        if (hasClientId()) {
-          hash = (37 * hash) + CLIENTID_FIELD_NUMBER;
-          hash = (53 * hash) + getClientId().hashCode();
-        }
-        if (hasTimestamp()) {
-          hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
-          hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-              getTimestamp());
-        }
-        if (hasEvent()) {
-          hash = (37 * hash) + EVENT_FIELD_NUMBER;
-          hash = (53 * hash) + getEvent().hashCode();
-        }
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-      }
-
-      public static org.observertc.schemas.dtos.Models.Call.ClientLog parseFrom(
-          java.nio.ByteBuffer data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-      }
-      public static org.observertc.schemas.dtos.Models.Call.ClientLog parseFrom(
-          java.nio.ByteBuffer data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-      }
-      public static org.observertc.schemas.dtos.Models.Call.ClientLog parseFrom(
-          com.google.protobuf.ByteString data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-      }
-      public static org.observertc.schemas.dtos.Models.Call.ClientLog parseFrom(
-          com.google.protobuf.ByteString data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-      }
-      public static org.observertc.schemas.dtos.Models.Call.ClientLog parseFrom(byte[] data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-      }
-      public static org.observertc.schemas.dtos.Models.Call.ClientLog parseFrom(
-          byte[] data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-      }
-      public static org.observertc.schemas.dtos.Models.Call.ClientLog parseFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input);
-      }
-      public static org.observertc.schemas.dtos.Models.Call.ClientLog parseFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input, extensionRegistry);
-      }
-      public static org.observertc.schemas.dtos.Models.Call.ClientLog parseDelimitedFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseDelimitedWithIOException(PARSER, input);
-      }
-      public static org.observertc.schemas.dtos.Models.Call.ClientLog parseDelimitedFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-      }
-      public static org.observertc.schemas.dtos.Models.Call.ClientLog parseFrom(
-          com.google.protobuf.CodedInputStream input)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input);
-      }
-      public static org.observertc.schemas.dtos.Models.Call.ClientLog parseFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input, extensionRegistry);
-      }
-
-      @java.lang.Override
-      public Builder newBuilderForType() { return newBuilder(); }
-      public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-      }
-      public static Builder newBuilder(org.observertc.schemas.dtos.Models.Call.ClientLog prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-      }
-      @java.lang.Override
-      public Builder toBuilder() {
-        return this == DEFAULT_INSTANCE
-            ? new Builder() : new Builder().mergeFrom(this);
-      }
-
-      @java.lang.Override
-      protected Builder newBuilderForType(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-      }
-      /**
-       * Protobuf type {@code org.observertc.schemas.dtos.Call.ClientLog}
-       */
-      public static final class Builder extends
-          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-          // @@protoc_insertion_point(builder_implements:org.observertc.schemas.dtos.Call.ClientLog)
-          org.observertc.schemas.dtos.Models.Call.ClientLogOrBuilder {
-        public static final com.google.protobuf.Descriptors.Descriptor
-            getDescriptor() {
-          return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_Call_ClientLog_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-            internalGetFieldAccessorTable() {
-          return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_Call_ClientLog_fieldAccessorTable
-              .ensureFieldAccessorsInitialized(
-                  org.observertc.schemas.dtos.Models.Call.ClientLog.class, org.observertc.schemas.dtos.Models.Call.ClientLog.Builder.class);
-        }
-
-        // Construct using org.observertc.schemas.dtos.Models.Call.ClientLog.newBuilder()
-        private Builder() {
-          maybeForceBuilderInitialization();
-        }
-
-        private Builder(
-            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-          super(parent);
-          maybeForceBuilderInitialization();
-        }
-        private void maybeForceBuilderInitialization() {
-          if (com.google.protobuf.GeneratedMessageV3
-                  .alwaysUseFieldBuilders) {
-          }
-        }
-        @java.lang.Override
-        public Builder clear() {
-          super.clear();
-          clientId_ = "";
-          bitField0_ = (bitField0_ & ~0x00000001);
-          timestamp_ = 0L;
-          bitField0_ = (bitField0_ & ~0x00000002);
-          event_ = "";
-          bitField0_ = (bitField0_ & ~0x00000004);
-          return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor
-            getDescriptorForType() {
-          return org.observertc.schemas.dtos.Models.internal_static_org_observertc_schemas_dtos_Call_ClientLog_descriptor;
-        }
-
-        @java.lang.Override
-        public org.observertc.schemas.dtos.Models.Call.ClientLog getDefaultInstanceForType() {
-          return org.observertc.schemas.dtos.Models.Call.ClientLog.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public org.observertc.schemas.dtos.Models.Call.ClientLog build() {
-          org.observertc.schemas.dtos.Models.Call.ClientLog result = buildPartial();
-          if (!result.isInitialized()) {
-            throw newUninitializedMessageException(result);
-          }
-          return result;
-        }
-
-        @java.lang.Override
-        public org.observertc.schemas.dtos.Models.Call.ClientLog buildPartial() {
-          org.observertc.schemas.dtos.Models.Call.ClientLog result = new org.observertc.schemas.dtos.Models.Call.ClientLog(this);
-          int from_bitField0_ = bitField0_;
-          int to_bitField0_ = 0;
-          if (((from_bitField0_ & 0x00000001) != 0)) {
-            to_bitField0_ |= 0x00000001;
-          }
-          result.clientId_ = clientId_;
-          if (((from_bitField0_ & 0x00000002) != 0)) {
-            result.timestamp_ = timestamp_;
-            to_bitField0_ |= 0x00000002;
-          }
-          if (((from_bitField0_ & 0x00000004) != 0)) {
-            to_bitField0_ |= 0x00000004;
-          }
-          result.event_ = event_;
-          result.bitField0_ = to_bitField0_;
-          onBuilt();
-          return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-          return super.clone();
-        }
-        @java.lang.Override
-        public Builder setField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.setField(field, value);
-        }
-        @java.lang.Override
-        public Builder clearField(
-            com.google.protobuf.Descriptors.FieldDescriptor field) {
-          return super.clearField(field);
-        }
-        @java.lang.Override
-        public Builder clearOneof(
-            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-          return super.clearOneof(oneof);
-        }
-        @java.lang.Override
-        public Builder setRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            int index, java.lang.Object value) {
-          return super.setRepeatedField(field, index, value);
-        }
-        @java.lang.Override
-        public Builder addRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.addRepeatedField(field, value);
-        }
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-          if (other instanceof org.observertc.schemas.dtos.Models.Call.ClientLog) {
-            return mergeFrom((org.observertc.schemas.dtos.Models.Call.ClientLog)other);
-          } else {
-            super.mergeFrom(other);
-            return this;
-          }
-        }
-
-        public Builder mergeFrom(org.observertc.schemas.dtos.Models.Call.ClientLog other) {
-          if (other == org.observertc.schemas.dtos.Models.Call.ClientLog.getDefaultInstance()) return this;
-          if (other.hasClientId()) {
-            bitField0_ |= 0x00000001;
-            clientId_ = other.clientId_;
-            onChanged();
-          }
-          if (other.hasTimestamp()) {
-            setTimestamp(other.getTimestamp());
-          }
-          if (other.hasEvent()) {
-            bitField0_ |= 0x00000004;
-            event_ = other.event_;
-            onChanged();
-          }
-          this.mergeUnknownFields(other.unknownFields);
-          onChanged();
-          return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-          if (!hasClientId()) {
-            return false;
-          }
-          if (!hasTimestamp()) {
-            return false;
-          }
-          if (!hasEvent()) {
-            return false;
-          }
-          return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-          org.observertc.schemas.dtos.Models.Call.ClientLog parsedMessage = null;
-          try {
-            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            parsedMessage = (org.observertc.schemas.dtos.Models.Call.ClientLog) e.getUnfinishedMessage();
-            throw e.unwrapIOException();
-          } finally {
-            if (parsedMessage != null) {
-              mergeFrom(parsedMessage);
-            }
-          }
-          return this;
-        }
-        private int bitField0_;
-
-        private java.lang.Object clientId_ = "";
-        /**
-         * <code>required string clientId = 1;</code>
-         * @return Whether the clientId field is set.
-         */
-        public boolean hasClientId() {
-          return ((bitField0_ & 0x00000001) != 0);
-        }
-        /**
-         * <code>required string clientId = 1;</code>
-         * @return The clientId.
-         */
-        public java.lang.String getClientId() {
-          java.lang.Object ref = clientId_;
-          if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            if (bs.isValidUtf8()) {
-              clientId_ = s;
-            }
-            return s;
-          } else {
-            return (java.lang.String) ref;
-          }
-        }
-        /**
-         * <code>required string clientId = 1;</code>
-         * @return The bytes for clientId.
-         */
-        public com.google.protobuf.ByteString
-            getClientIdBytes() {
-          java.lang.Object ref = clientId_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            clientId_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>required string clientId = 1;</code>
-         * @param value The clientId to set.
-         * @return This builder for chaining.
-         */
-        public Builder setClientId(
-            java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-          clientId_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>required string clientId = 1;</code>
-         * @return This builder for chaining.
-         */
-        public Builder clearClientId() {
-          bitField0_ = (bitField0_ & ~0x00000001);
-          clientId_ = getDefaultInstance().getClientId();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>required string clientId = 1;</code>
-         * @param value The bytes for clientId to set.
-         * @return This builder for chaining.
-         */
-        public Builder setClientIdBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-          clientId_ = value;
-          onChanged();
-          return this;
-        }
-
-        private long timestamp_ ;
-        /**
-         * <code>required uint64 timestamp = 2;</code>
-         * @return Whether the timestamp field is set.
-         */
-        @java.lang.Override
-        public boolean hasTimestamp() {
-          return ((bitField0_ & 0x00000002) != 0);
-        }
-        /**
-         * <code>required uint64 timestamp = 2;</code>
-         * @return The timestamp.
-         */
-        @java.lang.Override
-        public long getTimestamp() {
-          return timestamp_;
-        }
-        /**
-         * <code>required uint64 timestamp = 2;</code>
-         * @param value The timestamp to set.
-         * @return This builder for chaining.
-         */
-        public Builder setTimestamp(long value) {
-          bitField0_ |= 0x00000002;
-          timestamp_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>required uint64 timestamp = 2;</code>
-         * @return This builder for chaining.
-         */
-        public Builder clearTimestamp() {
-          bitField0_ = (bitField0_ & ~0x00000002);
-          timestamp_ = 0L;
-          onChanged();
-          return this;
-        }
-
-        private java.lang.Object event_ = "";
-        /**
-         * <code>required string event = 3;</code>
-         * @return Whether the event field is set.
-         */
-        public boolean hasEvent() {
-          return ((bitField0_ & 0x00000004) != 0);
-        }
-        /**
-         * <code>required string event = 3;</code>
-         * @return The event.
-         */
-        public java.lang.String getEvent() {
-          java.lang.Object ref = event_;
-          if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            if (bs.isValidUtf8()) {
-              event_ = s;
-            }
-            return s;
-          } else {
-            return (java.lang.String) ref;
-          }
-        }
-        /**
-         * <code>required string event = 3;</code>
-         * @return The bytes for event.
-         */
-        public com.google.protobuf.ByteString
-            getEventBytes() {
-          java.lang.Object ref = event_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            event_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>required string event = 3;</code>
-         * @param value The event to set.
-         * @return This builder for chaining.
-         */
-        public Builder setEvent(
-            java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-          event_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>required string event = 3;</code>
-         * @return This builder for chaining.
-         */
-        public Builder clearEvent() {
-          bitField0_ = (bitField0_ & ~0x00000004);
-          event_ = getDefaultInstance().getEvent();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>required string event = 3;</code>
-         * @param value The bytes for event to set.
-         * @return This builder for chaining.
-         */
-        public Builder setEventBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-          event_ = value;
-          onChanged();
-          return this;
-        }
-        @java.lang.Override
-        public final Builder setUnknownFields(
-            final com.google.protobuf.UnknownFieldSet unknownFields) {
-          return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(
-            final com.google.protobuf.UnknownFieldSet unknownFields) {
-          return super.mergeUnknownFields(unknownFields);
-        }
-
-
-        // @@protoc_insertion_point(builder_scope:org.observertc.schemas.dtos.Call.ClientLog)
-      }
-
-      // @@protoc_insertion_point(class_scope:org.observertc.schemas.dtos.Call.ClientLog)
-      private static final org.observertc.schemas.dtos.Models.Call.ClientLog DEFAULT_INSTANCE;
-      static {
-        DEFAULT_INSTANCE = new org.observertc.schemas.dtos.Models.Call.ClientLog();
-      }
-
-      public static org.observertc.schemas.dtos.Models.Call.ClientLog getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-      }
-
-      @java.lang.Deprecated public static final com.google.protobuf.Parser<ClientLog>
-          PARSER = new com.google.protobuf.AbstractParser<ClientLog>() {
-        @java.lang.Override
-        public ClientLog parsePartialFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ClientLog(input, extensionRegistry);
-        }
-      };
-
-      public static com.google.protobuf.Parser<ClientLog> parser() {
-        return PARSER;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Parser<ClientLog> getParserForType() {
-        return PARSER;
-      }
-
-      @java.lang.Override
-      public org.observertc.schemas.dtos.Models.Call.ClientLog getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-      }
-
     }
 
     private int bitField0_;
@@ -1366,44 +1465,58 @@ public final class Models {
       }
     }
 
-    public static final int CLIENTLOGS_FIELD_NUMBER = 6;
-    private java.util.List<org.observertc.schemas.dtos.Models.Call.ClientLog> clientLogs_;
+    public static final int TOUCHED_FIELD_NUMBER = 6;
+    private long touched_;
     /**
-     * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
+     * <code>optional uint64 touched = 6;</code>
+     * @return Whether the touched field is set.
      */
     @java.lang.Override
-    public java.util.List<org.observertc.schemas.dtos.Models.Call.ClientLog> getClientLogsList() {
-      return clientLogs_;
+    public boolean hasTouched() {
+      return ((bitField0_ & 0x00000020) != 0);
     }
     /**
-     * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
+     * <code>optional uint64 touched = 6;</code>
+     * @return The touched.
      */
     @java.lang.Override
-    public java.util.List<? extends org.observertc.schemas.dtos.Models.Call.ClientLogOrBuilder> 
-        getClientLogsOrBuilderList() {
-      return clientLogs_;
+    public long getTouched() {
+      return touched_;
+    }
+
+    public static final int CLIENTIDS_FIELD_NUMBER = 7;
+    private com.google.protobuf.LazyStringList clientIds_;
+    /**
+     * <code>repeated string clientIds = 7;</code>
+     * @return A list containing the clientIds.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getClientIdsList() {
+      return clientIds_;
     }
     /**
-     * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
+     * <code>repeated string clientIds = 7;</code>
+     * @return The count of clientIds.
      */
-    @java.lang.Override
-    public int getClientLogsCount() {
-      return clientLogs_.size();
+    public int getClientIdsCount() {
+      return clientIds_.size();
     }
     /**
-     * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
+     * <code>repeated string clientIds = 7;</code>
+     * @param index The index of the element to return.
+     * @return The clientIds at the given index.
      */
-    @java.lang.Override
-    public org.observertc.schemas.dtos.Models.Call.ClientLog getClientLogs(int index) {
-      return clientLogs_.get(index);
+    public java.lang.String getClientIds(int index) {
+      return clientIds_.get(index);
     }
     /**
-     * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
+     * <code>repeated string clientIds = 7;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the clientIds at the given index.
      */
-    @java.lang.Override
-    public org.observertc.schemas.dtos.Models.Call.ClientLogOrBuilder getClientLogsOrBuilder(
-        int index) {
-      return clientLogs_.get(index);
+    public com.google.protobuf.ByteString
+        getClientIdsBytes(int index) {
+      return clientIds_.getByteString(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -1429,12 +1542,6 @@ public final class Models {
         memoizedIsInitialized = 0;
         return false;
       }
-      for (int i = 0; i < getClientLogsCount(); i++) {
-        if (!getClientLogs(i).isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -1457,8 +1564,11 @@ public final class Models {
       if (((bitField0_ & 0x00000010) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, marker_);
       }
-      for (int i = 0; i < clientLogs_.size(); i++) {
-        output.writeMessage(6, clientLogs_.get(i));
+      if (((bitField0_ & 0x00000020) != 0)) {
+        output.writeUInt64(6, touched_);
+      }
+      for (int i = 0; i < clientIds_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, clientIds_.getRaw(i));
       }
       unknownFields.writeTo(output);
     }
@@ -1485,9 +1595,17 @@ public final class Models {
       if (((bitField0_ & 0x00000010) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, marker_);
       }
-      for (int i = 0; i < clientLogs_.size(); i++) {
+      if (((bitField0_ & 0x00000020) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, clientLogs_.get(i));
+          .computeUInt64Size(6, touched_);
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < clientIds_.size(); i++) {
+          dataSize += computeStringSizeNoTag(clientIds_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getClientIdsList().size();
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1529,8 +1647,13 @@ public final class Models {
         if (!getMarker()
             .equals(other.getMarker())) return false;
       }
-      if (!getClientLogsList()
-          .equals(other.getClientLogsList())) return false;
+      if (hasTouched() != other.hasTouched()) return false;
+      if (hasTouched()) {
+        if (getTouched()
+            != other.getTouched()) return false;
+      }
+      if (!getClientIdsList()
+          .equals(other.getClientIdsList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1563,9 +1686,14 @@ public final class Models {
         hash = (37 * hash) + MARKER_FIELD_NUMBER;
         hash = (53 * hash) + getMarker().hashCode();
       }
-      if (getClientLogsCount() > 0) {
-        hash = (37 * hash) + CLIENTLOGS_FIELD_NUMBER;
-        hash = (53 * hash) + getClientLogsList().hashCode();
+      if (hasTouched()) {
+        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getTouched());
+      }
+      if (getClientIdsCount() > 0) {
+        hash = (37 * hash) + CLIENTIDS_FIELD_NUMBER;
+        hash = (53 * hash) + getClientIdsList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -1695,7 +1823,6 @@ public final class Models {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
-          getClientLogsFieldBuilder();
         }
       }
       @java.lang.Override
@@ -1711,12 +1838,10 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000008);
         marker_ = "";
         bitField0_ = (bitField0_ & ~0x00000010);
-        if (clientLogsBuilder_ == null) {
-          clientLogs_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000020);
-        } else {
-          clientLogsBuilder_.clear();
-        }
+        touched_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        clientIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -1765,15 +1890,15 @@ public final class Models {
           to_bitField0_ |= 0x00000010;
         }
         result.marker_ = marker_;
-        if (clientLogsBuilder_ == null) {
-          if (((bitField0_ & 0x00000020) != 0)) {
-            clientLogs_ = java.util.Collections.unmodifiableList(clientLogs_);
-            bitField0_ = (bitField0_ & ~0x00000020);
-          }
-          result.clientLogs_ = clientLogs_;
-        } else {
-          result.clientLogs_ = clientLogsBuilder_.build();
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.touched_ = touched_;
+          to_bitField0_ |= 0x00000020;
         }
+        if (((bitField0_ & 0x00000040) != 0)) {
+          clientIds_ = clientIds_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000040);
+        }
+        result.clientIds_ = clientIds_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1846,31 +1971,18 @@ public final class Models {
           marker_ = other.marker_;
           onChanged();
         }
-        if (clientLogsBuilder_ == null) {
-          if (!other.clientLogs_.isEmpty()) {
-            if (clientLogs_.isEmpty()) {
-              clientLogs_ = other.clientLogs_;
-              bitField0_ = (bitField0_ & ~0x00000020);
-            } else {
-              ensureClientLogsIsMutable();
-              clientLogs_.addAll(other.clientLogs_);
-            }
-            onChanged();
+        if (other.hasTouched()) {
+          setTouched(other.getTouched());
+        }
+        if (!other.clientIds_.isEmpty()) {
+          if (clientIds_.isEmpty()) {
+            clientIds_ = other.clientIds_;
+            bitField0_ = (bitField0_ & ~0x00000040);
+          } else {
+            ensureClientIdsIsMutable();
+            clientIds_.addAll(other.clientIds_);
           }
-        } else {
-          if (!other.clientLogs_.isEmpty()) {
-            if (clientLogsBuilder_.isEmpty()) {
-              clientLogsBuilder_.dispose();
-              clientLogsBuilder_ = null;
-              clientLogs_ = other.clientLogs_;
-              bitField0_ = (bitField0_ & ~0x00000020);
-              clientLogsBuilder_ = 
-                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                   getClientLogsFieldBuilder() : null;
-            } else {
-              clientLogsBuilder_.addAllMessages(other.clientLogs_);
-            }
-          }
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1890,11 +2002,6 @@ public final class Models {
         }
         if (!hasStarted()) {
           return false;
-        }
-        for (int i = 0; i < getClientLogsCount(); i++) {
-          if (!getClientLogs(i).isInitialized()) {
-            return false;
-          }
         }
         return true;
       }
@@ -2294,244 +2401,152 @@ public final class Models {
         return this;
       }
 
-      private java.util.List<org.observertc.schemas.dtos.Models.Call.ClientLog> clientLogs_ =
-        java.util.Collections.emptyList();
-      private void ensureClientLogsIsMutable() {
-        if (!((bitField0_ & 0x00000020) != 0)) {
-          clientLogs_ = new java.util.ArrayList<org.observertc.schemas.dtos.Models.Call.ClientLog>(clientLogs_);
-          bitField0_ |= 0x00000020;
+      private long touched_ ;
+      /**
+       * <code>optional uint64 touched = 6;</code>
+       * @return Whether the touched field is set.
+       */
+      @java.lang.Override
+      public boolean hasTouched() {
+        return ((bitField0_ & 0x00000020) != 0);
+      }
+      /**
+       * <code>optional uint64 touched = 6;</code>
+       * @return The touched.
+       */
+      @java.lang.Override
+      public long getTouched() {
+        return touched_;
+      }
+      /**
+       * <code>optional uint64 touched = 6;</code>
+       * @param value The touched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTouched(long value) {
+        bitField0_ |= 0x00000020;
+        touched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 touched = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTouched() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        touched_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList clientIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureClientIdsIsMutable() {
+        if (!((bitField0_ & 0x00000040) != 0)) {
+          clientIds_ = new com.google.protobuf.LazyStringArrayList(clientIds_);
+          bitField0_ |= 0x00000040;
          }
       }
-
-      private com.google.protobuf.RepeatedFieldBuilderV3<
-          org.observertc.schemas.dtos.Models.Call.ClientLog, org.observertc.schemas.dtos.Models.Call.ClientLog.Builder, org.observertc.schemas.dtos.Models.Call.ClientLogOrBuilder> clientLogsBuilder_;
-
       /**
-       * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
+       * <code>repeated string clientIds = 7;</code>
+       * @return A list containing the clientIds.
        */
-      public java.util.List<org.observertc.schemas.dtos.Models.Call.ClientLog> getClientLogsList() {
-        if (clientLogsBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(clientLogs_);
-        } else {
-          return clientLogsBuilder_.getMessageList();
-        }
+      public com.google.protobuf.ProtocolStringList
+          getClientIdsList() {
+        return clientIds_.getUnmodifiableView();
       }
       /**
-       * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
+       * <code>repeated string clientIds = 7;</code>
+       * @return The count of clientIds.
        */
-      public int getClientLogsCount() {
-        if (clientLogsBuilder_ == null) {
-          return clientLogs_.size();
-        } else {
-          return clientLogsBuilder_.getCount();
-        }
+      public int getClientIdsCount() {
+        return clientIds_.size();
       }
       /**
-       * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
+       * <code>repeated string clientIds = 7;</code>
+       * @param index The index of the element to return.
+       * @return The clientIds at the given index.
        */
-      public org.observertc.schemas.dtos.Models.Call.ClientLog getClientLogs(int index) {
-        if (clientLogsBuilder_ == null) {
-          return clientLogs_.get(index);
-        } else {
-          return clientLogsBuilder_.getMessage(index);
-        }
+      public java.lang.String getClientIds(int index) {
+        return clientIds_.get(index);
       }
       /**
-       * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
+       * <code>repeated string clientIds = 7;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the clientIds at the given index.
        */
-      public Builder setClientLogs(
-          int index, org.observertc.schemas.dtos.Models.Call.ClientLog value) {
-        if (clientLogsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureClientLogsIsMutable();
-          clientLogs_.set(index, value);
-          onChanged();
-        } else {
-          clientLogsBuilder_.setMessage(index, value);
-        }
+      public com.google.protobuf.ByteString
+          getClientIdsBytes(int index) {
+        return clientIds_.getByteString(index);
+      }
+      /**
+       * <code>repeated string clientIds = 7;</code>
+       * @param index The index to set the value at.
+       * @param value The clientIds to set.
+       * @return This builder for chaining.
+       */
+      public Builder setClientIds(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureClientIdsIsMutable();
+        clientIds_.set(index, value);
+        onChanged();
         return this;
       }
       /**
-       * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
+       * <code>repeated string clientIds = 7;</code>
+       * @param value The clientIds to add.
+       * @return This builder for chaining.
        */
-      public Builder setClientLogs(
-          int index, org.observertc.schemas.dtos.Models.Call.ClientLog.Builder builderForValue) {
-        if (clientLogsBuilder_ == null) {
-          ensureClientLogsIsMutable();
-          clientLogs_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          clientLogsBuilder_.setMessage(index, builderForValue.build());
-        }
+      public Builder addClientIds(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureClientIdsIsMutable();
+        clientIds_.add(value);
+        onChanged();
         return this;
       }
       /**
-       * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
+       * <code>repeated string clientIds = 7;</code>
+       * @param values The clientIds to add.
+       * @return This builder for chaining.
        */
-      public Builder addClientLogs(org.observertc.schemas.dtos.Models.Call.ClientLog value) {
-        if (clientLogsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureClientLogsIsMutable();
-          clientLogs_.add(value);
-          onChanged();
-        } else {
-          clientLogsBuilder_.addMessage(value);
-        }
+      public Builder addAllClientIds(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureClientIdsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, clientIds_);
+        onChanged();
         return this;
       }
       /**
-       * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
+       * <code>repeated string clientIds = 7;</code>
+       * @return This builder for chaining.
        */
-      public Builder addClientLogs(
-          int index, org.observertc.schemas.dtos.Models.Call.ClientLog value) {
-        if (clientLogsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureClientLogsIsMutable();
-          clientLogs_.add(index, value);
-          onChanged();
-        } else {
-          clientLogsBuilder_.addMessage(index, value);
-        }
+      public Builder clearClientIds() {
+        clientIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        onChanged();
         return this;
       }
       /**
-       * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
+       * <code>repeated string clientIds = 7;</code>
+       * @param value The bytes of the clientIds to add.
+       * @return This builder for chaining.
        */
-      public Builder addClientLogs(
-          org.observertc.schemas.dtos.Models.Call.ClientLog.Builder builderForValue) {
-        if (clientLogsBuilder_ == null) {
-          ensureClientLogsIsMutable();
-          clientLogs_.add(builderForValue.build());
-          onChanged();
-        } else {
-          clientLogsBuilder_.addMessage(builderForValue.build());
-        }
+      public Builder addClientIdsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureClientIdsIsMutable();
+        clientIds_.add(value);
+        onChanged();
         return this;
-      }
-      /**
-       * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
-       */
-      public Builder addClientLogs(
-          int index, org.observertc.schemas.dtos.Models.Call.ClientLog.Builder builderForValue) {
-        if (clientLogsBuilder_ == null) {
-          ensureClientLogsIsMutable();
-          clientLogs_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          clientLogsBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
-       */
-      public Builder addAllClientLogs(
-          java.lang.Iterable<? extends org.observertc.schemas.dtos.Models.Call.ClientLog> values) {
-        if (clientLogsBuilder_ == null) {
-          ensureClientLogsIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, clientLogs_);
-          onChanged();
-        } else {
-          clientLogsBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
-       */
-      public Builder clearClientLogs() {
-        if (clientLogsBuilder_ == null) {
-          clientLogs_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000020);
-          onChanged();
-        } else {
-          clientLogsBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
-       */
-      public Builder removeClientLogs(int index) {
-        if (clientLogsBuilder_ == null) {
-          ensureClientLogsIsMutable();
-          clientLogs_.remove(index);
-          onChanged();
-        } else {
-          clientLogsBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
-       */
-      public org.observertc.schemas.dtos.Models.Call.ClientLog.Builder getClientLogsBuilder(
-          int index) {
-        return getClientLogsFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
-       */
-      public org.observertc.schemas.dtos.Models.Call.ClientLogOrBuilder getClientLogsOrBuilder(
-          int index) {
-        if (clientLogsBuilder_ == null) {
-          return clientLogs_.get(index);  } else {
-          return clientLogsBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
-       */
-      public java.util.List<? extends org.observertc.schemas.dtos.Models.Call.ClientLogOrBuilder> 
-           getClientLogsOrBuilderList() {
-        if (clientLogsBuilder_ != null) {
-          return clientLogsBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(clientLogs_);
-        }
-      }
-      /**
-       * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
-       */
-      public org.observertc.schemas.dtos.Models.Call.ClientLog.Builder addClientLogsBuilder() {
-        return getClientLogsFieldBuilder().addBuilder(
-            org.observertc.schemas.dtos.Models.Call.ClientLog.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
-       */
-      public org.observertc.schemas.dtos.Models.Call.ClientLog.Builder addClientLogsBuilder(
-          int index) {
-        return getClientLogsFieldBuilder().addBuilder(
-            index, org.observertc.schemas.dtos.Models.Call.ClientLog.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .org.observertc.schemas.dtos.Call.ClientLog clientLogs = 6;</code>
-       */
-      public java.util.List<org.observertc.schemas.dtos.Models.Call.ClientLog.Builder> 
-           getClientLogsBuilderList() {
-        return getClientLogsFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilderV3<
-          org.observertc.schemas.dtos.Models.Call.ClientLog, org.observertc.schemas.dtos.Models.Call.ClientLog.Builder, org.observertc.schemas.dtos.Models.Call.ClientLogOrBuilder> 
-          getClientLogsFieldBuilder() {
-        if (clientLogsBuilder_ == null) {
-          clientLogsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              org.observertc.schemas.dtos.Models.Call.ClientLog, org.observertc.schemas.dtos.Models.Call.ClientLog.Builder, org.observertc.schemas.dtos.Models.Call.ClientLogOrBuilder>(
-                  clientLogs_,
-                  ((bitField0_ & 0x00000020) != 0),
-                  getParentForChildren(),
-                  isClean());
-          clientLogs_ = null;
-        }
-        return clientLogsBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -28017,15 +28032,15 @@ public final class Models {
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_org_observertc_schemas_dtos_Room_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_org_observertc_schemas_dtos_Room_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_org_observertc_schemas_dtos_Call_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_org_observertc_schemas_dtos_Call_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_org_observertc_schemas_dtos_Call_ClientLog_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_org_observertc_schemas_dtos_Call_ClientLog_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_org_observertc_schemas_dtos_Client_descriptor;
   private static final 
@@ -28091,152 +28106,152 @@ public final class Models {
   static {
     java.lang.String[] descriptorData = {
       "\n\023protos/models.proto\022\033org.observertc.sc" +
-      "hemas.dtos\"\334\001\n\004Call\022\021\n\tserviceId\030\001 \002(\t\022\016" +
-      "\n\006roomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\017\n\007starte" +
-      "d\030\004 \002(\004\022\016\n\006marker\030\005 \001(\t\022?\n\nclientLogs\030\006 " +
-      "\003(\0132+.org.observertc.schemas.dtos.Call.C" +
-      "lientLog\032?\n\tClientLog\022\020\n\010clientId\030\001 \002(\t\022" +
-      "\021\n\ttimestamp\030\002 \002(\004\022\r\n\005event\030\003 \002(\t\"\322\001\n\006Cl" +
-      "ient\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006roomId\030\002 \002(\t\022" +
-      "\016\n\006callId\030\003 \002(\t\022\020\n\010clientId\030\004 \002(\t\022\016\n\006joi" +
-      "ned\030\005 \002(\004\022\017\n\007touched\030\006 \001(\004\022\022\n\ntimeZoneId" +
-      "\030\007 \001(\t\022\023\n\013mediaUnitId\030\010 \001(\t\022\016\n\006userId\030\t " +
-      "\001(\t\022\016\n\006marker\030\n \001(\t\022\031\n\021peerConnectionIds" +
-      "\030\013 \003(\t\"\207\002\n\016PeerConnection\022\021\n\tserviceId\030\001" +
-      " \002(\t\022\016\n\006roomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\020\n\010" +
-      "clientId\030\004 \002(\t\022\030\n\020peerConnectionId\030\005 \002(\t" +
-      "\022\016\n\006opened\030\006 \002(\004\022\017\n\007touched\030\007 \001(\004\022\023\n\013med" +
-      "iaUnitId\030\010 \001(\t\022\016\n\006userId\030\t \001(\t\022\016\n\006marker" +
-      "\030\n \001(\t\022\r\n\005label\030\013 \001(\t\022\027\n\017inboundTrackIds" +
-      "\030\014 \003(\t\022\030\n\020outboundTrackIds\030\r \003(\t\"\227\002\n\014Inb" +
-      "oundTrack\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006roomId\030\002" +
-      " \002(\t\022\016\n\006callId\030\003 \002(\t\022\020\n\010clientId\030\004 \002(\t\022\030" +
-      "\n\020peerConnectionId\030\005 \002(\t\022\017\n\007trackId\030\006 \002(" +
-      "\t\022\014\n\004kind\030\007 \002(\t\022\r\n\005added\030\010 \002(\004\022\017\n\007touche" +
-      "d\030\t \001(\004\022\023\n\013mediaUnitId\030\n \001(\t\022\016\n\006userId\030\013" +
-      " \001(\t\022\016\n\006marker\030\014 \001(\t\022\021\n\tsfuSinkId\030\r \001(\t\022" +
-      "\023\n\013sfuStreamId\030\016 \001(\t\022\014\n\004ssrc\030\017 \003(\003\"\205\002\n\rO" +
-      "utboundTrack\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006roomI" +
-      "d\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\020\n\010clientId\030\004 \002(" +
-      "\t\022\030\n\020peerConnectionId\030\005 \002(\t\022\017\n\007trackId\030\006" +
-      " \002(\t\022\r\n\005added\030\007 \002(\004\022\014\n\004kind\030\010 \002(\t\022\017\n\007tou" +
-      "ched\030\t \001(\004\022\023\n\013mediaUnitId\030\n \001(\t\022\016\n\006userI" +
-      "d\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\022\023\n\013sfuStreamId\030\r" +
-      " \001(\t\022\014\n\004ssrc\030\016 \003(\003\"\302\001\n\014SfuMediaSink\022\021\n\ts" +
-      "erviceId\030\001 \002(\t\022\023\n\013sfuStreamId\030\002 \002(\t\022\021\n\ts" +
-      "fuSinkId\030\003 \002(\t\022\014\n\004kind\030\004 \002(\t\022\016\n\006callId\030\005" +
-      " \002(\t\022\020\n\010clientId\030\006 \002(\t\022\030\n\020peerConnection" +
-      "Id\030\007 \002(\t\022\017\n\007trackId\030\010 \002(\t\022\034\n\024outboundSfu" +
-      "RtpPadIds\030\t \003(\t\"\263\001\n\016SfuMediaStream\022\021\n\tse" +
-      "rviceId\030\001 \002(\t\022\023\n\013sfuStreamId\030\002 \002(\t\022\014\n\004ki" +
-      "nd\030\003 \002(\t\022\016\n\006callId\030\004 \002(\t\022\020\n\010clientId\030\005 \002" +
-      "(\t\022\030\n\020peerConnectionId\030\006 \002(\t\022\017\n\007trackId\030" +
-      "\007 \002(\t\022\036\n\026sfuInboundSfuRtpPadIds\030\010 \003(\t\"\232\001" +
-      "\n\003Sfu\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022" +
-      "\016\n\006joined\030\003 \002(\004\022\017\n\007touched\030\004 \001(\004\022\023\n\013medi" +
-      "aUnitId\030\005 \001(\t\022\022\n\ntimeZoneId\030\006 \001(\t\022\016\n\006mar" +
-      "ker\030\007 \001(\t\022\027\n\017sfuTransportIds\030\010 \003(\t\"\360\001\n\014S" +
-      "fuTransport\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030" +
-      "\002 \002(\t\022\023\n\013transportId\030\003 \002(\t\022\027\n\010internal\030\004" +
-      " \002(\010:\005false\022\016\n\006opened\030\005 \002(\004\022\017\n\007touched\030\006" +
-      " \001(\004\022\023\n\013mediaUnitId\030\007 \001(\t\022\016\n\006marker\030\010 \001(" +
-      "\t\022\030\n\020inboundRtpPadIds\030\t \003(\t\022\031\n\021outboundR" +
-      "tpPadIds\030\n \003(\t\022\025\n\rsctpStreamIds\030\013 \003(\t\"\337\001" +
-      "\n\020SfuInboundRtpPad\022\021\n\tserviceId\030\001 \002(\t\022\r\n" +
-      "\005sfuId\030\002 \002(\t\022\026\n\016sfuTransportId\030\003 \002(\t\022\023\n\013" +
-      "sfuStreamId\030\004 \002(\t\022\020\n\010rtpPadId\030\005 \002(\t\022\014\n\004s" +
-      "src\030\006 \002(\003\022\027\n\010internal\030\007 \002(\010:\005false\022\r\n\005ad" +
-      "ded\030\010 \002(\004\022\017\n\007touched\030\t \001(\004\022\023\n\013mediaUnitI" +
-      "d\030\n \001(\t\022\016\n\006marker\030\013 \001(\t\"\363\001\n\021SfuOutboundR" +
-      "tpPad\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022" +
-      "\026\n\016sfuTransportId\030\003 \002(\t\022\023\n\013sfuStreamId\030\004" +
-      " \002(\t\022\021\n\tsfuSinkId\030\005 \002(\t\022\020\n\010rtpPadId\030\006 \002(" +
-      "\t\022\014\n\004ssrc\030\007 \002(\003\022\027\n\010internal\030\010 \002(\010:\005false" +
-      "\022\r\n\005added\030\t \002(\004\022\017\n\007touched\030\n \001(\004\022\023\n\013medi" +
-      "aUnitId\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\"\250\001\n\rSfuSct" +
-      "pStream\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(" +
-      "\t\022\026\n\016sfuTransportId\030\003 \002(\t\022\027\n\017sfuSctpStre" +
-      "amId\030\004 \002(\t\022\016\n\006opened\030\005 \002(\004\022\017\n\007touched\030\006 " +
-      "\001(\004\022\023\n\013mediaUnitId\030\007 \001(\t\022\016\n\006marker\030\010 \001(\t"
+      "hemas.dtos\"9\n\004Room\022\021\n\tserviceId\030\001 \002(\t\022\016\n" +
+      "\006roomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\"~\n\004Call\022\021\n" +
+      "\tserviceId\030\001 \002(\t\022\016\n\006roomId\030\002 \002(\t\022\016\n\006call" +
+      "Id\030\003 \002(\t\022\017\n\007started\030\004 \002(\004\022\016\n\006marker\030\005 \001(" +
+      "\t\022\017\n\007touched\030\006 \001(\004\022\021\n\tclientIds\030\007 \003(\t\"\322\001" +
+      "\n\006Client\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006roomId\030\002 " +
+      "\002(\t\022\016\n\006callId\030\003 \002(\t\022\020\n\010clientId\030\004 \002(\t\022\016\n" +
+      "\006joined\030\005 \002(\004\022\017\n\007touched\030\006 \001(\004\022\022\n\ntimeZo" +
+      "neId\030\007 \001(\t\022\023\n\013mediaUnitId\030\010 \001(\t\022\016\n\006userI" +
+      "d\030\t \001(\t\022\016\n\006marker\030\n \001(\t\022\031\n\021peerConnectio" +
+      "nIds\030\013 \003(\t\"\207\002\n\016PeerConnection\022\021\n\tservice" +
+      "Id\030\001 \002(\t\022\016\n\006roomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t" +
+      "\022\020\n\010clientId\030\004 \002(\t\022\030\n\020peerConnectionId\030\005" +
+      " \002(\t\022\016\n\006opened\030\006 \002(\004\022\017\n\007touched\030\007 \001(\004\022\023\n" +
+      "\013mediaUnitId\030\010 \001(\t\022\016\n\006userId\030\t \001(\t\022\016\n\006ma" +
+      "rker\030\n \001(\t\022\r\n\005label\030\013 \001(\t\022\027\n\017inboundTrac" +
+      "kIds\030\014 \003(\t\022\030\n\020outboundTrackIds\030\r \003(\t\"\227\002\n" +
+      "\014InboundTrack\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006room" +
+      "Id\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\020\n\010clientId\030\004 \002" +
+      "(\t\022\030\n\020peerConnectionId\030\005 \002(\t\022\017\n\007trackId\030" +
+      "\006 \002(\t\022\014\n\004kind\030\007 \002(\t\022\r\n\005added\030\010 \002(\004\022\017\n\007to" +
+      "uched\030\t \001(\004\022\023\n\013mediaUnitId\030\n \001(\t\022\016\n\006user" +
+      "Id\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\022\021\n\tsfuSinkId\030\r " +
+      "\001(\t\022\023\n\013sfuStreamId\030\016 \001(\t\022\014\n\004ssrc\030\017 \003(\003\"\205" +
+      "\002\n\rOutboundTrack\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006r" +
+      "oomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\020\n\010clientId\030" +
+      "\004 \002(\t\022\030\n\020peerConnectionId\030\005 \002(\t\022\017\n\007track" +
+      "Id\030\006 \002(\t\022\r\n\005added\030\007 \002(\004\022\014\n\004kind\030\010 \002(\t\022\017\n" +
+      "\007touched\030\t \001(\004\022\023\n\013mediaUnitId\030\n \001(\t\022\016\n\006u" +
+      "serId\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\022\023\n\013sfuStream" +
+      "Id\030\r \001(\t\022\014\n\004ssrc\030\016 \003(\003\"\302\001\n\014SfuMediaSink\022" +
+      "\021\n\tserviceId\030\001 \002(\t\022\023\n\013sfuStreamId\030\002 \002(\t\022" +
+      "\021\n\tsfuSinkId\030\003 \002(\t\022\014\n\004kind\030\004 \002(\t\022\016\n\006call" +
+      "Id\030\005 \002(\t\022\020\n\010clientId\030\006 \002(\t\022\030\n\020peerConnec" +
+      "tionId\030\007 \002(\t\022\017\n\007trackId\030\010 \002(\t\022\034\n\024outboun" +
+      "dSfuRtpPadIds\030\t \003(\t\"\263\001\n\016SfuMediaStream\022\021" +
+      "\n\tserviceId\030\001 \002(\t\022\023\n\013sfuStreamId\030\002 \002(\t\022\014" +
+      "\n\004kind\030\003 \002(\t\022\016\n\006callId\030\004 \002(\t\022\020\n\010clientId" +
+      "\030\005 \002(\t\022\030\n\020peerConnectionId\030\006 \002(\t\022\017\n\007trac" +
+      "kId\030\007 \002(\t\022\036\n\026sfuInboundSfuRtpPadIds\030\010 \003(" +
+      "\t\"\232\001\n\003Sfu\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 " +
+      "\002(\t\022\016\n\006joined\030\003 \002(\004\022\017\n\007touched\030\004 \001(\004\022\023\n\013" +
+      "mediaUnitId\030\005 \001(\t\022\022\n\ntimeZoneId\030\006 \001(\t\022\016\n" +
+      "\006marker\030\007 \001(\t\022\027\n\017sfuTransportIds\030\010 \003(\t\"\360" +
+      "\001\n\014SfuTransport\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sf" +
+      "uId\030\002 \002(\t\022\023\n\013transportId\030\003 \002(\t\022\027\n\010intern" +
+      "al\030\004 \002(\010:\005false\022\016\n\006opened\030\005 \002(\004\022\017\n\007touch" +
+      "ed\030\006 \001(\004\022\023\n\013mediaUnitId\030\007 \001(\t\022\016\n\006marker\030" +
+      "\010 \001(\t\022\030\n\020inboundRtpPadIds\030\t \003(\t\022\031\n\021outbo" +
+      "undRtpPadIds\030\n \003(\t\022\025\n\rsctpStreamIds\030\013 \003(" +
+      "\t\"\337\001\n\020SfuInboundRtpPad\022\021\n\tserviceId\030\001 \002(" +
+      "\t\022\r\n\005sfuId\030\002 \002(\t\022\026\n\016sfuTransportId\030\003 \002(\t" +
+      "\022\023\n\013sfuStreamId\030\004 \002(\t\022\020\n\010rtpPadId\030\005 \002(\t\022" +
+      "\014\n\004ssrc\030\006 \002(\003\022\027\n\010internal\030\007 \002(\010:\005false\022\r" +
+      "\n\005added\030\010 \002(\004\022\017\n\007touched\030\t \001(\004\022\023\n\013mediaU" +
+      "nitId\030\n \001(\t\022\016\n\006marker\030\013 \001(\t\"\363\001\n\021SfuOutbo" +
+      "undRtpPad\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 " +
+      "\002(\t\022\026\n\016sfuTransportId\030\003 \002(\t\022\023\n\013sfuStream" +
+      "Id\030\004 \002(\t\022\021\n\tsfuSinkId\030\005 \002(\t\022\020\n\010rtpPadId\030" +
+      "\006 \002(\t\022\014\n\004ssrc\030\007 \002(\003\022\027\n\010internal\030\010 \002(\010:\005f" +
+      "alse\022\r\n\005added\030\t \002(\004\022\017\n\007touched\030\n \001(\004\022\023\n\013" +
+      "mediaUnitId\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\"\250\001\n\rSf" +
+      "uSctpStream\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030" +
+      "\002 \002(\t\022\026\n\016sfuTransportId\030\003 \002(\t\022\027\n\017sfuSctp" +
+      "StreamId\030\004 \002(\t\022\016\n\006opened\030\005 \002(\004\022\017\n\007touche" +
+      "d\030\006 \001(\004\022\023\n\013mediaUnitId\030\007 \001(\t\022\016\n\006marker\030\010" +
+      " \001(\t"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         });
-    internal_static_org_observertc_schemas_dtos_Call_descriptor =
+    internal_static_org_observertc_schemas_dtos_Room_descriptor =
       getDescriptor().getMessageTypes().get(0);
+    internal_static_org_observertc_schemas_dtos_Room_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_org_observertc_schemas_dtos_Room_descriptor,
+        new java.lang.String[] { "ServiceId", "RoomId", "CallId", });
+    internal_static_org_observertc_schemas_dtos_Call_descriptor =
+      getDescriptor().getMessageTypes().get(1);
     internal_static_org_observertc_schemas_dtos_Call_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_Call_descriptor,
-        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "Started", "Marker", "ClientLogs", });
-    internal_static_org_observertc_schemas_dtos_Call_ClientLog_descriptor =
-      internal_static_org_observertc_schemas_dtos_Call_descriptor.getNestedTypes().get(0);
-    internal_static_org_observertc_schemas_dtos_Call_ClientLog_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_org_observertc_schemas_dtos_Call_ClientLog_descriptor,
-        new java.lang.String[] { "ClientId", "Timestamp", "Event", });
+        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "Started", "Marker", "Touched", "ClientIds", });
     internal_static_org_observertc_schemas_dtos_Client_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_org_observertc_schemas_dtos_Client_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_Client_descriptor,
         new java.lang.String[] { "ServiceId", "RoomId", "CallId", "ClientId", "Joined", "Touched", "TimeZoneId", "MediaUnitId", "UserId", "Marker", "PeerConnectionIds", });
     internal_static_org_observertc_schemas_dtos_PeerConnection_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_org_observertc_schemas_dtos_PeerConnection_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_PeerConnection_descriptor,
         new java.lang.String[] { "ServiceId", "RoomId", "CallId", "ClientId", "PeerConnectionId", "Opened", "Touched", "MediaUnitId", "UserId", "Marker", "Label", "InboundTrackIds", "OutboundTrackIds", });
     internal_static_org_observertc_schemas_dtos_InboundTrack_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_org_observertc_schemas_dtos_InboundTrack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_InboundTrack_descriptor,
         new java.lang.String[] { "ServiceId", "RoomId", "CallId", "ClientId", "PeerConnectionId", "TrackId", "Kind", "Added", "Touched", "MediaUnitId", "UserId", "Marker", "SfuSinkId", "SfuStreamId", "Ssrc", });
     internal_static_org_observertc_schemas_dtos_OutboundTrack_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_org_observertc_schemas_dtos_OutboundTrack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_OutboundTrack_descriptor,
         new java.lang.String[] { "ServiceId", "RoomId", "CallId", "ClientId", "PeerConnectionId", "TrackId", "Added", "Kind", "Touched", "MediaUnitId", "UserId", "Marker", "SfuStreamId", "Ssrc", });
     internal_static_org_observertc_schemas_dtos_SfuMediaSink_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_org_observertc_schemas_dtos_SfuMediaSink_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_SfuMediaSink_descriptor,
         new java.lang.String[] { "ServiceId", "SfuStreamId", "SfuSinkId", "Kind", "CallId", "ClientId", "PeerConnectionId", "TrackId", "OutboundSfuRtpPadIds", });
     internal_static_org_observertc_schemas_dtos_SfuMediaStream_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_org_observertc_schemas_dtos_SfuMediaStream_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_SfuMediaStream_descriptor,
         new java.lang.String[] { "ServiceId", "SfuStreamId", "Kind", "CallId", "ClientId", "PeerConnectionId", "TrackId", "SfuInboundSfuRtpPadIds", });
     internal_static_org_observertc_schemas_dtos_Sfu_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_org_observertc_schemas_dtos_Sfu_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_Sfu_descriptor,
         new java.lang.String[] { "ServiceId", "SfuId", "Joined", "Touched", "MediaUnitId", "TimeZoneId", "Marker", "SfuTransportIds", });
     internal_static_org_observertc_schemas_dtos_SfuTransport_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_org_observertc_schemas_dtos_SfuTransport_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_SfuTransport_descriptor,
         new java.lang.String[] { "ServiceId", "SfuId", "TransportId", "Internal", "Opened", "Touched", "MediaUnitId", "Marker", "InboundRtpPadIds", "OutboundRtpPadIds", "SctpStreamIds", });
     internal_static_org_observertc_schemas_dtos_SfuInboundRtpPad_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_org_observertc_schemas_dtos_SfuInboundRtpPad_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_SfuInboundRtpPad_descriptor,
         new java.lang.String[] { "ServiceId", "SfuId", "SfuTransportId", "SfuStreamId", "RtpPadId", "Ssrc", "Internal", "Added", "Touched", "MediaUnitId", "Marker", });
     internal_static_org_observertc_schemas_dtos_SfuOutboundRtpPad_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_org_observertc_schemas_dtos_SfuOutboundRtpPad_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_SfuOutboundRtpPad_descriptor,
         new java.lang.String[] { "ServiceId", "SfuId", "SfuTransportId", "SfuStreamId", "SfuSinkId", "RtpPadId", "Ssrc", "Internal", "Added", "Touched", "MediaUnitId", "Marker", });
     internal_static_org_observertc_schemas_dtos_SfuSctpStream_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_org_observertc_schemas_dtos_SfuSctpStream_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_SfuSctpStream_descriptor,

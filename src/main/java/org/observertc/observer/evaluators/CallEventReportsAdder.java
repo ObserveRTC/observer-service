@@ -9,7 +9,6 @@ import jakarta.inject.Singleton;
 import org.observertc.observer.evaluators.eventreports.*;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.repositories.*;
-import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.schemas.dtos.Models;
 import org.observertc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
@@ -81,8 +80,11 @@ public class CallEventReportsAdder {
     @PostConstruct
     void setup() {
 
-        this.repositoryEvents.expiredClients()
-                .subscribe(clientModels -> this.processExpiredClients(clientModels));
+        this.repositoryEvents.expiredCalls()
+                .subscribe(callModels -> this.processRemovedCalls(callModels));
+
+        this.repositoryEvents.deletedCalls()
+                .subscribe(callModels -> this.processRemovedCalls(callModels));
 
         this.repositoryEvents.deletedClients()
                 .subscribe(clientModels -> this.clientLeftReports.accept(clientModels));
@@ -167,35 +169,21 @@ public class CallEventReportsAdder {
         }
     }
 
-    private void processExpiredClients(List<Models.Client> expiredClientModels) {
-        if (expiredClientModels == null || expiredClientModels.size() < 1) {
-            logger.warn("Something is wrong");
+    private void processRemovedCalls(List<Models.Call> callModels) {
+        if (callModels == null || callModels.size() < 1) {
+            logger.warn("Expired call models should not be null or less than 1");
             return;
         }
-        this.clientLeftReports.accept(expiredClientModels);
-
-        var peerConnectionIds = expiredClientModels.stream()
-                .filter(model -> 0 < model.getPeerConnectionIdsCount())
-                .map(Models.Client::getPeerConnectionIdsList)
-                .flatMap(s -> s.stream())
+        var clientIds = callModels.stream()
+                .filter(callModel -> 0 < callModel.getClientIdsCount())
+                .flatMap(callModel -> callModel.getClientIdsList().stream())
                 .collect(Collectors.toSet());
-        this.peerConnectionsRepository.fetchRecursively(peerConnectionIds);
-        this.peerConnectionsRepository.deleteAll(peerConnectionIds);
 
-        for (var clientModel : expiredClientModels) {
-            var serviceRoomId = ServiceRoomId.make(clientModel.getServiceId(), clientModel.getRoomId());
-            var call = this.callsRepository.get(serviceRoomId);
-            if (call == null) {
-                continue;
-            }
-            call.removeClient(clientModel.getClientId());
+        if (0 < clientIds.size()) {
+            this.clientsRepository.deleteAll(clientIds);
+            this.clientsRepository.save();
         }
-
-        this.callsRepository.save();
-        var removedCallModels = this.callsRepository.removeExpiredCalls();
-        if (0 < removedCallModels.size()) {
-            this.callEndedReports.accept(removedCallModels.values());
-        }
+        this.callEndedReports.accept(callModels);
     }
 
 

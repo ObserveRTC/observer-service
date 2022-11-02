@@ -11,19 +11,19 @@ class TryTest {
     @Test
     void tryRunThreeTimes() {
         var invoked = new AtomicInteger(0);
-        Try.wrap(() -> {
+        Try.createForSupplier(() -> {
             invoked.incrementAndGet();
             throw new RuntimeException();
-        });
+        }).withMaxRetry(3).execute();
         Assertions.assertEquals(3, invoked.get());
     }
 
     @Test
     void callOnExceptionListener() {
         var invoked = new AtomicBoolean(false);
-        Try.create(() -> {
+        Try.createForSupplier(() -> {
             throw new RuntimeException();
-        }).onException(err -> invoked.set(true)).run();
+        }).withExceptionHandler(err -> invoked.set(true)).execute();
         Assertions.assertTrue(invoked.get());
     }
 
@@ -36,12 +36,12 @@ class TryTest {
     @Test
     void supplyInCaseOfTwoTimesExecution() {
         var invoked = new AtomicInteger(0);
-        var result = Try.wrap(() -> {
+        var result = Try.createForSupplier(() -> {
             if (invoked.incrementAndGet() < 2) {
                 throw new RuntimeException();
             }
             return 1;
-        }, 0);
+        }).withMaxRetry(3).execute().getResult();
         Assertions.assertEquals(1, result);
     }
 

@@ -2,7 +2,6 @@ package org.observertc.observer.utils;
 
 import org.observertc.observer.configs.MediaKind;
 import org.observertc.observer.repositories.HamokStorages;
-import org.observertc.observer.samples.ObservedClientSample;
 import org.observertc.observer.samples.ObservedClientSamples;
 import org.observertc.observer.samples.SamplesVisitor;
 
@@ -33,13 +32,7 @@ public class SamplesGeneratorForSingleSfu {
             var serviceId = this.modelsMapGenerator.getCallModel().getServiceId();
             var mediaUnitId = this.randomGenerators.getRandomClientSideMediaUnitId();
             SamplesVisitor.streamClientSamples(samples)
-                    .map(clientSample -> {
-                        return ObservedClientSample.builder()
-                                .setServiceId(serviceId)
-                                .setMediaUnitId(mediaUnitId)
-                                .setClientSample(clientSample)
-                                .build();
-                    }).forEach(result::addObservedClientSample);
+                    .forEach(clientSample -> result.add(serviceId, mediaUnitId, clientSample));
         }
         return result.build();
     }

@@ -47,7 +47,7 @@ class ClientsRepositoryTest {
         ));
         Assertions.assertEquals(0, alreadyInsertedCalls.size());
 
-        var call = this.callsRepository.get(serviceRoomId);
+        var call = this.callsRepository.get(callModel.getCallId());
         var clientModels = modelsMapGenerator.getClientModels();
         for (var clientModel : clientModels.values()) {
             call.addClient(
@@ -72,7 +72,7 @@ class ClientsRepositoryTest {
 
         for (var client : clients.values()) {
             var clientModel = clientModels.get(client.getClientId());
-            var call = this.callsRepository.get(client.getServiceRoomId());
+            var call = this.callsRepository.get(client.getCallId());
 
             Assertions.assertEquals(client.getCallId(), call.getCallId());
             Assertions.assertTrue(call.hasClient(client.getClientId()));
@@ -105,7 +105,7 @@ class ClientsRepositoryTest {
         var clients = this.clientsRepository.getAll(clientModels.keySet());
 
         for (var client : clients.values()) {
-            var call = this.callsRepository.get(client.getServiceRoomId());
+            var call = this.callsRepository.get(client.getCallId());
 
             Assertions.assertTrue(call.hasClient(client.getClientId()));
             Assertions.assertEquals(call.getServiceRoomId(), client.getServiceRoomId());

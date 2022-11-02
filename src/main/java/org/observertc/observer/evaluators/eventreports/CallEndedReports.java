@@ -40,8 +40,8 @@ public class CallEndedReports {
 
     private CallEventReport makeReport(Models.Call callModel) {
         Long timestamp;
-        if (0 < callModel.getClientLogsCount()) {
-            timestamp = callModel.getClientLogsList().stream().map(Models.Call.ClientLog::getTimestamp).max(Long::compare).get();
+        if (callModel.hasTouched()) {
+            timestamp = callModel.getTouched();
         } else {
             timestamp = Instant.now().toEpochMilli();
         }

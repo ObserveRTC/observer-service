@@ -2,7 +2,7 @@ package org.observertc.observer.repositories;
 
 import io.github.balazskreith.hamok.ModifiedStorageEntry;
 import io.github.balazskreith.hamok.memorystorages.MemoryStorageBuilder;
-import io.github.balazskreith.hamok.storagegrid.ReplicatedStorage;
+import io.github.balazskreith.hamok.storagegrid.SeparatedStorage;
 import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -17,10 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import java.time.Instant;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Singleton
 public class CallsRepository implements RepositoryStorageMetrics {
@@ -31,9 +30,9 @@ public class CallsRepository implements RepositoryStorageMetrics {
 
     private static final String STORAGE_ID = "observertc-calls";
 
-    private ReplicatedStorage<ServiceRoomId, Models.Call> storage;
-    private Map<ServiceRoomId, Models.Call> updated;
-    private CachedFetches<ServiceRoomId, Call> fetched;
+    private SeparatedStorage<String, Models.Call> storage;
+    private Map<String, Models.Call> updated;
+    private CachedFetches<String, Call> fetched;
 
     @Inject
     private HamokService service;
@@ -46,36 +45,34 @@ public class CallsRepository implements RepositoryStorageMetrics {
 
     @PostConstruct
     void setup() {
-        var baseStorage = new MemoryStorageBuilder<ServiceRoomId, Models.Call>()
+        var baseStorage = new MemoryStorageBuilder<String, Models.Call>()
                 .setConcurrency(true)
                 .setId(STORAGE_ID)
-                .setMergeOp((oldValue, newValue) -> {
-                    var clientLogs_1 = oldValue.getClientLogsList();
-                    var clientLogs_2 = newValue.getClientLogsList();
-                    var clientLogs = new HashMap<String, Models.Call.ClientLog>();
-                    for (var clientLog : clientLogs_1) {
-                        clientLogs.put(clientLog.getClientId(), clientLog);
+                .setMergeOp((call_1, call_2) -> {
+                    var clientIds = Stream.concat(
+                            call_1.getClientIdsCount() < 1 ? Stream.empty() : call_1.getClientIdsList().stream(),
+                            call_2.getClientIdsCount() < 1 ? Stream.empty() : call_2.getClientIdsList().stream()
+                    ).collect(Collectors.toSet());
+                    Long touched = null;
+                    if (call_1.hasTouched() || call_2.hasTouched()) {
+                        touched = Math.min(call_1.getTouched(), call_2.getTouched());
+                    } else if (call_1.hasTouched()) {
+                        touched = call_1.getTouched();
+                    } else if (call_2.hasTouched()) {
+                        touched = call_2.getTouched();
                     }
-                    for (var clientLog_2 : clientLogs_2) {
-                        var clientLog_1 = clientLogs.get(clientLog_2.getClientId());
-                        if (clientLog_1 == null) {
-                            clientLogs.put(clientLog_2.getClientId(), clientLog_2);
-                            continue;
-                        }
-                        if (clientLog_2.getTimestamp() <= clientLog_1.getTimestamp()) {
-                            continue;
-                        }
-                        clientLogs.put(clientLog_2.getClientId(), clientLog_2);
+                    var builder = Models.Call.newBuilder(call_1)
+                            .clearClientIds()
+                            .addAllClientIds(clientIds);
+                    if (touched != null) {
+                        builder.setTouched(touched);
                     }
-                    var builder = Models.Call.newBuilder(newValue)
-                            .clearClientLogs()
-                            .addAllClientLogs(clientLogs.values())
-                            ;
                     return builder.build();
                 })
+                .setExpiration(5 * 60 * 60 * 1000)
                 .build();
-        this.storage = this.service.getStorageGrid().replicatedStorage(baseStorage)
-                .setKeyCodec(ServiceRoomId::toBytes, ServiceRoomId::fromBytes)
+        this.storage = this.service.getStorageGrid().separatedStorage(baseStorage)
+                .setKeyCodec(String::getBytes, String::new)
                 .setValueCodec(
                         Mapper.create(Models.Call::toByteArray, logger)::map,
                         Mapper.<byte[], Models.Call>create(bytes -> Models.Call.parseFrom(bytes), logger)::map
@@ -87,23 +84,30 @@ public class CallsRepository implements RepositoryStorageMetrics {
                 .build();
 
 
-        this.fetched = CachedFetches.<ServiceRoomId, Call>builder()
+        this.fetched = CachedFetches.<String, Call>builder()
                 .onFetchOne(this::fetchOne)
                 .onFetchAll(this::fetchAll)
                 .build();
         this.updated = new HashMap<>();
     }
 
-    Observable<List<ModifiedStorageEntry<ServiceRoomId, Models.Call>>> observableDeletedEntries() {
+    Observable<List<ModifiedStorageEntry<String, Models.Call>>> observableDeletedEntries() {
         return this.storage.collectedEvents().deletedEntries();
     }
 
-    Observable<List<ModifiedStorageEntry<ServiceRoomId, Models.Call>>> observableCreatedEntries() {
+    Observable<List<ModifiedStorageEntry<String, Models.Call>>> observableCreatedEntries() {
         return this.storage.collectedEvents().createdEntries();
     }
 
-    public Map<ServiceRoomId, Call> fetchRecursively(Set<ServiceRoomId> serviceRoomIds) {
-        var result = this.getAll(serviceRoomIds);
+    Observable<List<ModifiedStorageEntry<String, Models.Call>>> observableExpiredEntries() {
+        return this.storage.collectedEvents().expiredEntries();
+    }
+
+    public Map<String, Call> fetchRecursively(Set<String> callIds) {
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        var result = this.getAll(callIds);
         var clientIds = result.values().stream()
                 .map(Call::getClientIds)
                 .flatMap(s -> s.stream())
@@ -112,19 +116,30 @@ public class CallsRepository implements RepositoryStorageMetrics {
         return result;
     }
 
+    public Map<String, Call> fetchRecursivelyUpwards(Collection<String> callIds) {
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        var result = this.getAll(callIds);
+//        var serviceRoomIds = result.values().stream()
+//                .map(Call::getServiceRoomId)
+//                .collect(Collectors.toSet());
+        return result;
+    }
+
     /**
      * Tries to insert calls, and returns with the NOT inserted one if it is already inserted
      * @param createCallInfo
      * @return
      */
-    public Map<ServiceRoomId, Call> insertAll(Collection<CreateCallInfo> createCallInfo) {
+    public Map<String, Call> insertAll(Collection<CreateCallInfo> createCallInfo) {
         if (createCallInfo == null || createCallInfo.size() < 1) {
             return Collections.emptyMap();
         }
         var proposedModels = createCallInfo.stream().collect(Collectors.toMap(
-                info -> info.serviceRoomId,
+                info -> info.callId,
                 info -> {
-                    var proposedCallId = Utils.firstNotNull(info.providedCallId, UUID.randomUUID().toString());
+                    var proposedCallId = Utils.firstNotNull(info.callId, UUID.randomUUID().toString());
                     var serviceRoomId = info.serviceRoomId();
                     var builder = Models.Call.newBuilder()
                             .setServiceId(serviceRoomId.serviceId)
@@ -148,14 +163,14 @@ public class CallsRepository implements RepositoryStorageMetrics {
         ));
     }
 
-    public Set<ServiceRoomId> removeAll(Set<ServiceRoomId> serviceRoomIds) {
-        var calls = this.getAll(serviceRoomIds);
+    public Set<String> removeAll(Set<String> callIds) {
+        var calls = this.getAll(callIds);
         var clientIds = calls.values().stream().map(call -> call.getClientIds())
                 .flatMap(s -> s.stream())
                 .collect(Collectors.toSet());
-        var result = Try.<Set<ServiceRoomId>>wrap(() -> this.storage.deleteAll(serviceRoomIds), Collections.emptySet());
+        var result = Try.<Set<String>>wrap(() -> this.storage.deleteAll(callIds), Collections.emptySet());
         synchronized (this) {
-            serviceRoomIds.forEach(this.updated::remove);
+            callIds.forEach(this.updated::remove);
         }
         this.clientsRepositoryRepo.deleteAll(clientIds);
         this.clientsRepositoryRepo.save();
@@ -163,60 +178,54 @@ public class CallsRepository implements RepositoryStorageMetrics {
         return result;
     }
 
-    public Call get(ServiceRoomId serviceRoomId) {
-        return this.fetched.get(serviceRoomId);
+    public Call get(String callId) {
+        return this.fetched.get(callId);
     }
 
-    public Map<ServiceRoomId, Call> getAll(Collection<ServiceRoomId> serviceRoomIds) {
-        if (serviceRoomIds == null || serviceRoomIds.size() < 1) {
+    public Map<String, Call> getAll(Collection<String> callIds) {
+        if (callIds == null || callIds.size() < 1) {
             return Collections.emptyMap();
         }
-        return this.fetched.getAll(Set.copyOf(serviceRoomIds));
-    }
-
-    public Map<String, Call> getAllMappedByCallIds(Collection<ServiceRoomId> serviceRoomIds) {
-        return this.getAll(serviceRoomIds).values().stream().collect(Collectors.toMap(
-                call -> call.getCallId(),
-                Function.identity()
-        ));
+        return this.fetched.getAll(Set.copyOf(callIds));
     }
 
     public void save() {
         synchronized (this) {
             if (0 < this.updated.size()) {
+//                Try2.createForAction(() -> this.storage.setAll(this.updated)).execute();
                 Try.wrap(() -> this.storage.setAll(this.updated));
             }
             this.updated.clear();
+
         }
         this.clientsRepositoryRepo.save();
         this.fetched.clear();
     }
 
-    private Call wrapCall(Models.Call model) {
+    Call wrapCall(Models.Call model) {
         var result = new Call(
                 model,
                 this,
                 this.clientsRepositoryRepo
         );
-        this.fetched.add(result.getServiceRoomId(), result);
+        this.fetched.add(result.getCallId(), result);
         return result;
     }
 
     synchronized void update(Models.Call call) {
-        var serviceRoomId = ServiceRoomId.make(call.getServiceId(), call.getRoomId());
-        this.updated.put(serviceRoomId, call);
+        this.updated.put(call.getCallId(), call);
     }
 
-    private Call fetchOne(ServiceRoomId serviceRoomId) {
-        var model = Try.wrap(() -> this.storage.get(serviceRoomId), null);
+    private Call fetchOne(String callId) {
+        var model = Try.wrap(() -> this.storage.get(callId), null);
         if (model == null) {
             return null;
         }
         return this.wrapCall(model);
     }
 
-    private Map<ServiceRoomId, Call> fetchAll(Set<ServiceRoomId> serviceRoomIds) {
-        var models = Try.wrap(() -> this.storage.getAll(serviceRoomIds), null);
+    private Map<String, Call> fetchAll(Set<String> callIds) {
+        var models = Try.wrap(() -> this.storage.getAll(callIds), null);
 
         if (models == null || models.isEmpty()) {
             return Collections.emptyMap();
@@ -240,48 +249,7 @@ public class CallsRepository implements RepositoryStorageMetrics {
         return this.storage.localSize();
     }
 
-    public Map<ServiceRoomId, Models.Call> removeExpiredCalls() {
-        var threshold = Instant.now().toEpochMilli() - 5 * 60 * 1000;
-        var toRemove = new HashMap<ServiceRoomId, Models.Call>();
-        var executed = Try.wrap(() -> {
-            for (var it = this.storage.iterator(); it.hasNext(); ) {
-                var entry = it.next();
-                var call = entry.getValue();
-                if (call == null) {
-                    continue;
-                }
-                if (call.getClientLogsCount() < 1) {
-                    toRemove.put(entry.getKey(), call);
-                    continue;
-                }
-                var logList = call.getClientLogsList();
-                var hasActiveClient = logList.stream().anyMatch(log -> Call.CLIENT_JOINED_EVENT_NAME.equals(log.getEvent()));
-                if (hasActiveClient) {
-                    continue;
-                }
-                var allExpired = logList.stream().allMatch(log -> log.getTimestamp() < threshold);
-                if (allExpired) {
-                    toRemove.put(entry.getKey(), call);
-                }
-            }
-        });
-        if (toRemove.size() < 1 || !executed) {
-            return Collections.emptyMap();
-        }
-        synchronized (this) {
-            toRemove.keySet().stream().forEach(this.updated::remove);
-            var removed = Try.wrap(() -> this.storage.deleteAll(toRemove.keySet()), null);
-            if (removed == null || removed.size() < 1) {
-                return Collections.emptyMap();
-            }
-            return toRemove.entrySet().stream().filter(entry -> removed.contains(entry.getKey())).collect(Collectors.toMap(
-                    Map.Entry::getKey,
-                    Map.Entry::getValue
-            ));
-        }
-    }
-
-    public record CreateCallInfo(ServiceRoomId serviceRoomId, String marker, String providedCallId, Long timestamp) {
+    public record CreateCallInfo(ServiceRoomId serviceRoomId, String marker, String callId, Long timestamp) {
 
     }
 }

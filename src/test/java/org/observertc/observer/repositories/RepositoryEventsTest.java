@@ -5,7 +5,6 @@ import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.observer.utils.ModelsMapGenerator;
 import org.observertc.schemas.dtos.Models;
 
@@ -35,11 +34,11 @@ class RepositoryEventsTest {
         modelsMapGenerator.generateP2pCase().saveTo(hamokStorages);
 
         var addedClientModels = modelsMapGenerator.getClientModels();
-        var serviceRoomId = ServiceRoomId.make(modelsMapGenerator.getCallModel().getServiceId(), modelsMapGenerator.getCallModel().getRoomId());
+        var callId = modelsMapGenerator.getCallModel().getCallId();
         var promise = new CompletableFuture<List<Models.Client>>();
 
         repositoryEvents.deletedClients().subscribe(promise::complete);
-        this.hamokStorages.getCallsRepository().removeAll(Set.of(serviceRoomId));
+        this.hamokStorages.getCallsRepository().removeAll(Set.of(callId));
         var deletedClientModels = promise.get(30, TimeUnit.SECONDS);
 
         Assertions.assertEquals(addedClientModels.size(), deletedClientModels.size());
@@ -55,11 +54,11 @@ class RepositoryEventsTest {
         modelsMapGenerator.generateP2pCase().saveTo(hamokStorages);
 
         var addedPeerConnectionModels = modelsMapGenerator.getPeerConnectionModels();
-        var serviceRoomId = ServiceRoomId.make(modelsMapGenerator.getCallModel().getServiceId(), modelsMapGenerator.getCallModel().getRoomId());
+        var callId = modelsMapGenerator.getCallModel().getCallId();
         var promise = new CompletableFuture<List<Models.PeerConnection>>();
         repositoryEvents.deletedPeerConnections().subscribe(promise::complete);
 //
-        this.hamokStorages.getCallsRepository().removeAll(Set.of(serviceRoomId));
+        this.hamokStorages.getCallsRepository().removeAll(Set.of(callId));
         var deletedPeerConnectionModels = promise.get(30, TimeUnit.SECONDS);
 
         Assertions.assertEquals(addedPeerConnectionModels.size(), deletedPeerConnectionModels.size());
@@ -73,11 +72,11 @@ class RepositoryEventsTest {
     @DisplayName("Scenario: a p2p is added to the hamok. When a call is removed Then corresponding inbound tracks are removed as well and events are triggered")
     void test_3() throws ExecutionException, InterruptedException, TimeoutException {
         modelsMapGenerator.generateP2pCase().saveTo(hamokStorages);
-        var serviceRoomId = ServiceRoomId.make(modelsMapGenerator.getCallModel().getServiceId(), modelsMapGenerator.getCallModel().getRoomId());
+        var callId = modelsMapGenerator.getCallModel().getCallId();
         var promise = new CompletableFuture<List<Models.InboundTrack>>();
         repositoryEvents.deletedInboundTrack().subscribe(promise::complete);
 //
-        this.hamokStorages.getCallsRepository().removeAll(Set.of(serviceRoomId));
+        this.hamokStorages.getCallsRepository().removeAll(Set.of(callId));
         var addedInboundTrackModels = modelsMapGenerator.getInboundTrackModels();
         var deletedInboundTrackModels = promise.get(30, TimeUnit.SECONDS);
 
@@ -95,11 +94,11 @@ class RepositoryEventsTest {
         modelsMapGenerator.generateP2pCase().saveTo(hamokStorages);
 
         var addedOutboundTrackModels = modelsMapGenerator.getOutboundTrackModels();
-        var serviceRoomId = ServiceRoomId.make(modelsMapGenerator.getCallModel().getServiceId(), modelsMapGenerator.getCallModel().getRoomId());
+        var callId = modelsMapGenerator.getCallModel().getCallId();
         var promise = new CompletableFuture<List<Models.OutboundTrack>>();
         repositoryEvents.deletedOutboundTrack().subscribe(promise::complete);
 //
-        this.hamokStorages.getCallsRepository().removeAll(Set.of(serviceRoomId));
+        this.hamokStorages.getCallsRepository().removeAll(Set.of(callId));
         var deletedOutboundTrackModels = promise.get(30, TimeUnit.SECONDS);
 
         Assertions.assertEquals(addedOutboundTrackModels.size(), deletedOutboundTrackModels.size());

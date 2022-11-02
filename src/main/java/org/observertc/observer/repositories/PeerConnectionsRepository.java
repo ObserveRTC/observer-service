@@ -183,6 +183,19 @@ public class PeerConnectionsRepository implements RepositoryStorageMetrics {
         return result;
     }
 
+    public Map<String, PeerConnection> fetchRecursivelyUpwards(Collection<String> peerConnectionIds) {
+        if (peerConnectionIds == null || peerConnectionIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        var result = this.getAll(peerConnectionIds);
+        var clientIds = result.values().stream()
+                .map(PeerConnection::getClientId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        this.clientsProvider.get().fetchRecursivelyUpwards(clientIds);
+        return result;
+    }
+
     @Override
     public String storageId() {
         return this.storage.getId();

@@ -64,8 +64,15 @@ public class RepositoryEvents {
     void teardown() {
     }
 
-    public Observable<List<Models.Client>> expiredClients() {
-        return this.clientsRepository.observableExpiredEntries()
+    public Observable<List<Models.Call>> expiredCalls() {
+        return this.callsRepository.observableExpiredEntries()
+                .map(events ->
+                        events.stream().map(ModifiedStorageEntry::getOldValue).collect(Collectors.toList())
+                );
+    }
+
+    public Observable<List<Models.Call>> deletedCalls() {
+        return this.callsRepository.observableDeletedEntries()
                 .map(events ->
                         events.stream().map(ModifiedStorageEntry::getOldValue).collect(Collectors.toList())
                 );

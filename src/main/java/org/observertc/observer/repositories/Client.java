@@ -30,7 +30,7 @@ public class Client {
     }
 
     public Call getCall() {
-        return this.callsRepo.get(this.serviceRoomId);
+        return this.callsRepo.get(this.getCallId());
     }
 
     public String getServiceId(){

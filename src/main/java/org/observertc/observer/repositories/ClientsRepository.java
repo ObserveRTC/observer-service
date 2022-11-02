@@ -5,7 +5,6 @@ import io.github.balazskreith.hamok.memorystorages.MemoryStorageBuilder;
 import io.github.balazskreith.hamok.storagegrid.SeparatedStorage;
 import io.micronaut.context.BeanProvider;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.HamokService;
@@ -56,7 +55,7 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
         var baseStorage = new MemoryStorageBuilder<String, Models.Client>()
                 .setId(STORAGE_ID)
                 .setConcurrency(true)
-                .setExpiration(config.clientMaxIdleTimeInS * 1000, Schedulers.io())
+//                .setExpiration(config.clientMaxIdleTimeInS * 1000, Schedulers.io())
                 .build();
         this.storage = this.hamokService.getStorageGrid().<String, Models.Client>separatedStorage(baseStorage)
                 .setKeyCodec(SerDeUtils.createStrToByteFunc(), SerDeUtils.createBytesToStr())
@@ -105,7 +104,7 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
         }
     }
 
-    synchronized void deleteAll(Set<String> clientIds) {
+    public synchronized void deleteAll(Set<String> clientIds) {
         if (clientIds == null || clientIds.size() < 1) {
             return;
         }
@@ -152,12 +151,28 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
     }
 
     public Map<String, Client> fetchRecursively(Collection<String> clientIds) {
+        if (clientIds == null || clientIds.size() < 1) {
+            return Collections.emptyMap();
+        }
         var clients = Try.<Map<String, Client>>wrap(() -> this.getAll(clientIds), Collections.emptyMap());
         var peerConnectionIds = clients.values().stream()
                 .map(Client::getPeerConnectionIds)
                 .flatMap(s -> s.stream())
                 .collect(Collectors.toSet());
         this.peerConnectionsRepositoryRepo.fetchRecursively(peerConnectionIds);
+        return clients;
+    }
+
+    public Map<String, Client> fetchRecursivelyUpwards(Collection<String> clientIds) {
+        if (clientIds == null || clientIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        var clients = Try.<Map<String, Client>>wrap(() -> this.getAll(clientIds), Collections.emptyMap());
+        var callIds = clients.values().stream()
+                .map(Client::getCallId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        this.callsProvider.get().fetchRecursivelyUpwards(callIds);
         return clients;
     }
 
@@ -212,6 +227,4 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
         this.fetched.add(result.getClientId(), result);
         return result;
     }
-
-
 }

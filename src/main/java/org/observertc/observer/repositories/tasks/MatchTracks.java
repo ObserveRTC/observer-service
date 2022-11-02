@@ -63,8 +63,8 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
                 if (localOutboundTracks == null || localOutboundTracks.size() < 1) {
                     return;
                 }
-                var serviceRoomIds = localOutboundTracks.values().stream().map(t -> t.getServiceRoomId()).collect(Collectors.toSet());
-                var calls = this.callsRepository.fetchRecursively(serviceRoomIds);
+                var callIds = localOutboundTracks.values().stream().map(t -> t.getCallId()).collect(Collectors.toSet());
+                var calls = this.callsRepository.fetchRecursively(callIds);
                 var clients = calls.values().stream().flatMap(call -> call.getClients().entrySet().stream())
                         .collect(Collectors.toMap(
                                 Map.Entry::getKey,
@@ -129,10 +129,10 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
                         .filter(trackId -> this.matchedOutboundTrackIds.contains(trackId) == false)
                         .collect(Collectors.toSet());
                 var outboundTracks = this.outboundTracksRepository.getAll(unmatchedOutboundTrackIds);
-                var serviceRoomIds = outboundTracks.values().stream()
-                        .map(OutboundTrack::getServiceRoomId)
+                var callIds = outboundTracks.values().stream()
+                        .map(OutboundTrack::getCallId)
                         .collect(Collectors.toSet());
-                this.callsRepository.fetchRecursively(serviceRoomIds);
+                this.callsRepository.fetchRecursively(callIds);
                 for (var entry : outboundTracks.entrySet()) {
                     var outboundTrackId = entry.getKey();
                     var outboundTrack = entry.getValue();

@@ -2,6 +2,11 @@ syntax = "proto2";
 
 package org.observertc.schemas.dtos;
 
+message Room {
+  required string serviceId = 1;
+  required string roomId = 2;
+  required string callId = 3;
+}
 
 message Call {
   required string serviceId = 1;
@@ -10,13 +15,17 @@ message Call {
   required uint64 started = 4;
   optional string marker = 5;
 
-  message ClientLog {
-    required string clientId = 1;
-    required uint64 timestamp = 2;
-    required string event = 3;
-  }
+  optional uint64 touched = 6;
 
-  repeated ClientLog clientLogs = 6;
+  repeated string clientIds = 7;
+
+//  message ClientLog {
+//    required string clientId = 1;
+//    required uint64 timestamp = 2;
+//    required string event = 3;
+//  }
+
+//  repeated ClientLog clientLogs = 6;
 }
 
 message Client {

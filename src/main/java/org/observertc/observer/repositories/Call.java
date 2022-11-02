@@ -3,17 +3,13 @@ package org.observertc.observer.repositories;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.schemas.dtos.Models;
 
-import java.time.Instant;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class Call {
-    static final String CLIENT_JOINED_EVENT_NAME = "joined";
-    static final String CLIENT_DETACHED_EVENT_NAME = "detached";
 
     private final ServiceRoomId serviceRoomId;
     private final AtomicReference<Models.Call> modelHolder;
@@ -48,26 +44,21 @@ public class Call {
     }
 
     public boolean hasClient(String clientId) {
-        var clientLogs = this.modelHolder.get().getClientLogsList();
-        if (clientLogs.size() < 1) {
+        var model = this.modelHolder.get();
+        if (model.getClientIdsCount() < 1) {
             return false;
         }
-        var hasClient = clientLogs.stream()
-                .filter(clientLog -> {
-                    return clientLog.getClientId().equals(clientId) && clientLog.getEvent().equals(CLIENT_JOINED_EVENT_NAME);
-                })
-                .findFirst();
-        return hasClient.isPresent();
+        var clientIds = model.getClientIdsList();
+        return clientIds.contains(clientId);
     }
 
     public Set<String> getClientIds() {
-        var clientLogs = this.modelHolder.get().getClientLogsList();
-        if (clientLogs.size() < 1) {
+        var model = this.modelHolder.get();
+        if (model.getClientIdsCount() < 1) {
             return Collections.emptySet();
         }
-        return clientLogs.stream()
-                .filter(clientLog -> clientLog.getEvent().equals(CLIENT_JOINED_EVENT_NAME))
-                .map(clientLog -> clientLog.getClientId())
+        return model.getClientIdsList()
+                .stream()
                 .collect(Collectors.toSet());
     }
 
@@ -96,7 +87,6 @@ public class Call {
             throw AlreadyCreatedException.wrapClientId(clientId);
         }
         var model = this.modelHolder.get();
-        this.updateClientLog(clientId, CLIENT_JOINED_EVENT_NAME);
 
         var clientModelBuilder = Models.Client.newBuilder()
                 .setServiceId(model.getServiceId())
@@ -120,6 +110,11 @@ public class Call {
             clientModelBuilder.setMarker(marker);
         }
         var clientModel = clientModelBuilder.build();
+        var newModel = Models.Call.newBuilder(model)
+                .addClientIds(clientId)
+                .build();
+
+        this.updateModel(newModel);
         this.clientsRepo.update(clientModel);
         return this.clientsRepo.wrapClient(clientModel);
     }
@@ -129,13 +124,30 @@ public class Call {
         if (!clientIds.contains(clientId)) {
             return false;
         }
-        this.updateClientLog(clientId, CLIENT_DETACHED_EVENT_NAME);
+
+        var newClientIds = clientIds.stream().filter(actualClientId -> actualClientId != clientId)
+                .collect(Collectors.toSet());
+
+        var newModel = Models.Call.newBuilder(this.modelHolder.get())
+                .clearClientIds()
+                .addAllClientIds(newClientIds)
+                .build();
+
+        this.updateModel(newModel);
         this.clientsRepo.delete(clientId);
         return true;
     }
 
     public ServiceRoomId getServiceRoomId() {
         return this.serviceRoomId;
+    }
+
+    public void touch(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.Call.newBuilder(model)
+                .setTouched(timestamp)
+                .build();
+        this.updateModel(newModel);
     }
 
     public Models.Call getModel() {
@@ -147,27 +159,6 @@ public class Call {
         this.callsRepositoryRepo.update(newModel);
     }
 
-    private void updateClientLog(String clientId, String event) {
-        var clientLogMap = new HashMap<String, Models.Call.ClientLog>();
-        var model = this.modelHolder.get();
-        if (0 < model.getClientLogsCount()) {
-            var clientLogs = model.getClientLogsList();
-            for (var clientLog : clientLogs) {
-                clientLogMap.put(clientLog.getClientId(), clientLog);
-            }
-        }
-
-        clientLogMap.put(clientId, Models.Call.ClientLog.newBuilder()
-                .setClientId(clientId)
-                .setTimestamp(Instant.now().toEpochMilli())
-                .setEvent(event)
-                .build());
-        var newCallModel = Models.Call.newBuilder(model)
-                .clearClientLogs()
-                .addAllClientLogs(clientLogMap.values())
-                .build();
-        this.updateModel(newCallModel);
-    }
 
     @Override
     public String toString() {

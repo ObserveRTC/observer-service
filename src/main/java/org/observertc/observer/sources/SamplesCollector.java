@@ -9,7 +9,10 @@ import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.common.MinuteToTimeZoneOffsetConverter;
 import org.observertc.observer.common.ObservableCollector;
 import org.observertc.observer.configs.ObserverConfig;
-import org.observertc.observer.samples.*;
+import org.observertc.observer.samples.ObservedClientSamples;
+import org.observertc.observer.samples.ObservedSfuSample;
+import org.observertc.observer.samples.ObservedSfuSamples;
+import org.observertc.observer.samples.SamplesVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,17 +115,11 @@ public class SamplesCollector {
 
             SamplesVisitor.streamClientSamples(receivedSample.samples)
                     .forEach(clientSample -> {
-                        var timeZoneId = this.minuteToTimeZoneOffsetConverter.apply(clientSample.timeZoneOffsetInHours);
-//                        if (this.useServerTimestamps) {
-//                            clientSample.timestamp = Instant.now().toEpochMilli();
-//                        }
-                        var observedClientSample =  ObservedClientSample.builder()
-                                .setMediaUnitId(receivedSample.mediaUnitId)
-                                .setServiceId(receivedSample.serviceId)
-                                .setTimeZoneId(timeZoneId)
-                                .setClientSample(clientSample)
-                                .build();
-                        observedClientSamplesBuilder.addObservedClientSample(observedClientSample);
+                        observedClientSamplesBuilder.add(
+                                receivedSample.serviceId,
+                                receivedSample.mediaUnitId,
+                                clientSample
+                        );
                     });
 
 
