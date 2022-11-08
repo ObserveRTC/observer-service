@@ -129,6 +129,7 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
                 clientSample.callId = callId;
             }
         }
+        this.callsRepository.dump();
         logger.info("Actual CallIds: {} Calls: {}",
                 JsonUtils.objectToString(callIds),
                 JsonUtils.objectToString(actualCalls.values().stream().map(c -> String.format("%s::%s", c.getRoomId(), c.getCallId())).collect(Collectors.toList()))

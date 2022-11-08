@@ -9,6 +9,7 @@ import jakarta.inject.Singleton;
 import org.observertc.observer.BackgroundTasksExecutor;
 import org.observertc.observer.HamokService;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.common.Try;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.ObserverConfig;
@@ -209,6 +210,17 @@ public class CallsRepository implements RepositoryStorageMetrics {
         this.clientsRepositoryRepo.save();
         this.fetched.clear();
         return result;
+    }
+
+    public void dump() {
+        var localKeys = this.storage.localKeys();
+        logger.info("Dumped storage local part. {}", JsonUtils.objectToString(
+                this.storage.getAll(localKeys).values().stream().map(call -> String.format("%s::%s", call.getRoomId(), call.getCallId())).collect(Collectors.toList())
+        ));
+        var remoteKeys = this.storage.keys().stream().filter(key -> !localKeys.contains(key)).collect(Collectors.toSet());
+        logger.info("Dumped storage remote part. {}", JsonUtils.objectToString(
+                this.storage.getAll(remoteKeys).values().stream().map(call -> String.format("%s::%s", call.getRoomId(), call.getCallId())).collect(Collectors.toList())
+        ));
     }
 
     public Map<String, Call> getAllLocallyStored() {
