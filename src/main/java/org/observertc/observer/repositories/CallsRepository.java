@@ -240,7 +240,9 @@ public class CallsRepository implements RepositoryStorageMetrics {
         if (callIds == null || callIds.size() < 1) {
             return Collections.emptyMap();
         }
-        return this.fetched.getAll(Set.copyOf(callIds));
+        var callIdSet = Set.copyOf(callIds);
+        logger.info("To fetch callIds: {}", callIdSet);
+        return this.fetched.getAll(callIdSet);
     }
 
     public void save() {
