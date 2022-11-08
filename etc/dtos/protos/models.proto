@@ -15,9 +15,10 @@ message Call {
   required uint64 started = 4;
   optional string marker = 5;
 
-  optional uint64 touched = 6;
+  optional uint64 sampleTouched = 6;
+  optional uint64 serverTouched = 7;
 
-  repeated string clientIds = 7;
+  repeated string clientIds = 8;
 
 //  message ClientLog {
 //    required string clientId = 1;

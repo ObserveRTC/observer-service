@@ -17,10 +17,13 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Fetch Calls for serviceRooms and create rooms if necessary
+ */
 @Singleton
-class ObservedCallsFetcherInMasterMode {
+class CallsFetcherInMasterAssigningMode implements CallsFetcher {
 
-    private static final Logger logger = LoggerFactory.getLogger(ObservedCallsFetcherInMasterMode.class);
+    private static final Logger logger = LoggerFactory.getLogger(CallsFetcherInMasterAssigningMode.class);
 
     @Inject
     RoomsRepository roomsRepository;
@@ -31,9 +34,10 @@ class ObservedCallsFetcherInMasterMode {
     @Inject
     CallStartedReports callStartedReports;
 
-    Map<ServiceRoomId, Call> fetchFor(ObservedClientSamples observedClientSamples) {
+
+    public CallsFetcherResult fetchFor(ObservedClientSamples observedClientSamples) {
         if (observedClientSamples == null || observedClientSamples.isEmpty()) {
-            return Collections.emptyMap();
+            return EMPTY_RESULT;
         }
         var createRoomsResult = this.createRooms(observedClientSamples);
         var callIds = new HashSet<String>();
@@ -62,6 +66,7 @@ class ObservedCallsFetcherInMasterMode {
             ));
         }
         if (callsToCreate.size() < 1) {
+            this.roomsRepository.save();
             return this.createResult(callIds, observedClientSamples);
         }
 
@@ -83,30 +88,41 @@ class ObservedCallsFetcherInMasterMode {
             );
         }
 
+        this.roomsRepository.save();
         return this.createResult(callIds, observedClientSamples);
     }
 
-    private Map<ServiceRoomId, Call> createResult(Set<String> callIds, ObservedClientSamples observedClientSamples) {
+    private CallsFetcherResult createResult(Set<String> callIds, ObservedClientSamples observedClientSamples) {
         if (callIds == null || callIds.size() < 1) {
-            return Collections.emptyMap();
+            return EMPTY_RESULT;
         }
-        var result = this.callsRepository.getAll(callIds).values().stream()
+        var actualCalls = this.callsRepository.fetchRecursively(callIds).values().stream()
                 .collect(Collectors.toMap(
                         call -> call.getServiceRoomId(),
                         Function.identity()
                 ));
         for (var observedRoom : observedClientSamples.observedRooms()) {
-            var call = result.get(observedRoom.getServiceRoomId());
+            var call = actualCalls.get(observedRoom.getServiceRoomId());
             if (call == null) {
                 continue;
             }
             var callId = call.getCallId();
             for (var observedClientSample : observedRoom.observedClientSamples()) {
                 var clientSample = observedClientSample.getClientSample();
+                if (clientSample == null) {
+                    logger.warn("ClientSample is null for service: {}, room {}",
+                            observedRoom.getServiceRoomId().serviceId,
+                            observedRoom.getServiceRoomId().roomId
+                    );
+                    continue;
+                }
                 clientSample.callId = callId;
             }
         }
-        return result;
+        return new CallsFetcherResult(
+                actualCalls,
+                Collections.emptyMap()
+        );
     }
 
     record CreateRoomsResult(
@@ -171,6 +187,14 @@ class ObservedCallsFetcherInMasterMode {
                         call -> call.getServiceRoomId(),
                         Function.identity()
                 ));
+        if (0 < createdCalls.size()) {
+            this.callStartedReports.accept(createdCalls.values()
+                            .stream()
+                            .map(Call::getModel)
+                            .collect(Collectors.toList())
+            );
+        }
+
         return new CreateCallsResult(
                 existingCalls,
                 createdCalls

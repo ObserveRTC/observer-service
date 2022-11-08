@@ -11,6 +11,7 @@ import org.observertc.observer.utils.ObservedSamplesGenerator;
 
 import java.time.Instant;
 import java.util.Objects;
+import java.util.UUID;
 
 @MicronautTest(environments = "test")
 class CallEntitiesUpdaterTest {
@@ -47,8 +48,9 @@ class CallEntitiesUpdaterTest {
 
     @Test
     void shouldAddCalls() {
-        var aliceClientSample = aliceObservedSamplesGenerator.generateObservedClientSample();
-        var bobClientSample = bobObservedSamplesGenerator.generateObservedClientSample();
+        var callId = UUID.randomUUID().toString();
+        var aliceClientSample = aliceObservedSamplesGenerator.generateObservedClientSample(callId);
+        var bobClientSample = bobObservedSamplesGenerator.generateObservedClientSample(callId);
         var observedClientSamples = ObservedClientSamples.builder()
                 .add(aliceClientSample.getServiceId(), aliceClientSample.getMediaUnitId(), aliceClientSample.getClientSample())
                 .add(bobClientSample.getServiceId(), bobClientSample.getMediaUnitId(), bobClientSample.getClientSample())
@@ -193,8 +195,9 @@ class CallEntitiesUpdaterTest {
 
 
     private ObservedClientSamples generateObservedClientSamples() {
-        var aliceClientSample = aliceObservedSamplesGenerator.generateObservedClientSample();
-        var bobClientSample = bobObservedSamplesGenerator.generateObservedClientSample();
+        var callId = UUID.randomUUID().toString();
+        var aliceClientSample = aliceObservedSamplesGenerator.generateObservedClientSample(callId);
+        var bobClientSample = bobObservedSamplesGenerator.generateObservedClientSample(callId);
         var observedClientSamples = ObservedClientSamples.builder()
                 .add(aliceClientSample.getServiceId(), aliceClientSample.getMediaUnitId(), aliceClientSample.getClientSample())
                 .add(bobClientSample.getServiceId(), bobClientSample.getMediaUnitId(), bobClientSample.getClientSample())

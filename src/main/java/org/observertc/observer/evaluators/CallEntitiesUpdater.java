@@ -1,10 +1,14 @@
 package org.observertc.observer.evaluators;
 
-import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
+import org.observertc.observer.ServerTimestamps;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.MediaKind;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.eventreports.*;
@@ -12,18 +16,27 @@ import org.observertc.observer.metrics.EvaluatorMetrics;
 import org.observertc.observer.repositories.AlreadyCreatedException;
 import org.observertc.observer.repositories.Call;
 import org.observertc.observer.repositories.CallsRepository;
+import org.observertc.observer.repositories.Client;
 import org.observertc.observer.samples.ObservedClientSamples;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.schemas.dtos.Models;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-@Prototype
+@Singleton
 public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
     private static final Logger logger = LoggerFactory.getLogger(CallEntitiesUpdater.class);
     private static final String METRIC_COMPONENT_NAME = CallEntitiesUpdater.class.getSimpleName();
@@ -56,10 +69,38 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
     ObserverConfig.EvaluatorsConfig.CallUpdater config;
 
     @Inject
-    ObservedCallsFetcherInMasterMode observedCallsFetcherInMasterMode;
+    CallsFetcherInMasterAssigningMode callsFetcherInMasterAssigningMode;
 
     @Inject
-    ObservedCallsFetcherInSlaveMode observedCallsFetcherInSlaveMode;
+    CallsFetcherInSlaveAssigningMode callsFetcherInSlaveAssigningMode;
+
+    @Inject
+    ServerTimestamps serverTimestamps;
+
+    @Inject
+    ObserverConfig observerConfig;
+
+    private Instant lastCleaned = null;
+    private AtomicReference<Disposable> timer = new AtomicReference<>(null);
+
+    @PostConstruct
+    void setup() {
+        var callMaxIdleTimeInS = this.observerConfig.repository.callMaxIdleTimeInS;
+        var timer = Schedulers.computation().createWorker().schedulePeriodically(() -> {
+            this.clean();
+        }, callMaxIdleTimeInS, callMaxIdleTimeInS, TimeUnit.SECONDS);
+        if (!this.timer.compareAndSet(null, timer)) {
+            timer.dispose();
+        }
+    }
+
+    @PreDestroy
+    void teardown() {
+        var timer = this.timer.getAndSet(null);
+        if (timer != null) {
+            timer.dispose();
+        }
+    }
 
     private Subject<ObservedClientSamples> output = PublishSubject.create();
 
@@ -87,9 +128,18 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
 
     private void process(ObservedClientSamples observedClientSamples) {
         Map<ServiceRoomId, Call> calls;
+        Map<String, Client> remedyClients;
         switch (config.callIdAssignMode) {
-            case SLAVE -> calls = this.observedCallsFetcherInSlaveMode.fetchFor(observedClientSamples);
-            default -> calls = this.observedCallsFetcherInMasterMode.fetchFor(observedClientSamples);
+            case SLAVE -> {
+                var fetchedCallsForRooms = this.callsFetcherInSlaveAssigningMode.fetchFor(observedClientSamples);
+                calls = fetchedCallsForRooms.actualCalls();
+                remedyClients = fetchedCallsForRooms.remedyClients();
+            }
+            default -> {
+                var fetchedCallsForRooms = this.callsFetcherInMasterAssigningMode.fetchFor(observedClientSamples);
+                calls = fetchedCallsForRooms.actualCalls();
+                remedyClients = fetchedCallsForRooms.remedyClients();
+            }
         }
         var newClientModels = new LinkedList<Models.Client>();
         var newPeerConnectionModels = new LinkedList<Models.PeerConnection>();
@@ -99,17 +149,33 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
         for (var observedRoom : observedClientSamples.observedRooms()) {
             var call = calls.get(observedRoom.getServiceRoomId());
             if (call == null) {
-                logger.warn("Cannot find call for service {}, room {}, call: {}",
+                logger.warn("Cannot find call for service {}, room {}",
                         observedRoom.getServiceRoomId().serviceId,
-                        observedRoom.getServiceRoomId().roomId,
-                        observedRoom.getCallId()
+                        observedRoom.getServiceRoomId().roomId
                 );
                 continue;
             }
-            call.touch(observedRoom.getMaxTimestamp());
+            call.touchBySample(observedRoom.getMaxTimestamp());
+            call.touchByServer(this.serverTimestamps.instant().toEpochMilli());
 
             for (var observedClient : observedRoom) {
                 var client = call.getClient(observedClient.getClientId());
+                var remedyClient = remedyClients.get(observedClient.getClientId());
+                if (client == null && remedyClient != null) {
+                    client = remedyClient;
+                    call = client.getCall();
+                    if (call == null) {
+                        logger.warn("Remedy client {} for service: {}, room: {} referencing to a call {} does not exists.",
+                                remedyClient.getClientId(),
+                                remedyClient.getServiceId(),
+                                remedyClient.getRoomId(),
+                                remedyClient.getCallId()
+                        );
+                        continue;
+                    }
+                    call.touchBySample(observedClient.getMaxTimestamp());
+                    call.touchByServer(this.serverTimestamps.instant().toEpochMilli());
+                }
                 if (client == null) {
                     try {
                         client = call.addClient(
@@ -332,5 +398,42 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                 this.output.onNext(observedClientSamples);
             }
         }
+        this.clean();
+    }
+
+
+    private synchronized void clean() {
+        var now = this.serverTimestamps.instant();
+        var callMaxIdleTimeInS = this.observerConfig.repository.callMaxIdleTimeInS;
+        if (this.lastCleaned != null && now.minusSeconds(callMaxIdleTimeInS).toEpochMilli() <  this.lastCleaned.toEpochMilli()) {
+            return;
+        }
+
+        this.lastCleaned = now;
+        var thresholdInMs = now.minusSeconds(callMaxIdleTimeInS).toEpochMilli();
+        var expiredCalls = Utils.firstNotNull(this.callsRepository.getAllLocallyStored(), Collections.<String, Call>emptyMap()).values()
+                .stream()
+                .filter(call -> call.getServerTouch() < thresholdInMs)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toMap(
+                        call -> call.getCallId(),
+                        Function.identity()
+                ));
+        if (expiredCalls.size() < 1) {
+            return;
+        }
+        this.callsRepository.removeAll(expiredCalls.keySet());
+
+//        var removedCallIds = this.callsRepository.removeAll(expiredCalls.keySet());
+//        var removedCallModels = new LinkedList<Models.Call>();
+//        for (var expiredCall : expiredCalls.values()) {
+//            if (!removedCallIds.contains(expiredCall.getCallId())) {
+//                continue;
+//            }
+//            removedCallModels.add(expiredCall.getModel());
+//        }
+//        if (0 < removedCallModels.size()) {
+//            this.callEndedReports.accept(removedCallModels);
+//        }
     }
 }

@@ -40,8 +40,8 @@ public class CallEndedReports {
 
     private CallEventReport makeReport(Models.Call callModel) {
         Long timestamp;
-        if (callModel.hasTouched()) {
-            timestamp = callModel.getTouched();
+        if (callModel.hasSampleTouched()) {
+            timestamp = callModel.getSampleTouched();
         } else {
             timestamp = Instant.now().toEpochMilli();
         }

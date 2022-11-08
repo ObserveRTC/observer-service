@@ -1,6 +1,7 @@
 package org.observertc.observer.common;
 
 import io.reactivex.rxjava3.functions.*;
+import org.slf4j.Logger;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -135,6 +136,16 @@ public class ChainedTask<T> extends TaskAbstract<T> {
         public Builder(ChainedTask<R> result) {
             this.result = result;
             this.terminated = false;
+        }
+
+        public Builder<R> withName(String taskName) {
+            this.result.setName(taskName);
+            return this;
+        }
+
+        public Builder<R> setFinalAction(Runnable finalAction) {
+            this.result.withFinalAction(finalAction);
+            return this;
         }
 
         /**
@@ -318,6 +329,11 @@ public class ChainedTask<T> extends TaskAbstract<T> {
             return this.<U>addSupplierStage(stageName, action, (inputHolder, thrown) -> {});
         }
 
+        public Builder<R> withLogger(Logger logger) {
+            this.result.withLogger(logger);
+            return this;
+        }
+
         public<U, V> Builder<R> addFunctionalStage(String stageName, Function<U, V> action,
                                              BiConsumer<AtomicReference, Throwable> rollback) {
             this.requireNotTerminated();
@@ -402,5 +418,6 @@ public class ChainedTask<T> extends TaskAbstract<T> {
                 throw new IllegalStateException("The operation requires to not having any added stage before");
             }
         }
+
     }
 }

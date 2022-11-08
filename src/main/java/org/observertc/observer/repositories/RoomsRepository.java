@@ -29,6 +29,34 @@ public class RoomsRepository implements RepositoryStorageMetrics {
 
     private static final String STORAGE_ID = "observertc-rooms";
 
+    public Map<ServiceRoomId, String> setCallIds(HashMap<ServiceRoomId, String> roomNewCallIds) {
+        if (roomNewCallIds == null || roomNewCallIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        var roomModels = this.storage.getAll(roomNewCallIds.keySet());
+        var newRoomModels = roomModels.entrySet().stream().collect(Collectors.toMap(
+                Map.Entry::getKey,
+                entry -> {
+                    var newCallId = roomNewCallIds.get(entry.getKey());
+                    if (newCallId == null) {
+                        return entry.getValue();
+                    }
+                    return Models.Room.newBuilder(entry.getValue())
+                            .setCallId(newCallId)
+                            .build();
+                }
+        ));
+        var oldRoomModels = this.storage.setAll(newRoomModels);
+        if (oldRoomModels == null || oldRoomModels.size() < 1) {
+            return Collections.emptyMap();
+        }
+
+        return oldRoomModels.entrySet().stream().collect(Collectors.toMap(
+                Map.Entry::getKey,
+                entry -> entry.getValue().getCallId()
+        ));
+    }
+
     public record CreateRoomInfo(
       ServiceRoomId serviceRoomId,
       String callId

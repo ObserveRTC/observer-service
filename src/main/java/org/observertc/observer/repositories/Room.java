@@ -6,15 +6,6 @@ import org.observertc.schemas.dtos.Models;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Room {
-//    static final String CALL_JOINED_EVENT_NAME = "joined";
-//    static final String CALL_DETACHED_EVENT_NAME = "detached";
-    public record CallLog(
-            String callId,
-            Long started,
-            Long ended
-    ) {
-
-    }
 
     private final ServiceRoomId serviceRoomId;
     private final AtomicReference<Models.Room> modelHolder;

@@ -7,6 +7,9 @@ on:
   push:
     branches:
       - 'master'
+  pull_request:
+    branches:
+      - master
 
 jobs:
   docker:
@@ -34,8 +37,19 @@ jobs:
           path: './src/main/resources/service.properties'
           property: 'version'
 
-      - name: Tag
+      - name: Setup Custom Contexts
+        shell: bash
+        run: |
+          echo "##[set-output name=branch;]$(echo ${GITHUB_REF##*/})"
+        id: job_context
+
+      - name: Make Release Tag
+        if: steps.job_context.outputs.branch != 'master'
         run: echo ${{ steps.observer_properties.outputs.value }}
+
+      - name: Make Snapshot Tag
+        if: steps.job_context.outputs.branch != 'master'
+        run: echo ${{ steps.observer_properties.outputs.value }}-SNAPSHOT.${{ github.sha }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1

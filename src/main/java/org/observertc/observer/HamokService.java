@@ -12,7 +12,6 @@ import jakarta.inject.Singleton;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.hamokendpoints.HamokEndpoint;
 import org.observertc.observer.hamokendpoints.HamokEndpointBuilderService;
-import org.observertc.observer.repositories.RepositorySweeper;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,9 +29,6 @@ public class HamokService  implements InfoSource {
 
     @Inject
     ObserverConfig.HamokConfig config;
-
-    @Inject
-    BeanProvider<RepositorySweeper> repositorySweeperBeanProvider;
 
     @Inject
     BeanProvider<CoreV1Api> coreV1ApiProvider;
@@ -79,9 +75,6 @@ public class HamokService  implements InfoSource {
 
     @PreDestroy
     private void teardown() {
-        if (this.repositorySweeperBeanProvider.get().isStarted()) {
-            this.repositorySweeperBeanProvider.get().stop();
-        }
         logger.info("Closed");
     }
 
@@ -174,9 +167,6 @@ public class HamokService  implements InfoSource {
             this.alreadyLoggedFlags += 8;
         }
         this.alreadyLoggedFlags = this.alreadyLoggedFlags & 0xFE;
-        if (!this.repositorySweeperBeanProvider.get().isStarted()) {
-            this.repositorySweeperBeanProvider.get().start();
-        }
         return true;
     }
 

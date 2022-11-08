@@ -1089,35 +1089,46 @@ public final class Models {
         getMarkerBytes();
 
     /**
-     * <code>optional uint64 touched = 6;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 6;</code>
+     * @return Whether the sampleTouched field is set.
      */
-    boolean hasTouched();
+    boolean hasSampleTouched();
     /**
-     * <code>optional uint64 touched = 6;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 6;</code>
+     * @return The sampleTouched.
      */
-    long getTouched();
+    long getSampleTouched();
 
     /**
-     * <code>repeated string clientIds = 7;</code>
+     * <code>optional uint64 serverTouched = 7;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    boolean hasServerTouched();
+    /**
+     * <code>optional uint64 serverTouched = 7;</code>
+     * @return The serverTouched.
+     */
+    long getServerTouched();
+
+    /**
+     * <code>repeated string clientIds = 8;</code>
      * @return A list containing the clientIds.
      */
     java.util.List<java.lang.String>
         getClientIdsList();
     /**
-     * <code>repeated string clientIds = 7;</code>
+     * <code>repeated string clientIds = 8;</code>
      * @return The count of clientIds.
      */
     int getClientIdsCount();
     /**
-     * <code>repeated string clientIds = 7;</code>
+     * <code>repeated string clientIds = 8;</code>
      * @param index The index of the element to return.
      * @return The clientIds at the given index.
      */
     java.lang.String getClientIds(int index);
     /**
-     * <code>repeated string clientIds = 7;</code>
+     * <code>repeated string clientIds = 8;</code>
      * @param index The index of the value to return.
      * @return The bytes of the clientIds at the given index.
      */
@@ -1206,14 +1217,19 @@ public final class Models {
             }
             case 48: {
               bitField0_ |= 0x00000020;
-              touched_ = input.readUInt64();
+              sampleTouched_ = input.readUInt64();
               break;
             }
-            case 58: {
+            case 56: {
+              bitField0_ |= 0x00000040;
+              serverTouched_ = input.readUInt64();
+              break;
+            }
+            case 66: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              if (!((mutable_bitField0_ & 0x00000040) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000080) != 0)) {
                 clientIds_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000040;
+                mutable_bitField0_ |= 0x00000080;
               }
               clientIds_.add(bs);
               break;
@@ -1233,7 +1249,7 @@ public final class Models {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000040) != 0)) {
+        if (((mutable_bitField0_ & 0x00000080) != 0)) {
           clientIds_ = clientIds_.getUnmodifiableView();
         }
         this.unknownFields = unknownFields.build();
@@ -1465,29 +1481,48 @@ public final class Models {
       }
     }
 
-    public static final int TOUCHED_FIELD_NUMBER = 6;
-    private long touched_;
+    public static final int SAMPLETOUCHED_FIELD_NUMBER = 6;
+    private long sampleTouched_;
     /**
-     * <code>optional uint64 touched = 6;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 6;</code>
+     * @return Whether the sampleTouched field is set.
      */
     @java.lang.Override
-    public boolean hasTouched() {
+    public boolean hasSampleTouched() {
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
-     * <code>optional uint64 touched = 6;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 6;</code>
+     * @return The sampleTouched.
      */
     @java.lang.Override
-    public long getTouched() {
-      return touched_;
+    public long getSampleTouched() {
+      return sampleTouched_;
     }
 
-    public static final int CLIENTIDS_FIELD_NUMBER = 7;
+    public static final int SERVERTOUCHED_FIELD_NUMBER = 7;
+    private long serverTouched_;
+    /**
+     * <code>optional uint64 serverTouched = 7;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    @java.lang.Override
+    public boolean hasServerTouched() {
+      return ((bitField0_ & 0x00000040) != 0);
+    }
+    /**
+     * <code>optional uint64 serverTouched = 7;</code>
+     * @return The serverTouched.
+     */
+    @java.lang.Override
+    public long getServerTouched() {
+      return serverTouched_;
+    }
+
+    public static final int CLIENTIDS_FIELD_NUMBER = 8;
     private com.google.protobuf.LazyStringList clientIds_;
     /**
-     * <code>repeated string clientIds = 7;</code>
+     * <code>repeated string clientIds = 8;</code>
      * @return A list containing the clientIds.
      */
     public com.google.protobuf.ProtocolStringList
@@ -1495,14 +1530,14 @@ public final class Models {
       return clientIds_;
     }
     /**
-     * <code>repeated string clientIds = 7;</code>
+     * <code>repeated string clientIds = 8;</code>
      * @return The count of clientIds.
      */
     public int getClientIdsCount() {
       return clientIds_.size();
     }
     /**
-     * <code>repeated string clientIds = 7;</code>
+     * <code>repeated string clientIds = 8;</code>
      * @param index The index of the element to return.
      * @return The clientIds at the given index.
      */
@@ -1510,7 +1545,7 @@ public final class Models {
       return clientIds_.get(index);
     }
     /**
-     * <code>repeated string clientIds = 7;</code>
+     * <code>repeated string clientIds = 8;</code>
      * @param index The index of the value to return.
      * @return The bytes of the clientIds at the given index.
      */
@@ -1565,10 +1600,13 @@ public final class Models {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, marker_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
-        output.writeUInt64(6, touched_);
+        output.writeUInt64(6, sampleTouched_);
+      }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        output.writeUInt64(7, serverTouched_);
       }
       for (int i = 0; i < clientIds_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, clientIds_.getRaw(i));
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, clientIds_.getRaw(i));
       }
       unknownFields.writeTo(output);
     }
@@ -1597,7 +1635,11 @@ public final class Models {
       }
       if (((bitField0_ & 0x00000020) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(6, touched_);
+          .computeUInt64Size(6, sampleTouched_);
+      }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(7, serverTouched_);
       }
       {
         int dataSize = 0;
@@ -1647,10 +1689,15 @@ public final class Models {
         if (!getMarker()
             .equals(other.getMarker())) return false;
       }
-      if (hasTouched() != other.hasTouched()) return false;
-      if (hasTouched()) {
-        if (getTouched()
-            != other.getTouched()) return false;
+      if (hasSampleTouched() != other.hasSampleTouched()) return false;
+      if (hasSampleTouched()) {
+        if (getSampleTouched()
+            != other.getSampleTouched()) return false;
+      }
+      if (hasServerTouched() != other.hasServerTouched()) return false;
+      if (hasServerTouched()) {
+        if (getServerTouched()
+            != other.getServerTouched()) return false;
       }
       if (!getClientIdsList()
           .equals(other.getClientIdsList())) return false;
@@ -1686,10 +1733,15 @@ public final class Models {
         hash = (37 * hash) + MARKER_FIELD_NUMBER;
         hash = (53 * hash) + getMarker().hashCode();
       }
-      if (hasTouched()) {
-        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+      if (hasSampleTouched()) {
+        hash = (37 * hash) + SAMPLETOUCHED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            getTouched());
+            getSampleTouched());
+      }
+      if (hasServerTouched()) {
+        hash = (37 * hash) + SERVERTOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getServerTouched());
       }
       if (getClientIdsCount() > 0) {
         hash = (37 * hash) + CLIENTIDS_FIELD_NUMBER;
@@ -1838,10 +1890,12 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000008);
         marker_ = "";
         bitField0_ = (bitField0_ & ~0x00000010);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000020);
-        clientIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        serverTouched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000040);
+        clientIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -1891,12 +1945,16 @@ public final class Models {
         }
         result.marker_ = marker_;
         if (((from_bitField0_ & 0x00000020) != 0)) {
-          result.touched_ = touched_;
+          result.sampleTouched_ = sampleTouched_;
           to_bitField0_ |= 0x00000020;
         }
-        if (((bitField0_ & 0x00000040) != 0)) {
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.serverTouched_ = serverTouched_;
+          to_bitField0_ |= 0x00000040;
+        }
+        if (((bitField0_ & 0x00000080) != 0)) {
           clientIds_ = clientIds_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000040);
+          bitField0_ = (bitField0_ & ~0x00000080);
         }
         result.clientIds_ = clientIds_;
         result.bitField0_ = to_bitField0_;
@@ -1971,13 +2029,16 @@ public final class Models {
           marker_ = other.marker_;
           onChanged();
         }
-        if (other.hasTouched()) {
-          setTouched(other.getTouched());
+        if (other.hasSampleTouched()) {
+          setSampleTouched(other.getSampleTouched());
+        }
+        if (other.hasServerTouched()) {
+          setServerTouched(other.getServerTouched());
         }
         if (!other.clientIds_.isEmpty()) {
           if (clientIds_.isEmpty()) {
             clientIds_ = other.clientIds_;
-            bitField0_ = (bitField0_ & ~0x00000040);
+            bitField0_ = (bitField0_ & ~0x00000080);
           } else {
             ensureClientIdsIsMutable();
             clientIds_.addAll(other.clientIds_);
@@ -2401,54 +2462,93 @@ public final class Models {
         return this;
       }
 
-      private long touched_ ;
+      private long sampleTouched_ ;
       /**
-       * <code>optional uint64 touched = 6;</code>
-       * @return Whether the touched field is set.
+       * <code>optional uint64 sampleTouched = 6;</code>
+       * @return Whether the sampleTouched field is set.
        */
       @java.lang.Override
-      public boolean hasTouched() {
+      public boolean hasSampleTouched() {
         return ((bitField0_ & 0x00000020) != 0);
       }
       /**
-       * <code>optional uint64 touched = 6;</code>
-       * @return The touched.
+       * <code>optional uint64 sampleTouched = 6;</code>
+       * @return The sampleTouched.
        */
       @java.lang.Override
-      public long getTouched() {
-        return touched_;
+      public long getSampleTouched() {
+        return sampleTouched_;
       }
       /**
-       * <code>optional uint64 touched = 6;</code>
-       * @param value The touched to set.
+       * <code>optional uint64 sampleTouched = 6;</code>
+       * @param value The sampleTouched to set.
        * @return This builder for chaining.
        */
-      public Builder setTouched(long value) {
+      public Builder setSampleTouched(long value) {
         bitField0_ |= 0x00000020;
-        touched_ = value;
+        sampleTouched_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional uint64 touched = 6;</code>
+       * <code>optional uint64 sampleTouched = 6;</code>
        * @return This builder for chaining.
        */
-      public Builder clearTouched() {
+      public Builder clearSampleTouched() {
         bitField0_ = (bitField0_ & ~0x00000020);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long serverTouched_ ;
+      /**
+       * <code>optional uint64 serverTouched = 7;</code>
+       * @return Whether the serverTouched field is set.
+       */
+      @java.lang.Override
+      public boolean hasServerTouched() {
+        return ((bitField0_ & 0x00000040) != 0);
+      }
+      /**
+       * <code>optional uint64 serverTouched = 7;</code>
+       * @return The serverTouched.
+       */
+      @java.lang.Override
+      public long getServerTouched() {
+        return serverTouched_;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 7;</code>
+       * @param value The serverTouched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setServerTouched(long value) {
+        bitField0_ |= 0x00000040;
+        serverTouched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearServerTouched() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        serverTouched_ = 0L;
         onChanged();
         return this;
       }
 
       private com.google.protobuf.LazyStringList clientIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       private void ensureClientIdsIsMutable() {
-        if (!((bitField0_ & 0x00000040) != 0)) {
+        if (!((bitField0_ & 0x00000080) != 0)) {
           clientIds_ = new com.google.protobuf.LazyStringArrayList(clientIds_);
-          bitField0_ |= 0x00000040;
+          bitField0_ |= 0x00000080;
          }
       }
       /**
-       * <code>repeated string clientIds = 7;</code>
+       * <code>repeated string clientIds = 8;</code>
        * @return A list containing the clientIds.
        */
       public com.google.protobuf.ProtocolStringList
@@ -2456,14 +2556,14 @@ public final class Models {
         return clientIds_.getUnmodifiableView();
       }
       /**
-       * <code>repeated string clientIds = 7;</code>
+       * <code>repeated string clientIds = 8;</code>
        * @return The count of clientIds.
        */
       public int getClientIdsCount() {
         return clientIds_.size();
       }
       /**
-       * <code>repeated string clientIds = 7;</code>
+       * <code>repeated string clientIds = 8;</code>
        * @param index The index of the element to return.
        * @return The clientIds at the given index.
        */
@@ -2471,7 +2571,7 @@ public final class Models {
         return clientIds_.get(index);
       }
       /**
-       * <code>repeated string clientIds = 7;</code>
+       * <code>repeated string clientIds = 8;</code>
        * @param index The index of the value to return.
        * @return The bytes of the clientIds at the given index.
        */
@@ -2480,7 +2580,7 @@ public final class Models {
         return clientIds_.getByteString(index);
       }
       /**
-       * <code>repeated string clientIds = 7;</code>
+       * <code>repeated string clientIds = 8;</code>
        * @param index The index to set the value at.
        * @param value The clientIds to set.
        * @return This builder for chaining.
@@ -2496,7 +2596,7 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated string clientIds = 7;</code>
+       * <code>repeated string clientIds = 8;</code>
        * @param value The clientIds to add.
        * @return This builder for chaining.
        */
@@ -2511,7 +2611,7 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated string clientIds = 7;</code>
+       * <code>repeated string clientIds = 8;</code>
        * @param values The clientIds to add.
        * @return This builder for chaining.
        */
@@ -2524,17 +2624,17 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated string clientIds = 7;</code>
+       * <code>repeated string clientIds = 8;</code>
        * @return This builder for chaining.
        */
       public Builder clearClientIds() {
         clientIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000080);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string clientIds = 7;</code>
+       * <code>repeated string clientIds = 8;</code>
        * @param value The bytes of the clientIds to add.
        * @return This builder for chaining.
        */
@@ -28107,72 +28207,72 @@ public final class Models {
     java.lang.String[] descriptorData = {
       "\n\023protos/models.proto\022\033org.observertc.sc" +
       "hemas.dtos\"9\n\004Room\022\021\n\tserviceId\030\001 \002(\t\022\016\n" +
-      "\006roomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\"~\n\004Call\022\021\n" +
-      "\tserviceId\030\001 \002(\t\022\016\n\006roomId\030\002 \002(\t\022\016\n\006call" +
-      "Id\030\003 \002(\t\022\017\n\007started\030\004 \002(\004\022\016\n\006marker\030\005 \001(" +
-      "\t\022\017\n\007touched\030\006 \001(\004\022\021\n\tclientIds\030\007 \003(\t\"\322\001" +
-      "\n\006Client\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006roomId\030\002 " +
-      "\002(\t\022\016\n\006callId\030\003 \002(\t\022\020\n\010clientId\030\004 \002(\t\022\016\n" +
-      "\006joined\030\005 \002(\004\022\017\n\007touched\030\006 \001(\004\022\022\n\ntimeZo" +
-      "neId\030\007 \001(\t\022\023\n\013mediaUnitId\030\010 \001(\t\022\016\n\006userI" +
-      "d\030\t \001(\t\022\016\n\006marker\030\n \001(\t\022\031\n\021peerConnectio" +
-      "nIds\030\013 \003(\t\"\207\002\n\016PeerConnection\022\021\n\tservice" +
-      "Id\030\001 \002(\t\022\016\n\006roomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t" +
-      "\022\020\n\010clientId\030\004 \002(\t\022\030\n\020peerConnectionId\030\005" +
-      " \002(\t\022\016\n\006opened\030\006 \002(\004\022\017\n\007touched\030\007 \001(\004\022\023\n" +
-      "\013mediaUnitId\030\010 \001(\t\022\016\n\006userId\030\t \001(\t\022\016\n\006ma" +
-      "rker\030\n \001(\t\022\r\n\005label\030\013 \001(\t\022\027\n\017inboundTrac" +
-      "kIds\030\014 \003(\t\022\030\n\020outboundTrackIds\030\r \003(\t\"\227\002\n" +
-      "\014InboundTrack\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006room" +
-      "Id\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\020\n\010clientId\030\004 \002" +
-      "(\t\022\030\n\020peerConnectionId\030\005 \002(\t\022\017\n\007trackId\030" +
-      "\006 \002(\t\022\014\n\004kind\030\007 \002(\t\022\r\n\005added\030\010 \002(\004\022\017\n\007to" +
-      "uched\030\t \001(\004\022\023\n\013mediaUnitId\030\n \001(\t\022\016\n\006user" +
-      "Id\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\022\021\n\tsfuSinkId\030\r " +
-      "\001(\t\022\023\n\013sfuStreamId\030\016 \001(\t\022\014\n\004ssrc\030\017 \003(\003\"\205" +
-      "\002\n\rOutboundTrack\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006r" +
-      "oomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\020\n\010clientId\030" +
-      "\004 \002(\t\022\030\n\020peerConnectionId\030\005 \002(\t\022\017\n\007track" +
-      "Id\030\006 \002(\t\022\r\n\005added\030\007 \002(\004\022\014\n\004kind\030\010 \002(\t\022\017\n" +
-      "\007touched\030\t \001(\004\022\023\n\013mediaUnitId\030\n \001(\t\022\016\n\006u" +
-      "serId\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\022\023\n\013sfuStream" +
-      "Id\030\r \001(\t\022\014\n\004ssrc\030\016 \003(\003\"\302\001\n\014SfuMediaSink\022" +
-      "\021\n\tserviceId\030\001 \002(\t\022\023\n\013sfuStreamId\030\002 \002(\t\022" +
-      "\021\n\tsfuSinkId\030\003 \002(\t\022\014\n\004kind\030\004 \002(\t\022\016\n\006call" +
-      "Id\030\005 \002(\t\022\020\n\010clientId\030\006 \002(\t\022\030\n\020peerConnec" +
-      "tionId\030\007 \002(\t\022\017\n\007trackId\030\010 \002(\t\022\034\n\024outboun" +
-      "dSfuRtpPadIds\030\t \003(\t\"\263\001\n\016SfuMediaStream\022\021" +
-      "\n\tserviceId\030\001 \002(\t\022\023\n\013sfuStreamId\030\002 \002(\t\022\014" +
-      "\n\004kind\030\003 \002(\t\022\016\n\006callId\030\004 \002(\t\022\020\n\010clientId" +
-      "\030\005 \002(\t\022\030\n\020peerConnectionId\030\006 \002(\t\022\017\n\007trac" +
-      "kId\030\007 \002(\t\022\036\n\026sfuInboundSfuRtpPadIds\030\010 \003(" +
-      "\t\"\232\001\n\003Sfu\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 " +
-      "\002(\t\022\016\n\006joined\030\003 \002(\004\022\017\n\007touched\030\004 \001(\004\022\023\n\013" +
-      "mediaUnitId\030\005 \001(\t\022\022\n\ntimeZoneId\030\006 \001(\t\022\016\n" +
-      "\006marker\030\007 \001(\t\022\027\n\017sfuTransportIds\030\010 \003(\t\"\360" +
-      "\001\n\014SfuTransport\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sf" +
-      "uId\030\002 \002(\t\022\023\n\013transportId\030\003 \002(\t\022\027\n\010intern" +
-      "al\030\004 \002(\010:\005false\022\016\n\006opened\030\005 \002(\004\022\017\n\007touch" +
-      "ed\030\006 \001(\004\022\023\n\013mediaUnitId\030\007 \001(\t\022\016\n\006marker\030" +
-      "\010 \001(\t\022\030\n\020inboundRtpPadIds\030\t \003(\t\022\031\n\021outbo" +
-      "undRtpPadIds\030\n \003(\t\022\025\n\rsctpStreamIds\030\013 \003(" +
-      "\t\"\337\001\n\020SfuInboundRtpPad\022\021\n\tserviceId\030\001 \002(" +
-      "\t\022\r\n\005sfuId\030\002 \002(\t\022\026\n\016sfuTransportId\030\003 \002(\t" +
-      "\022\023\n\013sfuStreamId\030\004 \002(\t\022\020\n\010rtpPadId\030\005 \002(\t\022" +
-      "\014\n\004ssrc\030\006 \002(\003\022\027\n\010internal\030\007 \002(\010:\005false\022\r" +
-      "\n\005added\030\010 \002(\004\022\017\n\007touched\030\t \001(\004\022\023\n\013mediaU" +
-      "nitId\030\n \001(\t\022\016\n\006marker\030\013 \001(\t\"\363\001\n\021SfuOutbo" +
-      "undRtpPad\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 " +
-      "\002(\t\022\026\n\016sfuTransportId\030\003 \002(\t\022\023\n\013sfuStream" +
-      "Id\030\004 \002(\t\022\021\n\tsfuSinkId\030\005 \002(\t\022\020\n\010rtpPadId\030" +
-      "\006 \002(\t\022\014\n\004ssrc\030\007 \002(\003\022\027\n\010internal\030\010 \002(\010:\005f" +
-      "alse\022\r\n\005added\030\t \002(\004\022\017\n\007touched\030\n \001(\004\022\023\n\013" +
-      "mediaUnitId\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\"\250\001\n\rSf" +
-      "uSctpStream\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030" +
-      "\002 \002(\t\022\026\n\016sfuTransportId\030\003 \002(\t\022\027\n\017sfuSctp" +
-      "StreamId\030\004 \002(\t\022\016\n\006opened\030\005 \002(\004\022\017\n\007touche" +
-      "d\030\006 \001(\004\022\023\n\013mediaUnitId\030\007 \001(\t\022\016\n\006marker\030\010" +
-      " \001(\t"
+      "\006roomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\"\233\001\n\004Call\022\021" +
+      "\n\tserviceId\030\001 \002(\t\022\016\n\006roomId\030\002 \002(\t\022\016\n\006cal" +
+      "lId\030\003 \002(\t\022\017\n\007started\030\004 \002(\004\022\016\n\006marker\030\005 \001" +
+      "(\t\022\025\n\rsampleTouched\030\006 \001(\004\022\025\n\rserverTouch" +
+      "ed\030\007 \001(\004\022\021\n\tclientIds\030\010 \003(\t\"\322\001\n\006Client\022\021" +
+      "\n\tserviceId\030\001 \002(\t\022\016\n\006roomId\030\002 \002(\t\022\016\n\006cal" +
+      "lId\030\003 \002(\t\022\020\n\010clientId\030\004 \002(\t\022\016\n\006joined\030\005 " +
+      "\002(\004\022\017\n\007touched\030\006 \001(\004\022\022\n\ntimeZoneId\030\007 \001(\t" +
+      "\022\023\n\013mediaUnitId\030\010 \001(\t\022\016\n\006userId\030\t \001(\t\022\016\n" +
+      "\006marker\030\n \001(\t\022\031\n\021peerConnectionIds\030\013 \003(\t" +
+      "\"\207\002\n\016PeerConnection\022\021\n\tserviceId\030\001 \002(\t\022\016" +
+      "\n\006roomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\020\n\010client" +
+      "Id\030\004 \002(\t\022\030\n\020peerConnectionId\030\005 \002(\t\022\016\n\006op" +
+      "ened\030\006 \002(\004\022\017\n\007touched\030\007 \001(\004\022\023\n\013mediaUnit" +
+      "Id\030\010 \001(\t\022\016\n\006userId\030\t \001(\t\022\016\n\006marker\030\n \001(\t" +
+      "\022\r\n\005label\030\013 \001(\t\022\027\n\017inboundTrackIds\030\014 \003(\t" +
+      "\022\030\n\020outboundTrackIds\030\r \003(\t\"\227\002\n\014InboundTr" +
+      "ack\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006roomId\030\002 \002(\t\022\016" +
+      "\n\006callId\030\003 \002(\t\022\020\n\010clientId\030\004 \002(\t\022\030\n\020peer" +
+      "ConnectionId\030\005 \002(\t\022\017\n\007trackId\030\006 \002(\t\022\014\n\004k" +
+      "ind\030\007 \002(\t\022\r\n\005added\030\010 \002(\004\022\017\n\007touched\030\t \001(" +
+      "\004\022\023\n\013mediaUnitId\030\n \001(\t\022\016\n\006userId\030\013 \001(\t\022\016" +
+      "\n\006marker\030\014 \001(\t\022\021\n\tsfuSinkId\030\r \001(\t\022\023\n\013sfu" +
+      "StreamId\030\016 \001(\t\022\014\n\004ssrc\030\017 \003(\003\"\205\002\n\rOutboun" +
+      "dTrack\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006roomId\030\002 \002(" +
+      "\t\022\016\n\006callId\030\003 \002(\t\022\020\n\010clientId\030\004 \002(\t\022\030\n\020p" +
+      "eerConnectionId\030\005 \002(\t\022\017\n\007trackId\030\006 \002(\t\022\r" +
+      "\n\005added\030\007 \002(\004\022\014\n\004kind\030\010 \002(\t\022\017\n\007touched\030\t" +
+      " \001(\004\022\023\n\013mediaUnitId\030\n \001(\t\022\016\n\006userId\030\013 \001(" +
+      "\t\022\016\n\006marker\030\014 \001(\t\022\023\n\013sfuStreamId\030\r \001(\t\022\014" +
+      "\n\004ssrc\030\016 \003(\003\"\302\001\n\014SfuMediaSink\022\021\n\tservice" +
+      "Id\030\001 \002(\t\022\023\n\013sfuStreamId\030\002 \002(\t\022\021\n\tsfuSink" +
+      "Id\030\003 \002(\t\022\014\n\004kind\030\004 \002(\t\022\016\n\006callId\030\005 \002(\t\022\020" +
+      "\n\010clientId\030\006 \002(\t\022\030\n\020peerConnectionId\030\007 \002" +
+      "(\t\022\017\n\007trackId\030\010 \002(\t\022\034\n\024outboundSfuRtpPad" +
+      "Ids\030\t \003(\t\"\263\001\n\016SfuMediaStream\022\021\n\tserviceI" +
+      "d\030\001 \002(\t\022\023\n\013sfuStreamId\030\002 \002(\t\022\014\n\004kind\030\003 \002" +
+      "(\t\022\016\n\006callId\030\004 \002(\t\022\020\n\010clientId\030\005 \002(\t\022\030\n\020" +
+      "peerConnectionId\030\006 \002(\t\022\017\n\007trackId\030\007 \002(\t\022" +
+      "\036\n\026sfuInboundSfuRtpPadIds\030\010 \003(\t\"\232\001\n\003Sfu\022" +
+      "\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\016\n\006joi" +
+      "ned\030\003 \002(\004\022\017\n\007touched\030\004 \001(\004\022\023\n\013mediaUnitI" +
+      "d\030\005 \001(\t\022\022\n\ntimeZoneId\030\006 \001(\t\022\016\n\006marker\030\007 " +
+      "\001(\t\022\027\n\017sfuTransportIds\030\010 \003(\t\"\360\001\n\014SfuTran" +
+      "sport\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022" +
+      "\023\n\013transportId\030\003 \002(\t\022\027\n\010internal\030\004 \002(\010:\005" +
+      "false\022\016\n\006opened\030\005 \002(\004\022\017\n\007touched\030\006 \001(\004\022\023" +
+      "\n\013mediaUnitId\030\007 \001(\t\022\016\n\006marker\030\010 \001(\t\022\030\n\020i" +
+      "nboundRtpPadIds\030\t \003(\t\022\031\n\021outboundRtpPadI" +
+      "ds\030\n \003(\t\022\025\n\rsctpStreamIds\030\013 \003(\t\"\337\001\n\020SfuI" +
+      "nboundRtpPad\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId" +
+      "\030\002 \002(\t\022\026\n\016sfuTransportId\030\003 \002(\t\022\023\n\013sfuStr" +
+      "eamId\030\004 \002(\t\022\020\n\010rtpPadId\030\005 \002(\t\022\014\n\004ssrc\030\006 " +
+      "\002(\003\022\027\n\010internal\030\007 \002(\010:\005false\022\r\n\005added\030\010 " +
+      "\002(\004\022\017\n\007touched\030\t \001(\004\022\023\n\013mediaUnitId\030\n \001(" +
+      "\t\022\016\n\006marker\030\013 \001(\t\"\363\001\n\021SfuOutboundRtpPad\022" +
+      "\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\026\n\016sfu" +
+      "TransportId\030\003 \002(\t\022\023\n\013sfuStreamId\030\004 \002(\t\022\021" +
+      "\n\tsfuSinkId\030\005 \002(\t\022\020\n\010rtpPadId\030\006 \002(\t\022\014\n\004s" +
+      "src\030\007 \002(\003\022\027\n\010internal\030\010 \002(\010:\005false\022\r\n\005ad" +
+      "ded\030\t \002(\004\022\017\n\007touched\030\n \001(\004\022\023\n\013mediaUnitI" +
+      "d\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\"\250\001\n\rSfuSctpStrea" +
+      "m\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\026\n\016s" +
+      "fuTransportId\030\003 \002(\t\022\027\n\017sfuSctpStreamId\030\004" +
+      " \002(\t\022\016\n\006opened\030\005 \002(\004\022\017\n\007touched\030\006 \001(\004\022\023\n" +
+      "\013mediaUnitId\030\007 \001(\t\022\016\n\006marker\030\010 \001(\t"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -28189,7 +28289,7 @@ public final class Models {
     internal_static_org_observertc_schemas_dtos_Call_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_Call_descriptor,
-        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "Started", "Marker", "Touched", "ClientIds", });
+        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "Started", "Marker", "SampleTouched", "ServerTouched", "ClientIds", });
     internal_static_org_observertc_schemas_dtos_Client_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_org_observertc_schemas_dtos_Client_fieldAccessorTable = new

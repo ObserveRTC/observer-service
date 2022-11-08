@@ -7,7 +7,9 @@ import io.micronaut.context.BeanProvider;
 import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.BackgroundTasksExecutor;
 import org.observertc.observer.HamokService;
+import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.Try;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
@@ -18,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -47,6 +50,9 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
     @Inject
     private ObserverConfig.InternalBuffersConfig bufferConfig;
 
+    @Inject
+    private BackgroundTasksExecutor backgroundTasksExecutor;
+
     @PostConstruct
     void setup() {
         var baseStorage = new MemoryStorageBuilder<String, Models.OutboundTrack>()
@@ -65,6 +71,21 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
                 .setMaxMessageKeys(MAX_KEYS)
                 .setMaxMessageValues(MAX_VALUES)
                 .build();
+
+        var checkCollision = new AtomicBoolean(false);
+        this.storage.detectedEntryCollisions().subscribe(detectedCollision -> {
+            logger.warn("Detected colliding items in {} for key {}", STORAGE_ID, detectedCollision.key());
+            if (checkCollision.compareAndSet(false, true)) {
+                this.backgroundTasksExecutor.addTask(ChainedTask.<Void>builder()
+                        .withName("Remove collisions for storage: " + STORAGE_ID)
+                        .withLogger(logger)
+                        .addActionStage("Check collision for " + STORAGE_ID, this.storage::checkCollidingEntries)
+                        .setFinalAction(() -> checkCollision.set(false))
+                        .build()
+                );
+            }
+        });
+
         this.fetched = CachedFetches.<String, OutboundTrack>builder()
                 .onFetchOne(this::fetchOne)
                 .onFetchAll(this::fetchAll)

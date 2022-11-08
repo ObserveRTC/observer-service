@@ -51,14 +51,8 @@ observer:
       enabled: true
 
   repository:
-    mediaTracksMaxIdleTimeInS: 300
-    clientMaxIdleTimeInS: 300
-    sfuMaxIdleTimeInS: 60
-    sfuTransportMaxIdleTimeInS: 600
-    sfuRtpPadMaxIdleTimeInS: 600
-    peerConnectionsMaxIdleTime: 300
-    evictExpiredEntriesPeriodInMs: 300000
-    evictExpiredEntriesThresholdOffsetInMs: 10000
+    callMaxIdleTimeInS: 300
+    sfuTransportMaxIdleTimeInS: 300
 
   buffers:
     samplesCollector:

@@ -6,7 +6,9 @@ import io.github.balazskreith.hamok.storagegrid.SeparatedStorage;
 import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.BackgroundTasksExecutor;
 import org.observertc.observer.HamokService;
+import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.Try;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.ObserverConfig;
@@ -18,6 +20,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,8 +47,24 @@ public class CallsRepository implements RepositoryStorageMetrics {
     @Inject
     private ObserverConfig.InternalBuffersConfig bufferConfig;
 
+    @Inject
+    private BackgroundTasksExecutor backgroundTasksExecutor;
+
     @PostConstruct
     void setup() {
+        BiFunction<Models.Call, Models.Call, Long> getMinSampleTouched = (call_1, call_2) -> {
+            return Utils.getMin(
+                    () -> call_1.hasSampleTouched() ? call_1.getSampleTouched() : null,
+                    () -> call_2.hasSampleTouched() ? call_2.getSampleTouched() : null
+            );
+        };
+        BiFunction<Models.Call, Models.Call, Long> getMaxServerTouched = (call_1, call_2) -> {
+            return Utils.getMax(
+                    () -> call_1.hasServerTouched() ? call_1.getServerTouched() : null,
+                    () -> call_2.hasServerTouched() ? call_2.getServerTouched() : null
+            );
+        };
+
         var baseStorage = new MemoryStorageBuilder<String, Models.Call>()
                 .setConcurrency(true)
                 .setId(STORAGE_ID)
@@ -53,23 +73,20 @@ public class CallsRepository implements RepositoryStorageMetrics {
                             call_1.getClientIdsCount() < 1 ? Stream.empty() : call_1.getClientIdsList().stream(),
                             call_2.getClientIdsCount() < 1 ? Stream.empty() : call_2.getClientIdsList().stream()
                     ).collect(Collectors.toSet());
-                    Long touched = null;
-                    if (call_1.hasTouched() || call_2.hasTouched()) {
-                        touched = Math.min(call_1.getTouched(), call_2.getTouched());
-                    } else if (call_1.hasTouched()) {
-                        touched = call_1.getTouched();
-                    } else if (call_2.hasTouched()) {
-                        touched = call_2.getTouched();
-                    }
+                    var sampleTouch = getMinSampleTouched.apply(call_1, call_2);
+                    var serverTouch =  getMaxServerTouched.apply(call_1, call_2);
                     var builder = Models.Call.newBuilder(call_1)
                             .clearClientIds()
                             .addAllClientIds(clientIds);
-                    if (touched != null) {
-                        builder.setTouched(touched);
+                    if (sampleTouch != null) {
+                        builder.setSampleTouched(sampleTouch);
+                    }
+                    if (serverTouch != null) {
+                        builder.setServerTouched(serverTouch);
                     }
                     return builder.build();
                 })
-                .setExpiration(5 * 60 * 60 * 1000)
+//                .setExpiration(5 * 60 * 60 * 1000)
                 .build();
         this.storage = this.service.getStorageGrid().separatedStorage(baseStorage)
                 .setKeyCodec(String::getBytes, String::new)
@@ -83,6 +100,21 @@ public class CallsRepository implements RepositoryStorageMetrics {
                 .setMaxMessageValues(MAX_VALUES)
                 .build();
 
+        var checkCollision = new AtomicBoolean(false);
+        this.storage.detectedEntryCollisions().subscribe(detectedCollision -> {
+            logger.warn("Detected colliding items in {} for key {}", STORAGE_ID, detectedCollision.key());
+            if (checkCollision.compareAndSet(false, true)) {
+                this.backgroundTasksExecutor.addTask(ChainedTask.<Void>builder()
+                        .withName("Remove collisions for storage: " + STORAGE_ID)
+                        .withLogger(logger)
+                        .addActionStage("Check collision for " + STORAGE_ID, this.storage::checkCollidingEntries)
+                        .setFinalAction(() -> checkCollision.set(false))
+                        .build()
+                );
+            }
+        });
+
+
 
         this.fetched = CachedFetches.<String, Call>builder()
                 .onFetchOne(this::fetchOne)
@@ -90,6 +122,7 @@ public class CallsRepository implements RepositoryStorageMetrics {
                 .build();
         this.updated = new HashMap<>();
     }
+
 
     Observable<List<ModifiedStorageEntry<String, Models.Call>>> observableDeletedEntries() {
         return this.storage.collectedEvents().deletedEntries();
@@ -176,6 +209,15 @@ public class CallsRepository implements RepositoryStorageMetrics {
         this.clientsRepositoryRepo.save();
         this.fetched.clear();
         return result;
+    }
+
+    public Map<String, Call> getAllLocallyStored() {
+        var callIds = this.storage.localKeys();
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        return this.fetchAll(callIds);
+
     }
 
     public Call get(String callId) {

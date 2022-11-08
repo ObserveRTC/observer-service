@@ -50,12 +50,18 @@ public class ServiceStartedListener implements ApplicationEventListener<ServerSt
 	@Inject
 	ObserverService observerService;
 
+	@Inject
+	BackgroundTasksExecutor backgroundTasksExecutor;
+
 	private Properties properties;
 
 	@PostConstruct
 	void setup() {
 		if (observerConfig.security.printConfigs) {
 			logger.info("Config {}", JsonUtils.objectToString(observerConfig));
+		}
+		if (this.backgroundTasksExecutor.isStarted()) {
+			this.backgroundTasksExecutor.stop();
 		}
 		this.properties = this.fetch();
 	}

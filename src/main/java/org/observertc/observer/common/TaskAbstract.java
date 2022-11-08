@@ -38,6 +38,8 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 	private T result = null;
 	private Supplier<AutoCloseable> lockProvider = () -> { return () -> {};};
 	private Consumer<Stats> statsConsumer = input -> {};
+	private Runnable finalAction = () -> {};
+	private String name = null;
 
 	public static class Stats {
 		public Instant started = Instant.now();
@@ -93,10 +95,22 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 					this.statsConsumer.accept(stats);
 				}
 			} catch (Exception ex) {
-				this.onLogger.error("Error while forwarding task stats");
+				this.onLogger.error("Error while forwarding task stats", ex);
+			}
+			try {
+				finalAction.run();
+			} catch (Exception ex) {
+				this.onLogger.warn("Error while executing final action", ex);
 			}
 		}
 		return this;
+	}
+
+	public String getName() {
+		if (this.name != null) {
+			return this.name;
+		}
+		return this.getClass().getSimpleName();
 	}
 
 	protected Logger getLogger() {
@@ -129,6 +143,11 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 
 	TaskAbstract<T> withLockProvider(Supplier<AutoCloseable> value) {
 		this.lockProvider = value;
+		return this;
+	}
+
+	protected TaskAbstract<T> setName(String taskName) {
+		this.name = taskName;
 		return this;
 	}
 
@@ -185,6 +204,11 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 
 	public TaskAbstract<T> withLogger(Logger logger) {
 		this.onLogger = logger;
+		return this;
+	}
+
+	public TaskAbstract<T> withFinalAction(Runnable action) {
+		this.finalAction = action;
 		return this;
 	}
 

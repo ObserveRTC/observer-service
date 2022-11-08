@@ -11,13 +11,13 @@ import org.observertc.observer.samples.ObservedClientSamples;
 import org.observertc.observer.utils.ObservedSamplesGenerator;
 
 @MicronautTest
-class ObservedCallsFetcherInMasterModeTest {
+class ObservedCallsFetcherInMasterAssigningModeTest {
 
     @Inject
     RoomsRepository roomsRepository;
 
     @Inject
-    ObservedCallsFetcherInMasterMode observedCallsFetcher;
+    CallsFetcherInMasterAssigningMode observedCallsFetcher;
 
     @Inject
     CallsRepository callsRepository;
@@ -39,12 +39,12 @@ class ObservedCallsFetcherInMasterModeTest {
                 .add(aliceClientSample.getServiceId(), aliceClientSample.getMediaUnitId(), aliceClientSample.getClientSample())
                 .build();
 
-        var calls = this.observedCallsFetcher.fetchFor(observedClientSamples);
+        var callsFetcherResult = this.observedCallsFetcher.fetchFor(observedClientSamples);
         var aliceRoom = this.roomsRepository.get(aliceClientSample.getServiceRoomId());
         Assertions.assertNotNull(aliceRoom);
-        Assertions.assertEquals(1, calls.size());
+        Assertions.assertEquals(1, callsFetcherResult.actualCalls().size());
 
-        var aliceCall = calls.get(aliceRoom.getServiceRoomId());
+        var aliceCall = callsFetcherResult.actualCalls().get(aliceRoom.getServiceRoomId());
         Assertions.assertNotNull(aliceCall);
     }
 
@@ -57,8 +57,8 @@ class ObservedCallsFetcherInMasterModeTest {
                 .add(bobClientSample.getServiceId(), bobClientSample.getMediaUnitId(), bobClientSample.getClientSample())
                 .build();
 
-        var call_1 = this.observedCallsFetcher.fetchFor(observedClientSamples).get(aliceClientSample.getServiceRoomId());
-        var call_2 = this.observedCallsFetcher.fetchFor(observedClientSamples).get(bobClientSample.getServiceRoomId());
+        var call_1 = this.observedCallsFetcher.fetchFor(observedClientSamples).actualCalls().get(aliceClientSample.getServiceRoomId());
+        var call_2 = this.observedCallsFetcher.fetchFor(observedClientSamples).actualCalls().get(bobClientSample.getServiceRoomId());
         Assertions.assertEquals(call_1.getCallId(), call_2.getCallId());
     }
 }

@@ -6,9 +6,11 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.evaluators.eventreports.*;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.repositories.*;
+import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.schemas.dtos.Models;
 import org.observertc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
@@ -16,9 +18,13 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Singleton
 public class CallEventReportsAdder {
@@ -31,6 +37,9 @@ public class CallEventReportsAdder {
 
     @Inject
     RepositoryEvents repositoryEvents;
+
+    @Inject
+    RoomsRepository roomsRepository;
 
     @Inject
     CallsRepository callsRepository;
@@ -79,9 +88,6 @@ public class CallEventReportsAdder {
 
     @PostConstruct
     void setup() {
-
-        this.repositoryEvents.expiredCalls()
-                .subscribe(callModels -> this.processRemovedCalls(callModels));
 
         this.repositoryEvents.deletedCalls()
                 .subscribe(callModels -> this.processRemovedCalls(callModels));
@@ -174,14 +180,26 @@ public class CallEventReportsAdder {
             logger.warn("Expired call models should not be null or less than 1");
             return;
         }
-        var clientIds = callModels.stream()
-                .filter(callModel -> 0 < callModel.getClientIdsCount())
-                .flatMap(callModel -> callModel.getClientIdsList().stream())
-                .collect(Collectors.toSet());
 
-        if (0 < clientIds.size()) {
-            this.clientsRepository.deleteAll(clientIds);
-            this.clientsRepository.save();
+        var serviceRoomsToCallIds = callModels.stream().collect(groupingBy(callModel -> ServiceRoomId.make(callModel.getServiceId(), callModel.getRoomId())));
+        var rooms = Utils.firstNotNull(this.roomsRepository.getAll(serviceRoomsToCallIds.keySet()), Collections.<ServiceRoomId, Room>emptyMap());
+        var roomsToDelete = new HashSet<ServiceRoomId>();
+        for (var entry : serviceRoomsToCallIds.entrySet()) {
+            var serviceRoomId = entry.getKey();
+            var callIds = entry.getValue();
+            var existingRoom = rooms.get(serviceRoomId);
+            if (existingRoom == null) {
+                continue;
+            }
+            if (callIds.contains(existingRoom.getCallId())) {
+                roomsToDelete.add(serviceRoomId);
+            }
+        }
+        if (0 < roomsToDelete.size()) {
+            var removedRoomIds = this.roomsRepository.removeAll(roomsToDelete);
+            Utils.firstNotNull(removedRoomIds, Collections.<ServiceRoomId>emptyList()).stream().forEach(serviceRoomId -> {
+                logger.info("Room {} for service {} is removed", serviceRoomId.roomId, serviceRoomId.serviceId);
+            });
         }
         this.callEndedReports.accept(callModels);
     }

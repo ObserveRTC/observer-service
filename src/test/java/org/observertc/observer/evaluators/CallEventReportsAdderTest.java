@@ -20,10 +20,12 @@ import org.observertc.schemas.reports.CallEventReport;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
 @MicronautTest(environments = "test")
 class CallEventReportsAdderTest {
@@ -140,10 +142,12 @@ class CallEventReportsAdderTest {
         var promise = new CompletableFuture<List<ModifiedStorageEntry<String, Models.Client>>>();
         var reports = new LinkedList<Report>();
         this.callEventReportsAdder.observableReports().subscribe(reports::addAll);
-        this.clientsRepository.observableExpiredEntries().subscribe(promise::complete);
+        this.clientsRepository.observableDeletedEntries().subscribe(promise::complete);
 
         this.callEntitiesUpdater.accept(observedClientSamples);
-        promise.get(config.repository.clientMaxIdleTimeInS * 10, TimeUnit.SECONDS);
+        promise.get(config.repository.callMaxIdleTimeInS * 10, TimeUnit.SECONDS);
+
+        Thread.sleep(5000);
 
         this.callEventReportsAdder.flush();
 
@@ -180,16 +184,20 @@ class CallEventReportsAdderTest {
         var promise = new CompletableFuture<List<ModifiedStorageEntry<String, Models.Client>>>();
         var reports = new LinkedList<Report>();
         this.callEventReportsAdder.observableReports().subscribe(reports::addAll);
-        this.clientsRepository.observableExpiredEntries().subscribe(promise::complete);
+        this.clientsRepository.observableDeletedEntries().subscribe(promise::complete);
 
         this.callEntitiesUpdater.accept(observedClientSamples);
-        promise.get(config.repository.clientMaxIdleTimeInS * 10, TimeUnit.SECONDS);
+        promise.get(config.repository.callMaxIdleTimeInS * 10, TimeUnit.SECONDS);
+
+        Thread.sleep(5000);
 
         this.callEventReportsAdder.flush();
-
-        var actualNumberOfReports = reports.stream()
+        var callEventReports = reports.stream()
                 .filter(r -> ReportType.CALL_EVENT.equals(r.type))
                 .map(r -> (CallEventReport) r.payload)
+                .collect(Collectors.toList());
+
+        var actualNumberOfReports = callEventReports.stream()
                 .filter(r -> CallEventType.PEER_CONNECTION_CLOSED.name().equals(r.name))
                 .count();
         Assertions.assertEquals(observedClientSamples.getPeerConnectionIds().size(), actualNumberOfReports);
@@ -224,10 +232,12 @@ class CallEventReportsAdderTest {
         var promise = new CompletableFuture<List<ModifiedStorageEntry<String, Models.Client>>>();
         var reports = new LinkedList<Report>();
         this.callEventReportsAdder.observableReports().subscribe(reports::addAll);
-        this.clientsRepository.observableExpiredEntries().subscribe(promise::complete);
+        this.clientsRepository.observableDeletedEntries().subscribe(promise::complete);
 
         this.callEntitiesUpdater.accept(observedClientSamples);
-        promise.get(config.repository.clientMaxIdleTimeInS * 10, TimeUnit.SECONDS);
+        promise.get(config.repository.callMaxIdleTimeInS * 10, TimeUnit.SECONDS);
+
+        Thread.sleep(5000);
 
         this.callEventReportsAdder.flush();
 
@@ -244,8 +254,9 @@ class CallEventReportsAdderTest {
     }
 
     private ObservedClientSamples generateObservedClientSamples() {
-        var observedAliceSample = aliceObservedSamplesGenerator.generateObservedClientSample();
-        var observedBobSample = bobObservedSamplesGenerator.generateObservedClientSample();
+        var callId = UUID.randomUUID().toString();
+        var observedAliceSample = aliceObservedSamplesGenerator.generateObservedClientSample(callId);
+        var observedBobSample = bobObservedSamplesGenerator.generateObservedClientSample(callId);
         return ObservedClientSamples.builder()
                 .addObservedClientSample(observedAliceSample)
                 .addObservedClientSample(observedBobSample)

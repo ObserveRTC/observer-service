@@ -43,6 +43,22 @@ public class Call {
         return this.modelHolder.get().getMarker();
     }
 
+    public Long getSampleTouch() {
+        var model = this.modelHolder.get();
+        if (!model.hasSampleTouched()) {
+            return null;
+        }
+        return model.getSampleTouched();
+    }
+
+    public Long getServerTouch() {
+        var model = this.modelHolder.get();
+        if (!model.hasServerTouched()) {
+            return null;
+        }
+        return model.getServerTouched();
+    }
+
     public boolean hasClient(String clientId) {
         var model = this.modelHolder.get();
         if (model.getClientIdsCount() < 1) {
@@ -142,10 +158,18 @@ public class Call {
         return this.serviceRoomId;
     }
 
-    public void touch(Long timestamp) {
+    public void touchBySample(Long timestamp) {
         var model = modelHolder.get();
         var newModel = Models.Call.newBuilder(model)
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
+                .build();
+        this.updateModel(newModel);
+    }
+
+    public void touchByServer(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.Call.newBuilder(model)
+                .setServerTouched(timestamp)
                 .build();
         this.updateModel(newModel);
     }

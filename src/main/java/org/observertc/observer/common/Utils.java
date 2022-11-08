@@ -35,6 +35,24 @@ public final class Utils {
         return null;
     }
 
+    public static Long getMax(Supplier<Long> supplier_1, Supplier<Long> supplier_2) {
+        var value_1 = supplier_1.get();
+        var value_2 = supplier_2.get();
+        if (value_1 == null && value_2 == null) return null;
+        if (value_1 == null) return value_2;
+        if (value_2 == null) return value_1;
+        return Math.max(value_1, value_2);
+    }
+
+    public static Long getMin(Supplier<Long> supplier_1, Supplier<Long> supplier_2) {
+        var value_1 = supplier_1.get();
+        var value_2 = supplier_2.get();
+        if (value_1 == null && value_2 == null) return null;
+        if (value_1 == null) return value_2;
+        if (value_2 == null) return value_1;
+        return Math.min(value_1, value_2);
+    }
+
 
 //    public static<T> Collection<T> coalesceCollection(Collection<T> actualValue) {
 //        return Objects.nonNull(actualValue) ? actualValue : Collections.EMPTY_LIST;
