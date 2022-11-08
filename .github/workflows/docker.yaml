@@ -73,6 +73,7 @@ jobs:
       
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
+        if: steps.job_context.outputs.branch == 'master'
         with:
           image-ref: 'observertc/observer:${{ steps.observer_properties.outputs.value }}'
           format: 'table'
