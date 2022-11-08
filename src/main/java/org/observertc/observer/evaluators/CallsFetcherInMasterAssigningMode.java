@@ -76,10 +76,10 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
         }
 
         var createCallsResult = this.createCalls(callsToCreate);
-        logger.info("Created Calls. createdCalls: {}, existingCalls: {}",
-                JsonUtils.objectToString(createCallsResult.createdCalls.values().stream().map(c -> String.format("%s::%s", c.getRoomId(), c.getCallId())).collect(Collectors.toList())),
-                JsonUtils.objectToString(createCallsResult.existingCalls.values().stream().map(c -> String.format("%s::%s", c.getRoomId(), c.getCallId())).collect(Collectors.toList()))
-        );
+//        logger.info("Created Calls. createdCalls: {}, existingCalls: {}",
+//                JsonUtils.objectToString(createCallsResult.createdCalls.values().stream().map(c -> String.format("%s::%s", c.getRoomId(), c.getCallId())).collect(Collectors.toList())),
+//                JsonUtils.objectToString(createCallsResult.existingCalls.values().stream().map(c -> String.format("%s::%s", c.getRoomId(), c.getCallId())).collect(Collectors.toList()))
+//        );
 
         if (createCallsResult.existingCalls != null && 0 < createCallsResult.existingCalls.size()) {
             callIds.addAll(createCallsResult.existingCalls
@@ -130,7 +130,7 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
                 clientSample.callId = callId;
             }
         }
-        this.callsRepository.dump();
+//        this.callsRepository.dump();
         logger.info("Actual CallIds: {} \n FetchedCalls: {} \n Calls: {} \n",
                 JsonUtils.objectToString(callIds),
                 JsonUtils.objectToString(fetchedCalls.values().stream().map(c -> String.format("%s::%s", c.getCallId(), c.getRoomId())).collect(Collectors.toList())),
