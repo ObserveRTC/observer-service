@@ -61,7 +61,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: observertc/observer:latest,observertc/observer:${{ steps.observer_properties.outputs.value }}-SNAPSHOT.${{ github.sha }}
+          tags: observertc/observer:latest,observertc/observer:${{ steps.observer_properties.outputs.value }}-SNAPSHOT.${{ steps.job_context.outputs.branch }}
 
       - name: Build and push RELEASE
         id: docker_build_release
