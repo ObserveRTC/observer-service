@@ -106,7 +106,8 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
         if (callIds == null || callIds.size() < 1) {
             return EMPTY_RESULT;
         }
-        var actualCalls = this.callsRepository.fetchRecursively(callIds).values().stream()
+        var fetchedCalls = this.callsRepository.fetchRecursively(callIds);
+        var actualCalls = fetchedCalls.values().stream()
                 .collect(Collectors.toMap(
                         call -> call.getServiceRoomId(),
                         Function.identity()
@@ -130,8 +131,9 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
             }
         }
         this.callsRepository.dump();
-        logger.info("Actual CallIds: {} Calls: {}",
+        logger.info("Actual CallIds: {} \n FetchedCalls: {}\n Calls: {}\n",
                 JsonUtils.objectToString(callIds),
+                JsonUtils.objectToString(fetchedCalls),
                 JsonUtils.objectToString(actualCalls.values().stream().map(c -> String.format("%s::%s", c.getRoomId(), c.getCallId())).collect(Collectors.toList()))
         );
         return new CallsFetcherResult(
