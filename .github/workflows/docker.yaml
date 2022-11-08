@@ -43,14 +43,6 @@ jobs:
           echo "##[set-output name=branch;]$(echo ${GITHUB_REF##*/})"
         id: job_context
 
-      - name: Make Release Tag
-        if: steps.job_context.outputs.branch != 'master'
-        run: echo ${{ steps.observer_properties.outputs.value }}
-
-      - name: Make Snapshot Tag
-        if: steps.job_context.outputs.branch != 'master'
-        run: echo ${{ steps.observer_properties.outputs.value }}-SNAPSHOT.${{ github.sha }}
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
@@ -63,8 +55,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
-        id: docker_build
+      - name: Build and push SNAPSHOT
+        id: docker_build_snapshot
+        if: steps.job_context.outputs.branch != 'master'
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: observertc/observer:latest,observertc/observer:${{ steps.observer_properties.outputs.value }}-SNAPSHOT.${{ github.sha }}
+
+      - name: Build and push RELEASE
+        id: docker_build_release
+        if: steps.job_context.outputs.branch == 'master'
         uses: docker/build-push-action@v2
         with:
           push: true
