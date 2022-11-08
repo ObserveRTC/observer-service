@@ -41,9 +41,9 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
             return EMPTY_RESULT;
         }
         var createRoomsResult = this.createRooms(observedClientSamples);
-        logger.debug("Fetched Rooms. createdRooms: {}, existingRooms: {}",
-                JsonUtils.objectToString(createRoomsResult.createdRooms),
-                JsonUtils.objectToString(createRoomsResult.existingRooms)
+        logger.info("Fetched Rooms. createdRooms: {}, existingRooms: {}",
+                JsonUtils.objectToString(createRoomsResult.createdRooms.values().stream().map(Room::getRoomId).collect(Collectors.toList())),
+                JsonUtils.objectToString(createRoomsResult.existingRooms.values().stream().map(Room::getRoomId).collect(Collectors.toList()))
         );
         var callIds = new HashSet<String>();
         if (0 < createRoomsResult.existingRooms.size()) {
@@ -76,9 +76,9 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
         }
 
         var createCallsResult = this.createCalls(callsToCreate);
-        logger.debug("Created Calls. createdCalls: {}, existingCalls: {}",
-                JsonUtils.objectToString(createCallsResult.createdCalls),
-                JsonUtils.objectToString(createCallsResult.existingCalls)
+        logger.info("Created Calls. createdCalls: {}, existingCalls: {}",
+                JsonUtils.objectToString(createCallsResult.createdCalls.values().stream().map(c -> String.format("%s::%s", c.getRoomId(), c.getCallId())).collect(Collectors.toList())),
+                JsonUtils.objectToString(createCallsResult.existingCalls.values().stream().map(c -> String.format("%s::%s", c.getRoomId(), c.getCallId())).collect(Collectors.toList()))
         );
 
         if (createCallsResult.existingCalls != null && 0 < createCallsResult.existingCalls.size()) {
@@ -129,7 +129,9 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
                 clientSample.callId = callId;
             }
         }
-        logger.debug("createResult: actual calls {}", JsonUtils.objectToString(actualCalls));
+        logger.info("Actual Calls. createdCalls: {}, existingCalls: {}",
+                JsonUtils.objectToString(actualCalls.values().stream().map(c -> String.format("%s::%s", c.getRoomId(), c.getCallId())).collect(Collectors.toList()))
+        );
         return new CallsFetcherResult(
                 actualCalls,
                 Collections.emptyMap()
