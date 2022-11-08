@@ -2,6 +2,7 @@ package org.observertc.observer.evaluators;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.evaluators.eventreports.CallStartedReports;
 import org.observertc.observer.repositories.Call;
@@ -40,6 +41,10 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
             return EMPTY_RESULT;
         }
         var createRoomsResult = this.createRooms(observedClientSamples);
+        logger.debug("Fetched Rooms. createdRooms: {}, existingRooms: {}",
+                JsonUtils.objectToString(createRoomsResult.createdRooms),
+                JsonUtils.objectToString(createRoomsResult.existingRooms)
+        );
         var callIds = new HashSet<String>();
         if (0 < createRoomsResult.existingRooms.size()) {
             callIds.addAll(createRoomsResult.existingRooms.values().stream()
@@ -71,6 +76,11 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
         }
 
         var createCallsResult = this.createCalls(callsToCreate);
+        logger.debug("Created Calls. createdCalls: {}, existingCalls: {}",
+                JsonUtils.objectToString(createCallsResult.createdCalls),
+                JsonUtils.objectToString(createCallsResult.existingCalls)
+        );
+
         if (createCallsResult.existingCalls != null && 0 < createCallsResult.existingCalls.size()) {
             callIds.addAll(createCallsResult.existingCalls
                     .values().stream()
@@ -119,6 +129,7 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
                 clientSample.callId = callId;
             }
         }
+        logger.debug("createResult: actual calls {}", JsonUtils.objectToString(actualCalls));
         return new CallsFetcherResult(
                 actualCalls,
                 Collections.emptyMap()
