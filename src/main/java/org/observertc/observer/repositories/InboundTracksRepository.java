@@ -29,7 +29,7 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
 
     private static final Logger logger = LoggerFactory.getLogger(InboundTracksRepository.class);
 
-    private static final String STORAGE_ID = "observertc-inbound-video-tracks";
+    private static final String STORAGE_ID = "observertc-inbound-tracks";
     private static final int MAX_KEYS = 1000;
     private static final int MAX_VALUES = 100;
 
