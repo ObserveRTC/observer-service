@@ -282,10 +282,10 @@ public class CallsRepository implements RepositoryStorageMetrics {
 
     private Map<String, Call> fetchAll(Set<String> callIds) {
         var models = Try.wrap(() -> this.storage.getAll(callIds), null);
-//        logger.info("fetchAll CallIds: {} \n getAll: {}\n",
-//                JsonUtils.objectToString(callIds),
-//                JsonUtils.objectToString(models.values().stream().map(c -> String.format("%s::%s", c.getCallId(), c.getRoomId())).collect(Collectors.toList()))
-//        );
+        logger.info("fetchAll CallIds: {} \n getAll: {}\n",
+                JsonUtils.objectToString(callIds),
+                JsonUtils.objectToString(models.values().stream().map(c -> String.format("%s::%s", c.getCallId(), c.getRoomId())).collect(Collectors.toList()))
+        );
         if (models == null || models.isEmpty()) {
             return Collections.emptyMap();
         }
