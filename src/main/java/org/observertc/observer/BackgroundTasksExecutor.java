@@ -95,8 +95,9 @@ public class BackgroundTasksExecutor {
                 logger.warn("Interrupted while executing tasks");
                 break;
             }
+            logger.info("Executing task: {}", task.getName());
             if (!task.execute().succeeded()) {
-                logger.warn("Task execution failed. Task name: {}", task.getName());
+                logger.warn("Task ({}) execution failed.", task.getName());
             }
         }
         this.fire();
