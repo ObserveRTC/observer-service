@@ -10,6 +10,7 @@ import jakarta.inject.Singleton;
 import org.observertc.observer.BackgroundTasksExecutor;
 import org.observertc.observer.HamokService;
 import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.common.Try;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
@@ -75,12 +76,16 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
         var checkCollision = new AtomicBoolean(false);
         this.storage.detectedEntryCollisions().subscribe(detectedCollision -> {
             logger.warn("Detected colliding items in {} for key {}", STORAGE_ID, detectedCollision.key());
+            this.dump("Before colliding check");
             if (checkCollision.compareAndSet(false, true)) {
                 this.backgroundTasksExecutor.addTask(ChainedTask.<Void>builder()
                         .withName("Remove collisions for storage: " + STORAGE_ID)
                         .withLogger(logger)
                         .addActionStage("Check collision for " + STORAGE_ID, this.storage::checkCollidingEntries)
-                        .setFinalAction(() -> checkCollision.set(false))
+                        .setFinalAction(() -> {
+                            this.dump("After collision checked");
+                            checkCollision.set(false);
+                        })
                         .build()
                 );
             }
@@ -92,6 +97,17 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
                 .build();
         this.updated = new HashMap<>();
         this.deleted = new HashSet<>();
+    }
+
+    public void dump(String context) {
+        var localKeys = this.storage.localKeys();
+        logger.info("Dumped storage: {}, context: {}, local part: {}", STORAGE_ID, context, JsonUtils.objectToString(
+                this.storage.getAll(localKeys).values().stream().map(model -> String.format("%s::%s", model.getRoomId(), model.getTrackId())).collect(Collectors.toList())
+        ));
+        var remoteKeys = this.storage.keys().stream().filter(key -> !localKeys.contains(key)).collect(Collectors.toSet());
+        logger.info("Dumped storage: {}, context: {}, remote part: {}", STORAGE_ID, context, JsonUtils.objectToString(
+                this.storage.getAll(remoteKeys).values().stream().map(model -> String.format("%s::%s", model.getRoomId(), model.getTrackId())).collect(Collectors.toList())
+        ));
     }
 
     Observable<List<ModifiedStorageEntry<String, Models.InboundTrack>>> observableDeletedEntries() {

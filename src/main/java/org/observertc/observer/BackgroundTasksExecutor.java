@@ -104,22 +104,8 @@ public class BackgroundTasksExecutor {
 
     }
 
-
     public void addTask(Task<Void> task) {
         this.tasks.add(task);
-    }
-
-
-
-    private void checkCollidingEntries() {
-//        this.clientsRepositoryProvider.get().checkCollidingEntries();
-//        this.peerConnectionsRepositoryProvider.get().checkCollidingEntries();
-//        this.inboundTracksRepositoryProvider.get().checkCollidingEntries();
-//        this.outboundTracksRepositoryProvider.get().checkCollidingEntries();
-//        this.sfusRepositoryProvider.get().checkCollidingEntries();
-//        this.sfuTransportsRepositoryProvider.get().checkCollidingEntries();
-//        this.sfuInboundRtpPadsRepositoryProvider.get().checkCollidingEntries();
-//        this.sfuOutboundRtpPadsRepositoryProvider.get().checkCollidingEntries();
     }
 
     private void fire() {
