@@ -13,6 +13,7 @@ class SamplesVersionVisitorTest {
         var notRecognized = "notRecognized";
         var visitor = SamplesVersionVisitor.<Void, String>createFunctionalVisitor(
                 VOID -> Samples.VERSION,
+                VOID -> "2.1.0",
                 VOID -> notRecognized
         );
         Assertions.assertEquals(Samples.VERSION, visitor.apply(null, Samples.VERSION));

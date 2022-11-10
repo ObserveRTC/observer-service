@@ -2,20 +2,22 @@
 
 package org.observertc.schemas.v210.protobuf;
 
-import org.observertc.observer.common.UUIDAdapter;
-import org.observertc.schemas.protobuf.ProtobufSamples;
 import org.observertc.schemas.samples.Samples;
-import org.observertc.schemas.samples.Samples.*;
+import org.observertc.schemas.samples.Samples.ClientSample;
 import org.observertc.schemas.samples.Samples.ClientSample.*;
+import org.observertc.schemas.samples.Samples.Controls;
+import org.observertc.schemas.samples.Samples.SfuSample;
 import org.observertc.schemas.samples.Samples.SfuSample.*;
-import org.observertc.schemas.samples.Samples.TurnSample.*;
+import org.observertc.schemas.samples.Samples.TurnSample;
+import org.observertc.schemas.samples.Samples.TurnSample.TurnPeerAllocation;
+import org.observertc.schemas.samples.Samples.TurnSample.TurnSession;
 
 import java.util.function.Function;
 
-public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, Samples> {
+public class ProtobufSamplesMapper implements Function<org.observertc.schemas.v210.protobuf.ProtobufSamples.Samples, Samples> {
 
 	@Override
-	public Samples apply(ProtobufSamples.Samples source) {
+	public Samples apply(org.observertc.schemas.v210.protobuf.ProtobufSamples.Samples source) {
 		if (source == null) return null;
 		var result = new Samples();
 		if (source.hasControls()) {
