@@ -8,6 +8,7 @@ import org.observertc.observer.mappings.Mapper;
 import org.observertc.schemas.protobuf.ProtobufSamples;
 import org.observertc.schemas.protobuf.ProtobufSamplesMapper;
 import org.observertc.schemas.samples.Samples;
+import org.observertc.schemas.v210.samples.Fromv210ToLatestConverter;
 import org.slf4j.Logger;
 
 import java.util.Objects;
@@ -82,6 +83,14 @@ class SamplesDecoder implements Decoder<byte[], Samples> {
                             return samples;
                         };
                     },
+                    () -> { // v2.1.0
+                        var samplerMapper = new org.observertc.schemas.v210.protobuf.ProtobufSamplesMapper();
+                        return message -> {
+                            var protobufSamples = org.observertc.schemas.v210.protobuf.ProtobufSamples.Samples.parseFrom(message);
+                            var samples = samplerMapper.apply(protobufSamples);
+                            return samples;
+                        };
+                    },
                     () -> { // not recognized
                         throw new RuntimeException("Not recognized version" + this.version);
                     }
@@ -98,6 +107,19 @@ class SamplesDecoder implements Decoder<byte[], Samples> {
                             if (samples == null) {
                                 throw new RuntimeException("Failed to decode Samples");
                             }
+                            return samples;
+                        };
+                    },
+                    () -> { // v2.1.0
+                        var decoder = JsonMapper.<org.observertc.schemas.v210.samples.Samples>createBytesToObjectMapper(org.observertc.schemas.v210.samples.Samples.class);
+                        Mapper<org.observertc.schemas.v210.samples.Samples, Samples> samplesVersionAligner;
+                        var from210LatestConverter = new Fromv210ToLatestConverter();
+                        return message -> {
+                            var samplesV210 = decoder.map(message);
+                            if (samplesV210 == null) {
+                                throw new RuntimeException("Failed to decode Samples");
+                            }
+                            var samples = from210LatestConverter.apply(samplesV210);
                             return samples;
                         };
                     },

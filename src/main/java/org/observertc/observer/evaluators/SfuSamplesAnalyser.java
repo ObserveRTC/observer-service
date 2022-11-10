@@ -42,6 +42,7 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
     private final SfuOutboundRtpPadReportsDepot sfuOutboundRtpPadReportsDepot = new SfuOutboundRtpPadReportsDepot();
     private final SfuSctpStreamReportsDepot sfuSctpStreamReportsDepot = new SfuSctpStreamReportsDepot();
     private final SfuExtensionReportsDepot sfuExtensionReportsDepot = new SfuExtensionReportsDepot();
+    private final CustomSfuEventReportsDepot customSfuEventReportsDepot = new CustomSfuEventReportsDepot();
 
     public Observable<List<Report>> observableReports() {
         return this.output;
@@ -168,6 +169,13 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
                         .setPayload(sfuExtensionStats.payload)
                         .assemble();
             });
+
+            SfuSampleVisitor.streamCustomSfuEvents(sfuSample).forEach(customSfuEvent -> {
+                this.customSfuEventReportsDepot
+                        .setObservedSfuSample(observedSfuSample)
+                        .setCustomSfuEvent(customSfuEvent)
+                        .assemble();
+            });
         }
         var reports = new LinkedList<Report>();
         this.sfuTransportReportsDepot.get().stream().map(Report::fromSfuTransportReport).forEach(reports::add);
@@ -175,6 +183,7 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
         this.sfuOutboundRtpPadReportsDepot.get().stream().map(Report::fromSfuOutboundRtpPadReport).forEach(reports::add);
         this.sfuSctpStreamReportsDepot.get().stream().map(Report::fromSfuSctpStreamReport).forEach(reports::add);
         this.sfuExtensionReportsDepot.get().stream().map(Report::fromSfuExtensionReport).forEach(reports::add);
+        this.customSfuEventReportsDepot.get().stream().map(Report::fromSfuEventReport).forEach(reports::add);
         if (0 < reports.size()) {
             this.output.onNext(reports);
         }

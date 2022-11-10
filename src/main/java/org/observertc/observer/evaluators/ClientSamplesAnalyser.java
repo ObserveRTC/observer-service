@@ -46,6 +46,7 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
     private final ClientDataChannelReportsDepot clientDataChannelReportsDepot = new ClientDataChannelReportsDepot();
     private final CallMetaReportsDepot callMetaReportsDepot = new CallMetaReportsDepot();
     private final ClientExtensionReportsDepot clientExtensionReportsDepot = new ClientExtensionReportsDepot();
+    private final CustomCallEventReportsDepot customCallEventReportsDepot = new CustomCallEventReportsDepot();
 
     public Observable<List<Report>> observableReports() {
         return this.output;
@@ -252,6 +253,14 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
                         .assemble();
             });
 
+            // stream custom call events
+            ClientSampleVisitor.streamCustomCallEvents(clientSample).forEach(customCallEvent -> {
+                this.customCallEventReportsDepot
+                        .setObservedClientSample(observedClientSample)
+                        .setCustomCallEvent(customCallEvent)
+                        .assemble();
+            });
+
             // streamIceServers
             ClientSampleVisitor.streamIceServers(clientSample).forEach(iceServer -> {
                 this.callMetaReportsDepot
@@ -332,6 +341,7 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
         this.clientDataChannelReportsDepot.get().stream().map(Report::fromClientDataChannelReport).forEach(reports::add);
         this.callMetaReportsDepot.get().stream().map(Report::fromCallMetaReport).forEach(reports::add);
         this.clientExtensionReportsDepot.get().stream().map(Report::fromClientExtensionReport).forEach(reports::add);
+        this.customCallEventReportsDepot.get().stream().map(Report::fromCallEventReport).forEach(reports::add);
         if (0 < reports.size()) {
             this.output.onNext(reports);
         }

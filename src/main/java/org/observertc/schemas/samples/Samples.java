@@ -2,14 +2,13 @@ package org.observertc.schemas.samples;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.UUID;
 
 /**
 * Observer created reports related to events (call started, call ended, client joined, etc...) indicated by the incoming samples.
 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Samples {
-	public static final String VERSION="2.1.8";
+	public static final String VERSION="2.2.0";
 	public static Builder newBuilder() {
 		return new Builder();
 	}
@@ -303,6 +302,152 @@ public class Samples {
 					return this;
 				}
 				public ExtensionStat build() {
+					return this.result;
+				}
+			}
+		}
+		/**
+		* undefined
+		*/
+		@JsonIgnoreProperties(ignoreUnknown = true)
+		public static class CustomCallEvent {
+			public static Builder newBuilder() {
+				return new Builder();
+			}
+			/**
+			* the name of the event used as identifier. (e.g.: MEDIA_TRACK_MUTED, USER_REJOINED, etc..)
+			*/
+			@JsonProperty("name")
+			public String name;
+			/**
+			* the value of the event
+			*/
+			@JsonProperty("value")
+			public String value;
+			/**
+			* The unique identifier of the peer connection
+			*/
+			@JsonProperty("peerConnectionId")
+			public String peerConnectionId;
+			/**
+			* The identifier of the media track the event is related to
+			*/
+			@JsonProperty("mediaTrackId")
+			public String mediaTrackId;
+			/**
+			* the human readable message of the event
+			*/
+			@JsonProperty("message")
+			public String message;
+			/**
+			* Additional attachment relevant for the event
+			*/
+			@JsonProperty("attachments")
+			public String attachments;
+			/**
+			* The EPOCH timestamp the event is generated
+			*/
+			@JsonProperty("timestamp")
+			public Long timestamp;
+		
+
+			public static class Builder {
+		
+				private CustomCallEvent result = new CustomCallEvent();
+		
+				public Builder setName(String value) {
+					this.result.name = value;
+					return this;
+				}
+				public Builder setValue(String value) {
+					this.result.value = value;
+					return this;
+				}
+				public Builder setPeerConnectionId(String value) {
+					this.result.peerConnectionId = value;
+					return this;
+				}
+				public Builder setMediaTrackId(String value) {
+					this.result.mediaTrackId = value;
+					return this;
+				}
+				public Builder setMessage(String value) {
+					this.result.message = value;
+					return this;
+				}
+				public Builder setAttachments(String value) {
+					this.result.attachments = value;
+					return this;
+				}
+				public Builder setTimestamp(Long value) {
+					this.result.timestamp = value;
+					return this;
+				}
+				public CustomCallEvent build() {
+					return this.result;
+				}
+			}
+		}
+		/**
+		* undefined
+		*/
+		@JsonIgnoreProperties(ignoreUnknown = true)
+		public static class CustomObserverEvent {
+			public static Builder newBuilder() {
+				return new Builder();
+			}
+			/**
+			* the name of the event used as identifier. (e.g.: MEDIA_TRACK_MUTED, USER_REJOINED, etc..)
+			*/
+			@JsonProperty("name")
+			public String name;
+			/**
+			* The identifier of the media track the event is related to
+			*/
+			@JsonProperty("mediaTrackId")
+			public String mediaTrackId;
+			/**
+			* the human readable message of the event
+			*/
+			@JsonProperty("message")
+			public String message;
+			/**
+			* Additional attachment relevant for the event
+			*/
+			@JsonProperty("attachments")
+			public String attachments;
+			/**
+			* The EPOCH timestamp the event is generated
+			*/
+			@JsonProperty("timestamp")
+			public Long timestamp;
+		
+
+			public static class Builder {
+		
+				private CustomObserverEvent result = new CustomObserverEvent();
+		
+				public Builder setName(String value) {
+					this.result.name = value;
+					return this;
+				}
+				public Builder setMediaTrackId(String value) {
+					this.result.mediaTrackId = value;
+					return this;
+				}
+				public Builder setMessage(String value) {
+					this.result.message = value;
+					return this;
+				}
+				public Builder setAttachments(String value) {
+					this.result.attachments = value;
+					return this;
+				}
+				public Builder setTimestamp(Long value) {
+					this.result.timestamp = value;
+					return this;
+				}
+				public CustomObserverEvent build() {
 					return this.result;
 				}
 			}
@@ -2977,6 +3122,16 @@ public class Samples {
 		@JsonProperty("extensionStats")
 		public ExtensionStat[] extensionStats;
 		/**
+		* User provided custom call events
+		*/
+		@JsonProperty("customCallEvents")
+		public CustomCallEvent[] customCallEvents;
+		/**
+		* User provided custom call events
+		*/
+		@JsonProperty("customObserverEvents")
+		public CustomObserverEvent[] customObserverEvents;
+		/**
 		* The WebRTC app provided List of ICE server the client used.
 		*/
 		@JsonProperty("iceServers")
@@ -3119,6 +3274,14 @@ public class Samples {
 				this.result.extensionStats = value;
 				return this;
 			}
+			public Builder setCustomCallEvents(CustomCallEvent[] value) {
+				this.result.customCallEvents = value;
+				return this;
+			}
+			public Builder setCustomObserverEvents(CustomObserverEvent[] value) {
+				this.result.customObserverEvents = value;
+				return this;
+			}
 			public Builder setIceServers(String[] value) {
 				this.result.iceServers = value;
 				return this;
@@ -3199,6 +3362,97 @@ public class Samples {
 	public static class SfuSample {
 		public static Builder newBuilder() {
 			return new Builder();
+		}
+		/**
+		* undefined
+		*/
+		@JsonIgnoreProperties(ignoreUnknown = true)
+		public static class CustomSfuEvent {
+			public static Builder newBuilder() {
+				return new Builder();
+			}
+			/**
+			* the name of the event used as identifier. (e.g.: CLIENT_REJOINED, etc..)
+			*/
+			@JsonProperty("name")
+			public String name;
+			/**
+			* the value of the event
+			*/
+			@JsonProperty("value")
+			public String value;
+			/**
+			* The unique identifier of the sfu transport the event is related to
+			*/
+			@JsonProperty("transportId")
+			public String transportId;
+			/**
+			* The identifier of the sfu stream the event is related to
+			*/
+			@JsonProperty("sfuStreamId")
+			public String sfuStreamId;
+			/**
+			* The identifier of the sfu sink the event is related to
+			*/
+			@JsonProperty("sfuSinkId")
+			public String sfuSinkId;
+			/**
+			* the human readable message of the event
+			*/
+			@JsonProperty("message")
+			public String message;
+			/**
+			* Additional attachment relevant for the event
+			*/
+			@JsonProperty("attachments")
+			public String attachments;
+			/**
+			* The EPOCH timestamp the event is generated
+			*/
+			@JsonProperty("timestamp")
+			public Long timestamp;
+		
+
+			public static class Builder {
+		
+				private CustomSfuEvent result = new CustomSfuEvent();
+		
+				public Builder setName(String value) {
+					this.result.name = value;
+					return this;
+				}
+				public Builder setValue(String value) {
+					this.result.value = value;
+					return this;
+				}
+				public Builder setTransportId(String value) {
+					this.result.transportId = value;
+					return this;
+				}
+				public Builder setSfuStreamId(String value) {
+					this.result.sfuStreamId = value;
+					return this;
+				}
+				public Builder setSfuSinkId(String value) {
+					this.result.sfuSinkId = value;
+					return this;
+				}
+				public Builder setMessage(String value) {
+					this.result.message = value;
+					return this;
+				}
+				public Builder setAttachments(String value) {
+					this.result.attachments = value;
+					return this;
+				}
+				public Builder setTimestamp(Long value) {
+					this.result.timestamp = value;
+					return this;
+				}
+				public CustomSfuEvent build() {
+					return this.result;
+				}
+			}
 		}
 		/**
 		* undefined
@@ -4441,6 +4695,11 @@ public class Samples {
 		@JsonProperty("marker")
 		public String marker;
 		/**
+		* User provided custom call events
+		*/
+		@JsonProperty("customSfuEvents")
+		public CustomSfuEvent[] customSfuEvents;
+		/**
 		* The Sfu Transports obtained measurements
 		*/
 		@JsonProperty("transports")
@@ -4485,6 +4744,10 @@ public class Samples {
 			}
 			public Builder setMarker(String value) {
 				this.result.marker = value;
+				return this;
+			}
+			public Builder setCustomSfuEvents(CustomSfuEvent[] value) {
+				this.result.customSfuEvents = value;
 				return this;
 			}
 			public Builder setTransports(SfuTransport[] value) {

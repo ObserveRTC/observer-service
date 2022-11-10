@@ -52,6 +52,13 @@ public interface ClientSampleVisitor<T> extends BiConsumer<T, ClientSample> {
         return Arrays.stream(clientSample.iceRemoteCandidates);
     }
 
+    static Stream<ClientSample.CustomCallEvent> streamCustomCallEvents(@NotNull ClientSample clientSample) {
+        if (Objects.isNull(clientSample.customCallEvents)) {
+            return Stream.empty();
+        }
+        return Arrays.stream(clientSample.customCallEvents);
+    }
+
     static Stream<String> streamIceServers(@NotNull ClientSample clientSample) {
         if (Objects.isNull(clientSample.iceServers)) {
             return Stream.empty();

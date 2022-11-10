@@ -115,8 +115,6 @@ public class CallsRepository implements RepositoryStorageMetrics {
             }
         });
 
-
-
         this.fetched = CachedFetches.<String, Call>builder()
                 .onFetchOne(this::fetchOne)
                 .onFetchAll(this::fetchAll)

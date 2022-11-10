@@ -10,6 +10,13 @@ import java.util.stream.Stream;
 
 public interface SfuSampleVisitor<T> extends BiConsumer<T, SfuSample> {
 
+    static Stream<SfuSample.CustomSfuEvent> streamCustomSfuEvents(@NotNull SfuSample sfuSample) {
+        if (Objects.isNull(sfuSample.customSfuEvents)) {
+            return Stream.empty();
+        }
+        return Arrays.stream(sfuSample.customSfuEvents);
+    }
+
     static Stream<SfuSample.SfuTransport> streamTransports(@NotNull SfuSample sfuSample) {
         if (Objects.isNull(sfuSample.transports)) {
             return Stream.empty();

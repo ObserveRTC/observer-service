@@ -994,144 +994,192 @@ public final class ProtobufSamples {
           int index);
 
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+       */
+      java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent> 
+          getCustomCallEventsList();
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+       */
+      org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent getCustomCallEvents(int index);
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+       */
+      int getCustomCallEventsCount();
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+       */
+      java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEventOrBuilder> 
+          getCustomCallEventsOrBuilderList();
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+       */
+      org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEventOrBuilder getCustomCallEventsOrBuilder(
+          int index);
+
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+       */
+      java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent> 
+          getCustomObserverEventsList();
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+       */
+      org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent getCustomObserverEvents(int index);
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+       */
+      int getCustomObserverEventsCount();
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+       */
+      java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEventOrBuilder> 
+          getCustomObserverEventsOrBuilderList();
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+       */
+      org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEventOrBuilder getCustomObserverEventsOrBuilder(
+          int index);
+
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
        */
       java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel> 
           getDataChannelsList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel getDataChannels(int index);
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
        */
       int getDataChannelsCount();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
        */
       java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannelOrBuilder> 
           getDataChannelsOrBuilderList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannelOrBuilder getDataChannelsOrBuilder(
           int index);
 
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
        */
       java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat> 
           getExtensionStatsList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat getExtensionStats(int index);
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
        */
       int getExtensionStatsCount();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
        */
       java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStatOrBuilder> 
           getExtensionStatsOrBuilderList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStatOrBuilder getExtensionStatsOrBuilder(
           int index);
 
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
        */
       java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair> 
           getIceCandidatePairsList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair getIceCandidatePairs(int index);
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
        */
       int getIceCandidatePairsCount();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
        */
       java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePairOrBuilder> 
           getIceCandidatePairsOrBuilderList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePairOrBuilder getIceCandidatePairsOrBuilder(
           int index);
 
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
        */
       java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate> 
           getIceLocalCandidatesList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate getIceLocalCandidates(int index);
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
        */
       int getIceLocalCandidatesCount();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
        */
       java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidateOrBuilder> 
           getIceLocalCandidatesOrBuilderList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidateOrBuilder getIceLocalCandidatesOrBuilder(
           int index);
 
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
        */
       java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate> 
           getIceRemoteCandidatesList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate getIceRemoteCandidates(int index);
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
        */
       int getIceRemoteCandidatesCount();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
        */
       java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidateOrBuilder> 
           getIceRemoteCandidatesOrBuilderList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidateOrBuilder getIceRemoteCandidatesOrBuilder(
           int index);
 
       /**
-       * <code>repeated string iceServers = 8;</code>
+       * <code>repeated string iceServers = 10;</code>
        * @return A list containing the iceServers.
        */
       java.util.List<java.lang.String>
           getIceServersList();
       /**
-       * <code>repeated string iceServers = 8;</code>
+       * <code>repeated string iceServers = 10;</code>
        * @return The count of iceServers.
        */
       int getIceServersCount();
       /**
-       * <code>repeated string iceServers = 8;</code>
+       * <code>repeated string iceServers = 10;</code>
        * @param index The index of the element to return.
        * @return The iceServers at the given index.
        */
       java.lang.String getIceServers(int index);
       /**
-       * <code>repeated string iceServers = 8;</code>
+       * <code>repeated string iceServers = 10;</code>
        * @param index The index of the value to return.
        * @return The bytes of the iceServers at the given index.
        */
@@ -1139,72 +1187,72 @@ public final class ProtobufSamples {
           getIceServersBytes(int index);
 
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
        */
       java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack> 
           getInboundAudioTracksList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack getInboundAudioTracks(int index);
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
        */
       int getInboundAudioTracksCount();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
        */
       java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrackOrBuilder> 
           getInboundAudioTracksOrBuilderList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrackOrBuilder getInboundAudioTracksOrBuilder(
           int index);
 
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
        */
       java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack> 
           getInboundVideoTracksList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack getInboundVideoTracks(int index);
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
        */
       int getInboundVideoTracksCount();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
        */
       java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrackOrBuilder> 
           getInboundVideoTracksOrBuilderList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrackOrBuilder getInboundVideoTracksOrBuilder(
           int index);
 
       /**
-       * <code>repeated string localSDPs = 11;</code>
+       * <code>repeated string localSDPs = 13;</code>
        * @return A list containing the localSDPs.
        */
       java.util.List<java.lang.String>
           getLocalSDPsList();
       /**
-       * <code>repeated string localSDPs = 11;</code>
+       * <code>repeated string localSDPs = 13;</code>
        * @return The count of localSDPs.
        */
       int getLocalSDPsCount();
       /**
-       * <code>repeated string localSDPs = 11;</code>
+       * <code>repeated string localSDPs = 13;</code>
        * @param index The index of the element to return.
        * @return The localSDPs at the given index.
        */
       java.lang.String getLocalSDPs(int index);
       /**
-       * <code>repeated string localSDPs = 11;</code>
+       * <code>repeated string localSDPs = 13;</code>
        * @param index The index of the value to return.
        * @return The bytes of the localSDPs at the given index.
        */
@@ -1212,24 +1260,24 @@ public final class ProtobufSamples {
           getLocalSDPsBytes(int index);
 
       /**
-       * <code>repeated string mediaConstraints = 12;</code>
+       * <code>repeated string mediaConstraints = 14;</code>
        * @return A list containing the mediaConstraints.
        */
       java.util.List<java.lang.String>
           getMediaConstraintsList();
       /**
-       * <code>repeated string mediaConstraints = 12;</code>
+       * <code>repeated string mediaConstraints = 14;</code>
        * @return The count of mediaConstraints.
        */
       int getMediaConstraintsCount();
       /**
-       * <code>repeated string mediaConstraints = 12;</code>
+       * <code>repeated string mediaConstraints = 14;</code>
        * @param index The index of the element to return.
        * @return The mediaConstraints at the given index.
        */
       java.lang.String getMediaConstraints(int index);
       /**
-       * <code>repeated string mediaConstraints = 12;</code>
+       * <code>repeated string mediaConstraints = 14;</code>
        * @param index The index of the value to return.
        * @return The bytes of the mediaConstraints at the given index.
        */
@@ -1237,144 +1285,144 @@ public final class ProtobufSamples {
           getMediaConstraintsBytes(int index);
 
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
        */
       java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice> 
           getMediaDevicesList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice getMediaDevices(int index);
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
        */
       int getMediaDevicesCount();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
        */
       java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDeviceOrBuilder> 
           getMediaDevicesOrBuilderList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDeviceOrBuilder getMediaDevicesOrBuilder(
           int index);
 
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
        */
       java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat> 
           getMediaSourcesList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat getMediaSources(int index);
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
        */
       int getMediaSourcesCount();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
        */
       java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStatOrBuilder> 
           getMediaSourcesOrBuilderList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStatOrBuilder getMediaSourcesOrBuilder(
           int index);
 
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
        */
       java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack> 
           getOutboundAudioTracksList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack getOutboundAudioTracks(int index);
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
        */
       int getOutboundAudioTracksCount();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
        */
       java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrackOrBuilder> 
           getOutboundAudioTracksOrBuilderList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrackOrBuilder getOutboundAudioTracksOrBuilder(
           int index);
 
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
        */
       java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack> 
           getOutboundVideoTracksList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack getOutboundVideoTracks(int index);
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
        */
       int getOutboundVideoTracksCount();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
        */
       java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrackOrBuilder> 
           getOutboundVideoTracksOrBuilderList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrackOrBuilder getOutboundVideoTracksOrBuilder(
           int index);
 
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
        */
       java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport> 
           getPcTransportsList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport getPcTransports(int index);
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
        */
       int getPcTransportsCount();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
        */
       java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransportOrBuilder> 
           getPcTransportsOrBuilderList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransportOrBuilder getPcTransportsOrBuilder(
           int index);
 
       /**
-       * <code>repeated string userMediaErrors = 18;</code>
+       * <code>repeated string userMediaErrors = 20;</code>
        * @return A list containing the userMediaErrors.
        */
       java.util.List<java.lang.String>
           getUserMediaErrorsList();
       /**
-       * <code>repeated string userMediaErrors = 18;</code>
+       * <code>repeated string userMediaErrors = 20;</code>
        * @return The count of userMediaErrors.
        */
       int getUserMediaErrorsCount();
       /**
-       * <code>repeated string userMediaErrors = 18;</code>
+       * <code>repeated string userMediaErrors = 20;</code>
        * @param index The index of the element to return.
        * @return The userMediaErrors at the given index.
        */
       java.lang.String getUserMediaErrors(int index);
       /**
-       * <code>repeated string userMediaErrors = 18;</code>
+       * <code>repeated string userMediaErrors = 20;</code>
        * @param index The index of the value to return.
        * @return The bytes of the userMediaErrors at the given index.
        */
@@ -1382,178 +1430,178 @@ public final class ProtobufSamples {
           getUserMediaErrorsBytes(int index);
 
       /**
-       * <code>required string clientId = 19;</code>
+       * <code>required string clientId = 21;</code>
        * @return Whether the clientId field is set.
        */
       boolean hasClientId();
       /**
-       * <code>required string clientId = 19;</code>
+       * <code>required string clientId = 21;</code>
        * @return The clientId.
        */
       java.lang.String getClientId();
       /**
-       * <code>required string clientId = 19;</code>
+       * <code>required string clientId = 21;</code>
        * @return The bytes for clientId.
        */
       com.google.protobuf.ByteString
           getClientIdBytes();
 
       /**
-       * <code>required int64 timestamp = 20;</code>
+       * <code>required int64 timestamp = 22;</code>
        * @return Whether the timestamp field is set.
        */
       boolean hasTimestamp();
       /**
-       * <code>required int64 timestamp = 20;</code>
+       * <code>required int64 timestamp = 22;</code>
        * @return The timestamp.
        */
       long getTimestamp();
 
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 21;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 23;</code>
        * @return Whether the browser field is set.
        */
       boolean hasBrowser();
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 21;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 23;</code>
        * @return The browser.
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Browser getBrowser();
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 21;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 23;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.BrowserOrBuilder getBrowserOrBuilder();
 
       /**
-       * <code>optional string callId = 22;</code>
+       * <code>optional string callId = 24;</code>
        * @return Whether the callId field is set.
        */
       boolean hasCallId();
       /**
-       * <code>optional string callId = 22;</code>
+       * <code>optional string callId = 24;</code>
        * @return The callId.
        */
       java.lang.String getCallId();
       /**
-       * <code>optional string callId = 22;</code>
+       * <code>optional string callId = 24;</code>
        * @return The bytes for callId.
        */
       com.google.protobuf.ByteString
           getCallIdBytes();
 
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 23;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 25;</code>
        * @return Whether the engine field is set.
        */
       boolean hasEngine();
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 23;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 25;</code>
        * @return The engine.
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Engine getEngine();
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 23;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 25;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.EngineOrBuilder getEngineOrBuilder();
 
       /**
-       * <code>optional string marker = 24;</code>
+       * <code>optional string marker = 26;</code>
        * @return Whether the marker field is set.
        */
       boolean hasMarker();
       /**
-       * <code>optional string marker = 24;</code>
+       * <code>optional string marker = 26;</code>
        * @return The marker.
        */
       java.lang.String getMarker();
       /**
-       * <code>optional string marker = 24;</code>
+       * <code>optional string marker = 26;</code>
        * @return The bytes for marker.
        */
       com.google.protobuf.ByteString
           getMarkerBytes();
 
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 25;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 27;</code>
        * @return Whether the os field is set.
        */
       boolean hasOs();
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 25;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 27;</code>
        * @return The os.
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystem getOs();
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 25;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 27;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystemOrBuilder getOsOrBuilder();
 
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 26;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 28;</code>
        * @return Whether the platform field is set.
        */
       boolean hasPlatform();
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 26;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 28;</code>
        * @return The platform.
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Platform getPlatform();
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 26;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 28;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PlatformOrBuilder getPlatformOrBuilder();
 
       /**
-       * <code>optional string roomId = 27;</code>
+       * <code>optional string roomId = 29;</code>
        * @return Whether the roomId field is set.
        */
       boolean hasRoomId();
       /**
-       * <code>optional string roomId = 27;</code>
+       * <code>optional string roomId = 29;</code>
        * @return The roomId.
        */
       java.lang.String getRoomId();
       /**
-       * <code>optional string roomId = 27;</code>
+       * <code>optional string roomId = 29;</code>
        * @return The bytes for roomId.
        */
       com.google.protobuf.ByteString
           getRoomIdBytes();
 
       /**
-       * <code>optional int32 sampleSeq = 28;</code>
+       * <code>optional int32 sampleSeq = 30;</code>
        * @return Whether the sampleSeq field is set.
        */
       boolean hasSampleSeq();
       /**
-       * <code>optional int32 sampleSeq = 28;</code>
+       * <code>optional int32 sampleSeq = 30;</code>
        * @return The sampleSeq.
        */
       int getSampleSeq();
 
       /**
-       * <code>optional int32 timeZoneOffsetInHours = 29;</code>
+       * <code>optional int32 timeZoneOffsetInHours = 31;</code>
        * @return Whether the timeZoneOffsetInHours field is set.
        */
       boolean hasTimeZoneOffsetInHours();
       /**
-       * <code>optional int32 timeZoneOffsetInHours = 29;</code>
+       * <code>optional int32 timeZoneOffsetInHours = 31;</code>
        * @return The timeZoneOffsetInHours.
        */
       int getTimeZoneOffsetInHours();
 
       /**
-       * <code>optional string userId = 30;</code>
+       * <code>optional string userId = 32;</code>
        * @return Whether the userId field is set.
        */
       boolean hasUserId();
       /**
-       * <code>optional string userId = 30;</code>
+       * <code>optional string userId = 32;</code>
        * @return The userId.
        */
       java.lang.String getUserId();
       /**
-       * <code>optional string userId = 30;</code>
+       * <code>optional string userId = 32;</code>
        * @return The bytes for userId.
        */
       com.google.protobuf.ByteString
@@ -1574,6 +1622,8 @@ public final class ProtobufSamples {
       private ClientSample() {
         certificates_ = java.util.Collections.emptyList();
         codecs_ = java.util.Collections.emptyList();
+        customCallEvents_ = java.util.Collections.emptyList();
+        customObserverEvents_ = java.util.Collections.emptyList();
         dataChannels_ = java.util.Collections.emptyList();
         extensionStats_ = java.util.Collections.emptyList();
         iceCandidatePairs_ = java.util.Collections.emptyList();
@@ -1648,160 +1698,178 @@ public final class ProtobufSamples {
               }
               case 26: {
                 if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-                  dataChannels_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel>();
+                  customCallEvents_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent>();
                   mutable_bitField0_ |= 0x00000004;
+                }
+                customCallEvents_.add(
+                    input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.PARSER, extensionRegistry));
+                break;
+              }
+              case 34: {
+                if (!((mutable_bitField0_ & 0x00000008) != 0)) {
+                  customObserverEvents_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent>();
+                  mutable_bitField0_ |= 0x00000008;
+                }
+                customObserverEvents_.add(
+                    input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.PARSER, extensionRegistry));
+                break;
+              }
+              case 42: {
+                if (!((mutable_bitField0_ & 0x00000010) != 0)) {
+                  dataChannels_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel>();
+                  mutable_bitField0_ |= 0x00000010;
                 }
                 dataChannels_.add(
                     input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel.PARSER, extensionRegistry));
                 break;
               }
-              case 34: {
-                if (!((mutable_bitField0_ & 0x00000008) != 0)) {
+              case 50: {
+                if (!((mutable_bitField0_ & 0x00000020) != 0)) {
                   extensionStats_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat>();
-                  mutable_bitField0_ |= 0x00000008;
+                  mutable_bitField0_ |= 0x00000020;
                 }
                 extensionStats_.add(
                     input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat.PARSER, extensionRegistry));
                 break;
               }
-              case 42: {
-                if (!((mutable_bitField0_ & 0x00000010) != 0)) {
+              case 58: {
+                if (!((mutable_bitField0_ & 0x00000040) != 0)) {
                   iceCandidatePairs_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair>();
-                  mutable_bitField0_ |= 0x00000010;
+                  mutable_bitField0_ |= 0x00000040;
                 }
                 iceCandidatePairs_.add(
                     input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair.PARSER, extensionRegistry));
                 break;
               }
-              case 50: {
-                if (!((mutable_bitField0_ & 0x00000020) != 0)) {
+              case 66: {
+                if (!((mutable_bitField0_ & 0x00000080) != 0)) {
                   iceLocalCandidates_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate>();
-                  mutable_bitField0_ |= 0x00000020;
+                  mutable_bitField0_ |= 0x00000080;
                 }
                 iceLocalCandidates_.add(
                     input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate.PARSER, extensionRegistry));
                 break;
               }
-              case 58: {
-                if (!((mutable_bitField0_ & 0x00000040) != 0)) {
+              case 74: {
+                if (!((mutable_bitField0_ & 0x00000100) != 0)) {
                   iceRemoteCandidates_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate>();
-                  mutable_bitField0_ |= 0x00000040;
+                  mutable_bitField0_ |= 0x00000100;
                 }
                 iceRemoteCandidates_.add(
                     input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate.PARSER, extensionRegistry));
                 break;
               }
-              case 66: {
+              case 82: {
                 com.google.protobuf.ByteString bs = input.readBytes();
-                if (!((mutable_bitField0_ & 0x00000080) != 0)) {
+                if (!((mutable_bitField0_ & 0x00000200) != 0)) {
                   iceServers_ = new com.google.protobuf.LazyStringArrayList();
-                  mutable_bitField0_ |= 0x00000080;
+                  mutable_bitField0_ |= 0x00000200;
                 }
                 iceServers_.add(bs);
                 break;
               }
-              case 74: {
-                if (!((mutable_bitField0_ & 0x00000100) != 0)) {
+              case 90: {
+                if (!((mutable_bitField0_ & 0x00000400) != 0)) {
                   inboundAudioTracks_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack>();
-                  mutable_bitField0_ |= 0x00000100;
+                  mutable_bitField0_ |= 0x00000400;
                 }
                 inboundAudioTracks_.add(
                     input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack.PARSER, extensionRegistry));
                 break;
               }
-              case 82: {
-                if (!((mutable_bitField0_ & 0x00000200) != 0)) {
+              case 98: {
+                if (!((mutable_bitField0_ & 0x00000800) != 0)) {
                   inboundVideoTracks_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack>();
-                  mutable_bitField0_ |= 0x00000200;
+                  mutable_bitField0_ |= 0x00000800;
                 }
                 inboundVideoTracks_.add(
                     input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack.PARSER, extensionRegistry));
                 break;
               }
-              case 90: {
+              case 106: {
                 com.google.protobuf.ByteString bs = input.readBytes();
-                if (!((mutable_bitField0_ & 0x00000400) != 0)) {
+                if (!((mutable_bitField0_ & 0x00001000) != 0)) {
                   localSDPs_ = new com.google.protobuf.LazyStringArrayList();
-                  mutable_bitField0_ |= 0x00000400;
+                  mutable_bitField0_ |= 0x00001000;
                 }
                 localSDPs_.add(bs);
                 break;
               }
-              case 98: {
+              case 114: {
                 com.google.protobuf.ByteString bs = input.readBytes();
-                if (!((mutable_bitField0_ & 0x00000800) != 0)) {
+                if (!((mutable_bitField0_ & 0x00002000) != 0)) {
                   mediaConstraints_ = new com.google.protobuf.LazyStringArrayList();
-                  mutable_bitField0_ |= 0x00000800;
+                  mutable_bitField0_ |= 0x00002000;
                 }
                 mediaConstraints_.add(bs);
                 break;
               }
-              case 106: {
-                if (!((mutable_bitField0_ & 0x00001000) != 0)) {
+              case 122: {
+                if (!((mutable_bitField0_ & 0x00004000) != 0)) {
                   mediaDevices_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice>();
-                  mutable_bitField0_ |= 0x00001000;
+                  mutable_bitField0_ |= 0x00004000;
                 }
                 mediaDevices_.add(
                     input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice.PARSER, extensionRegistry));
                 break;
               }
-              case 114: {
-                if (!((mutable_bitField0_ & 0x00002000) != 0)) {
+              case 130: {
+                if (!((mutable_bitField0_ & 0x00008000) != 0)) {
                   mediaSources_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat>();
-                  mutable_bitField0_ |= 0x00002000;
+                  mutable_bitField0_ |= 0x00008000;
                 }
                 mediaSources_.add(
                     input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat.PARSER, extensionRegistry));
                 break;
               }
-              case 122: {
-                if (!((mutable_bitField0_ & 0x00004000) != 0)) {
+              case 138: {
+                if (!((mutable_bitField0_ & 0x00010000) != 0)) {
                   outboundAudioTracks_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack>();
-                  mutable_bitField0_ |= 0x00004000;
+                  mutable_bitField0_ |= 0x00010000;
                 }
                 outboundAudioTracks_.add(
                     input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack.PARSER, extensionRegistry));
                 break;
               }
-              case 130: {
-                if (!((mutable_bitField0_ & 0x00008000) != 0)) {
+              case 146: {
+                if (!((mutable_bitField0_ & 0x00020000) != 0)) {
                   outboundVideoTracks_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack>();
-                  mutable_bitField0_ |= 0x00008000;
+                  mutable_bitField0_ |= 0x00020000;
                 }
                 outboundVideoTracks_.add(
                     input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack.PARSER, extensionRegistry));
                 break;
               }
-              case 138: {
-                if (!((mutable_bitField0_ & 0x00010000) != 0)) {
+              case 154: {
+                if (!((mutable_bitField0_ & 0x00040000) != 0)) {
                   pcTransports_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport>();
-                  mutable_bitField0_ |= 0x00010000;
+                  mutable_bitField0_ |= 0x00040000;
                 }
                 pcTransports_.add(
                     input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport.PARSER, extensionRegistry));
                 break;
               }
-              case 146: {
+              case 162: {
                 com.google.protobuf.ByteString bs = input.readBytes();
-                if (!((mutable_bitField0_ & 0x00020000) != 0)) {
+                if (!((mutable_bitField0_ & 0x00080000) != 0)) {
                   userMediaErrors_ = new com.google.protobuf.LazyStringArrayList();
-                  mutable_bitField0_ |= 0x00020000;
+                  mutable_bitField0_ |= 0x00080000;
                 }
                 userMediaErrors_.add(bs);
                 break;
               }
-              case 154: {
+              case 170: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x00000001;
                 clientId_ = bs;
                 break;
               }
-              case 160: {
+              case 176: {
                 bitField0_ |= 0x00000002;
                 timestamp_ = input.readInt64();
                 break;
               }
-              case 170: {
+              case 186: {
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Browser.Builder subBuilder = null;
                 if (((bitField0_ & 0x00000004) != 0)) {
                   subBuilder = browser_.toBuilder();
@@ -1814,13 +1882,13 @@ public final class ProtobufSamples {
                 bitField0_ |= 0x00000004;
                 break;
               }
-              case 178: {
+              case 194: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x00000008;
                 callId_ = bs;
                 break;
               }
-              case 186: {
+              case 202: {
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Engine.Builder subBuilder = null;
                 if (((bitField0_ & 0x00000010) != 0)) {
                   subBuilder = engine_.toBuilder();
@@ -1833,13 +1901,13 @@ public final class ProtobufSamples {
                 bitField0_ |= 0x00000010;
                 break;
               }
-              case 194: {
+              case 210: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x00000020;
                 marker_ = bs;
                 break;
               }
-              case 202: {
+              case 218: {
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystem.Builder subBuilder = null;
                 if (((bitField0_ & 0x00000040) != 0)) {
                   subBuilder = os_.toBuilder();
@@ -1852,7 +1920,7 @@ public final class ProtobufSamples {
                 bitField0_ |= 0x00000040;
                 break;
               }
-              case 210: {
+              case 226: {
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Platform.Builder subBuilder = null;
                 if (((bitField0_ & 0x00000080) != 0)) {
                   subBuilder = platform_.toBuilder();
@@ -1865,23 +1933,23 @@ public final class ProtobufSamples {
                 bitField0_ |= 0x00000080;
                 break;
               }
-              case 218: {
+              case 234: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x00000100;
                 roomId_ = bs;
                 break;
               }
-              case 224: {
+              case 240: {
                 bitField0_ |= 0x00000200;
                 sampleSeq_ = input.readInt32();
                 break;
               }
-              case 232: {
+              case 248: {
                 bitField0_ |= 0x00000400;
                 timeZoneOffsetInHours_ = input.readInt32();
                 break;
               }
-              case 242: {
+              case 258: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x00000800;
                 userId_ = bs;
@@ -1909,51 +1977,57 @@ public final class ProtobufSamples {
             codecs_ = java.util.Collections.unmodifiableList(codecs_);
           }
           if (((mutable_bitField0_ & 0x00000004) != 0)) {
-            dataChannels_ = java.util.Collections.unmodifiableList(dataChannels_);
+            customCallEvents_ = java.util.Collections.unmodifiableList(customCallEvents_);
           }
           if (((mutable_bitField0_ & 0x00000008) != 0)) {
-            extensionStats_ = java.util.Collections.unmodifiableList(extensionStats_);
+            customObserverEvents_ = java.util.Collections.unmodifiableList(customObserverEvents_);
           }
           if (((mutable_bitField0_ & 0x00000010) != 0)) {
-            iceCandidatePairs_ = java.util.Collections.unmodifiableList(iceCandidatePairs_);
+            dataChannels_ = java.util.Collections.unmodifiableList(dataChannels_);
           }
           if (((mutable_bitField0_ & 0x00000020) != 0)) {
-            iceLocalCandidates_ = java.util.Collections.unmodifiableList(iceLocalCandidates_);
+            extensionStats_ = java.util.Collections.unmodifiableList(extensionStats_);
           }
           if (((mutable_bitField0_ & 0x00000040) != 0)) {
-            iceRemoteCandidates_ = java.util.Collections.unmodifiableList(iceRemoteCandidates_);
+            iceCandidatePairs_ = java.util.Collections.unmodifiableList(iceCandidatePairs_);
           }
           if (((mutable_bitField0_ & 0x00000080) != 0)) {
-            iceServers_ = iceServers_.getUnmodifiableView();
+            iceLocalCandidates_ = java.util.Collections.unmodifiableList(iceLocalCandidates_);
           }
           if (((mutable_bitField0_ & 0x00000100) != 0)) {
-            inboundAudioTracks_ = java.util.Collections.unmodifiableList(inboundAudioTracks_);
+            iceRemoteCandidates_ = java.util.Collections.unmodifiableList(iceRemoteCandidates_);
           }
           if (((mutable_bitField0_ & 0x00000200) != 0)) {
-            inboundVideoTracks_ = java.util.Collections.unmodifiableList(inboundVideoTracks_);
+            iceServers_ = iceServers_.getUnmodifiableView();
           }
           if (((mutable_bitField0_ & 0x00000400) != 0)) {
-            localSDPs_ = localSDPs_.getUnmodifiableView();
+            inboundAudioTracks_ = java.util.Collections.unmodifiableList(inboundAudioTracks_);
           }
           if (((mutable_bitField0_ & 0x00000800) != 0)) {
-            mediaConstraints_ = mediaConstraints_.getUnmodifiableView();
+            inboundVideoTracks_ = java.util.Collections.unmodifiableList(inboundVideoTracks_);
           }
           if (((mutable_bitField0_ & 0x00001000) != 0)) {
-            mediaDevices_ = java.util.Collections.unmodifiableList(mediaDevices_);
+            localSDPs_ = localSDPs_.getUnmodifiableView();
           }
           if (((mutable_bitField0_ & 0x00002000) != 0)) {
-            mediaSources_ = java.util.Collections.unmodifiableList(mediaSources_);
+            mediaConstraints_ = mediaConstraints_.getUnmodifiableView();
           }
           if (((mutable_bitField0_ & 0x00004000) != 0)) {
-            outboundAudioTracks_ = java.util.Collections.unmodifiableList(outboundAudioTracks_);
+            mediaDevices_ = java.util.Collections.unmodifiableList(mediaDevices_);
           }
           if (((mutable_bitField0_ & 0x00008000) != 0)) {
-            outboundVideoTracks_ = java.util.Collections.unmodifiableList(outboundVideoTracks_);
+            mediaSources_ = java.util.Collections.unmodifiableList(mediaSources_);
           }
           if (((mutable_bitField0_ & 0x00010000) != 0)) {
-            pcTransports_ = java.util.Collections.unmodifiableList(pcTransports_);
+            outboundAudioTracks_ = java.util.Collections.unmodifiableList(outboundAudioTracks_);
           }
           if (((mutable_bitField0_ & 0x00020000) != 0)) {
+            outboundVideoTracks_ = java.util.Collections.unmodifiableList(outboundVideoTracks_);
+          }
+          if (((mutable_bitField0_ & 0x00040000) != 0)) {
+            pcTransports_ = java.util.Collections.unmodifiableList(pcTransports_);
+          }
+          if (((mutable_bitField0_ & 0x00080000) != 0)) {
             userMediaErrors_ = userMediaErrors_.getUnmodifiableView();
           }
           this.unknownFields = unknownFields.build();
@@ -7256,6 +7330,2888 @@ public final class ProtobufSamples {
 
         @java.lang.Override
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat getDefaultInstanceForType() {
+          return DEFAULT_INSTANCE;
+        }
+
+      }
+
+      public interface CustomCallEventOrBuilder extends
+          // @@protoc_insertion_point(interface_extends:org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent)
+          com.google.protobuf.MessageOrBuilder {
+
+        /**
+         * <code>required string name = 1;</code>
+         * @return Whether the name field is set.
+         */
+        boolean hasName();
+        /**
+         * <code>required string name = 1;</code>
+         * @return The name.
+         */
+        java.lang.String getName();
+        /**
+         * <code>required string name = 1;</code>
+         * @return The bytes for name.
+         */
+        com.google.protobuf.ByteString
+            getNameBytes();
+
+        /**
+         * <code>optional string attachments = 2;</code>
+         * @return Whether the attachments field is set.
+         */
+        boolean hasAttachments();
+        /**
+         * <code>optional string attachments = 2;</code>
+         * @return The attachments.
+         */
+        java.lang.String getAttachments();
+        /**
+         * <code>optional string attachments = 2;</code>
+         * @return The bytes for attachments.
+         */
+        com.google.protobuf.ByteString
+            getAttachmentsBytes();
+
+        /**
+         * <code>optional string mediaTrackId = 3;</code>
+         * @return Whether the mediaTrackId field is set.
+         */
+        boolean hasMediaTrackId();
+        /**
+         * <code>optional string mediaTrackId = 3;</code>
+         * @return The mediaTrackId.
+         */
+        java.lang.String getMediaTrackId();
+        /**
+         * <code>optional string mediaTrackId = 3;</code>
+         * @return The bytes for mediaTrackId.
+         */
+        com.google.protobuf.ByteString
+            getMediaTrackIdBytes();
+
+        /**
+         * <code>optional string message = 4;</code>
+         * @return Whether the message field is set.
+         */
+        boolean hasMessage();
+        /**
+         * <code>optional string message = 4;</code>
+         * @return The message.
+         */
+        java.lang.String getMessage();
+        /**
+         * <code>optional string message = 4;</code>
+         * @return The bytes for message.
+         */
+        com.google.protobuf.ByteString
+            getMessageBytes();
+
+        /**
+         * <code>optional string peerConnectionId = 5;</code>
+         * @return Whether the peerConnectionId field is set.
+         */
+        boolean hasPeerConnectionId();
+        /**
+         * <code>optional string peerConnectionId = 5;</code>
+         * @return The peerConnectionId.
+         */
+        java.lang.String getPeerConnectionId();
+        /**
+         * <code>optional string peerConnectionId = 5;</code>
+         * @return The bytes for peerConnectionId.
+         */
+        com.google.protobuf.ByteString
+            getPeerConnectionIdBytes();
+
+        /**
+         * <code>optional int64 timestamp = 6;</code>
+         * @return Whether the timestamp field is set.
+         */
+        boolean hasTimestamp();
+        /**
+         * <code>optional int64 timestamp = 6;</code>
+         * @return The timestamp.
+         */
+        long getTimestamp();
+
+        /**
+         * <code>optional string value = 7;</code>
+         * @return Whether the value field is set.
+         */
+        boolean hasValue();
+        /**
+         * <code>optional string value = 7;</code>
+         * @return The value.
+         */
+        java.lang.String getValue();
+        /**
+         * <code>optional string value = 7;</code>
+         * @return The bytes for value.
+         */
+        com.google.protobuf.ByteString
+            getValueBytes();
+      }
+      /**
+       * Protobuf type {@code org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent}
+       */
+      public static final class CustomCallEvent extends
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent)
+          CustomCallEventOrBuilder {
+      private static final long serialVersionUID = 0L;
+        // Use CustomCallEvent.newBuilder() to construct.
+        private CustomCallEvent(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+          super(builder);
+        }
+        private CustomCallEvent() {
+          name_ = "";
+          attachments_ = "";
+          mediaTrackId_ = "";
+          message_ = "";
+          peerConnectionId_ = "";
+          value_ = "";
+        }
+
+        @java.lang.Override
+        @SuppressWarnings({"unused"})
+        protected java.lang.Object newInstance(
+            UnusedPrivateParameter unused) {
+          return new CustomCallEvent();
+        }
+
+        @java.lang.Override
+        public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+          return this.unknownFields;
+        }
+        private CustomCallEvent(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          this();
+          if (extensionRegistry == null) {
+            throw new java.lang.NullPointerException();
+          }
+          int mutable_bitField0_ = 0;
+          com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+              com.google.protobuf.UnknownFieldSet.newBuilder();
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                case 10: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000001;
+                  name_ = bs;
+                  break;
+                }
+                case 18: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000002;
+                  attachments_ = bs;
+                  break;
+                }
+                case 26: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000004;
+                  mediaTrackId_ = bs;
+                  break;
+                }
+                case 34: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000008;
+                  message_ = bs;
+                  break;
+                }
+                case 42: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000010;
+                  peerConnectionId_ = bs;
+                  break;
+                }
+                case 48: {
+                  bitField0_ |= 0x00000020;
+                  timestamp_ = input.readInt64();
+                  break;
+                }
+                case 58: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000040;
+                  value_ = bs;
+                  break;
+                }
+                default: {
+                  if (!parseUnknownField(
+                      input, unknownFields, extensionRegistry, tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(this);
+          } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(
+                e).setUnfinishedMessage(this);
+          } finally {
+            this.unknownFields = unknownFields.build();
+            makeExtensionsImmutable();
+          }
+        }
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomCallEvent_descriptor;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomCallEvent_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.class, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.Builder.class);
+        }
+
+        private int bitField0_;
+        public static final int NAME_FIELD_NUMBER = 1;
+        private volatile java.lang.Object name_;
+        /**
+         * <code>required string name = 1;</code>
+         * @return Whether the name field is set.
+         */
+        @java.lang.Override
+        public boolean hasName() {
+          return ((bitField0_ & 0x00000001) != 0);
+        }
+        /**
+         * <code>required string name = 1;</code>
+         * @return The name.
+         */
+        @java.lang.Override
+        public java.lang.String getName() {
+          java.lang.Object ref = name_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              name_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>required string name = 1;</code>
+         * @return The bytes for name.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getNameBytes() {
+          java.lang.Object ref = name_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            name_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int ATTACHMENTS_FIELD_NUMBER = 2;
+        private volatile java.lang.Object attachments_;
+        /**
+         * <code>optional string attachments = 2;</code>
+         * @return Whether the attachments field is set.
+         */
+        @java.lang.Override
+        public boolean hasAttachments() {
+          return ((bitField0_ & 0x00000002) != 0);
+        }
+        /**
+         * <code>optional string attachments = 2;</code>
+         * @return The attachments.
+         */
+        @java.lang.Override
+        public java.lang.String getAttachments() {
+          java.lang.Object ref = attachments_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              attachments_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>optional string attachments = 2;</code>
+         * @return The bytes for attachments.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getAttachmentsBytes() {
+          java.lang.Object ref = attachments_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            attachments_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int MEDIATRACKID_FIELD_NUMBER = 3;
+        private volatile java.lang.Object mediaTrackId_;
+        /**
+         * <code>optional string mediaTrackId = 3;</code>
+         * @return Whether the mediaTrackId field is set.
+         */
+        @java.lang.Override
+        public boolean hasMediaTrackId() {
+          return ((bitField0_ & 0x00000004) != 0);
+        }
+        /**
+         * <code>optional string mediaTrackId = 3;</code>
+         * @return The mediaTrackId.
+         */
+        @java.lang.Override
+        public java.lang.String getMediaTrackId() {
+          java.lang.Object ref = mediaTrackId_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              mediaTrackId_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>optional string mediaTrackId = 3;</code>
+         * @return The bytes for mediaTrackId.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getMediaTrackIdBytes() {
+          java.lang.Object ref = mediaTrackId_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            mediaTrackId_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int MESSAGE_FIELD_NUMBER = 4;
+        private volatile java.lang.Object message_;
+        /**
+         * <code>optional string message = 4;</code>
+         * @return Whether the message field is set.
+         */
+        @java.lang.Override
+        public boolean hasMessage() {
+          return ((bitField0_ & 0x00000008) != 0);
+        }
+        /**
+         * <code>optional string message = 4;</code>
+         * @return The message.
+         */
+        @java.lang.Override
+        public java.lang.String getMessage() {
+          java.lang.Object ref = message_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              message_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>optional string message = 4;</code>
+         * @return The bytes for message.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getMessageBytes() {
+          java.lang.Object ref = message_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            message_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int PEERCONNECTIONID_FIELD_NUMBER = 5;
+        private volatile java.lang.Object peerConnectionId_;
+        /**
+         * <code>optional string peerConnectionId = 5;</code>
+         * @return Whether the peerConnectionId field is set.
+         */
+        @java.lang.Override
+        public boolean hasPeerConnectionId() {
+          return ((bitField0_ & 0x00000010) != 0);
+        }
+        /**
+         * <code>optional string peerConnectionId = 5;</code>
+         * @return The peerConnectionId.
+         */
+        @java.lang.Override
+        public java.lang.String getPeerConnectionId() {
+          java.lang.Object ref = peerConnectionId_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              peerConnectionId_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>optional string peerConnectionId = 5;</code>
+         * @return The bytes for peerConnectionId.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getPeerConnectionIdBytes() {
+          java.lang.Object ref = peerConnectionId_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            peerConnectionId_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int TIMESTAMP_FIELD_NUMBER = 6;
+        private long timestamp_;
+        /**
+         * <code>optional int64 timestamp = 6;</code>
+         * @return Whether the timestamp field is set.
+         */
+        @java.lang.Override
+        public boolean hasTimestamp() {
+          return ((bitField0_ & 0x00000020) != 0);
+        }
+        /**
+         * <code>optional int64 timestamp = 6;</code>
+         * @return The timestamp.
+         */
+        @java.lang.Override
+        public long getTimestamp() {
+          return timestamp_;
+        }
+
+        public static final int VALUE_FIELD_NUMBER = 7;
+        private volatile java.lang.Object value_;
+        /**
+         * <code>optional string value = 7;</code>
+         * @return Whether the value field is set.
+         */
+        @java.lang.Override
+        public boolean hasValue() {
+          return ((bitField0_ & 0x00000040) != 0);
+        }
+        /**
+         * <code>optional string value = 7;</code>
+         * @return The value.
+         */
+        @java.lang.Override
+        public java.lang.String getValue() {
+          java.lang.Object ref = value_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              value_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>optional string value = 7;</code>
+         * @return The bytes for value.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getValueBytes() {
+          java.lang.Object ref = value_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            value_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        private byte memoizedIsInitialized = -1;
+        @java.lang.Override
+        public final boolean isInitialized() {
+          byte isInitialized = memoizedIsInitialized;
+          if (isInitialized == 1) return true;
+          if (isInitialized == 0) return false;
+
+          if (!hasName()) {
+            memoizedIsInitialized = 0;
+            return false;
+          }
+          memoizedIsInitialized = 1;
+          return true;
+        }
+
+        @java.lang.Override
+        public void writeTo(com.google.protobuf.CodedOutputStream output)
+                            throws java.io.IOException {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
+          }
+          if (((bitField0_ & 0x00000002) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, attachments_);
+          }
+          if (((bitField0_ & 0x00000004) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, mediaTrackId_);
+          }
+          if (((bitField0_ & 0x00000008) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 4, message_);
+          }
+          if (((bitField0_ & 0x00000010) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 5, peerConnectionId_);
+          }
+          if (((bitField0_ & 0x00000020) != 0)) {
+            output.writeInt64(6, timestamp_);
+          }
+          if (((bitField0_ & 0x00000040) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 7, value_);
+          }
+          unknownFields.writeTo(output);
+        }
+
+        @java.lang.Override
+        public int getSerializedSize() {
+          int size = memoizedSize;
+          if (size != -1) return size;
+
+          size = 0;
+          if (((bitField0_ & 0x00000001) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
+          }
+          if (((bitField0_ & 0x00000002) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, attachments_);
+          }
+          if (((bitField0_ & 0x00000004) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, mediaTrackId_);
+          }
+          if (((bitField0_ & 0x00000008) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, message_);
+          }
+          if (((bitField0_ & 0x00000010) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, peerConnectionId_);
+          }
+          if (((bitField0_ & 0x00000020) != 0)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeInt64Size(6, timestamp_);
+          }
+          if (((bitField0_ & 0x00000040) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, value_);
+          }
+          size += unknownFields.getSerializedSize();
+          memoizedSize = size;
+          return size;
+        }
+
+        @java.lang.Override
+        public boolean equals(final java.lang.Object obj) {
+          if (obj == this) {
+           return true;
+          }
+          if (!(obj instanceof org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent)) {
+            return super.equals(obj);
+          }
+          org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent other = (org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent) obj;
+
+          if (hasName() != other.hasName()) return false;
+          if (hasName()) {
+            if (!getName()
+                .equals(other.getName())) return false;
+          }
+          if (hasAttachments() != other.hasAttachments()) return false;
+          if (hasAttachments()) {
+            if (!getAttachments()
+                .equals(other.getAttachments())) return false;
+          }
+          if (hasMediaTrackId() != other.hasMediaTrackId()) return false;
+          if (hasMediaTrackId()) {
+            if (!getMediaTrackId()
+                .equals(other.getMediaTrackId())) return false;
+          }
+          if (hasMessage() != other.hasMessage()) return false;
+          if (hasMessage()) {
+            if (!getMessage()
+                .equals(other.getMessage())) return false;
+          }
+          if (hasPeerConnectionId() != other.hasPeerConnectionId()) return false;
+          if (hasPeerConnectionId()) {
+            if (!getPeerConnectionId()
+                .equals(other.getPeerConnectionId())) return false;
+          }
+          if (hasTimestamp() != other.hasTimestamp()) return false;
+          if (hasTimestamp()) {
+            if (getTimestamp()
+                != other.getTimestamp()) return false;
+          }
+          if (hasValue() != other.hasValue()) return false;
+          if (hasValue()) {
+            if (!getValue()
+                .equals(other.getValue())) return false;
+          }
+          if (!unknownFields.equals(other.unknownFields)) return false;
+          return true;
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+          if (memoizedHashCode != 0) {
+            return memoizedHashCode;
+          }
+          int hash = 41;
+          hash = (19 * hash) + getDescriptor().hashCode();
+          if (hasName()) {
+            hash = (37 * hash) + NAME_FIELD_NUMBER;
+            hash = (53 * hash) + getName().hashCode();
+          }
+          if (hasAttachments()) {
+            hash = (37 * hash) + ATTACHMENTS_FIELD_NUMBER;
+            hash = (53 * hash) + getAttachments().hashCode();
+          }
+          if (hasMediaTrackId()) {
+            hash = (37 * hash) + MEDIATRACKID_FIELD_NUMBER;
+            hash = (53 * hash) + getMediaTrackId().hashCode();
+          }
+          if (hasMessage()) {
+            hash = (37 * hash) + MESSAGE_FIELD_NUMBER;
+            hash = (53 * hash) + getMessage().hashCode();
+          }
+          if (hasPeerConnectionId()) {
+            hash = (37 * hash) + PEERCONNECTIONID_FIELD_NUMBER;
+            hash = (53 * hash) + getPeerConnectionId().hashCode();
+          }
+          if (hasTimestamp()) {
+            hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+                getTimestamp());
+          }
+          if (hasValue()) {
+            hash = (37 * hash) + VALUE_FIELD_NUMBER;
+            hash = (53 * hash) + getValue().hashCode();
+          }
+          hash = (29 * hash) + unknownFields.hashCode();
+          memoizedHashCode = hash;
+          return hash;
+        }
+
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent parseFrom(
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent parseFrom(
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent parseFrom(
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent parseFrom(
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent parseFrom(byte[] data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent parseFrom(
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent parseFrom(java.io.InputStream input)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent parseFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent parseDelimitedFrom(java.io.InputStream input)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent parseDelimitedFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent parseFrom(
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent parseFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+        }
+
+        @java.lang.Override
+        public Builder newBuilderForType() { return newBuilder(); }
+        public static Builder newBuilder() {
+          return DEFAULT_INSTANCE.toBuilder();
+        }
+        public static Builder newBuilder(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent prototype) {
+          return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+        }
+        @java.lang.Override
+        public Builder toBuilder() {
+          return this == DEFAULT_INSTANCE
+              ? new Builder() : new Builder().mergeFrom(this);
+        }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          Builder builder = new Builder(parent);
+          return builder;
+        }
+        /**
+         * Protobuf type {@code org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent}
+         */
+        public static final class Builder extends
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent)
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEventOrBuilder {
+          public static final com.google.protobuf.Descriptors.Descriptor
+              getDescriptor() {
+            return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomCallEvent_descriptor;
+          }
+
+          @java.lang.Override
+          protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+              internalGetFieldAccessorTable() {
+            return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomCallEvent_fieldAccessorTable
+                .ensureFieldAccessorsInitialized(
+                    org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.class, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.Builder.class);
+          }
+
+          // Construct using org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.newBuilder()
+          private Builder() {
+            maybeForceBuilderInitialization();
+          }
+
+          private Builder(
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+          }
+          private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3
+                    .alwaysUseFieldBuilders) {
+            }
+          }
+          @java.lang.Override
+          public Builder clear() {
+            super.clear();
+            name_ = "";
+            bitField0_ = (bitField0_ & ~0x00000001);
+            attachments_ = "";
+            bitField0_ = (bitField0_ & ~0x00000002);
+            mediaTrackId_ = "";
+            bitField0_ = (bitField0_ & ~0x00000004);
+            message_ = "";
+            bitField0_ = (bitField0_ & ~0x00000008);
+            peerConnectionId_ = "";
+            bitField0_ = (bitField0_ & ~0x00000010);
+            timestamp_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000020);
+            value_ = "";
+            bitField0_ = (bitField0_ & ~0x00000040);
+            return this;
+          }
+
+          @java.lang.Override
+          public com.google.protobuf.Descriptors.Descriptor
+              getDescriptorForType() {
+            return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomCallEvent_descriptor;
+          }
+
+          @java.lang.Override
+          public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent getDefaultInstanceForType() {
+            return org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.getDefaultInstance();
+          }
+
+          @java.lang.Override
+          public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent build() {
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent result = buildPartial();
+            if (!result.isInitialized()) {
+              throw newUninitializedMessageException(result);
+            }
+            return result;
+          }
+
+          @java.lang.Override
+          public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent buildPartial() {
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent result = new org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent(this);
+            int from_bitField0_ = bitField0_;
+            int to_bitField0_ = 0;
+            if (((from_bitField0_ & 0x00000001) != 0)) {
+              to_bitField0_ |= 0x00000001;
+            }
+            result.name_ = name_;
+            if (((from_bitField0_ & 0x00000002) != 0)) {
+              to_bitField0_ |= 0x00000002;
+            }
+            result.attachments_ = attachments_;
+            if (((from_bitField0_ & 0x00000004) != 0)) {
+              to_bitField0_ |= 0x00000004;
+            }
+            result.mediaTrackId_ = mediaTrackId_;
+            if (((from_bitField0_ & 0x00000008) != 0)) {
+              to_bitField0_ |= 0x00000008;
+            }
+            result.message_ = message_;
+            if (((from_bitField0_ & 0x00000010) != 0)) {
+              to_bitField0_ |= 0x00000010;
+            }
+            result.peerConnectionId_ = peerConnectionId_;
+            if (((from_bitField0_ & 0x00000020) != 0)) {
+              result.timestamp_ = timestamp_;
+              to_bitField0_ |= 0x00000020;
+            }
+            if (((from_bitField0_ & 0x00000040) != 0)) {
+              to_bitField0_ |= 0x00000040;
+            }
+            result.value_ = value_;
+            result.bitField0_ = to_bitField0_;
+            onBuilt();
+            return result;
+          }
+
+          @java.lang.Override
+          public Builder clone() {
+            return super.clone();
+          }
+          @java.lang.Override
+          public Builder setField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+            return super.setField(field, value);
+          }
+          @java.lang.Override
+          public Builder clearField(
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+          }
+          @java.lang.Override
+          public Builder clearOneof(
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+          }
+          @java.lang.Override
+          public Builder setRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+          }
+          @java.lang.Override
+          public Builder addRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+          }
+          @java.lang.Override
+          public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (other instanceof org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent) {
+              return mergeFrom((org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent)other);
+            } else {
+              super.mergeFrom(other);
+              return this;
+            }
+          }
+
+          public Builder mergeFrom(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent other) {
+            if (other == org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.getDefaultInstance()) return this;
+            if (other.hasName()) {
+              bitField0_ |= 0x00000001;
+              name_ = other.name_;
+              onChanged();
+            }
+            if (other.hasAttachments()) {
+              bitField0_ |= 0x00000002;
+              attachments_ = other.attachments_;
+              onChanged();
+            }
+            if (other.hasMediaTrackId()) {
+              bitField0_ |= 0x00000004;
+              mediaTrackId_ = other.mediaTrackId_;
+              onChanged();
+            }
+            if (other.hasMessage()) {
+              bitField0_ |= 0x00000008;
+              message_ = other.message_;
+              onChanged();
+            }
+            if (other.hasPeerConnectionId()) {
+              bitField0_ |= 0x00000010;
+              peerConnectionId_ = other.peerConnectionId_;
+              onChanged();
+            }
+            if (other.hasTimestamp()) {
+              setTimestamp(other.getTimestamp());
+            }
+            if (other.hasValue()) {
+              bitField0_ |= 0x00000040;
+              value_ = other.value_;
+              onChanged();
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+          }
+
+          @java.lang.Override
+          public final boolean isInitialized() {
+            if (!hasName()) {
+              return false;
+            }
+            return true;
+          }
+
+          @java.lang.Override
+          public Builder mergeFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent parsedMessage = null;
+            try {
+              parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+              parsedMessage = (org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent) e.getUnfinishedMessage();
+              throw e.unwrapIOException();
+            } finally {
+              if (parsedMessage != null) {
+                mergeFrom(parsedMessage);
+              }
+            }
+            return this;
+          }
+          private int bitField0_;
+
+          private java.lang.Object name_ = "";
+          /**
+           * <code>required string name = 1;</code>
+           * @return Whether the name field is set.
+           */
+          public boolean hasName() {
+            return ((bitField0_ & 0x00000001) != 0);
+          }
+          /**
+           * <code>required string name = 1;</code>
+           * @return The name.
+           */
+          public java.lang.String getName() {
+            java.lang.Object ref = name_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                name_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>required string name = 1;</code>
+           * @return The bytes for name.
+           */
+          public com.google.protobuf.ByteString
+              getNameBytes() {
+            java.lang.Object ref = name_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              name_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>required string name = 1;</code>
+           * @param value The name to set.
+           * @return This builder for chaining.
+           */
+          public Builder setName(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+            name_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>required string name = 1;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearName() {
+            bitField0_ = (bitField0_ & ~0x00000001);
+            name_ = getDefaultInstance().getName();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>required string name = 1;</code>
+           * @param value The bytes for name to set.
+           * @return This builder for chaining.
+           */
+          public Builder setNameBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+            name_ = value;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object attachments_ = "";
+          /**
+           * <code>optional string attachments = 2;</code>
+           * @return Whether the attachments field is set.
+           */
+          public boolean hasAttachments() {
+            return ((bitField0_ & 0x00000002) != 0);
+          }
+          /**
+           * <code>optional string attachments = 2;</code>
+           * @return The attachments.
+           */
+          public java.lang.String getAttachments() {
+            java.lang.Object ref = attachments_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                attachments_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>optional string attachments = 2;</code>
+           * @return The bytes for attachments.
+           */
+          public com.google.protobuf.ByteString
+              getAttachmentsBytes() {
+            java.lang.Object ref = attachments_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              attachments_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>optional string attachments = 2;</code>
+           * @param value The attachments to set.
+           * @return This builder for chaining.
+           */
+          public Builder setAttachments(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+            attachments_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string attachments = 2;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearAttachments() {
+            bitField0_ = (bitField0_ & ~0x00000002);
+            attachments_ = getDefaultInstance().getAttachments();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string attachments = 2;</code>
+           * @param value The bytes for attachments to set.
+           * @return This builder for chaining.
+           */
+          public Builder setAttachmentsBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+            attachments_ = value;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object mediaTrackId_ = "";
+          /**
+           * <code>optional string mediaTrackId = 3;</code>
+           * @return Whether the mediaTrackId field is set.
+           */
+          public boolean hasMediaTrackId() {
+            return ((bitField0_ & 0x00000004) != 0);
+          }
+          /**
+           * <code>optional string mediaTrackId = 3;</code>
+           * @return The mediaTrackId.
+           */
+          public java.lang.String getMediaTrackId() {
+            java.lang.Object ref = mediaTrackId_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                mediaTrackId_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>optional string mediaTrackId = 3;</code>
+           * @return The bytes for mediaTrackId.
+           */
+          public com.google.protobuf.ByteString
+              getMediaTrackIdBytes() {
+            java.lang.Object ref = mediaTrackId_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              mediaTrackId_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>optional string mediaTrackId = 3;</code>
+           * @param value The mediaTrackId to set.
+           * @return This builder for chaining.
+           */
+          public Builder setMediaTrackId(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+            mediaTrackId_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string mediaTrackId = 3;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearMediaTrackId() {
+            bitField0_ = (bitField0_ & ~0x00000004);
+            mediaTrackId_ = getDefaultInstance().getMediaTrackId();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string mediaTrackId = 3;</code>
+           * @param value The bytes for mediaTrackId to set.
+           * @return This builder for chaining.
+           */
+          public Builder setMediaTrackIdBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+            mediaTrackId_ = value;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object message_ = "";
+          /**
+           * <code>optional string message = 4;</code>
+           * @return Whether the message field is set.
+           */
+          public boolean hasMessage() {
+            return ((bitField0_ & 0x00000008) != 0);
+          }
+          /**
+           * <code>optional string message = 4;</code>
+           * @return The message.
+           */
+          public java.lang.String getMessage() {
+            java.lang.Object ref = message_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                message_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>optional string message = 4;</code>
+           * @return The bytes for message.
+           */
+          public com.google.protobuf.ByteString
+              getMessageBytes() {
+            java.lang.Object ref = message_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              message_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>optional string message = 4;</code>
+           * @param value The message to set.
+           * @return This builder for chaining.
+           */
+          public Builder setMessage(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+            message_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string message = 4;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearMessage() {
+            bitField0_ = (bitField0_ & ~0x00000008);
+            message_ = getDefaultInstance().getMessage();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string message = 4;</code>
+           * @param value The bytes for message to set.
+           * @return This builder for chaining.
+           */
+          public Builder setMessageBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+            message_ = value;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object peerConnectionId_ = "";
+          /**
+           * <code>optional string peerConnectionId = 5;</code>
+           * @return Whether the peerConnectionId field is set.
+           */
+          public boolean hasPeerConnectionId() {
+            return ((bitField0_ & 0x00000010) != 0);
+          }
+          /**
+           * <code>optional string peerConnectionId = 5;</code>
+           * @return The peerConnectionId.
+           */
+          public java.lang.String getPeerConnectionId() {
+            java.lang.Object ref = peerConnectionId_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                peerConnectionId_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>optional string peerConnectionId = 5;</code>
+           * @return The bytes for peerConnectionId.
+           */
+          public com.google.protobuf.ByteString
+              getPeerConnectionIdBytes() {
+            java.lang.Object ref = peerConnectionId_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              peerConnectionId_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>optional string peerConnectionId = 5;</code>
+           * @param value The peerConnectionId to set.
+           * @return This builder for chaining.
+           */
+          public Builder setPeerConnectionId(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+            peerConnectionId_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string peerConnectionId = 5;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearPeerConnectionId() {
+            bitField0_ = (bitField0_ & ~0x00000010);
+            peerConnectionId_ = getDefaultInstance().getPeerConnectionId();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string peerConnectionId = 5;</code>
+           * @param value The bytes for peerConnectionId to set.
+           * @return This builder for chaining.
+           */
+          public Builder setPeerConnectionIdBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+            peerConnectionId_ = value;
+            onChanged();
+            return this;
+          }
+
+          private long timestamp_ ;
+          /**
+           * <code>optional int64 timestamp = 6;</code>
+           * @return Whether the timestamp field is set.
+           */
+          @java.lang.Override
+          public boolean hasTimestamp() {
+            return ((bitField0_ & 0x00000020) != 0);
+          }
+          /**
+           * <code>optional int64 timestamp = 6;</code>
+           * @return The timestamp.
+           */
+          @java.lang.Override
+          public long getTimestamp() {
+            return timestamp_;
+          }
+          /**
+           * <code>optional int64 timestamp = 6;</code>
+           * @param value The timestamp to set.
+           * @return This builder for chaining.
+           */
+          public Builder setTimestamp(long value) {
+            bitField0_ |= 0x00000020;
+            timestamp_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional int64 timestamp = 6;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearTimestamp() {
+            bitField0_ = (bitField0_ & ~0x00000020);
+            timestamp_ = 0L;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object value_ = "";
+          /**
+           * <code>optional string value = 7;</code>
+           * @return Whether the value field is set.
+           */
+          public boolean hasValue() {
+            return ((bitField0_ & 0x00000040) != 0);
+          }
+          /**
+           * <code>optional string value = 7;</code>
+           * @return The value.
+           */
+          public java.lang.String getValue() {
+            java.lang.Object ref = value_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                value_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>optional string value = 7;</code>
+           * @return The bytes for value.
+           */
+          public com.google.protobuf.ByteString
+              getValueBytes() {
+            java.lang.Object ref = value_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              value_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>optional string value = 7;</code>
+           * @param value The value to set.
+           * @return This builder for chaining.
+           */
+          public Builder setValue(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+            value_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string value = 7;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearValue() {
+            bitField0_ = (bitField0_ & ~0x00000040);
+            value_ = getDefaultInstance().getValue();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string value = 7;</code>
+           * @param value The bytes for value to set.
+           * @return This builder for chaining.
+           */
+          public Builder setValueBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+            value_ = value;
+            onChanged();
+            return this;
+          }
+          @java.lang.Override
+          public final Builder setUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+          }
+
+          @java.lang.Override
+          public final Builder mergeUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+          }
+
+
+          // @@protoc_insertion_point(builder_scope:org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent)
+        }
+
+        // @@protoc_insertion_point(class_scope:org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent)
+        private static final org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent DEFAULT_INSTANCE;
+        static {
+          DEFAULT_INSTANCE = new org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent();
+        }
+
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent getDefaultInstance() {
+          return DEFAULT_INSTANCE;
+        }
+
+        @java.lang.Deprecated public static final com.google.protobuf.Parser<CustomCallEvent>
+            PARSER = new com.google.protobuf.AbstractParser<CustomCallEvent>() {
+          @java.lang.Override
+          public CustomCallEvent parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new CustomCallEvent(input, extensionRegistry);
+          }
+        };
+
+        public static com.google.protobuf.Parser<CustomCallEvent> parser() {
+          return PARSER;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Parser<CustomCallEvent> getParserForType() {
+          return PARSER;
+        }
+
+        @java.lang.Override
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent getDefaultInstanceForType() {
+          return DEFAULT_INSTANCE;
+        }
+
+      }
+
+      public interface CustomObserverEventOrBuilder extends
+          // @@protoc_insertion_point(interface_extends:org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent)
+          com.google.protobuf.MessageOrBuilder {
+
+        /**
+         * <code>required string name = 1;</code>
+         * @return Whether the name field is set.
+         */
+        boolean hasName();
+        /**
+         * <code>required string name = 1;</code>
+         * @return The name.
+         */
+        java.lang.String getName();
+        /**
+         * <code>required string name = 1;</code>
+         * @return The bytes for name.
+         */
+        com.google.protobuf.ByteString
+            getNameBytes();
+
+        /**
+         * <code>optional string attachments = 2;</code>
+         * @return Whether the attachments field is set.
+         */
+        boolean hasAttachments();
+        /**
+         * <code>optional string attachments = 2;</code>
+         * @return The attachments.
+         */
+        java.lang.String getAttachments();
+        /**
+         * <code>optional string attachments = 2;</code>
+         * @return The bytes for attachments.
+         */
+        com.google.protobuf.ByteString
+            getAttachmentsBytes();
+
+        /**
+         * <code>optional string mediaTrackId = 3;</code>
+         * @return Whether the mediaTrackId field is set.
+         */
+        boolean hasMediaTrackId();
+        /**
+         * <code>optional string mediaTrackId = 3;</code>
+         * @return The mediaTrackId.
+         */
+        java.lang.String getMediaTrackId();
+        /**
+         * <code>optional string mediaTrackId = 3;</code>
+         * @return The bytes for mediaTrackId.
+         */
+        com.google.protobuf.ByteString
+            getMediaTrackIdBytes();
+
+        /**
+         * <code>optional string message = 4;</code>
+         * @return Whether the message field is set.
+         */
+        boolean hasMessage();
+        /**
+         * <code>optional string message = 4;</code>
+         * @return The message.
+         */
+        java.lang.String getMessage();
+        /**
+         * <code>optional string message = 4;</code>
+         * @return The bytes for message.
+         */
+        com.google.protobuf.ByteString
+            getMessageBytes();
+
+        /**
+         * <code>optional int64 timestamp = 5;</code>
+         * @return Whether the timestamp field is set.
+         */
+        boolean hasTimestamp();
+        /**
+         * <code>optional int64 timestamp = 5;</code>
+         * @return The timestamp.
+         */
+        long getTimestamp();
+      }
+      /**
+       * Protobuf type {@code org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent}
+       */
+      public static final class CustomObserverEvent extends
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent)
+          CustomObserverEventOrBuilder {
+      private static final long serialVersionUID = 0L;
+        // Use CustomObserverEvent.newBuilder() to construct.
+        private CustomObserverEvent(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+          super(builder);
+        }
+        private CustomObserverEvent() {
+          name_ = "";
+          attachments_ = "";
+          mediaTrackId_ = "";
+          message_ = "";
+        }
+
+        @java.lang.Override
+        @SuppressWarnings({"unused"})
+        protected java.lang.Object newInstance(
+            UnusedPrivateParameter unused) {
+          return new CustomObserverEvent();
+        }
+
+        @java.lang.Override
+        public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+          return this.unknownFields;
+        }
+        private CustomObserverEvent(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          this();
+          if (extensionRegistry == null) {
+            throw new java.lang.NullPointerException();
+          }
+          int mutable_bitField0_ = 0;
+          com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+              com.google.protobuf.UnknownFieldSet.newBuilder();
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                case 10: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000001;
+                  name_ = bs;
+                  break;
+                }
+                case 18: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000002;
+                  attachments_ = bs;
+                  break;
+                }
+                case 26: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000004;
+                  mediaTrackId_ = bs;
+                  break;
+                }
+                case 34: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000008;
+                  message_ = bs;
+                  break;
+                }
+                case 40: {
+                  bitField0_ |= 0x00000010;
+                  timestamp_ = input.readInt64();
+                  break;
+                }
+                default: {
+                  if (!parseUnknownField(
+                      input, unknownFields, extensionRegistry, tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(this);
+          } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(
+                e).setUnfinishedMessage(this);
+          } finally {
+            this.unknownFields = unknownFields.build();
+            makeExtensionsImmutable();
+          }
+        }
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomObserverEvent_descriptor;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomObserverEvent_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.class, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.Builder.class);
+        }
+
+        private int bitField0_;
+        public static final int NAME_FIELD_NUMBER = 1;
+        private volatile java.lang.Object name_;
+        /**
+         * <code>required string name = 1;</code>
+         * @return Whether the name field is set.
+         */
+        @java.lang.Override
+        public boolean hasName() {
+          return ((bitField0_ & 0x00000001) != 0);
+        }
+        /**
+         * <code>required string name = 1;</code>
+         * @return The name.
+         */
+        @java.lang.Override
+        public java.lang.String getName() {
+          java.lang.Object ref = name_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              name_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>required string name = 1;</code>
+         * @return The bytes for name.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getNameBytes() {
+          java.lang.Object ref = name_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            name_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int ATTACHMENTS_FIELD_NUMBER = 2;
+        private volatile java.lang.Object attachments_;
+        /**
+         * <code>optional string attachments = 2;</code>
+         * @return Whether the attachments field is set.
+         */
+        @java.lang.Override
+        public boolean hasAttachments() {
+          return ((bitField0_ & 0x00000002) != 0);
+        }
+        /**
+         * <code>optional string attachments = 2;</code>
+         * @return The attachments.
+         */
+        @java.lang.Override
+        public java.lang.String getAttachments() {
+          java.lang.Object ref = attachments_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              attachments_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>optional string attachments = 2;</code>
+         * @return The bytes for attachments.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getAttachmentsBytes() {
+          java.lang.Object ref = attachments_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            attachments_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int MEDIATRACKID_FIELD_NUMBER = 3;
+        private volatile java.lang.Object mediaTrackId_;
+        /**
+         * <code>optional string mediaTrackId = 3;</code>
+         * @return Whether the mediaTrackId field is set.
+         */
+        @java.lang.Override
+        public boolean hasMediaTrackId() {
+          return ((bitField0_ & 0x00000004) != 0);
+        }
+        /**
+         * <code>optional string mediaTrackId = 3;</code>
+         * @return The mediaTrackId.
+         */
+        @java.lang.Override
+        public java.lang.String getMediaTrackId() {
+          java.lang.Object ref = mediaTrackId_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              mediaTrackId_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>optional string mediaTrackId = 3;</code>
+         * @return The bytes for mediaTrackId.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getMediaTrackIdBytes() {
+          java.lang.Object ref = mediaTrackId_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            mediaTrackId_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int MESSAGE_FIELD_NUMBER = 4;
+        private volatile java.lang.Object message_;
+        /**
+         * <code>optional string message = 4;</code>
+         * @return Whether the message field is set.
+         */
+        @java.lang.Override
+        public boolean hasMessage() {
+          return ((bitField0_ & 0x00000008) != 0);
+        }
+        /**
+         * <code>optional string message = 4;</code>
+         * @return The message.
+         */
+        @java.lang.Override
+        public java.lang.String getMessage() {
+          java.lang.Object ref = message_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              message_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>optional string message = 4;</code>
+         * @return The bytes for message.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getMessageBytes() {
+          java.lang.Object ref = message_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            message_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int TIMESTAMP_FIELD_NUMBER = 5;
+        private long timestamp_;
+        /**
+         * <code>optional int64 timestamp = 5;</code>
+         * @return Whether the timestamp field is set.
+         */
+        @java.lang.Override
+        public boolean hasTimestamp() {
+          return ((bitField0_ & 0x00000010) != 0);
+        }
+        /**
+         * <code>optional int64 timestamp = 5;</code>
+         * @return The timestamp.
+         */
+        @java.lang.Override
+        public long getTimestamp() {
+          return timestamp_;
+        }
+
+        private byte memoizedIsInitialized = -1;
+        @java.lang.Override
+        public final boolean isInitialized() {
+          byte isInitialized = memoizedIsInitialized;
+          if (isInitialized == 1) return true;
+          if (isInitialized == 0) return false;
+
+          if (!hasName()) {
+            memoizedIsInitialized = 0;
+            return false;
+          }
+          memoizedIsInitialized = 1;
+          return true;
+        }
+
+        @java.lang.Override
+        public void writeTo(com.google.protobuf.CodedOutputStream output)
+                            throws java.io.IOException {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
+          }
+          if (((bitField0_ & 0x00000002) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, attachments_);
+          }
+          if (((bitField0_ & 0x00000004) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, mediaTrackId_);
+          }
+          if (((bitField0_ & 0x00000008) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 4, message_);
+          }
+          if (((bitField0_ & 0x00000010) != 0)) {
+            output.writeInt64(5, timestamp_);
+          }
+          unknownFields.writeTo(output);
+        }
+
+        @java.lang.Override
+        public int getSerializedSize() {
+          int size = memoizedSize;
+          if (size != -1) return size;
+
+          size = 0;
+          if (((bitField0_ & 0x00000001) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
+          }
+          if (((bitField0_ & 0x00000002) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, attachments_);
+          }
+          if (((bitField0_ & 0x00000004) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, mediaTrackId_);
+          }
+          if (((bitField0_ & 0x00000008) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, message_);
+          }
+          if (((bitField0_ & 0x00000010) != 0)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeInt64Size(5, timestamp_);
+          }
+          size += unknownFields.getSerializedSize();
+          memoizedSize = size;
+          return size;
+        }
+
+        @java.lang.Override
+        public boolean equals(final java.lang.Object obj) {
+          if (obj == this) {
+           return true;
+          }
+          if (!(obj instanceof org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent)) {
+            return super.equals(obj);
+          }
+          org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent other = (org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent) obj;
+
+          if (hasName() != other.hasName()) return false;
+          if (hasName()) {
+            if (!getName()
+                .equals(other.getName())) return false;
+          }
+          if (hasAttachments() != other.hasAttachments()) return false;
+          if (hasAttachments()) {
+            if (!getAttachments()
+                .equals(other.getAttachments())) return false;
+          }
+          if (hasMediaTrackId() != other.hasMediaTrackId()) return false;
+          if (hasMediaTrackId()) {
+            if (!getMediaTrackId()
+                .equals(other.getMediaTrackId())) return false;
+          }
+          if (hasMessage() != other.hasMessage()) return false;
+          if (hasMessage()) {
+            if (!getMessage()
+                .equals(other.getMessage())) return false;
+          }
+          if (hasTimestamp() != other.hasTimestamp()) return false;
+          if (hasTimestamp()) {
+            if (getTimestamp()
+                != other.getTimestamp()) return false;
+          }
+          if (!unknownFields.equals(other.unknownFields)) return false;
+          return true;
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+          if (memoizedHashCode != 0) {
+            return memoizedHashCode;
+          }
+          int hash = 41;
+          hash = (19 * hash) + getDescriptor().hashCode();
+          if (hasName()) {
+            hash = (37 * hash) + NAME_FIELD_NUMBER;
+            hash = (53 * hash) + getName().hashCode();
+          }
+          if (hasAttachments()) {
+            hash = (37 * hash) + ATTACHMENTS_FIELD_NUMBER;
+            hash = (53 * hash) + getAttachments().hashCode();
+          }
+          if (hasMediaTrackId()) {
+            hash = (37 * hash) + MEDIATRACKID_FIELD_NUMBER;
+            hash = (53 * hash) + getMediaTrackId().hashCode();
+          }
+          if (hasMessage()) {
+            hash = (37 * hash) + MESSAGE_FIELD_NUMBER;
+            hash = (53 * hash) + getMessage().hashCode();
+          }
+          if (hasTimestamp()) {
+            hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+                getTimestamp());
+          }
+          hash = (29 * hash) + unknownFields.hashCode();
+          memoizedHashCode = hash;
+          return hash;
+        }
+
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent parseFrom(
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent parseFrom(
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent parseFrom(
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent parseFrom(
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent parseFrom(byte[] data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent parseFrom(
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent parseFrom(java.io.InputStream input)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent parseFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent parseDelimitedFrom(java.io.InputStream input)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent parseDelimitedFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent parseFrom(
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent parseFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+        }
+
+        @java.lang.Override
+        public Builder newBuilderForType() { return newBuilder(); }
+        public static Builder newBuilder() {
+          return DEFAULT_INSTANCE.toBuilder();
+        }
+        public static Builder newBuilder(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent prototype) {
+          return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+        }
+        @java.lang.Override
+        public Builder toBuilder() {
+          return this == DEFAULT_INSTANCE
+              ? new Builder() : new Builder().mergeFrom(this);
+        }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          Builder builder = new Builder(parent);
+          return builder;
+        }
+        /**
+         * Protobuf type {@code org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent}
+         */
+        public static final class Builder extends
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent)
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEventOrBuilder {
+          public static final com.google.protobuf.Descriptors.Descriptor
+              getDescriptor() {
+            return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomObserverEvent_descriptor;
+          }
+
+          @java.lang.Override
+          protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+              internalGetFieldAccessorTable() {
+            return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomObserverEvent_fieldAccessorTable
+                .ensureFieldAccessorsInitialized(
+                    org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.class, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.Builder.class);
+          }
+
+          // Construct using org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.newBuilder()
+          private Builder() {
+            maybeForceBuilderInitialization();
+          }
+
+          private Builder(
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+          }
+          private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3
+                    .alwaysUseFieldBuilders) {
+            }
+          }
+          @java.lang.Override
+          public Builder clear() {
+            super.clear();
+            name_ = "";
+            bitField0_ = (bitField0_ & ~0x00000001);
+            attachments_ = "";
+            bitField0_ = (bitField0_ & ~0x00000002);
+            mediaTrackId_ = "";
+            bitField0_ = (bitField0_ & ~0x00000004);
+            message_ = "";
+            bitField0_ = (bitField0_ & ~0x00000008);
+            timestamp_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000010);
+            return this;
+          }
+
+          @java.lang.Override
+          public com.google.protobuf.Descriptors.Descriptor
+              getDescriptorForType() {
+            return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomObserverEvent_descriptor;
+          }
+
+          @java.lang.Override
+          public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent getDefaultInstanceForType() {
+            return org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.getDefaultInstance();
+          }
+
+          @java.lang.Override
+          public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent build() {
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent result = buildPartial();
+            if (!result.isInitialized()) {
+              throw newUninitializedMessageException(result);
+            }
+            return result;
+          }
+
+          @java.lang.Override
+          public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent buildPartial() {
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent result = new org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent(this);
+            int from_bitField0_ = bitField0_;
+            int to_bitField0_ = 0;
+            if (((from_bitField0_ & 0x00000001) != 0)) {
+              to_bitField0_ |= 0x00000001;
+            }
+            result.name_ = name_;
+            if (((from_bitField0_ & 0x00000002) != 0)) {
+              to_bitField0_ |= 0x00000002;
+            }
+            result.attachments_ = attachments_;
+            if (((from_bitField0_ & 0x00000004) != 0)) {
+              to_bitField0_ |= 0x00000004;
+            }
+            result.mediaTrackId_ = mediaTrackId_;
+            if (((from_bitField0_ & 0x00000008) != 0)) {
+              to_bitField0_ |= 0x00000008;
+            }
+            result.message_ = message_;
+            if (((from_bitField0_ & 0x00000010) != 0)) {
+              result.timestamp_ = timestamp_;
+              to_bitField0_ |= 0x00000010;
+            }
+            result.bitField0_ = to_bitField0_;
+            onBuilt();
+            return result;
+          }
+
+          @java.lang.Override
+          public Builder clone() {
+            return super.clone();
+          }
+          @java.lang.Override
+          public Builder setField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+            return super.setField(field, value);
+          }
+          @java.lang.Override
+          public Builder clearField(
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+          }
+          @java.lang.Override
+          public Builder clearOneof(
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+          }
+          @java.lang.Override
+          public Builder setRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+          }
+          @java.lang.Override
+          public Builder addRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+          }
+          @java.lang.Override
+          public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (other instanceof org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent) {
+              return mergeFrom((org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent)other);
+            } else {
+              super.mergeFrom(other);
+              return this;
+            }
+          }
+
+          public Builder mergeFrom(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent other) {
+            if (other == org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.getDefaultInstance()) return this;
+            if (other.hasName()) {
+              bitField0_ |= 0x00000001;
+              name_ = other.name_;
+              onChanged();
+            }
+            if (other.hasAttachments()) {
+              bitField0_ |= 0x00000002;
+              attachments_ = other.attachments_;
+              onChanged();
+            }
+            if (other.hasMediaTrackId()) {
+              bitField0_ |= 0x00000004;
+              mediaTrackId_ = other.mediaTrackId_;
+              onChanged();
+            }
+            if (other.hasMessage()) {
+              bitField0_ |= 0x00000008;
+              message_ = other.message_;
+              onChanged();
+            }
+            if (other.hasTimestamp()) {
+              setTimestamp(other.getTimestamp());
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+          }
+
+          @java.lang.Override
+          public final boolean isInitialized() {
+            if (!hasName()) {
+              return false;
+            }
+            return true;
+          }
+
+          @java.lang.Override
+          public Builder mergeFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent parsedMessage = null;
+            try {
+              parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+              parsedMessage = (org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent) e.getUnfinishedMessage();
+              throw e.unwrapIOException();
+            } finally {
+              if (parsedMessage != null) {
+                mergeFrom(parsedMessage);
+              }
+            }
+            return this;
+          }
+          private int bitField0_;
+
+          private java.lang.Object name_ = "";
+          /**
+           * <code>required string name = 1;</code>
+           * @return Whether the name field is set.
+           */
+          public boolean hasName() {
+            return ((bitField0_ & 0x00000001) != 0);
+          }
+          /**
+           * <code>required string name = 1;</code>
+           * @return The name.
+           */
+          public java.lang.String getName() {
+            java.lang.Object ref = name_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                name_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>required string name = 1;</code>
+           * @return The bytes for name.
+           */
+          public com.google.protobuf.ByteString
+              getNameBytes() {
+            java.lang.Object ref = name_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              name_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>required string name = 1;</code>
+           * @param value The name to set.
+           * @return This builder for chaining.
+           */
+          public Builder setName(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+            name_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>required string name = 1;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearName() {
+            bitField0_ = (bitField0_ & ~0x00000001);
+            name_ = getDefaultInstance().getName();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>required string name = 1;</code>
+           * @param value The bytes for name to set.
+           * @return This builder for chaining.
+           */
+          public Builder setNameBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+            name_ = value;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object attachments_ = "";
+          /**
+           * <code>optional string attachments = 2;</code>
+           * @return Whether the attachments field is set.
+           */
+          public boolean hasAttachments() {
+            return ((bitField0_ & 0x00000002) != 0);
+          }
+          /**
+           * <code>optional string attachments = 2;</code>
+           * @return The attachments.
+           */
+          public java.lang.String getAttachments() {
+            java.lang.Object ref = attachments_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                attachments_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>optional string attachments = 2;</code>
+           * @return The bytes for attachments.
+           */
+          public com.google.protobuf.ByteString
+              getAttachmentsBytes() {
+            java.lang.Object ref = attachments_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              attachments_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>optional string attachments = 2;</code>
+           * @param value The attachments to set.
+           * @return This builder for chaining.
+           */
+          public Builder setAttachments(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+            attachments_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string attachments = 2;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearAttachments() {
+            bitField0_ = (bitField0_ & ~0x00000002);
+            attachments_ = getDefaultInstance().getAttachments();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string attachments = 2;</code>
+           * @param value The bytes for attachments to set.
+           * @return This builder for chaining.
+           */
+          public Builder setAttachmentsBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+            attachments_ = value;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object mediaTrackId_ = "";
+          /**
+           * <code>optional string mediaTrackId = 3;</code>
+           * @return Whether the mediaTrackId field is set.
+           */
+          public boolean hasMediaTrackId() {
+            return ((bitField0_ & 0x00000004) != 0);
+          }
+          /**
+           * <code>optional string mediaTrackId = 3;</code>
+           * @return The mediaTrackId.
+           */
+          public java.lang.String getMediaTrackId() {
+            java.lang.Object ref = mediaTrackId_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                mediaTrackId_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>optional string mediaTrackId = 3;</code>
+           * @return The bytes for mediaTrackId.
+           */
+          public com.google.protobuf.ByteString
+              getMediaTrackIdBytes() {
+            java.lang.Object ref = mediaTrackId_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              mediaTrackId_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>optional string mediaTrackId = 3;</code>
+           * @param value The mediaTrackId to set.
+           * @return This builder for chaining.
+           */
+          public Builder setMediaTrackId(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+            mediaTrackId_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string mediaTrackId = 3;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearMediaTrackId() {
+            bitField0_ = (bitField0_ & ~0x00000004);
+            mediaTrackId_ = getDefaultInstance().getMediaTrackId();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string mediaTrackId = 3;</code>
+           * @param value The bytes for mediaTrackId to set.
+           * @return This builder for chaining.
+           */
+          public Builder setMediaTrackIdBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+            mediaTrackId_ = value;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object message_ = "";
+          /**
+           * <code>optional string message = 4;</code>
+           * @return Whether the message field is set.
+           */
+          public boolean hasMessage() {
+            return ((bitField0_ & 0x00000008) != 0);
+          }
+          /**
+           * <code>optional string message = 4;</code>
+           * @return The message.
+           */
+          public java.lang.String getMessage() {
+            java.lang.Object ref = message_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                message_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>optional string message = 4;</code>
+           * @return The bytes for message.
+           */
+          public com.google.protobuf.ByteString
+              getMessageBytes() {
+            java.lang.Object ref = message_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              message_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>optional string message = 4;</code>
+           * @param value The message to set.
+           * @return This builder for chaining.
+           */
+          public Builder setMessage(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+            message_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string message = 4;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearMessage() {
+            bitField0_ = (bitField0_ & ~0x00000008);
+            message_ = getDefaultInstance().getMessage();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string message = 4;</code>
+           * @param value The bytes for message to set.
+           * @return This builder for chaining.
+           */
+          public Builder setMessageBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+            message_ = value;
+            onChanged();
+            return this;
+          }
+
+          private long timestamp_ ;
+          /**
+           * <code>optional int64 timestamp = 5;</code>
+           * @return Whether the timestamp field is set.
+           */
+          @java.lang.Override
+          public boolean hasTimestamp() {
+            return ((bitField0_ & 0x00000010) != 0);
+          }
+          /**
+           * <code>optional int64 timestamp = 5;</code>
+           * @return The timestamp.
+           */
+          @java.lang.Override
+          public long getTimestamp() {
+            return timestamp_;
+          }
+          /**
+           * <code>optional int64 timestamp = 5;</code>
+           * @param value The timestamp to set.
+           * @return This builder for chaining.
+           */
+          public Builder setTimestamp(long value) {
+            bitField0_ |= 0x00000010;
+            timestamp_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional int64 timestamp = 5;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearTimestamp() {
+            bitField0_ = (bitField0_ & ~0x00000010);
+            timestamp_ = 0L;
+            onChanged();
+            return this;
+          }
+          @java.lang.Override
+          public final Builder setUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+          }
+
+          @java.lang.Override
+          public final Builder mergeUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+          }
+
+
+          // @@protoc_insertion_point(builder_scope:org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent)
+        }
+
+        // @@protoc_insertion_point(class_scope:org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent)
+        private static final org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent DEFAULT_INSTANCE;
+        static {
+          DEFAULT_INSTANCE = new org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent();
+        }
+
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent getDefaultInstance() {
+          return DEFAULT_INSTANCE;
+        }
+
+        @java.lang.Deprecated public static final com.google.protobuf.Parser<CustomObserverEvent>
+            PARSER = new com.google.protobuf.AbstractParser<CustomObserverEvent>() {
+          @java.lang.Override
+          public CustomObserverEvent parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new CustomObserverEvent(input, extensionRegistry);
+          }
+        };
+
+        public static com.google.protobuf.Parser<CustomObserverEvent> parser() {
+          return PARSER;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Parser<CustomObserverEvent> getParserForType() {
+          return PARSER;
+        }
+
+        @java.lang.Override
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent getDefaultInstanceForType() {
           return DEFAULT_INSTANCE;
         }
 
@@ -44871,17 +47827,97 @@ public final class ProtobufSamples {
         return codecs_.get(index);
       }
 
-      public static final int DATACHANNELS_FIELD_NUMBER = 3;
+      public static final int CUSTOMCALLEVENTS_FIELD_NUMBER = 3;
+      private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent> customCallEvents_;
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+       */
+      @java.lang.Override
+      public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent> getCustomCallEventsList() {
+        return customCallEvents_;
+      }
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+       */
+      @java.lang.Override
+      public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEventOrBuilder> 
+          getCustomCallEventsOrBuilderList() {
+        return customCallEvents_;
+      }
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+       */
+      @java.lang.Override
+      public int getCustomCallEventsCount() {
+        return customCallEvents_.size();
+      }
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+       */
+      @java.lang.Override
+      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent getCustomCallEvents(int index) {
+        return customCallEvents_.get(index);
+      }
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+       */
+      @java.lang.Override
+      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEventOrBuilder getCustomCallEventsOrBuilder(
+          int index) {
+        return customCallEvents_.get(index);
+      }
+
+      public static final int CUSTOMOBSERVEREVENTS_FIELD_NUMBER = 4;
+      private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent> customObserverEvents_;
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+       */
+      @java.lang.Override
+      public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent> getCustomObserverEventsList() {
+        return customObserverEvents_;
+      }
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+       */
+      @java.lang.Override
+      public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEventOrBuilder> 
+          getCustomObserverEventsOrBuilderList() {
+        return customObserverEvents_;
+      }
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+       */
+      @java.lang.Override
+      public int getCustomObserverEventsCount() {
+        return customObserverEvents_.size();
+      }
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+       */
+      @java.lang.Override
+      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent getCustomObserverEvents(int index) {
+        return customObserverEvents_.get(index);
+      }
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+       */
+      @java.lang.Override
+      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEventOrBuilder getCustomObserverEventsOrBuilder(
+          int index) {
+        return customObserverEvents_.get(index);
+      }
+
+      public static final int DATACHANNELS_FIELD_NUMBER = 5;
       private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel> dataChannels_;
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
        */
       @java.lang.Override
       public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel> getDataChannelsList() {
         return dataChannels_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
        */
       @java.lang.Override
       public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannelOrBuilder> 
@@ -44889,21 +47925,21 @@ public final class ProtobufSamples {
         return dataChannels_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
        */
       @java.lang.Override
       public int getDataChannelsCount() {
         return dataChannels_.size();
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel getDataChannels(int index) {
         return dataChannels_.get(index);
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannelOrBuilder getDataChannelsOrBuilder(
@@ -44911,17 +47947,17 @@ public final class ProtobufSamples {
         return dataChannels_.get(index);
       }
 
-      public static final int EXTENSIONSTATS_FIELD_NUMBER = 4;
+      public static final int EXTENSIONSTATS_FIELD_NUMBER = 6;
       private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat> extensionStats_;
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
        */
       @java.lang.Override
       public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat> getExtensionStatsList() {
         return extensionStats_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
        */
       @java.lang.Override
       public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStatOrBuilder> 
@@ -44929,21 +47965,21 @@ public final class ProtobufSamples {
         return extensionStats_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
        */
       @java.lang.Override
       public int getExtensionStatsCount() {
         return extensionStats_.size();
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat getExtensionStats(int index) {
         return extensionStats_.get(index);
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStatOrBuilder getExtensionStatsOrBuilder(
@@ -44951,17 +47987,17 @@ public final class ProtobufSamples {
         return extensionStats_.get(index);
       }
 
-      public static final int ICECANDIDATEPAIRS_FIELD_NUMBER = 5;
+      public static final int ICECANDIDATEPAIRS_FIELD_NUMBER = 7;
       private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair> iceCandidatePairs_;
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
        */
       @java.lang.Override
       public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair> getIceCandidatePairsList() {
         return iceCandidatePairs_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
        */
       @java.lang.Override
       public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePairOrBuilder> 
@@ -44969,21 +48005,21 @@ public final class ProtobufSamples {
         return iceCandidatePairs_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
        */
       @java.lang.Override
       public int getIceCandidatePairsCount() {
         return iceCandidatePairs_.size();
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair getIceCandidatePairs(int index) {
         return iceCandidatePairs_.get(index);
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePairOrBuilder getIceCandidatePairsOrBuilder(
@@ -44991,17 +48027,17 @@ public final class ProtobufSamples {
         return iceCandidatePairs_.get(index);
       }
 
-      public static final int ICELOCALCANDIDATES_FIELD_NUMBER = 6;
+      public static final int ICELOCALCANDIDATES_FIELD_NUMBER = 8;
       private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate> iceLocalCandidates_;
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
        */
       @java.lang.Override
       public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate> getIceLocalCandidatesList() {
         return iceLocalCandidates_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
        */
       @java.lang.Override
       public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidateOrBuilder> 
@@ -45009,21 +48045,21 @@ public final class ProtobufSamples {
         return iceLocalCandidates_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
        */
       @java.lang.Override
       public int getIceLocalCandidatesCount() {
         return iceLocalCandidates_.size();
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate getIceLocalCandidates(int index) {
         return iceLocalCandidates_.get(index);
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidateOrBuilder getIceLocalCandidatesOrBuilder(
@@ -45031,17 +48067,17 @@ public final class ProtobufSamples {
         return iceLocalCandidates_.get(index);
       }
 
-      public static final int ICEREMOTECANDIDATES_FIELD_NUMBER = 7;
+      public static final int ICEREMOTECANDIDATES_FIELD_NUMBER = 9;
       private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate> iceRemoteCandidates_;
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
        */
       @java.lang.Override
       public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate> getIceRemoteCandidatesList() {
         return iceRemoteCandidates_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
        */
       @java.lang.Override
       public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidateOrBuilder> 
@@ -45049,21 +48085,21 @@ public final class ProtobufSamples {
         return iceRemoteCandidates_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
        */
       @java.lang.Override
       public int getIceRemoteCandidatesCount() {
         return iceRemoteCandidates_.size();
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate getIceRemoteCandidates(int index) {
         return iceRemoteCandidates_.get(index);
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidateOrBuilder getIceRemoteCandidatesOrBuilder(
@@ -45071,10 +48107,10 @@ public final class ProtobufSamples {
         return iceRemoteCandidates_.get(index);
       }
 
-      public static final int ICESERVERS_FIELD_NUMBER = 8;
+      public static final int ICESERVERS_FIELD_NUMBER = 10;
       private com.google.protobuf.LazyStringList iceServers_;
       /**
-       * <code>repeated string iceServers = 8;</code>
+       * <code>repeated string iceServers = 10;</code>
        * @return A list containing the iceServers.
        */
       public com.google.protobuf.ProtocolStringList
@@ -45082,14 +48118,14 @@ public final class ProtobufSamples {
         return iceServers_;
       }
       /**
-       * <code>repeated string iceServers = 8;</code>
+       * <code>repeated string iceServers = 10;</code>
        * @return The count of iceServers.
        */
       public int getIceServersCount() {
         return iceServers_.size();
       }
       /**
-       * <code>repeated string iceServers = 8;</code>
+       * <code>repeated string iceServers = 10;</code>
        * @param index The index of the element to return.
        * @return The iceServers at the given index.
        */
@@ -45097,7 +48133,7 @@ public final class ProtobufSamples {
         return iceServers_.get(index);
       }
       /**
-       * <code>repeated string iceServers = 8;</code>
+       * <code>repeated string iceServers = 10;</code>
        * @param index The index of the value to return.
        * @return The bytes of the iceServers at the given index.
        */
@@ -45106,17 +48142,17 @@ public final class ProtobufSamples {
         return iceServers_.getByteString(index);
       }
 
-      public static final int INBOUNDAUDIOTRACKS_FIELD_NUMBER = 9;
+      public static final int INBOUNDAUDIOTRACKS_FIELD_NUMBER = 11;
       private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack> inboundAudioTracks_;
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
        */
       @java.lang.Override
       public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack> getInboundAudioTracksList() {
         return inboundAudioTracks_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
        */
       @java.lang.Override
       public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrackOrBuilder> 
@@ -45124,21 +48160,21 @@ public final class ProtobufSamples {
         return inboundAudioTracks_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
        */
       @java.lang.Override
       public int getInboundAudioTracksCount() {
         return inboundAudioTracks_.size();
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack getInboundAudioTracks(int index) {
         return inboundAudioTracks_.get(index);
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrackOrBuilder getInboundAudioTracksOrBuilder(
@@ -45146,17 +48182,17 @@ public final class ProtobufSamples {
         return inboundAudioTracks_.get(index);
       }
 
-      public static final int INBOUNDVIDEOTRACKS_FIELD_NUMBER = 10;
+      public static final int INBOUNDVIDEOTRACKS_FIELD_NUMBER = 12;
       private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack> inboundVideoTracks_;
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
        */
       @java.lang.Override
       public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack> getInboundVideoTracksList() {
         return inboundVideoTracks_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
        */
       @java.lang.Override
       public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrackOrBuilder> 
@@ -45164,21 +48200,21 @@ public final class ProtobufSamples {
         return inboundVideoTracks_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
        */
       @java.lang.Override
       public int getInboundVideoTracksCount() {
         return inboundVideoTracks_.size();
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack getInboundVideoTracks(int index) {
         return inboundVideoTracks_.get(index);
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrackOrBuilder getInboundVideoTracksOrBuilder(
@@ -45186,10 +48222,10 @@ public final class ProtobufSamples {
         return inboundVideoTracks_.get(index);
       }
 
-      public static final int LOCALSDPS_FIELD_NUMBER = 11;
+      public static final int LOCALSDPS_FIELD_NUMBER = 13;
       private com.google.protobuf.LazyStringList localSDPs_;
       /**
-       * <code>repeated string localSDPs = 11;</code>
+       * <code>repeated string localSDPs = 13;</code>
        * @return A list containing the localSDPs.
        */
       public com.google.protobuf.ProtocolStringList
@@ -45197,14 +48233,14 @@ public final class ProtobufSamples {
         return localSDPs_;
       }
       /**
-       * <code>repeated string localSDPs = 11;</code>
+       * <code>repeated string localSDPs = 13;</code>
        * @return The count of localSDPs.
        */
       public int getLocalSDPsCount() {
         return localSDPs_.size();
       }
       /**
-       * <code>repeated string localSDPs = 11;</code>
+       * <code>repeated string localSDPs = 13;</code>
        * @param index The index of the element to return.
        * @return The localSDPs at the given index.
        */
@@ -45212,7 +48248,7 @@ public final class ProtobufSamples {
         return localSDPs_.get(index);
       }
       /**
-       * <code>repeated string localSDPs = 11;</code>
+       * <code>repeated string localSDPs = 13;</code>
        * @param index The index of the value to return.
        * @return The bytes of the localSDPs at the given index.
        */
@@ -45221,10 +48257,10 @@ public final class ProtobufSamples {
         return localSDPs_.getByteString(index);
       }
 
-      public static final int MEDIACONSTRAINTS_FIELD_NUMBER = 12;
+      public static final int MEDIACONSTRAINTS_FIELD_NUMBER = 14;
       private com.google.protobuf.LazyStringList mediaConstraints_;
       /**
-       * <code>repeated string mediaConstraints = 12;</code>
+       * <code>repeated string mediaConstraints = 14;</code>
        * @return A list containing the mediaConstraints.
        */
       public com.google.protobuf.ProtocolStringList
@@ -45232,14 +48268,14 @@ public final class ProtobufSamples {
         return mediaConstraints_;
       }
       /**
-       * <code>repeated string mediaConstraints = 12;</code>
+       * <code>repeated string mediaConstraints = 14;</code>
        * @return The count of mediaConstraints.
        */
       public int getMediaConstraintsCount() {
         return mediaConstraints_.size();
       }
       /**
-       * <code>repeated string mediaConstraints = 12;</code>
+       * <code>repeated string mediaConstraints = 14;</code>
        * @param index The index of the element to return.
        * @return The mediaConstraints at the given index.
        */
@@ -45247,7 +48283,7 @@ public final class ProtobufSamples {
         return mediaConstraints_.get(index);
       }
       /**
-       * <code>repeated string mediaConstraints = 12;</code>
+       * <code>repeated string mediaConstraints = 14;</code>
        * @param index The index of the value to return.
        * @return The bytes of the mediaConstraints at the given index.
        */
@@ -45256,17 +48292,17 @@ public final class ProtobufSamples {
         return mediaConstraints_.getByteString(index);
       }
 
-      public static final int MEDIADEVICES_FIELD_NUMBER = 13;
+      public static final int MEDIADEVICES_FIELD_NUMBER = 15;
       private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice> mediaDevices_;
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
        */
       @java.lang.Override
       public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice> getMediaDevicesList() {
         return mediaDevices_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
        */
       @java.lang.Override
       public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDeviceOrBuilder> 
@@ -45274,21 +48310,21 @@ public final class ProtobufSamples {
         return mediaDevices_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
        */
       @java.lang.Override
       public int getMediaDevicesCount() {
         return mediaDevices_.size();
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice getMediaDevices(int index) {
         return mediaDevices_.get(index);
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDeviceOrBuilder getMediaDevicesOrBuilder(
@@ -45296,17 +48332,17 @@ public final class ProtobufSamples {
         return mediaDevices_.get(index);
       }
 
-      public static final int MEDIASOURCES_FIELD_NUMBER = 14;
+      public static final int MEDIASOURCES_FIELD_NUMBER = 16;
       private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat> mediaSources_;
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
        */
       @java.lang.Override
       public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat> getMediaSourcesList() {
         return mediaSources_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
        */
       @java.lang.Override
       public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStatOrBuilder> 
@@ -45314,21 +48350,21 @@ public final class ProtobufSamples {
         return mediaSources_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
        */
       @java.lang.Override
       public int getMediaSourcesCount() {
         return mediaSources_.size();
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat getMediaSources(int index) {
         return mediaSources_.get(index);
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStatOrBuilder getMediaSourcesOrBuilder(
@@ -45336,17 +48372,17 @@ public final class ProtobufSamples {
         return mediaSources_.get(index);
       }
 
-      public static final int OUTBOUNDAUDIOTRACKS_FIELD_NUMBER = 15;
+      public static final int OUTBOUNDAUDIOTRACKS_FIELD_NUMBER = 17;
       private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack> outboundAudioTracks_;
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
        */
       @java.lang.Override
       public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack> getOutboundAudioTracksList() {
         return outboundAudioTracks_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
        */
       @java.lang.Override
       public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrackOrBuilder> 
@@ -45354,21 +48390,21 @@ public final class ProtobufSamples {
         return outboundAudioTracks_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
        */
       @java.lang.Override
       public int getOutboundAudioTracksCount() {
         return outboundAudioTracks_.size();
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack getOutboundAudioTracks(int index) {
         return outboundAudioTracks_.get(index);
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrackOrBuilder getOutboundAudioTracksOrBuilder(
@@ -45376,17 +48412,17 @@ public final class ProtobufSamples {
         return outboundAudioTracks_.get(index);
       }
 
-      public static final int OUTBOUNDVIDEOTRACKS_FIELD_NUMBER = 16;
+      public static final int OUTBOUNDVIDEOTRACKS_FIELD_NUMBER = 18;
       private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack> outboundVideoTracks_;
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
        */
       @java.lang.Override
       public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack> getOutboundVideoTracksList() {
         return outboundVideoTracks_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
        */
       @java.lang.Override
       public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrackOrBuilder> 
@@ -45394,21 +48430,21 @@ public final class ProtobufSamples {
         return outboundVideoTracks_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
        */
       @java.lang.Override
       public int getOutboundVideoTracksCount() {
         return outboundVideoTracks_.size();
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack getOutboundVideoTracks(int index) {
         return outboundVideoTracks_.get(index);
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrackOrBuilder getOutboundVideoTracksOrBuilder(
@@ -45416,17 +48452,17 @@ public final class ProtobufSamples {
         return outboundVideoTracks_.get(index);
       }
 
-      public static final int PCTRANSPORTS_FIELD_NUMBER = 17;
+      public static final int PCTRANSPORTS_FIELD_NUMBER = 19;
       private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport> pcTransports_;
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
        */
       @java.lang.Override
       public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport> getPcTransportsList() {
         return pcTransports_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
        */
       @java.lang.Override
       public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransportOrBuilder> 
@@ -45434,21 +48470,21 @@ public final class ProtobufSamples {
         return pcTransports_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
        */
       @java.lang.Override
       public int getPcTransportsCount() {
         return pcTransports_.size();
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport getPcTransports(int index) {
         return pcTransports_.get(index);
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransportOrBuilder getPcTransportsOrBuilder(
@@ -45456,10 +48492,10 @@ public final class ProtobufSamples {
         return pcTransports_.get(index);
       }
 
-      public static final int USERMEDIAERRORS_FIELD_NUMBER = 18;
+      public static final int USERMEDIAERRORS_FIELD_NUMBER = 20;
       private com.google.protobuf.LazyStringList userMediaErrors_;
       /**
-       * <code>repeated string userMediaErrors = 18;</code>
+       * <code>repeated string userMediaErrors = 20;</code>
        * @return A list containing the userMediaErrors.
        */
       public com.google.protobuf.ProtocolStringList
@@ -45467,14 +48503,14 @@ public final class ProtobufSamples {
         return userMediaErrors_;
       }
       /**
-       * <code>repeated string userMediaErrors = 18;</code>
+       * <code>repeated string userMediaErrors = 20;</code>
        * @return The count of userMediaErrors.
        */
       public int getUserMediaErrorsCount() {
         return userMediaErrors_.size();
       }
       /**
-       * <code>repeated string userMediaErrors = 18;</code>
+       * <code>repeated string userMediaErrors = 20;</code>
        * @param index The index of the element to return.
        * @return The userMediaErrors at the given index.
        */
@@ -45482,7 +48518,7 @@ public final class ProtobufSamples {
         return userMediaErrors_.get(index);
       }
       /**
-       * <code>repeated string userMediaErrors = 18;</code>
+       * <code>repeated string userMediaErrors = 20;</code>
        * @param index The index of the value to return.
        * @return The bytes of the userMediaErrors at the given index.
        */
@@ -45491,10 +48527,10 @@ public final class ProtobufSamples {
         return userMediaErrors_.getByteString(index);
       }
 
-      public static final int CLIENTID_FIELD_NUMBER = 19;
+      public static final int CLIENTID_FIELD_NUMBER = 21;
       private volatile java.lang.Object clientId_;
       /**
-       * <code>required string clientId = 19;</code>
+       * <code>required string clientId = 21;</code>
        * @return Whether the clientId field is set.
        */
       @java.lang.Override
@@ -45502,7 +48538,7 @@ public final class ProtobufSamples {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>required string clientId = 19;</code>
+       * <code>required string clientId = 21;</code>
        * @return The clientId.
        */
       @java.lang.Override
@@ -45521,7 +48557,7 @@ public final class ProtobufSamples {
         }
       }
       /**
-       * <code>required string clientId = 19;</code>
+       * <code>required string clientId = 21;</code>
        * @return The bytes for clientId.
        */
       @java.lang.Override
@@ -45539,10 +48575,10 @@ public final class ProtobufSamples {
         }
       }
 
-      public static final int TIMESTAMP_FIELD_NUMBER = 20;
+      public static final int TIMESTAMP_FIELD_NUMBER = 22;
       private long timestamp_;
       /**
-       * <code>required int64 timestamp = 20;</code>
+       * <code>required int64 timestamp = 22;</code>
        * @return Whether the timestamp field is set.
        */
       @java.lang.Override
@@ -45550,7 +48586,7 @@ public final class ProtobufSamples {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>required int64 timestamp = 20;</code>
+       * <code>required int64 timestamp = 22;</code>
        * @return The timestamp.
        */
       @java.lang.Override
@@ -45558,10 +48594,10 @@ public final class ProtobufSamples {
         return timestamp_;
       }
 
-      public static final int BROWSER_FIELD_NUMBER = 21;
+      public static final int BROWSER_FIELD_NUMBER = 23;
       private org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Browser browser_;
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 21;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 23;</code>
        * @return Whether the browser field is set.
        */
       @java.lang.Override
@@ -45569,7 +48605,7 @@ public final class ProtobufSamples {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 21;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 23;</code>
        * @return The browser.
        */
       @java.lang.Override
@@ -45577,17 +48613,17 @@ public final class ProtobufSamples {
         return browser_ == null ? org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Browser.getDefaultInstance() : browser_;
       }
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 21;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 23;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.BrowserOrBuilder getBrowserOrBuilder() {
         return browser_ == null ? org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Browser.getDefaultInstance() : browser_;
       }
 
-      public static final int CALLID_FIELD_NUMBER = 22;
+      public static final int CALLID_FIELD_NUMBER = 24;
       private volatile java.lang.Object callId_;
       /**
-       * <code>optional string callId = 22;</code>
+       * <code>optional string callId = 24;</code>
        * @return Whether the callId field is set.
        */
       @java.lang.Override
@@ -45595,7 +48631,7 @@ public final class ProtobufSamples {
         return ((bitField0_ & 0x00000008) != 0);
       }
       /**
-       * <code>optional string callId = 22;</code>
+       * <code>optional string callId = 24;</code>
        * @return The callId.
        */
       @java.lang.Override
@@ -45614,7 +48650,7 @@ public final class ProtobufSamples {
         }
       }
       /**
-       * <code>optional string callId = 22;</code>
+       * <code>optional string callId = 24;</code>
        * @return The bytes for callId.
        */
       @java.lang.Override
@@ -45632,10 +48668,10 @@ public final class ProtobufSamples {
         }
       }
 
-      public static final int ENGINE_FIELD_NUMBER = 23;
+      public static final int ENGINE_FIELD_NUMBER = 25;
       private org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Engine engine_;
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 23;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 25;</code>
        * @return Whether the engine field is set.
        */
       @java.lang.Override
@@ -45643,7 +48679,7 @@ public final class ProtobufSamples {
         return ((bitField0_ & 0x00000010) != 0);
       }
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 23;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 25;</code>
        * @return The engine.
        */
       @java.lang.Override
@@ -45651,17 +48687,17 @@ public final class ProtobufSamples {
         return engine_ == null ? org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Engine.getDefaultInstance() : engine_;
       }
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 23;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 25;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.EngineOrBuilder getEngineOrBuilder() {
         return engine_ == null ? org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Engine.getDefaultInstance() : engine_;
       }
 
-      public static final int MARKER_FIELD_NUMBER = 24;
+      public static final int MARKER_FIELD_NUMBER = 26;
       private volatile java.lang.Object marker_;
       /**
-       * <code>optional string marker = 24;</code>
+       * <code>optional string marker = 26;</code>
        * @return Whether the marker field is set.
        */
       @java.lang.Override
@@ -45669,7 +48705,7 @@ public final class ProtobufSamples {
         return ((bitField0_ & 0x00000020) != 0);
       }
       /**
-       * <code>optional string marker = 24;</code>
+       * <code>optional string marker = 26;</code>
        * @return The marker.
        */
       @java.lang.Override
@@ -45688,7 +48724,7 @@ public final class ProtobufSamples {
         }
       }
       /**
-       * <code>optional string marker = 24;</code>
+       * <code>optional string marker = 26;</code>
        * @return The bytes for marker.
        */
       @java.lang.Override
@@ -45706,10 +48742,10 @@ public final class ProtobufSamples {
         }
       }
 
-      public static final int OS_FIELD_NUMBER = 25;
+      public static final int OS_FIELD_NUMBER = 27;
       private org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystem os_;
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 25;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 27;</code>
        * @return Whether the os field is set.
        */
       @java.lang.Override
@@ -45717,7 +48753,7 @@ public final class ProtobufSamples {
         return ((bitField0_ & 0x00000040) != 0);
       }
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 25;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 27;</code>
        * @return The os.
        */
       @java.lang.Override
@@ -45725,17 +48761,17 @@ public final class ProtobufSamples {
         return os_ == null ? org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystem.getDefaultInstance() : os_;
       }
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 25;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 27;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystemOrBuilder getOsOrBuilder() {
         return os_ == null ? org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystem.getDefaultInstance() : os_;
       }
 
-      public static final int PLATFORM_FIELD_NUMBER = 26;
+      public static final int PLATFORM_FIELD_NUMBER = 28;
       private org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Platform platform_;
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 26;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 28;</code>
        * @return Whether the platform field is set.
        */
       @java.lang.Override
@@ -45743,7 +48779,7 @@ public final class ProtobufSamples {
         return ((bitField0_ & 0x00000080) != 0);
       }
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 26;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 28;</code>
        * @return The platform.
        */
       @java.lang.Override
@@ -45751,17 +48787,17 @@ public final class ProtobufSamples {
         return platform_ == null ? org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Platform.getDefaultInstance() : platform_;
       }
       /**
-       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 26;</code>
+       * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 28;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PlatformOrBuilder getPlatformOrBuilder() {
         return platform_ == null ? org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Platform.getDefaultInstance() : platform_;
       }
 
-      public static final int ROOMID_FIELD_NUMBER = 27;
+      public static final int ROOMID_FIELD_NUMBER = 29;
       private volatile java.lang.Object roomId_;
       /**
-       * <code>optional string roomId = 27;</code>
+       * <code>optional string roomId = 29;</code>
        * @return Whether the roomId field is set.
        */
       @java.lang.Override
@@ -45769,7 +48805,7 @@ public final class ProtobufSamples {
         return ((bitField0_ & 0x00000100) != 0);
       }
       /**
-       * <code>optional string roomId = 27;</code>
+       * <code>optional string roomId = 29;</code>
        * @return The roomId.
        */
       @java.lang.Override
@@ -45788,7 +48824,7 @@ public final class ProtobufSamples {
         }
       }
       /**
-       * <code>optional string roomId = 27;</code>
+       * <code>optional string roomId = 29;</code>
        * @return The bytes for roomId.
        */
       @java.lang.Override
@@ -45806,10 +48842,10 @@ public final class ProtobufSamples {
         }
       }
 
-      public static final int SAMPLESEQ_FIELD_NUMBER = 28;
+      public static final int SAMPLESEQ_FIELD_NUMBER = 30;
       private int sampleSeq_;
       /**
-       * <code>optional int32 sampleSeq = 28;</code>
+       * <code>optional int32 sampleSeq = 30;</code>
        * @return Whether the sampleSeq field is set.
        */
       @java.lang.Override
@@ -45817,7 +48853,7 @@ public final class ProtobufSamples {
         return ((bitField0_ & 0x00000200) != 0);
       }
       /**
-       * <code>optional int32 sampleSeq = 28;</code>
+       * <code>optional int32 sampleSeq = 30;</code>
        * @return The sampleSeq.
        */
       @java.lang.Override
@@ -45825,10 +48861,10 @@ public final class ProtobufSamples {
         return sampleSeq_;
       }
 
-      public static final int TIMEZONEOFFSETINHOURS_FIELD_NUMBER = 29;
+      public static final int TIMEZONEOFFSETINHOURS_FIELD_NUMBER = 31;
       private int timeZoneOffsetInHours_;
       /**
-       * <code>optional int32 timeZoneOffsetInHours = 29;</code>
+       * <code>optional int32 timeZoneOffsetInHours = 31;</code>
        * @return Whether the timeZoneOffsetInHours field is set.
        */
       @java.lang.Override
@@ -45836,7 +48872,7 @@ public final class ProtobufSamples {
         return ((bitField0_ & 0x00000400) != 0);
       }
       /**
-       * <code>optional int32 timeZoneOffsetInHours = 29;</code>
+       * <code>optional int32 timeZoneOffsetInHours = 31;</code>
        * @return The timeZoneOffsetInHours.
        */
       @java.lang.Override
@@ -45844,10 +48880,10 @@ public final class ProtobufSamples {
         return timeZoneOffsetInHours_;
       }
 
-      public static final int USERID_FIELD_NUMBER = 30;
+      public static final int USERID_FIELD_NUMBER = 32;
       private volatile java.lang.Object userId_;
       /**
-       * <code>optional string userId = 30;</code>
+       * <code>optional string userId = 32;</code>
        * @return Whether the userId field is set.
        */
       @java.lang.Override
@@ -45855,7 +48891,7 @@ public final class ProtobufSamples {
         return ((bitField0_ & 0x00000800) != 0);
       }
       /**
-       * <code>optional string userId = 30;</code>
+       * <code>optional string userId = 32;</code>
        * @return The userId.
        */
       @java.lang.Override
@@ -45874,7 +48910,7 @@ public final class ProtobufSamples {
         }
       }
       /**
-       * <code>optional string userId = 30;</code>
+       * <code>optional string userId = 32;</code>
        * @return The bytes for userId.
        */
       @java.lang.Override
@@ -45906,6 +48942,18 @@ public final class ProtobufSamples {
         if (!hasTimestamp()) {
           memoizedIsInitialized = 0;
           return false;
+        }
+        for (int i = 0; i < getCustomCallEventsCount(); i++) {
+          if (!getCustomCallEvents(i).isInitialized()) {
+            memoizedIsInitialized = 0;
+            return false;
+          }
+        }
+        for (int i = 0; i < getCustomObserverEventsCount(); i++) {
+          if (!getCustomObserverEvents(i).isInitialized()) {
+            memoizedIsInitialized = 0;
+            return false;
+          }
         }
         for (int i = 0; i < getDataChannelsCount(); i++) {
           if (!getDataChannels(i).isInitialized()) {
@@ -45968,89 +49016,95 @@ public final class ProtobufSamples {
         for (int i = 0; i < codecs_.size(); i++) {
           output.writeMessage(2, codecs_.get(i));
         }
+        for (int i = 0; i < customCallEvents_.size(); i++) {
+          output.writeMessage(3, customCallEvents_.get(i));
+        }
+        for (int i = 0; i < customObserverEvents_.size(); i++) {
+          output.writeMessage(4, customObserverEvents_.get(i));
+        }
         for (int i = 0; i < dataChannels_.size(); i++) {
-          output.writeMessage(3, dataChannels_.get(i));
+          output.writeMessage(5, dataChannels_.get(i));
         }
         for (int i = 0; i < extensionStats_.size(); i++) {
-          output.writeMessage(4, extensionStats_.get(i));
+          output.writeMessage(6, extensionStats_.get(i));
         }
         for (int i = 0; i < iceCandidatePairs_.size(); i++) {
-          output.writeMessage(5, iceCandidatePairs_.get(i));
+          output.writeMessage(7, iceCandidatePairs_.get(i));
         }
         for (int i = 0; i < iceLocalCandidates_.size(); i++) {
-          output.writeMessage(6, iceLocalCandidates_.get(i));
+          output.writeMessage(8, iceLocalCandidates_.get(i));
         }
         for (int i = 0; i < iceRemoteCandidates_.size(); i++) {
-          output.writeMessage(7, iceRemoteCandidates_.get(i));
+          output.writeMessage(9, iceRemoteCandidates_.get(i));
         }
         for (int i = 0; i < iceServers_.size(); i++) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 8, iceServers_.getRaw(i));
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 10, iceServers_.getRaw(i));
         }
         for (int i = 0; i < inboundAudioTracks_.size(); i++) {
-          output.writeMessage(9, inboundAudioTracks_.get(i));
+          output.writeMessage(11, inboundAudioTracks_.get(i));
         }
         for (int i = 0; i < inboundVideoTracks_.size(); i++) {
-          output.writeMessage(10, inboundVideoTracks_.get(i));
+          output.writeMessage(12, inboundVideoTracks_.get(i));
         }
         for (int i = 0; i < localSDPs_.size(); i++) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 11, localSDPs_.getRaw(i));
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 13, localSDPs_.getRaw(i));
         }
         for (int i = 0; i < mediaConstraints_.size(); i++) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 12, mediaConstraints_.getRaw(i));
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 14, mediaConstraints_.getRaw(i));
         }
         for (int i = 0; i < mediaDevices_.size(); i++) {
-          output.writeMessage(13, mediaDevices_.get(i));
+          output.writeMessage(15, mediaDevices_.get(i));
         }
         for (int i = 0; i < mediaSources_.size(); i++) {
-          output.writeMessage(14, mediaSources_.get(i));
+          output.writeMessage(16, mediaSources_.get(i));
         }
         for (int i = 0; i < outboundAudioTracks_.size(); i++) {
-          output.writeMessage(15, outboundAudioTracks_.get(i));
+          output.writeMessage(17, outboundAudioTracks_.get(i));
         }
         for (int i = 0; i < outboundVideoTracks_.size(); i++) {
-          output.writeMessage(16, outboundVideoTracks_.get(i));
+          output.writeMessage(18, outboundVideoTracks_.get(i));
         }
         for (int i = 0; i < pcTransports_.size(); i++) {
-          output.writeMessage(17, pcTransports_.get(i));
+          output.writeMessage(19, pcTransports_.get(i));
         }
         for (int i = 0; i < userMediaErrors_.size(); i++) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 18, userMediaErrors_.getRaw(i));
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 20, userMediaErrors_.getRaw(i));
         }
         if (((bitField0_ & 0x00000001) != 0)) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 19, clientId_);
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 21, clientId_);
         }
         if (((bitField0_ & 0x00000002) != 0)) {
-          output.writeInt64(20, timestamp_);
+          output.writeInt64(22, timestamp_);
         }
         if (((bitField0_ & 0x00000004) != 0)) {
-          output.writeMessage(21, getBrowser());
+          output.writeMessage(23, getBrowser());
         }
         if (((bitField0_ & 0x00000008) != 0)) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 22, callId_);
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 24, callId_);
         }
         if (((bitField0_ & 0x00000010) != 0)) {
-          output.writeMessage(23, getEngine());
+          output.writeMessage(25, getEngine());
         }
         if (((bitField0_ & 0x00000020) != 0)) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 24, marker_);
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 26, marker_);
         }
         if (((bitField0_ & 0x00000040) != 0)) {
-          output.writeMessage(25, getOs());
+          output.writeMessage(27, getOs());
         }
         if (((bitField0_ & 0x00000080) != 0)) {
-          output.writeMessage(26, getPlatform());
+          output.writeMessage(28, getPlatform());
         }
         if (((bitField0_ & 0x00000100) != 0)) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 27, roomId_);
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 29, roomId_);
         }
         if (((bitField0_ & 0x00000200) != 0)) {
-          output.writeInt32(28, sampleSeq_);
+          output.writeInt32(30, sampleSeq_);
         }
         if (((bitField0_ & 0x00000400) != 0)) {
-          output.writeInt32(29, timeZoneOffsetInHours_);
+          output.writeInt32(31, timeZoneOffsetInHours_);
         }
         if (((bitField0_ & 0x00000800) != 0)) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 30, userId_);
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 32, userId_);
         }
         unknownFields.writeTo(output);
       }
@@ -46069,25 +49123,33 @@ public final class ProtobufSamples {
           size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(2, codecs_.get(i));
         }
+        for (int i = 0; i < customCallEvents_.size(); i++) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(3, customCallEvents_.get(i));
+        }
+        for (int i = 0; i < customObserverEvents_.size(); i++) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(4, customObserverEvents_.get(i));
+        }
         for (int i = 0; i < dataChannels_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(3, dataChannels_.get(i));
+            .computeMessageSize(5, dataChannels_.get(i));
         }
         for (int i = 0; i < extensionStats_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(4, extensionStats_.get(i));
+            .computeMessageSize(6, extensionStats_.get(i));
         }
         for (int i = 0; i < iceCandidatePairs_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(5, iceCandidatePairs_.get(i));
+            .computeMessageSize(7, iceCandidatePairs_.get(i));
         }
         for (int i = 0; i < iceLocalCandidates_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(6, iceLocalCandidates_.get(i));
+            .computeMessageSize(8, iceLocalCandidates_.get(i));
         }
         for (int i = 0; i < iceRemoteCandidates_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(7, iceRemoteCandidates_.get(i));
+            .computeMessageSize(9, iceRemoteCandidates_.get(i));
         }
         {
           int dataSize = 0;
@@ -46099,11 +49161,11 @@ public final class ProtobufSamples {
         }
         for (int i = 0; i < inboundAudioTracks_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(9, inboundAudioTracks_.get(i));
+            .computeMessageSize(11, inboundAudioTracks_.get(i));
         }
         for (int i = 0; i < inboundVideoTracks_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(10, inboundVideoTracks_.get(i));
+            .computeMessageSize(12, inboundVideoTracks_.get(i));
         }
         {
           int dataSize = 0;
@@ -46123,23 +49185,23 @@ public final class ProtobufSamples {
         }
         for (int i = 0; i < mediaDevices_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(13, mediaDevices_.get(i));
+            .computeMessageSize(15, mediaDevices_.get(i));
         }
         for (int i = 0; i < mediaSources_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(14, mediaSources_.get(i));
+            .computeMessageSize(16, mediaSources_.get(i));
         }
         for (int i = 0; i < outboundAudioTracks_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(15, outboundAudioTracks_.get(i));
+            .computeMessageSize(17, outboundAudioTracks_.get(i));
         }
         for (int i = 0; i < outboundVideoTracks_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(16, outboundVideoTracks_.get(i));
+            .computeMessageSize(18, outboundVideoTracks_.get(i));
         }
         for (int i = 0; i < pcTransports_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(17, pcTransports_.get(i));
+            .computeMessageSize(19, pcTransports_.get(i));
         }
         {
           int dataSize = 0;
@@ -46150,47 +49212,47 @@ public final class ProtobufSamples {
           size += 2 * getUserMediaErrorsList().size();
         }
         if (((bitField0_ & 0x00000001) != 0)) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(19, clientId_);
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(21, clientId_);
         }
         if (((bitField0_ & 0x00000002) != 0)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt64Size(20, timestamp_);
+            .computeInt64Size(22, timestamp_);
         }
         if (((bitField0_ & 0x00000004) != 0)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(21, getBrowser());
+            .computeMessageSize(23, getBrowser());
         }
         if (((bitField0_ & 0x00000008) != 0)) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(22, callId_);
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(24, callId_);
         }
         if (((bitField0_ & 0x00000010) != 0)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(23, getEngine());
+            .computeMessageSize(25, getEngine());
         }
         if (((bitField0_ & 0x00000020) != 0)) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(24, marker_);
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(26, marker_);
         }
         if (((bitField0_ & 0x00000040) != 0)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(25, getOs());
+            .computeMessageSize(27, getOs());
         }
         if (((bitField0_ & 0x00000080) != 0)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(26, getPlatform());
+            .computeMessageSize(28, getPlatform());
         }
         if (((bitField0_ & 0x00000100) != 0)) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(27, roomId_);
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(29, roomId_);
         }
         if (((bitField0_ & 0x00000200) != 0)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(28, sampleSeq_);
+            .computeInt32Size(30, sampleSeq_);
         }
         if (((bitField0_ & 0x00000400) != 0)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(29, timeZoneOffsetInHours_);
+            .computeInt32Size(31, timeZoneOffsetInHours_);
         }
         if (((bitField0_ & 0x00000800) != 0)) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(30, userId_);
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(32, userId_);
         }
         size += unknownFields.getSerializedSize();
         memoizedSize = size;
@@ -46211,6 +49273,10 @@ public final class ProtobufSamples {
             .equals(other.getCertificatesList())) return false;
         if (!getCodecsList()
             .equals(other.getCodecsList())) return false;
+        if (!getCustomCallEventsList()
+            .equals(other.getCustomCallEventsList())) return false;
+        if (!getCustomObserverEventsList()
+            .equals(other.getCustomObserverEventsList())) return false;
         if (!getDataChannelsList()
             .equals(other.getDataChannelsList())) return false;
         if (!getExtensionStatsList()
@@ -46321,6 +49387,14 @@ public final class ProtobufSamples {
         if (getCodecsCount() > 0) {
           hash = (37 * hash) + CODECS_FIELD_NUMBER;
           hash = (53 * hash) + getCodecsList().hashCode();
+        }
+        if (getCustomCallEventsCount() > 0) {
+          hash = (37 * hash) + CUSTOMCALLEVENTS_FIELD_NUMBER;
+          hash = (53 * hash) + getCustomCallEventsList().hashCode();
+        }
+        if (getCustomObserverEventsCount() > 0) {
+          hash = (37 * hash) + CUSTOMOBSERVEREVENTS_FIELD_NUMBER;
+          hash = (53 * hash) + getCustomObserverEventsList().hashCode();
         }
         if (getDataChannelsCount() > 0) {
           hash = (37 * hash) + DATACHANNELS_FIELD_NUMBER;
@@ -46565,6 +49639,8 @@ public final class ProtobufSamples {
                   .alwaysUseFieldBuilders) {
             getCertificatesFieldBuilder();
             getCodecsFieldBuilder();
+            getCustomCallEventsFieldBuilder();
+            getCustomObserverEventsFieldBuilder();
             getDataChannelsFieldBuilder();
             getExtensionStatsFieldBuilder();
             getIceCandidatePairsFieldBuilder();
@@ -46598,126 +49674,138 @@ public final class ProtobufSamples {
           } else {
             codecsBuilder_.clear();
           }
+          if (customCallEventsBuilder_ == null) {
+            customCallEvents_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00000004);
+          } else {
+            customCallEventsBuilder_.clear();
+          }
+          if (customObserverEventsBuilder_ == null) {
+            customObserverEvents_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00000008);
+          } else {
+            customObserverEventsBuilder_.clear();
+          }
           if (dataChannelsBuilder_ == null) {
             dataChannels_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000004);
+            bitField0_ = (bitField0_ & ~0x00000010);
           } else {
             dataChannelsBuilder_.clear();
           }
           if (extensionStatsBuilder_ == null) {
             extensionStats_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000008);
+            bitField0_ = (bitField0_ & ~0x00000020);
           } else {
             extensionStatsBuilder_.clear();
           }
           if (iceCandidatePairsBuilder_ == null) {
             iceCandidatePairs_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000010);
+            bitField0_ = (bitField0_ & ~0x00000040);
           } else {
             iceCandidatePairsBuilder_.clear();
           }
           if (iceLocalCandidatesBuilder_ == null) {
             iceLocalCandidates_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000020);
+            bitField0_ = (bitField0_ & ~0x00000080);
           } else {
             iceLocalCandidatesBuilder_.clear();
           }
           if (iceRemoteCandidatesBuilder_ == null) {
             iceRemoteCandidates_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000040);
+            bitField0_ = (bitField0_ & ~0x00000100);
           } else {
             iceRemoteCandidatesBuilder_.clear();
           }
           iceServers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-          bitField0_ = (bitField0_ & ~0x00000080);
+          bitField0_ = (bitField0_ & ~0x00000200);
           if (inboundAudioTracksBuilder_ == null) {
             inboundAudioTracks_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000100);
+            bitField0_ = (bitField0_ & ~0x00000400);
           } else {
             inboundAudioTracksBuilder_.clear();
           }
           if (inboundVideoTracksBuilder_ == null) {
             inboundVideoTracks_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000200);
+            bitField0_ = (bitField0_ & ~0x00000800);
           } else {
             inboundVideoTracksBuilder_.clear();
           }
           localSDPs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-          bitField0_ = (bitField0_ & ~0x00000400);
+          bitField0_ = (bitField0_ & ~0x00001000);
           mediaConstraints_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-          bitField0_ = (bitField0_ & ~0x00000800);
+          bitField0_ = (bitField0_ & ~0x00002000);
           if (mediaDevicesBuilder_ == null) {
             mediaDevices_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00001000);
+            bitField0_ = (bitField0_ & ~0x00004000);
           } else {
             mediaDevicesBuilder_.clear();
           }
           if (mediaSourcesBuilder_ == null) {
             mediaSources_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00002000);
+            bitField0_ = (bitField0_ & ~0x00008000);
           } else {
             mediaSourcesBuilder_.clear();
           }
           if (outboundAudioTracksBuilder_ == null) {
             outboundAudioTracks_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00004000);
+            bitField0_ = (bitField0_ & ~0x00010000);
           } else {
             outboundAudioTracksBuilder_.clear();
           }
           if (outboundVideoTracksBuilder_ == null) {
             outboundVideoTracks_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00008000);
+            bitField0_ = (bitField0_ & ~0x00020000);
           } else {
             outboundVideoTracksBuilder_.clear();
           }
           if (pcTransportsBuilder_ == null) {
             pcTransports_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00010000);
+            bitField0_ = (bitField0_ & ~0x00040000);
           } else {
             pcTransportsBuilder_.clear();
           }
           userMediaErrors_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-          bitField0_ = (bitField0_ & ~0x00020000);
-          clientId_ = "";
-          bitField0_ = (bitField0_ & ~0x00040000);
-          timestamp_ = 0L;
           bitField0_ = (bitField0_ & ~0x00080000);
+          clientId_ = "";
+          bitField0_ = (bitField0_ & ~0x00100000);
+          timestamp_ = 0L;
+          bitField0_ = (bitField0_ & ~0x00200000);
           if (browserBuilder_ == null) {
             browser_ = null;
           } else {
             browserBuilder_.clear();
           }
-          bitField0_ = (bitField0_ & ~0x00100000);
+          bitField0_ = (bitField0_ & ~0x00400000);
           callId_ = "";
-          bitField0_ = (bitField0_ & ~0x00200000);
+          bitField0_ = (bitField0_ & ~0x00800000);
           if (engineBuilder_ == null) {
             engine_ = null;
           } else {
             engineBuilder_.clear();
           }
-          bitField0_ = (bitField0_ & ~0x00400000);
+          bitField0_ = (bitField0_ & ~0x01000000);
           marker_ = "";
-          bitField0_ = (bitField0_ & ~0x00800000);
+          bitField0_ = (bitField0_ & ~0x02000000);
           if (osBuilder_ == null) {
             os_ = null;
           } else {
             osBuilder_.clear();
           }
-          bitField0_ = (bitField0_ & ~0x01000000);
+          bitField0_ = (bitField0_ & ~0x04000000);
           if (platformBuilder_ == null) {
             platform_ = null;
           } else {
             platformBuilder_.clear();
           }
-          bitField0_ = (bitField0_ & ~0x02000000);
-          roomId_ = "";
-          bitField0_ = (bitField0_ & ~0x04000000);
-          sampleSeq_ = 0;
           bitField0_ = (bitField0_ & ~0x08000000);
-          timeZoneOffsetInHours_ = 0;
+          roomId_ = "";
           bitField0_ = (bitField0_ & ~0x10000000);
-          userId_ = "";
+          sampleSeq_ = 0;
           bitField0_ = (bitField0_ & ~0x20000000);
+          timeZoneOffsetInHours_ = 0;
+          bitField0_ = (bitField0_ & ~0x40000000);
+          userId_ = "";
+          bitField0_ = (bitField0_ & ~0x80000000);
           return this;
         }
 
@@ -46764,143 +49852,161 @@ public final class ProtobufSamples {
           } else {
             result.codecs_ = codecsBuilder_.build();
           }
-          if (dataChannelsBuilder_ == null) {
+          if (customCallEventsBuilder_ == null) {
             if (((bitField0_ & 0x00000004) != 0)) {
-              dataChannels_ = java.util.Collections.unmodifiableList(dataChannels_);
+              customCallEvents_ = java.util.Collections.unmodifiableList(customCallEvents_);
               bitField0_ = (bitField0_ & ~0x00000004);
+            }
+            result.customCallEvents_ = customCallEvents_;
+          } else {
+            result.customCallEvents_ = customCallEventsBuilder_.build();
+          }
+          if (customObserverEventsBuilder_ == null) {
+            if (((bitField0_ & 0x00000008) != 0)) {
+              customObserverEvents_ = java.util.Collections.unmodifiableList(customObserverEvents_);
+              bitField0_ = (bitField0_ & ~0x00000008);
+            }
+            result.customObserverEvents_ = customObserverEvents_;
+          } else {
+            result.customObserverEvents_ = customObserverEventsBuilder_.build();
+          }
+          if (dataChannelsBuilder_ == null) {
+            if (((bitField0_ & 0x00000010) != 0)) {
+              dataChannels_ = java.util.Collections.unmodifiableList(dataChannels_);
+              bitField0_ = (bitField0_ & ~0x00000010);
             }
             result.dataChannels_ = dataChannels_;
           } else {
             result.dataChannels_ = dataChannelsBuilder_.build();
           }
           if (extensionStatsBuilder_ == null) {
-            if (((bitField0_ & 0x00000008) != 0)) {
+            if (((bitField0_ & 0x00000020) != 0)) {
               extensionStats_ = java.util.Collections.unmodifiableList(extensionStats_);
-              bitField0_ = (bitField0_ & ~0x00000008);
+              bitField0_ = (bitField0_ & ~0x00000020);
             }
             result.extensionStats_ = extensionStats_;
           } else {
             result.extensionStats_ = extensionStatsBuilder_.build();
           }
           if (iceCandidatePairsBuilder_ == null) {
-            if (((bitField0_ & 0x00000010) != 0)) {
+            if (((bitField0_ & 0x00000040) != 0)) {
               iceCandidatePairs_ = java.util.Collections.unmodifiableList(iceCandidatePairs_);
-              bitField0_ = (bitField0_ & ~0x00000010);
+              bitField0_ = (bitField0_ & ~0x00000040);
             }
             result.iceCandidatePairs_ = iceCandidatePairs_;
           } else {
             result.iceCandidatePairs_ = iceCandidatePairsBuilder_.build();
           }
           if (iceLocalCandidatesBuilder_ == null) {
-            if (((bitField0_ & 0x00000020) != 0)) {
+            if (((bitField0_ & 0x00000080) != 0)) {
               iceLocalCandidates_ = java.util.Collections.unmodifiableList(iceLocalCandidates_);
-              bitField0_ = (bitField0_ & ~0x00000020);
+              bitField0_ = (bitField0_ & ~0x00000080);
             }
             result.iceLocalCandidates_ = iceLocalCandidates_;
           } else {
             result.iceLocalCandidates_ = iceLocalCandidatesBuilder_.build();
           }
           if (iceRemoteCandidatesBuilder_ == null) {
-            if (((bitField0_ & 0x00000040) != 0)) {
+            if (((bitField0_ & 0x00000100) != 0)) {
               iceRemoteCandidates_ = java.util.Collections.unmodifiableList(iceRemoteCandidates_);
-              bitField0_ = (bitField0_ & ~0x00000040);
+              bitField0_ = (bitField0_ & ~0x00000100);
             }
             result.iceRemoteCandidates_ = iceRemoteCandidates_;
           } else {
             result.iceRemoteCandidates_ = iceRemoteCandidatesBuilder_.build();
           }
-          if (((bitField0_ & 0x00000080) != 0)) {
+          if (((bitField0_ & 0x00000200) != 0)) {
             iceServers_ = iceServers_.getUnmodifiableView();
-            bitField0_ = (bitField0_ & ~0x00000080);
+            bitField0_ = (bitField0_ & ~0x00000200);
           }
           result.iceServers_ = iceServers_;
           if (inboundAudioTracksBuilder_ == null) {
-            if (((bitField0_ & 0x00000100) != 0)) {
+            if (((bitField0_ & 0x00000400) != 0)) {
               inboundAudioTracks_ = java.util.Collections.unmodifiableList(inboundAudioTracks_);
-              bitField0_ = (bitField0_ & ~0x00000100);
+              bitField0_ = (bitField0_ & ~0x00000400);
             }
             result.inboundAudioTracks_ = inboundAudioTracks_;
           } else {
             result.inboundAudioTracks_ = inboundAudioTracksBuilder_.build();
           }
           if (inboundVideoTracksBuilder_ == null) {
-            if (((bitField0_ & 0x00000200) != 0)) {
+            if (((bitField0_ & 0x00000800) != 0)) {
               inboundVideoTracks_ = java.util.Collections.unmodifiableList(inboundVideoTracks_);
-              bitField0_ = (bitField0_ & ~0x00000200);
+              bitField0_ = (bitField0_ & ~0x00000800);
             }
             result.inboundVideoTracks_ = inboundVideoTracks_;
           } else {
             result.inboundVideoTracks_ = inboundVideoTracksBuilder_.build();
           }
-          if (((bitField0_ & 0x00000400) != 0)) {
+          if (((bitField0_ & 0x00001000) != 0)) {
             localSDPs_ = localSDPs_.getUnmodifiableView();
-            bitField0_ = (bitField0_ & ~0x00000400);
+            bitField0_ = (bitField0_ & ~0x00001000);
           }
           result.localSDPs_ = localSDPs_;
-          if (((bitField0_ & 0x00000800) != 0)) {
+          if (((bitField0_ & 0x00002000) != 0)) {
             mediaConstraints_ = mediaConstraints_.getUnmodifiableView();
-            bitField0_ = (bitField0_ & ~0x00000800);
+            bitField0_ = (bitField0_ & ~0x00002000);
           }
           result.mediaConstraints_ = mediaConstraints_;
           if (mediaDevicesBuilder_ == null) {
-            if (((bitField0_ & 0x00001000) != 0)) {
+            if (((bitField0_ & 0x00004000) != 0)) {
               mediaDevices_ = java.util.Collections.unmodifiableList(mediaDevices_);
-              bitField0_ = (bitField0_ & ~0x00001000);
+              bitField0_ = (bitField0_ & ~0x00004000);
             }
             result.mediaDevices_ = mediaDevices_;
           } else {
             result.mediaDevices_ = mediaDevicesBuilder_.build();
           }
           if (mediaSourcesBuilder_ == null) {
-            if (((bitField0_ & 0x00002000) != 0)) {
+            if (((bitField0_ & 0x00008000) != 0)) {
               mediaSources_ = java.util.Collections.unmodifiableList(mediaSources_);
-              bitField0_ = (bitField0_ & ~0x00002000);
+              bitField0_ = (bitField0_ & ~0x00008000);
             }
             result.mediaSources_ = mediaSources_;
           } else {
             result.mediaSources_ = mediaSourcesBuilder_.build();
           }
           if (outboundAudioTracksBuilder_ == null) {
-            if (((bitField0_ & 0x00004000) != 0)) {
+            if (((bitField0_ & 0x00010000) != 0)) {
               outboundAudioTracks_ = java.util.Collections.unmodifiableList(outboundAudioTracks_);
-              bitField0_ = (bitField0_ & ~0x00004000);
+              bitField0_ = (bitField0_ & ~0x00010000);
             }
             result.outboundAudioTracks_ = outboundAudioTracks_;
           } else {
             result.outboundAudioTracks_ = outboundAudioTracksBuilder_.build();
           }
           if (outboundVideoTracksBuilder_ == null) {
-            if (((bitField0_ & 0x00008000) != 0)) {
+            if (((bitField0_ & 0x00020000) != 0)) {
               outboundVideoTracks_ = java.util.Collections.unmodifiableList(outboundVideoTracks_);
-              bitField0_ = (bitField0_ & ~0x00008000);
+              bitField0_ = (bitField0_ & ~0x00020000);
             }
             result.outboundVideoTracks_ = outboundVideoTracks_;
           } else {
             result.outboundVideoTracks_ = outboundVideoTracksBuilder_.build();
           }
           if (pcTransportsBuilder_ == null) {
-            if (((bitField0_ & 0x00010000) != 0)) {
+            if (((bitField0_ & 0x00040000) != 0)) {
               pcTransports_ = java.util.Collections.unmodifiableList(pcTransports_);
-              bitField0_ = (bitField0_ & ~0x00010000);
+              bitField0_ = (bitField0_ & ~0x00040000);
             }
             result.pcTransports_ = pcTransports_;
           } else {
             result.pcTransports_ = pcTransportsBuilder_.build();
           }
-          if (((bitField0_ & 0x00020000) != 0)) {
+          if (((bitField0_ & 0x00080000) != 0)) {
             userMediaErrors_ = userMediaErrors_.getUnmodifiableView();
-            bitField0_ = (bitField0_ & ~0x00020000);
+            bitField0_ = (bitField0_ & ~0x00080000);
           }
           result.userMediaErrors_ = userMediaErrors_;
-          if (((from_bitField0_ & 0x00040000) != 0)) {
+          if (((from_bitField0_ & 0x00100000) != 0)) {
             to_bitField0_ |= 0x00000001;
           }
           result.clientId_ = clientId_;
-          if (((from_bitField0_ & 0x00080000) != 0)) {
+          if (((from_bitField0_ & 0x00200000) != 0)) {
             result.timestamp_ = timestamp_;
             to_bitField0_ |= 0x00000002;
           }
-          if (((from_bitField0_ & 0x00100000) != 0)) {
+          if (((from_bitField0_ & 0x00400000) != 0)) {
             if (browserBuilder_ == null) {
               result.browser_ = browser_;
             } else {
@@ -46908,11 +50014,11 @@ public final class ProtobufSamples {
             }
             to_bitField0_ |= 0x00000004;
           }
-          if (((from_bitField0_ & 0x00200000) != 0)) {
+          if (((from_bitField0_ & 0x00800000) != 0)) {
             to_bitField0_ |= 0x00000008;
           }
           result.callId_ = callId_;
-          if (((from_bitField0_ & 0x00400000) != 0)) {
+          if (((from_bitField0_ & 0x01000000) != 0)) {
             if (engineBuilder_ == null) {
               result.engine_ = engine_;
             } else {
@@ -46920,11 +50026,11 @@ public final class ProtobufSamples {
             }
             to_bitField0_ |= 0x00000010;
           }
-          if (((from_bitField0_ & 0x00800000) != 0)) {
+          if (((from_bitField0_ & 0x02000000) != 0)) {
             to_bitField0_ |= 0x00000020;
           }
           result.marker_ = marker_;
-          if (((from_bitField0_ & 0x01000000) != 0)) {
+          if (((from_bitField0_ & 0x04000000) != 0)) {
             if (osBuilder_ == null) {
               result.os_ = os_;
             } else {
@@ -46932,7 +50038,7 @@ public final class ProtobufSamples {
             }
             to_bitField0_ |= 0x00000040;
           }
-          if (((from_bitField0_ & 0x02000000) != 0)) {
+          if (((from_bitField0_ & 0x08000000) != 0)) {
             if (platformBuilder_ == null) {
               result.platform_ = platform_;
             } else {
@@ -46940,19 +50046,19 @@ public final class ProtobufSamples {
             }
             to_bitField0_ |= 0x00000080;
           }
-          if (((from_bitField0_ & 0x04000000) != 0)) {
+          if (((from_bitField0_ & 0x10000000) != 0)) {
             to_bitField0_ |= 0x00000100;
           }
           result.roomId_ = roomId_;
-          if (((from_bitField0_ & 0x08000000) != 0)) {
+          if (((from_bitField0_ & 0x20000000) != 0)) {
             result.sampleSeq_ = sampleSeq_;
             to_bitField0_ |= 0x00000200;
           }
-          if (((from_bitField0_ & 0x10000000) != 0)) {
+          if (((from_bitField0_ & 0x40000000) != 0)) {
             result.timeZoneOffsetInHours_ = timeZoneOffsetInHours_;
             to_bitField0_ |= 0x00000400;
           }
-          if (((from_bitField0_ & 0x20000000) != 0)) {
+          if (((from_bitField0_ & 0x80000000) != 0)) {
             to_bitField0_ |= 0x00000800;
           }
           result.userId_ = userId_;
@@ -47057,11 +50163,63 @@ public final class ProtobufSamples {
               }
             }
           }
+          if (customCallEventsBuilder_ == null) {
+            if (!other.customCallEvents_.isEmpty()) {
+              if (customCallEvents_.isEmpty()) {
+                customCallEvents_ = other.customCallEvents_;
+                bitField0_ = (bitField0_ & ~0x00000004);
+              } else {
+                ensureCustomCallEventsIsMutable();
+                customCallEvents_.addAll(other.customCallEvents_);
+              }
+              onChanged();
+            }
+          } else {
+            if (!other.customCallEvents_.isEmpty()) {
+              if (customCallEventsBuilder_.isEmpty()) {
+                customCallEventsBuilder_.dispose();
+                customCallEventsBuilder_ = null;
+                customCallEvents_ = other.customCallEvents_;
+                bitField0_ = (bitField0_ & ~0x00000004);
+                customCallEventsBuilder_ = 
+                  com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                     getCustomCallEventsFieldBuilder() : null;
+              } else {
+                customCallEventsBuilder_.addAllMessages(other.customCallEvents_);
+              }
+            }
+          }
+          if (customObserverEventsBuilder_ == null) {
+            if (!other.customObserverEvents_.isEmpty()) {
+              if (customObserverEvents_.isEmpty()) {
+                customObserverEvents_ = other.customObserverEvents_;
+                bitField0_ = (bitField0_ & ~0x00000008);
+              } else {
+                ensureCustomObserverEventsIsMutable();
+                customObserverEvents_.addAll(other.customObserverEvents_);
+              }
+              onChanged();
+            }
+          } else {
+            if (!other.customObserverEvents_.isEmpty()) {
+              if (customObserverEventsBuilder_.isEmpty()) {
+                customObserverEventsBuilder_.dispose();
+                customObserverEventsBuilder_ = null;
+                customObserverEvents_ = other.customObserverEvents_;
+                bitField0_ = (bitField0_ & ~0x00000008);
+                customObserverEventsBuilder_ = 
+                  com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                     getCustomObserverEventsFieldBuilder() : null;
+              } else {
+                customObserverEventsBuilder_.addAllMessages(other.customObserverEvents_);
+              }
+            }
+          }
           if (dataChannelsBuilder_ == null) {
             if (!other.dataChannels_.isEmpty()) {
               if (dataChannels_.isEmpty()) {
                 dataChannels_ = other.dataChannels_;
-                bitField0_ = (bitField0_ & ~0x00000004);
+                bitField0_ = (bitField0_ & ~0x00000010);
               } else {
                 ensureDataChannelsIsMutable();
                 dataChannels_.addAll(other.dataChannels_);
@@ -47074,7 +50232,7 @@ public final class ProtobufSamples {
                 dataChannelsBuilder_.dispose();
                 dataChannelsBuilder_ = null;
                 dataChannels_ = other.dataChannels_;
-                bitField0_ = (bitField0_ & ~0x00000004);
+                bitField0_ = (bitField0_ & ~0x00000010);
                 dataChannelsBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getDataChannelsFieldBuilder() : null;
@@ -47087,7 +50245,7 @@ public final class ProtobufSamples {
             if (!other.extensionStats_.isEmpty()) {
               if (extensionStats_.isEmpty()) {
                 extensionStats_ = other.extensionStats_;
-                bitField0_ = (bitField0_ & ~0x00000008);
+                bitField0_ = (bitField0_ & ~0x00000020);
               } else {
                 ensureExtensionStatsIsMutable();
                 extensionStats_.addAll(other.extensionStats_);
@@ -47100,7 +50258,7 @@ public final class ProtobufSamples {
                 extensionStatsBuilder_.dispose();
                 extensionStatsBuilder_ = null;
                 extensionStats_ = other.extensionStats_;
-                bitField0_ = (bitField0_ & ~0x00000008);
+                bitField0_ = (bitField0_ & ~0x00000020);
                 extensionStatsBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getExtensionStatsFieldBuilder() : null;
@@ -47113,7 +50271,7 @@ public final class ProtobufSamples {
             if (!other.iceCandidatePairs_.isEmpty()) {
               if (iceCandidatePairs_.isEmpty()) {
                 iceCandidatePairs_ = other.iceCandidatePairs_;
-                bitField0_ = (bitField0_ & ~0x00000010);
+                bitField0_ = (bitField0_ & ~0x00000040);
               } else {
                 ensureIceCandidatePairsIsMutable();
                 iceCandidatePairs_.addAll(other.iceCandidatePairs_);
@@ -47126,7 +50284,7 @@ public final class ProtobufSamples {
                 iceCandidatePairsBuilder_.dispose();
                 iceCandidatePairsBuilder_ = null;
                 iceCandidatePairs_ = other.iceCandidatePairs_;
-                bitField0_ = (bitField0_ & ~0x00000010);
+                bitField0_ = (bitField0_ & ~0x00000040);
                 iceCandidatePairsBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getIceCandidatePairsFieldBuilder() : null;
@@ -47139,7 +50297,7 @@ public final class ProtobufSamples {
             if (!other.iceLocalCandidates_.isEmpty()) {
               if (iceLocalCandidates_.isEmpty()) {
                 iceLocalCandidates_ = other.iceLocalCandidates_;
-                bitField0_ = (bitField0_ & ~0x00000020);
+                bitField0_ = (bitField0_ & ~0x00000080);
               } else {
                 ensureIceLocalCandidatesIsMutable();
                 iceLocalCandidates_.addAll(other.iceLocalCandidates_);
@@ -47152,7 +50310,7 @@ public final class ProtobufSamples {
                 iceLocalCandidatesBuilder_.dispose();
                 iceLocalCandidatesBuilder_ = null;
                 iceLocalCandidates_ = other.iceLocalCandidates_;
-                bitField0_ = (bitField0_ & ~0x00000020);
+                bitField0_ = (bitField0_ & ~0x00000080);
                 iceLocalCandidatesBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getIceLocalCandidatesFieldBuilder() : null;
@@ -47165,7 +50323,7 @@ public final class ProtobufSamples {
             if (!other.iceRemoteCandidates_.isEmpty()) {
               if (iceRemoteCandidates_.isEmpty()) {
                 iceRemoteCandidates_ = other.iceRemoteCandidates_;
-                bitField0_ = (bitField0_ & ~0x00000040);
+                bitField0_ = (bitField0_ & ~0x00000100);
               } else {
                 ensureIceRemoteCandidatesIsMutable();
                 iceRemoteCandidates_.addAll(other.iceRemoteCandidates_);
@@ -47178,7 +50336,7 @@ public final class ProtobufSamples {
                 iceRemoteCandidatesBuilder_.dispose();
                 iceRemoteCandidatesBuilder_ = null;
                 iceRemoteCandidates_ = other.iceRemoteCandidates_;
-                bitField0_ = (bitField0_ & ~0x00000040);
+                bitField0_ = (bitField0_ & ~0x00000100);
                 iceRemoteCandidatesBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getIceRemoteCandidatesFieldBuilder() : null;
@@ -47190,7 +50348,7 @@ public final class ProtobufSamples {
           if (!other.iceServers_.isEmpty()) {
             if (iceServers_.isEmpty()) {
               iceServers_ = other.iceServers_;
-              bitField0_ = (bitField0_ & ~0x00000080);
+              bitField0_ = (bitField0_ & ~0x00000200);
             } else {
               ensureIceServersIsMutable();
               iceServers_.addAll(other.iceServers_);
@@ -47201,7 +50359,7 @@ public final class ProtobufSamples {
             if (!other.inboundAudioTracks_.isEmpty()) {
               if (inboundAudioTracks_.isEmpty()) {
                 inboundAudioTracks_ = other.inboundAudioTracks_;
-                bitField0_ = (bitField0_ & ~0x00000100);
+                bitField0_ = (bitField0_ & ~0x00000400);
               } else {
                 ensureInboundAudioTracksIsMutable();
                 inboundAudioTracks_.addAll(other.inboundAudioTracks_);
@@ -47214,7 +50372,7 @@ public final class ProtobufSamples {
                 inboundAudioTracksBuilder_.dispose();
                 inboundAudioTracksBuilder_ = null;
                 inboundAudioTracks_ = other.inboundAudioTracks_;
-                bitField0_ = (bitField0_ & ~0x00000100);
+                bitField0_ = (bitField0_ & ~0x00000400);
                 inboundAudioTracksBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getInboundAudioTracksFieldBuilder() : null;
@@ -47227,7 +50385,7 @@ public final class ProtobufSamples {
             if (!other.inboundVideoTracks_.isEmpty()) {
               if (inboundVideoTracks_.isEmpty()) {
                 inboundVideoTracks_ = other.inboundVideoTracks_;
-                bitField0_ = (bitField0_ & ~0x00000200);
+                bitField0_ = (bitField0_ & ~0x00000800);
               } else {
                 ensureInboundVideoTracksIsMutable();
                 inboundVideoTracks_.addAll(other.inboundVideoTracks_);
@@ -47240,7 +50398,7 @@ public final class ProtobufSamples {
                 inboundVideoTracksBuilder_.dispose();
                 inboundVideoTracksBuilder_ = null;
                 inboundVideoTracks_ = other.inboundVideoTracks_;
-                bitField0_ = (bitField0_ & ~0x00000200);
+                bitField0_ = (bitField0_ & ~0x00000800);
                 inboundVideoTracksBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getInboundVideoTracksFieldBuilder() : null;
@@ -47252,7 +50410,7 @@ public final class ProtobufSamples {
           if (!other.localSDPs_.isEmpty()) {
             if (localSDPs_.isEmpty()) {
               localSDPs_ = other.localSDPs_;
-              bitField0_ = (bitField0_ & ~0x00000400);
+              bitField0_ = (bitField0_ & ~0x00001000);
             } else {
               ensureLocalSDPsIsMutable();
               localSDPs_.addAll(other.localSDPs_);
@@ -47262,7 +50420,7 @@ public final class ProtobufSamples {
           if (!other.mediaConstraints_.isEmpty()) {
             if (mediaConstraints_.isEmpty()) {
               mediaConstraints_ = other.mediaConstraints_;
-              bitField0_ = (bitField0_ & ~0x00000800);
+              bitField0_ = (bitField0_ & ~0x00002000);
             } else {
               ensureMediaConstraintsIsMutable();
               mediaConstraints_.addAll(other.mediaConstraints_);
@@ -47273,7 +50431,7 @@ public final class ProtobufSamples {
             if (!other.mediaDevices_.isEmpty()) {
               if (mediaDevices_.isEmpty()) {
                 mediaDevices_ = other.mediaDevices_;
-                bitField0_ = (bitField0_ & ~0x00001000);
+                bitField0_ = (bitField0_ & ~0x00004000);
               } else {
                 ensureMediaDevicesIsMutable();
                 mediaDevices_.addAll(other.mediaDevices_);
@@ -47286,7 +50444,7 @@ public final class ProtobufSamples {
                 mediaDevicesBuilder_.dispose();
                 mediaDevicesBuilder_ = null;
                 mediaDevices_ = other.mediaDevices_;
-                bitField0_ = (bitField0_ & ~0x00001000);
+                bitField0_ = (bitField0_ & ~0x00004000);
                 mediaDevicesBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getMediaDevicesFieldBuilder() : null;
@@ -47299,7 +50457,7 @@ public final class ProtobufSamples {
             if (!other.mediaSources_.isEmpty()) {
               if (mediaSources_.isEmpty()) {
                 mediaSources_ = other.mediaSources_;
-                bitField0_ = (bitField0_ & ~0x00002000);
+                bitField0_ = (bitField0_ & ~0x00008000);
               } else {
                 ensureMediaSourcesIsMutable();
                 mediaSources_.addAll(other.mediaSources_);
@@ -47312,7 +50470,7 @@ public final class ProtobufSamples {
                 mediaSourcesBuilder_.dispose();
                 mediaSourcesBuilder_ = null;
                 mediaSources_ = other.mediaSources_;
-                bitField0_ = (bitField0_ & ~0x00002000);
+                bitField0_ = (bitField0_ & ~0x00008000);
                 mediaSourcesBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getMediaSourcesFieldBuilder() : null;
@@ -47325,7 +50483,7 @@ public final class ProtobufSamples {
             if (!other.outboundAudioTracks_.isEmpty()) {
               if (outboundAudioTracks_.isEmpty()) {
                 outboundAudioTracks_ = other.outboundAudioTracks_;
-                bitField0_ = (bitField0_ & ~0x00004000);
+                bitField0_ = (bitField0_ & ~0x00010000);
               } else {
                 ensureOutboundAudioTracksIsMutable();
                 outboundAudioTracks_.addAll(other.outboundAudioTracks_);
@@ -47338,7 +50496,7 @@ public final class ProtobufSamples {
                 outboundAudioTracksBuilder_.dispose();
                 outboundAudioTracksBuilder_ = null;
                 outboundAudioTracks_ = other.outboundAudioTracks_;
-                bitField0_ = (bitField0_ & ~0x00004000);
+                bitField0_ = (bitField0_ & ~0x00010000);
                 outboundAudioTracksBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getOutboundAudioTracksFieldBuilder() : null;
@@ -47351,7 +50509,7 @@ public final class ProtobufSamples {
             if (!other.outboundVideoTracks_.isEmpty()) {
               if (outboundVideoTracks_.isEmpty()) {
                 outboundVideoTracks_ = other.outboundVideoTracks_;
-                bitField0_ = (bitField0_ & ~0x00008000);
+                bitField0_ = (bitField0_ & ~0x00020000);
               } else {
                 ensureOutboundVideoTracksIsMutable();
                 outboundVideoTracks_.addAll(other.outboundVideoTracks_);
@@ -47364,7 +50522,7 @@ public final class ProtobufSamples {
                 outboundVideoTracksBuilder_.dispose();
                 outboundVideoTracksBuilder_ = null;
                 outboundVideoTracks_ = other.outboundVideoTracks_;
-                bitField0_ = (bitField0_ & ~0x00008000);
+                bitField0_ = (bitField0_ & ~0x00020000);
                 outboundVideoTracksBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getOutboundVideoTracksFieldBuilder() : null;
@@ -47377,7 +50535,7 @@ public final class ProtobufSamples {
             if (!other.pcTransports_.isEmpty()) {
               if (pcTransports_.isEmpty()) {
                 pcTransports_ = other.pcTransports_;
-                bitField0_ = (bitField0_ & ~0x00010000);
+                bitField0_ = (bitField0_ & ~0x00040000);
               } else {
                 ensurePcTransportsIsMutable();
                 pcTransports_.addAll(other.pcTransports_);
@@ -47390,7 +50548,7 @@ public final class ProtobufSamples {
                 pcTransportsBuilder_.dispose();
                 pcTransportsBuilder_ = null;
                 pcTransports_ = other.pcTransports_;
-                bitField0_ = (bitField0_ & ~0x00010000);
+                bitField0_ = (bitField0_ & ~0x00040000);
                 pcTransportsBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getPcTransportsFieldBuilder() : null;
@@ -47402,7 +50560,7 @@ public final class ProtobufSamples {
           if (!other.userMediaErrors_.isEmpty()) {
             if (userMediaErrors_.isEmpty()) {
               userMediaErrors_ = other.userMediaErrors_;
-              bitField0_ = (bitField0_ & ~0x00020000);
+              bitField0_ = (bitField0_ & ~0x00080000);
             } else {
               ensureUserMediaErrorsIsMutable();
               userMediaErrors_.addAll(other.userMediaErrors_);
@@ -47410,7 +50568,7 @@ public final class ProtobufSamples {
             onChanged();
           }
           if (other.hasClientId()) {
-            bitField0_ |= 0x00040000;
+            bitField0_ |= 0x00100000;
             clientId_ = other.clientId_;
             onChanged();
           }
@@ -47421,7 +50579,7 @@ public final class ProtobufSamples {
             mergeBrowser(other.getBrowser());
           }
           if (other.hasCallId()) {
-            bitField0_ |= 0x00200000;
+            bitField0_ |= 0x00800000;
             callId_ = other.callId_;
             onChanged();
           }
@@ -47429,7 +50587,7 @@ public final class ProtobufSamples {
             mergeEngine(other.getEngine());
           }
           if (other.hasMarker()) {
-            bitField0_ |= 0x00800000;
+            bitField0_ |= 0x02000000;
             marker_ = other.marker_;
             onChanged();
           }
@@ -47440,7 +50598,7 @@ public final class ProtobufSamples {
             mergePlatform(other.getPlatform());
           }
           if (other.hasRoomId()) {
-            bitField0_ |= 0x04000000;
+            bitField0_ |= 0x10000000;
             roomId_ = other.roomId_;
             onChanged();
           }
@@ -47451,7 +50609,7 @@ public final class ProtobufSamples {
             setTimeZoneOffsetInHours(other.getTimeZoneOffsetInHours());
           }
           if (other.hasUserId()) {
-            bitField0_ |= 0x20000000;
+            bitField0_ |= 0x80000000;
             userId_ = other.userId_;
             onChanged();
           }
@@ -47467,6 +50625,16 @@ public final class ProtobufSamples {
           }
           if (!hasTimestamp()) {
             return false;
+          }
+          for (int i = 0; i < getCustomCallEventsCount(); i++) {
+            if (!getCustomCallEvents(i).isInitialized()) {
+              return false;
+            }
+          }
+          for (int i = 0; i < getCustomObserverEventsCount(); i++) {
+            if (!getCustomObserverEvents(i).isInitialized()) {
+              return false;
+            }
           }
           for (int i = 0; i < getDataChannelsCount(); i++) {
             if (!getDataChannels(i).isInitialized()) {
@@ -48011,12 +51179,492 @@ public final class ProtobufSamples {
           return codecsBuilder_;
         }
 
+        private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent> customCallEvents_ =
+          java.util.Collections.emptyList();
+        private void ensureCustomCallEventsIsMutable() {
+          if (!((bitField0_ & 0x00000004) != 0)) {
+            customCallEvents_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent>(customCallEvents_);
+            bitField0_ |= 0x00000004;
+           }
+        }
+
+        private com.google.protobuf.RepeatedFieldBuilderV3<
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEventOrBuilder> customCallEventsBuilder_;
+
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+         */
+        public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent> getCustomCallEventsList() {
+          if (customCallEventsBuilder_ == null) {
+            return java.util.Collections.unmodifiableList(customCallEvents_);
+          } else {
+            return customCallEventsBuilder_.getMessageList();
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+         */
+        public int getCustomCallEventsCount() {
+          if (customCallEventsBuilder_ == null) {
+            return customCallEvents_.size();
+          } else {
+            return customCallEventsBuilder_.getCount();
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent getCustomCallEvents(int index) {
+          if (customCallEventsBuilder_ == null) {
+            return customCallEvents_.get(index);
+          } else {
+            return customCallEventsBuilder_.getMessage(index);
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+         */
+        public Builder setCustomCallEvents(
+            int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent value) {
+          if (customCallEventsBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureCustomCallEventsIsMutable();
+            customCallEvents_.set(index, value);
+            onChanged();
+          } else {
+            customCallEventsBuilder_.setMessage(index, value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+         */
+        public Builder setCustomCallEvents(
+            int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.Builder builderForValue) {
+          if (customCallEventsBuilder_ == null) {
+            ensureCustomCallEventsIsMutable();
+            customCallEvents_.set(index, builderForValue.build());
+            onChanged();
+          } else {
+            customCallEventsBuilder_.setMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+         */
+        public Builder addCustomCallEvents(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent value) {
+          if (customCallEventsBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureCustomCallEventsIsMutable();
+            customCallEvents_.add(value);
+            onChanged();
+          } else {
+            customCallEventsBuilder_.addMessage(value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+         */
+        public Builder addCustomCallEvents(
+            int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent value) {
+          if (customCallEventsBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureCustomCallEventsIsMutable();
+            customCallEvents_.add(index, value);
+            onChanged();
+          } else {
+            customCallEventsBuilder_.addMessage(index, value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+         */
+        public Builder addCustomCallEvents(
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.Builder builderForValue) {
+          if (customCallEventsBuilder_ == null) {
+            ensureCustomCallEventsIsMutable();
+            customCallEvents_.add(builderForValue.build());
+            onChanged();
+          } else {
+            customCallEventsBuilder_.addMessage(builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+         */
+        public Builder addCustomCallEvents(
+            int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.Builder builderForValue) {
+          if (customCallEventsBuilder_ == null) {
+            ensureCustomCallEventsIsMutable();
+            customCallEvents_.add(index, builderForValue.build());
+            onChanged();
+          } else {
+            customCallEventsBuilder_.addMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+         */
+        public Builder addAllCustomCallEvents(
+            java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent> values) {
+          if (customCallEventsBuilder_ == null) {
+            ensureCustomCallEventsIsMutable();
+            com.google.protobuf.AbstractMessageLite.Builder.addAll(
+                values, customCallEvents_);
+            onChanged();
+          } else {
+            customCallEventsBuilder_.addAllMessages(values);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+         */
+        public Builder clearCustomCallEvents() {
+          if (customCallEventsBuilder_ == null) {
+            customCallEvents_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00000004);
+            onChanged();
+          } else {
+            customCallEventsBuilder_.clear();
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+         */
+        public Builder removeCustomCallEvents(int index) {
+          if (customCallEventsBuilder_ == null) {
+            ensureCustomCallEventsIsMutable();
+            customCallEvents_.remove(index);
+            onChanged();
+          } else {
+            customCallEventsBuilder_.remove(index);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.Builder getCustomCallEventsBuilder(
+            int index) {
+          return getCustomCallEventsFieldBuilder().getBuilder(index);
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEventOrBuilder getCustomCallEventsOrBuilder(
+            int index) {
+          if (customCallEventsBuilder_ == null) {
+            return customCallEvents_.get(index);  } else {
+            return customCallEventsBuilder_.getMessageOrBuilder(index);
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+         */
+        public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEventOrBuilder> 
+             getCustomCallEventsOrBuilderList() {
+          if (customCallEventsBuilder_ != null) {
+            return customCallEventsBuilder_.getMessageOrBuilderList();
+          } else {
+            return java.util.Collections.unmodifiableList(customCallEvents_);
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.Builder addCustomCallEventsBuilder() {
+          return getCustomCallEventsFieldBuilder().addBuilder(
+              org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.getDefaultInstance());
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.Builder addCustomCallEventsBuilder(
+            int index) {
+          return getCustomCallEventsFieldBuilder().addBuilder(
+              index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.getDefaultInstance());
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomCallEvent customCallEvents = 3;</code>
+         */
+        public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.Builder> 
+             getCustomCallEventsBuilderList() {
+          return getCustomCallEventsFieldBuilder().getBuilderList();
+        }
+        private com.google.protobuf.RepeatedFieldBuilderV3<
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEventOrBuilder> 
+            getCustomCallEventsFieldBuilder() {
+          if (customCallEventsBuilder_ == null) {
+            customCallEventsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+                org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEvent.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomCallEventOrBuilder>(
+                    customCallEvents_,
+                    ((bitField0_ & 0x00000004) != 0),
+                    getParentForChildren(),
+                    isClean());
+            customCallEvents_ = null;
+          }
+          return customCallEventsBuilder_;
+        }
+
+        private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent> customObserverEvents_ =
+          java.util.Collections.emptyList();
+        private void ensureCustomObserverEventsIsMutable() {
+          if (!((bitField0_ & 0x00000008) != 0)) {
+            customObserverEvents_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent>(customObserverEvents_);
+            bitField0_ |= 0x00000008;
+           }
+        }
+
+        private com.google.protobuf.RepeatedFieldBuilderV3<
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEventOrBuilder> customObserverEventsBuilder_;
+
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+         */
+        public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent> getCustomObserverEventsList() {
+          if (customObserverEventsBuilder_ == null) {
+            return java.util.Collections.unmodifiableList(customObserverEvents_);
+          } else {
+            return customObserverEventsBuilder_.getMessageList();
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+         */
+        public int getCustomObserverEventsCount() {
+          if (customObserverEventsBuilder_ == null) {
+            return customObserverEvents_.size();
+          } else {
+            return customObserverEventsBuilder_.getCount();
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent getCustomObserverEvents(int index) {
+          if (customObserverEventsBuilder_ == null) {
+            return customObserverEvents_.get(index);
+          } else {
+            return customObserverEventsBuilder_.getMessage(index);
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+         */
+        public Builder setCustomObserverEvents(
+            int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent value) {
+          if (customObserverEventsBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureCustomObserverEventsIsMutable();
+            customObserverEvents_.set(index, value);
+            onChanged();
+          } else {
+            customObserverEventsBuilder_.setMessage(index, value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+         */
+        public Builder setCustomObserverEvents(
+            int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.Builder builderForValue) {
+          if (customObserverEventsBuilder_ == null) {
+            ensureCustomObserverEventsIsMutable();
+            customObserverEvents_.set(index, builderForValue.build());
+            onChanged();
+          } else {
+            customObserverEventsBuilder_.setMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+         */
+        public Builder addCustomObserverEvents(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent value) {
+          if (customObserverEventsBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureCustomObserverEventsIsMutable();
+            customObserverEvents_.add(value);
+            onChanged();
+          } else {
+            customObserverEventsBuilder_.addMessage(value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+         */
+        public Builder addCustomObserverEvents(
+            int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent value) {
+          if (customObserverEventsBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureCustomObserverEventsIsMutable();
+            customObserverEvents_.add(index, value);
+            onChanged();
+          } else {
+            customObserverEventsBuilder_.addMessage(index, value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+         */
+        public Builder addCustomObserverEvents(
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.Builder builderForValue) {
+          if (customObserverEventsBuilder_ == null) {
+            ensureCustomObserverEventsIsMutable();
+            customObserverEvents_.add(builderForValue.build());
+            onChanged();
+          } else {
+            customObserverEventsBuilder_.addMessage(builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+         */
+        public Builder addCustomObserverEvents(
+            int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.Builder builderForValue) {
+          if (customObserverEventsBuilder_ == null) {
+            ensureCustomObserverEventsIsMutable();
+            customObserverEvents_.add(index, builderForValue.build());
+            onChanged();
+          } else {
+            customObserverEventsBuilder_.addMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+         */
+        public Builder addAllCustomObserverEvents(
+            java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent> values) {
+          if (customObserverEventsBuilder_ == null) {
+            ensureCustomObserverEventsIsMutable();
+            com.google.protobuf.AbstractMessageLite.Builder.addAll(
+                values, customObserverEvents_);
+            onChanged();
+          } else {
+            customObserverEventsBuilder_.addAllMessages(values);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+         */
+        public Builder clearCustomObserverEvents() {
+          if (customObserverEventsBuilder_ == null) {
+            customObserverEvents_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00000008);
+            onChanged();
+          } else {
+            customObserverEventsBuilder_.clear();
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+         */
+        public Builder removeCustomObserverEvents(int index) {
+          if (customObserverEventsBuilder_ == null) {
+            ensureCustomObserverEventsIsMutable();
+            customObserverEvents_.remove(index);
+            onChanged();
+          } else {
+            customObserverEventsBuilder_.remove(index);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.Builder getCustomObserverEventsBuilder(
+            int index) {
+          return getCustomObserverEventsFieldBuilder().getBuilder(index);
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEventOrBuilder getCustomObserverEventsOrBuilder(
+            int index) {
+          if (customObserverEventsBuilder_ == null) {
+            return customObserverEvents_.get(index);  } else {
+            return customObserverEventsBuilder_.getMessageOrBuilder(index);
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+         */
+        public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEventOrBuilder> 
+             getCustomObserverEventsOrBuilderList() {
+          if (customObserverEventsBuilder_ != null) {
+            return customObserverEventsBuilder_.getMessageOrBuilderList();
+          } else {
+            return java.util.Collections.unmodifiableList(customObserverEvents_);
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.Builder addCustomObserverEventsBuilder() {
+          return getCustomObserverEventsFieldBuilder().addBuilder(
+              org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.getDefaultInstance());
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.Builder addCustomObserverEventsBuilder(
+            int index) {
+          return getCustomObserverEventsFieldBuilder().addBuilder(
+              index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.getDefaultInstance());
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.CustomObserverEvent customObserverEvents = 4;</code>
+         */
+        public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.Builder> 
+             getCustomObserverEventsBuilderList() {
+          return getCustomObserverEventsFieldBuilder().getBuilderList();
+        }
+        private com.google.protobuf.RepeatedFieldBuilderV3<
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEventOrBuilder> 
+            getCustomObserverEventsFieldBuilder() {
+          if (customObserverEventsBuilder_ == null) {
+            customObserverEventsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+                org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEvent.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.CustomObserverEventOrBuilder>(
+                    customObserverEvents_,
+                    ((bitField0_ & 0x00000008) != 0),
+                    getParentForChildren(),
+                    isClean());
+            customObserverEvents_ = null;
+          }
+          return customObserverEventsBuilder_;
+        }
+
         private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel> dataChannels_ =
           java.util.Collections.emptyList();
         private void ensureDataChannelsIsMutable() {
-          if (!((bitField0_ & 0x00000004) != 0)) {
+          if (!((bitField0_ & 0x00000010) != 0)) {
             dataChannels_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel>(dataChannels_);
-            bitField0_ |= 0x00000004;
+            bitField0_ |= 0x00000010;
            }
         }
 
@@ -48024,7 +51672,7 @@ public final class ProtobufSamples {
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannelOrBuilder> dataChannelsBuilder_;
 
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel> getDataChannelsList() {
           if (dataChannelsBuilder_ == null) {
@@ -48034,7 +51682,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
          */
         public int getDataChannelsCount() {
           if (dataChannelsBuilder_ == null) {
@@ -48044,7 +51692,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel getDataChannels(int index) {
           if (dataChannelsBuilder_ == null) {
@@ -48054,7 +51702,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
          */
         public Builder setDataChannels(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel value) {
@@ -48071,7 +51719,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
          */
         public Builder setDataChannels(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel.Builder builderForValue) {
@@ -48085,7 +51733,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
          */
         public Builder addDataChannels(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel value) {
           if (dataChannelsBuilder_ == null) {
@@ -48101,7 +51749,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
          */
         public Builder addDataChannels(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel value) {
@@ -48118,7 +51766,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
          */
         public Builder addDataChannels(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel.Builder builderForValue) {
@@ -48132,7 +51780,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
          */
         public Builder addDataChannels(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel.Builder builderForValue) {
@@ -48146,7 +51794,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
          */
         public Builder addAllDataChannels(
             java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel> values) {
@@ -48161,12 +51809,12 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
          */
         public Builder clearDataChannels() {
           if (dataChannelsBuilder_ == null) {
             dataChannels_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000004);
+            bitField0_ = (bitField0_ & ~0x00000010);
             onChanged();
           } else {
             dataChannelsBuilder_.clear();
@@ -48174,7 +51822,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
          */
         public Builder removeDataChannels(int index) {
           if (dataChannelsBuilder_ == null) {
@@ -48187,14 +51835,14 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel.Builder getDataChannelsBuilder(
             int index) {
           return getDataChannelsFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannelOrBuilder getDataChannelsOrBuilder(
             int index) {
@@ -48204,7 +51852,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
          */
         public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannelOrBuilder> 
              getDataChannelsOrBuilderList() {
@@ -48215,14 +51863,14 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel.Builder addDataChannelsBuilder() {
           return getDataChannelsFieldBuilder().addBuilder(
               org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel.Builder addDataChannelsBuilder(
             int index) {
@@ -48230,7 +51878,7 @@ public final class ProtobufSamples {
               index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.DataChannel dataChannels = 5;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel.Builder> 
              getDataChannelsBuilderList() {
@@ -48243,7 +51891,7 @@ public final class ProtobufSamples {
             dataChannelsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannel.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.DataChannelOrBuilder>(
                     dataChannels_,
-                    ((bitField0_ & 0x00000004) != 0),
+                    ((bitField0_ & 0x00000010) != 0),
                     getParentForChildren(),
                     isClean());
             dataChannels_ = null;
@@ -48254,9 +51902,9 @@ public final class ProtobufSamples {
         private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat> extensionStats_ =
           java.util.Collections.emptyList();
         private void ensureExtensionStatsIsMutable() {
-          if (!((bitField0_ & 0x00000008) != 0)) {
+          if (!((bitField0_ & 0x00000020) != 0)) {
             extensionStats_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat>(extensionStats_);
-            bitField0_ |= 0x00000008;
+            bitField0_ |= 0x00000020;
            }
         }
 
@@ -48264,7 +51912,7 @@ public final class ProtobufSamples {
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStatOrBuilder> extensionStatsBuilder_;
 
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat> getExtensionStatsList() {
           if (extensionStatsBuilder_ == null) {
@@ -48274,7 +51922,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
          */
         public int getExtensionStatsCount() {
           if (extensionStatsBuilder_ == null) {
@@ -48284,7 +51932,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat getExtensionStats(int index) {
           if (extensionStatsBuilder_ == null) {
@@ -48294,7 +51942,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
          */
         public Builder setExtensionStats(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat value) {
@@ -48311,7 +51959,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
          */
         public Builder setExtensionStats(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat.Builder builderForValue) {
@@ -48325,7 +51973,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
          */
         public Builder addExtensionStats(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat value) {
           if (extensionStatsBuilder_ == null) {
@@ -48341,7 +51989,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
          */
         public Builder addExtensionStats(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat value) {
@@ -48358,7 +52006,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
          */
         public Builder addExtensionStats(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat.Builder builderForValue) {
@@ -48372,7 +52020,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
          */
         public Builder addExtensionStats(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat.Builder builderForValue) {
@@ -48386,7 +52034,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
          */
         public Builder addAllExtensionStats(
             java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat> values) {
@@ -48401,12 +52049,12 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
          */
         public Builder clearExtensionStats() {
           if (extensionStatsBuilder_ == null) {
             extensionStats_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000008);
+            bitField0_ = (bitField0_ & ~0x00000020);
             onChanged();
           } else {
             extensionStatsBuilder_.clear();
@@ -48414,7 +52062,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
          */
         public Builder removeExtensionStats(int index) {
           if (extensionStatsBuilder_ == null) {
@@ -48427,14 +52075,14 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat.Builder getExtensionStatsBuilder(
             int index) {
           return getExtensionStatsFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStatOrBuilder getExtensionStatsOrBuilder(
             int index) {
@@ -48444,7 +52092,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
          */
         public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStatOrBuilder> 
              getExtensionStatsOrBuilderList() {
@@ -48455,14 +52103,14 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat.Builder addExtensionStatsBuilder() {
           return getExtensionStatsFieldBuilder().addBuilder(
               org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat.Builder addExtensionStatsBuilder(
             int index) {
@@ -48470,7 +52118,7 @@ public final class ProtobufSamples {
               index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.ExtensionStat extensionStats = 6;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat.Builder> 
              getExtensionStatsBuilderList() {
@@ -48483,7 +52131,7 @@ public final class ProtobufSamples {
             extensionStatsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStat.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.ExtensionStatOrBuilder>(
                     extensionStats_,
-                    ((bitField0_ & 0x00000008) != 0),
+                    ((bitField0_ & 0x00000020) != 0),
                     getParentForChildren(),
                     isClean());
             extensionStats_ = null;
@@ -48494,9 +52142,9 @@ public final class ProtobufSamples {
         private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair> iceCandidatePairs_ =
           java.util.Collections.emptyList();
         private void ensureIceCandidatePairsIsMutable() {
-          if (!((bitField0_ & 0x00000010) != 0)) {
+          if (!((bitField0_ & 0x00000040) != 0)) {
             iceCandidatePairs_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair>(iceCandidatePairs_);
-            bitField0_ |= 0x00000010;
+            bitField0_ |= 0x00000040;
            }
         }
 
@@ -48504,7 +52152,7 @@ public final class ProtobufSamples {
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePairOrBuilder> iceCandidatePairsBuilder_;
 
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair> getIceCandidatePairsList() {
           if (iceCandidatePairsBuilder_ == null) {
@@ -48514,7 +52162,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
          */
         public int getIceCandidatePairsCount() {
           if (iceCandidatePairsBuilder_ == null) {
@@ -48524,7 +52172,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair getIceCandidatePairs(int index) {
           if (iceCandidatePairsBuilder_ == null) {
@@ -48534,7 +52182,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
          */
         public Builder setIceCandidatePairs(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair value) {
@@ -48551,7 +52199,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
          */
         public Builder setIceCandidatePairs(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair.Builder builderForValue) {
@@ -48565,7 +52213,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
          */
         public Builder addIceCandidatePairs(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair value) {
           if (iceCandidatePairsBuilder_ == null) {
@@ -48581,7 +52229,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
          */
         public Builder addIceCandidatePairs(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair value) {
@@ -48598,7 +52246,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
          */
         public Builder addIceCandidatePairs(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair.Builder builderForValue) {
@@ -48612,7 +52260,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
          */
         public Builder addIceCandidatePairs(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair.Builder builderForValue) {
@@ -48626,7 +52274,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
          */
         public Builder addAllIceCandidatePairs(
             java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair> values) {
@@ -48641,12 +52289,12 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
          */
         public Builder clearIceCandidatePairs() {
           if (iceCandidatePairsBuilder_ == null) {
             iceCandidatePairs_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000010);
+            bitField0_ = (bitField0_ & ~0x00000040);
             onChanged();
           } else {
             iceCandidatePairsBuilder_.clear();
@@ -48654,7 +52302,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
          */
         public Builder removeIceCandidatePairs(int index) {
           if (iceCandidatePairsBuilder_ == null) {
@@ -48667,14 +52315,14 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair.Builder getIceCandidatePairsBuilder(
             int index) {
           return getIceCandidatePairsFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePairOrBuilder getIceCandidatePairsOrBuilder(
             int index) {
@@ -48684,7 +52332,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
          */
         public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePairOrBuilder> 
              getIceCandidatePairsOrBuilderList() {
@@ -48695,14 +52343,14 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair.Builder addIceCandidatePairsBuilder() {
           return getIceCandidatePairsFieldBuilder().addBuilder(
               org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair.Builder addIceCandidatePairsBuilder(
             int index) {
@@ -48710,7 +52358,7 @@ public final class ProtobufSamples {
               index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceCandidatePair iceCandidatePairs = 7;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair.Builder> 
              getIceCandidatePairsBuilderList() {
@@ -48723,7 +52371,7 @@ public final class ProtobufSamples {
             iceCandidatePairsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePair.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceCandidatePairOrBuilder>(
                     iceCandidatePairs_,
-                    ((bitField0_ & 0x00000010) != 0),
+                    ((bitField0_ & 0x00000040) != 0),
                     getParentForChildren(),
                     isClean());
             iceCandidatePairs_ = null;
@@ -48734,9 +52382,9 @@ public final class ProtobufSamples {
         private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate> iceLocalCandidates_ =
           java.util.Collections.emptyList();
         private void ensureIceLocalCandidatesIsMutable() {
-          if (!((bitField0_ & 0x00000020) != 0)) {
+          if (!((bitField0_ & 0x00000080) != 0)) {
             iceLocalCandidates_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate>(iceLocalCandidates_);
-            bitField0_ |= 0x00000020;
+            bitField0_ |= 0x00000080;
            }
         }
 
@@ -48744,7 +52392,7 @@ public final class ProtobufSamples {
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidateOrBuilder> iceLocalCandidatesBuilder_;
 
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate> getIceLocalCandidatesList() {
           if (iceLocalCandidatesBuilder_ == null) {
@@ -48754,7 +52402,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
          */
         public int getIceLocalCandidatesCount() {
           if (iceLocalCandidatesBuilder_ == null) {
@@ -48764,7 +52412,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate getIceLocalCandidates(int index) {
           if (iceLocalCandidatesBuilder_ == null) {
@@ -48774,7 +52422,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
          */
         public Builder setIceLocalCandidates(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate value) {
@@ -48791,7 +52439,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
          */
         public Builder setIceLocalCandidates(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate.Builder builderForValue) {
@@ -48805,7 +52453,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
          */
         public Builder addIceLocalCandidates(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate value) {
           if (iceLocalCandidatesBuilder_ == null) {
@@ -48821,7 +52469,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
          */
         public Builder addIceLocalCandidates(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate value) {
@@ -48838,7 +52486,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
          */
         public Builder addIceLocalCandidates(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate.Builder builderForValue) {
@@ -48852,7 +52500,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
          */
         public Builder addIceLocalCandidates(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate.Builder builderForValue) {
@@ -48866,7 +52514,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
          */
         public Builder addAllIceLocalCandidates(
             java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate> values) {
@@ -48881,12 +52529,12 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
          */
         public Builder clearIceLocalCandidates() {
           if (iceLocalCandidatesBuilder_ == null) {
             iceLocalCandidates_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000020);
+            bitField0_ = (bitField0_ & ~0x00000080);
             onChanged();
           } else {
             iceLocalCandidatesBuilder_.clear();
@@ -48894,7 +52542,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
          */
         public Builder removeIceLocalCandidates(int index) {
           if (iceLocalCandidatesBuilder_ == null) {
@@ -48907,14 +52555,14 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate.Builder getIceLocalCandidatesBuilder(
             int index) {
           return getIceLocalCandidatesFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidateOrBuilder getIceLocalCandidatesOrBuilder(
             int index) {
@@ -48924,7 +52572,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
          */
         public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidateOrBuilder> 
              getIceLocalCandidatesOrBuilderList() {
@@ -48935,14 +52583,14 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate.Builder addIceLocalCandidatesBuilder() {
           return getIceLocalCandidatesFieldBuilder().addBuilder(
               org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate.Builder addIceLocalCandidatesBuilder(
             int index) {
@@ -48950,7 +52598,7 @@ public final class ProtobufSamples {
               index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 6;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceLocalCandidate iceLocalCandidates = 8;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate.Builder> 
              getIceLocalCandidatesBuilderList() {
@@ -48963,7 +52611,7 @@ public final class ProtobufSamples {
             iceLocalCandidatesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidate.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceLocalCandidateOrBuilder>(
                     iceLocalCandidates_,
-                    ((bitField0_ & 0x00000020) != 0),
+                    ((bitField0_ & 0x00000080) != 0),
                     getParentForChildren(),
                     isClean());
             iceLocalCandidates_ = null;
@@ -48974,9 +52622,9 @@ public final class ProtobufSamples {
         private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate> iceRemoteCandidates_ =
           java.util.Collections.emptyList();
         private void ensureIceRemoteCandidatesIsMutable() {
-          if (!((bitField0_ & 0x00000040) != 0)) {
+          if (!((bitField0_ & 0x00000100) != 0)) {
             iceRemoteCandidates_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate>(iceRemoteCandidates_);
-            bitField0_ |= 0x00000040;
+            bitField0_ |= 0x00000100;
            }
         }
 
@@ -48984,7 +52632,7 @@ public final class ProtobufSamples {
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidateOrBuilder> iceRemoteCandidatesBuilder_;
 
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate> getIceRemoteCandidatesList() {
           if (iceRemoteCandidatesBuilder_ == null) {
@@ -48994,7 +52642,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
          */
         public int getIceRemoteCandidatesCount() {
           if (iceRemoteCandidatesBuilder_ == null) {
@@ -49004,7 +52652,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate getIceRemoteCandidates(int index) {
           if (iceRemoteCandidatesBuilder_ == null) {
@@ -49014,7 +52662,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
          */
         public Builder setIceRemoteCandidates(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate value) {
@@ -49031,7 +52679,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
          */
         public Builder setIceRemoteCandidates(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate.Builder builderForValue) {
@@ -49045,7 +52693,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
          */
         public Builder addIceRemoteCandidates(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate value) {
           if (iceRemoteCandidatesBuilder_ == null) {
@@ -49061,7 +52709,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
          */
         public Builder addIceRemoteCandidates(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate value) {
@@ -49078,7 +52726,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
          */
         public Builder addIceRemoteCandidates(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate.Builder builderForValue) {
@@ -49092,7 +52740,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
          */
         public Builder addIceRemoteCandidates(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate.Builder builderForValue) {
@@ -49106,7 +52754,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
          */
         public Builder addAllIceRemoteCandidates(
             java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate> values) {
@@ -49121,12 +52769,12 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
          */
         public Builder clearIceRemoteCandidates() {
           if (iceRemoteCandidatesBuilder_ == null) {
             iceRemoteCandidates_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000040);
+            bitField0_ = (bitField0_ & ~0x00000100);
             onChanged();
           } else {
             iceRemoteCandidatesBuilder_.clear();
@@ -49134,7 +52782,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
          */
         public Builder removeIceRemoteCandidates(int index) {
           if (iceRemoteCandidatesBuilder_ == null) {
@@ -49147,14 +52795,14 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate.Builder getIceRemoteCandidatesBuilder(
             int index) {
           return getIceRemoteCandidatesFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidateOrBuilder getIceRemoteCandidatesOrBuilder(
             int index) {
@@ -49164,7 +52812,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
          */
         public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidateOrBuilder> 
              getIceRemoteCandidatesOrBuilderList() {
@@ -49175,14 +52823,14 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate.Builder addIceRemoteCandidatesBuilder() {
           return getIceRemoteCandidatesFieldBuilder().addBuilder(
               org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate.Builder addIceRemoteCandidatesBuilder(
             int index) {
@@ -49190,7 +52838,7 @@ public final class ProtobufSamples {
               index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 7;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.IceRemoteCandidate iceRemoteCandidates = 9;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate.Builder> 
              getIceRemoteCandidatesBuilderList() {
@@ -49203,7 +52851,7 @@ public final class ProtobufSamples {
             iceRemoteCandidatesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidate.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.IceRemoteCandidateOrBuilder>(
                     iceRemoteCandidates_,
-                    ((bitField0_ & 0x00000040) != 0),
+                    ((bitField0_ & 0x00000100) != 0),
                     getParentForChildren(),
                     isClean());
             iceRemoteCandidates_ = null;
@@ -49213,13 +52861,13 @@ public final class ProtobufSamples {
 
         private com.google.protobuf.LazyStringList iceServers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         private void ensureIceServersIsMutable() {
-          if (!((bitField0_ & 0x00000080) != 0)) {
+          if (!((bitField0_ & 0x00000200) != 0)) {
             iceServers_ = new com.google.protobuf.LazyStringArrayList(iceServers_);
-            bitField0_ |= 0x00000080;
+            bitField0_ |= 0x00000200;
            }
         }
         /**
-         * <code>repeated string iceServers = 8;</code>
+         * <code>repeated string iceServers = 10;</code>
          * @return A list containing the iceServers.
          */
         public com.google.protobuf.ProtocolStringList
@@ -49227,14 +52875,14 @@ public final class ProtobufSamples {
           return iceServers_.getUnmodifiableView();
         }
         /**
-         * <code>repeated string iceServers = 8;</code>
+         * <code>repeated string iceServers = 10;</code>
          * @return The count of iceServers.
          */
         public int getIceServersCount() {
           return iceServers_.size();
         }
         /**
-         * <code>repeated string iceServers = 8;</code>
+         * <code>repeated string iceServers = 10;</code>
          * @param index The index of the element to return.
          * @return The iceServers at the given index.
          */
@@ -49242,7 +52890,7 @@ public final class ProtobufSamples {
           return iceServers_.get(index);
         }
         /**
-         * <code>repeated string iceServers = 8;</code>
+         * <code>repeated string iceServers = 10;</code>
          * @param index The index of the value to return.
          * @return The bytes of the iceServers at the given index.
          */
@@ -49251,7 +52899,7 @@ public final class ProtobufSamples {
           return iceServers_.getByteString(index);
         }
         /**
-         * <code>repeated string iceServers = 8;</code>
+         * <code>repeated string iceServers = 10;</code>
          * @param index The index to set the value at.
          * @param value The iceServers to set.
          * @return This builder for chaining.
@@ -49267,7 +52915,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated string iceServers = 8;</code>
+         * <code>repeated string iceServers = 10;</code>
          * @param value The iceServers to add.
          * @return This builder for chaining.
          */
@@ -49282,7 +52930,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated string iceServers = 8;</code>
+         * <code>repeated string iceServers = 10;</code>
          * @param values The iceServers to add.
          * @return This builder for chaining.
          */
@@ -49295,17 +52943,17 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated string iceServers = 8;</code>
+         * <code>repeated string iceServers = 10;</code>
          * @return This builder for chaining.
          */
         public Builder clearIceServers() {
           iceServers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-          bitField0_ = (bitField0_ & ~0x00000080);
+          bitField0_ = (bitField0_ & ~0x00000200);
           onChanged();
           return this;
         }
         /**
-         * <code>repeated string iceServers = 8;</code>
+         * <code>repeated string iceServers = 10;</code>
          * @param value The bytes of the iceServers to add.
          * @return This builder for chaining.
          */
@@ -49323,9 +52971,9 @@ public final class ProtobufSamples {
         private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack> inboundAudioTracks_ =
           java.util.Collections.emptyList();
         private void ensureInboundAudioTracksIsMutable() {
-          if (!((bitField0_ & 0x00000100) != 0)) {
+          if (!((bitField0_ & 0x00000400) != 0)) {
             inboundAudioTracks_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack>(inboundAudioTracks_);
-            bitField0_ |= 0x00000100;
+            bitField0_ |= 0x00000400;
            }
         }
 
@@ -49333,7 +52981,7 @@ public final class ProtobufSamples {
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrackOrBuilder> inboundAudioTracksBuilder_;
 
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack> getInboundAudioTracksList() {
           if (inboundAudioTracksBuilder_ == null) {
@@ -49343,7 +52991,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
          */
         public int getInboundAudioTracksCount() {
           if (inboundAudioTracksBuilder_ == null) {
@@ -49353,7 +53001,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack getInboundAudioTracks(int index) {
           if (inboundAudioTracksBuilder_ == null) {
@@ -49363,7 +53011,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
          */
         public Builder setInboundAudioTracks(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack value) {
@@ -49380,7 +53028,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
          */
         public Builder setInboundAudioTracks(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack.Builder builderForValue) {
@@ -49394,7 +53042,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
          */
         public Builder addInboundAudioTracks(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack value) {
           if (inboundAudioTracksBuilder_ == null) {
@@ -49410,7 +53058,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
          */
         public Builder addInboundAudioTracks(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack value) {
@@ -49427,7 +53075,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
          */
         public Builder addInboundAudioTracks(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack.Builder builderForValue) {
@@ -49441,7 +53089,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
          */
         public Builder addInboundAudioTracks(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack.Builder builderForValue) {
@@ -49455,7 +53103,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
          */
         public Builder addAllInboundAudioTracks(
             java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack> values) {
@@ -49470,12 +53118,12 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
          */
         public Builder clearInboundAudioTracks() {
           if (inboundAudioTracksBuilder_ == null) {
             inboundAudioTracks_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000100);
+            bitField0_ = (bitField0_ & ~0x00000400);
             onChanged();
           } else {
             inboundAudioTracksBuilder_.clear();
@@ -49483,7 +53131,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
          */
         public Builder removeInboundAudioTracks(int index) {
           if (inboundAudioTracksBuilder_ == null) {
@@ -49496,14 +53144,14 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack.Builder getInboundAudioTracksBuilder(
             int index) {
           return getInboundAudioTracksFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrackOrBuilder getInboundAudioTracksOrBuilder(
             int index) {
@@ -49513,7 +53161,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
          */
         public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrackOrBuilder> 
              getInboundAudioTracksOrBuilderList() {
@@ -49524,14 +53172,14 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack.Builder addInboundAudioTracksBuilder() {
           return getInboundAudioTracksFieldBuilder().addBuilder(
               org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack.Builder addInboundAudioTracksBuilder(
             int index) {
@@ -49539,7 +53187,7 @@ public final class ProtobufSamples {
               index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 9;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundAudioTrack inboundAudioTracks = 11;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack.Builder> 
              getInboundAudioTracksBuilderList() {
@@ -49552,7 +53200,7 @@ public final class ProtobufSamples {
             inboundAudioTracksBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrack.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundAudioTrackOrBuilder>(
                     inboundAudioTracks_,
-                    ((bitField0_ & 0x00000100) != 0),
+                    ((bitField0_ & 0x00000400) != 0),
                     getParentForChildren(),
                     isClean());
             inboundAudioTracks_ = null;
@@ -49563,9 +53211,9 @@ public final class ProtobufSamples {
         private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack> inboundVideoTracks_ =
           java.util.Collections.emptyList();
         private void ensureInboundVideoTracksIsMutable() {
-          if (!((bitField0_ & 0x00000200) != 0)) {
+          if (!((bitField0_ & 0x00000800) != 0)) {
             inboundVideoTracks_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack>(inboundVideoTracks_);
-            bitField0_ |= 0x00000200;
+            bitField0_ |= 0x00000800;
            }
         }
 
@@ -49573,7 +53221,7 @@ public final class ProtobufSamples {
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrackOrBuilder> inboundVideoTracksBuilder_;
 
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack> getInboundVideoTracksList() {
           if (inboundVideoTracksBuilder_ == null) {
@@ -49583,7 +53231,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
          */
         public int getInboundVideoTracksCount() {
           if (inboundVideoTracksBuilder_ == null) {
@@ -49593,7 +53241,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack getInboundVideoTracks(int index) {
           if (inboundVideoTracksBuilder_ == null) {
@@ -49603,7 +53251,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
          */
         public Builder setInboundVideoTracks(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack value) {
@@ -49620,7 +53268,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
          */
         public Builder setInboundVideoTracks(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack.Builder builderForValue) {
@@ -49634,7 +53282,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
          */
         public Builder addInboundVideoTracks(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack value) {
           if (inboundVideoTracksBuilder_ == null) {
@@ -49650,7 +53298,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
          */
         public Builder addInboundVideoTracks(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack value) {
@@ -49667,7 +53315,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
          */
         public Builder addInboundVideoTracks(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack.Builder builderForValue) {
@@ -49681,7 +53329,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
          */
         public Builder addInboundVideoTracks(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack.Builder builderForValue) {
@@ -49695,7 +53343,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
          */
         public Builder addAllInboundVideoTracks(
             java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack> values) {
@@ -49710,12 +53358,12 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
          */
         public Builder clearInboundVideoTracks() {
           if (inboundVideoTracksBuilder_ == null) {
             inboundVideoTracks_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000200);
+            bitField0_ = (bitField0_ & ~0x00000800);
             onChanged();
           } else {
             inboundVideoTracksBuilder_.clear();
@@ -49723,7 +53371,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
          */
         public Builder removeInboundVideoTracks(int index) {
           if (inboundVideoTracksBuilder_ == null) {
@@ -49736,14 +53384,14 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack.Builder getInboundVideoTracksBuilder(
             int index) {
           return getInboundVideoTracksFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrackOrBuilder getInboundVideoTracksOrBuilder(
             int index) {
@@ -49753,7 +53401,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
          */
         public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrackOrBuilder> 
              getInboundVideoTracksOrBuilderList() {
@@ -49764,14 +53412,14 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack.Builder addInboundVideoTracksBuilder() {
           return getInboundVideoTracksFieldBuilder().addBuilder(
               org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack.Builder addInboundVideoTracksBuilder(
             int index) {
@@ -49779,7 +53427,7 @@ public final class ProtobufSamples {
               index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 10;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.InboundVideoTrack inboundVideoTracks = 12;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack.Builder> 
              getInboundVideoTracksBuilderList() {
@@ -49792,7 +53440,7 @@ public final class ProtobufSamples {
             inboundVideoTracksBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrack.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.InboundVideoTrackOrBuilder>(
                     inboundVideoTracks_,
-                    ((bitField0_ & 0x00000200) != 0),
+                    ((bitField0_ & 0x00000800) != 0),
                     getParentForChildren(),
                     isClean());
             inboundVideoTracks_ = null;
@@ -49802,13 +53450,13 @@ public final class ProtobufSamples {
 
         private com.google.protobuf.LazyStringList localSDPs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         private void ensureLocalSDPsIsMutable() {
-          if (!((bitField0_ & 0x00000400) != 0)) {
+          if (!((bitField0_ & 0x00001000) != 0)) {
             localSDPs_ = new com.google.protobuf.LazyStringArrayList(localSDPs_);
-            bitField0_ |= 0x00000400;
+            bitField0_ |= 0x00001000;
            }
         }
         /**
-         * <code>repeated string localSDPs = 11;</code>
+         * <code>repeated string localSDPs = 13;</code>
          * @return A list containing the localSDPs.
          */
         public com.google.protobuf.ProtocolStringList
@@ -49816,14 +53464,14 @@ public final class ProtobufSamples {
           return localSDPs_.getUnmodifiableView();
         }
         /**
-         * <code>repeated string localSDPs = 11;</code>
+         * <code>repeated string localSDPs = 13;</code>
          * @return The count of localSDPs.
          */
         public int getLocalSDPsCount() {
           return localSDPs_.size();
         }
         /**
-         * <code>repeated string localSDPs = 11;</code>
+         * <code>repeated string localSDPs = 13;</code>
          * @param index The index of the element to return.
          * @return The localSDPs at the given index.
          */
@@ -49831,7 +53479,7 @@ public final class ProtobufSamples {
           return localSDPs_.get(index);
         }
         /**
-         * <code>repeated string localSDPs = 11;</code>
+         * <code>repeated string localSDPs = 13;</code>
          * @param index The index of the value to return.
          * @return The bytes of the localSDPs at the given index.
          */
@@ -49840,7 +53488,7 @@ public final class ProtobufSamples {
           return localSDPs_.getByteString(index);
         }
         /**
-         * <code>repeated string localSDPs = 11;</code>
+         * <code>repeated string localSDPs = 13;</code>
          * @param index The index to set the value at.
          * @param value The localSDPs to set.
          * @return This builder for chaining.
@@ -49856,7 +53504,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated string localSDPs = 11;</code>
+         * <code>repeated string localSDPs = 13;</code>
          * @param value The localSDPs to add.
          * @return This builder for chaining.
          */
@@ -49871,7 +53519,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated string localSDPs = 11;</code>
+         * <code>repeated string localSDPs = 13;</code>
          * @param values The localSDPs to add.
          * @return This builder for chaining.
          */
@@ -49884,17 +53532,17 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated string localSDPs = 11;</code>
+         * <code>repeated string localSDPs = 13;</code>
          * @return This builder for chaining.
          */
         public Builder clearLocalSDPs() {
           localSDPs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-          bitField0_ = (bitField0_ & ~0x00000400);
+          bitField0_ = (bitField0_ & ~0x00001000);
           onChanged();
           return this;
         }
         /**
-         * <code>repeated string localSDPs = 11;</code>
+         * <code>repeated string localSDPs = 13;</code>
          * @param value The bytes of the localSDPs to add.
          * @return This builder for chaining.
          */
@@ -49911,13 +53559,13 @@ public final class ProtobufSamples {
 
         private com.google.protobuf.LazyStringList mediaConstraints_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         private void ensureMediaConstraintsIsMutable() {
-          if (!((bitField0_ & 0x00000800) != 0)) {
+          if (!((bitField0_ & 0x00002000) != 0)) {
             mediaConstraints_ = new com.google.protobuf.LazyStringArrayList(mediaConstraints_);
-            bitField0_ |= 0x00000800;
+            bitField0_ |= 0x00002000;
            }
         }
         /**
-         * <code>repeated string mediaConstraints = 12;</code>
+         * <code>repeated string mediaConstraints = 14;</code>
          * @return A list containing the mediaConstraints.
          */
         public com.google.protobuf.ProtocolStringList
@@ -49925,14 +53573,14 @@ public final class ProtobufSamples {
           return mediaConstraints_.getUnmodifiableView();
         }
         /**
-         * <code>repeated string mediaConstraints = 12;</code>
+         * <code>repeated string mediaConstraints = 14;</code>
          * @return The count of mediaConstraints.
          */
         public int getMediaConstraintsCount() {
           return mediaConstraints_.size();
         }
         /**
-         * <code>repeated string mediaConstraints = 12;</code>
+         * <code>repeated string mediaConstraints = 14;</code>
          * @param index The index of the element to return.
          * @return The mediaConstraints at the given index.
          */
@@ -49940,7 +53588,7 @@ public final class ProtobufSamples {
           return mediaConstraints_.get(index);
         }
         /**
-         * <code>repeated string mediaConstraints = 12;</code>
+         * <code>repeated string mediaConstraints = 14;</code>
          * @param index The index of the value to return.
          * @return The bytes of the mediaConstraints at the given index.
          */
@@ -49949,7 +53597,7 @@ public final class ProtobufSamples {
           return mediaConstraints_.getByteString(index);
         }
         /**
-         * <code>repeated string mediaConstraints = 12;</code>
+         * <code>repeated string mediaConstraints = 14;</code>
          * @param index The index to set the value at.
          * @param value The mediaConstraints to set.
          * @return This builder for chaining.
@@ -49965,7 +53613,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated string mediaConstraints = 12;</code>
+         * <code>repeated string mediaConstraints = 14;</code>
          * @param value The mediaConstraints to add.
          * @return This builder for chaining.
          */
@@ -49980,7 +53628,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated string mediaConstraints = 12;</code>
+         * <code>repeated string mediaConstraints = 14;</code>
          * @param values The mediaConstraints to add.
          * @return This builder for chaining.
          */
@@ -49993,17 +53641,17 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated string mediaConstraints = 12;</code>
+         * <code>repeated string mediaConstraints = 14;</code>
          * @return This builder for chaining.
          */
         public Builder clearMediaConstraints() {
           mediaConstraints_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-          bitField0_ = (bitField0_ & ~0x00000800);
+          bitField0_ = (bitField0_ & ~0x00002000);
           onChanged();
           return this;
         }
         /**
-         * <code>repeated string mediaConstraints = 12;</code>
+         * <code>repeated string mediaConstraints = 14;</code>
          * @param value The bytes of the mediaConstraints to add.
          * @return This builder for chaining.
          */
@@ -50021,9 +53669,9 @@ public final class ProtobufSamples {
         private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice> mediaDevices_ =
           java.util.Collections.emptyList();
         private void ensureMediaDevicesIsMutable() {
-          if (!((bitField0_ & 0x00001000) != 0)) {
+          if (!((bitField0_ & 0x00004000) != 0)) {
             mediaDevices_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice>(mediaDevices_);
-            bitField0_ |= 0x00001000;
+            bitField0_ |= 0x00004000;
            }
         }
 
@@ -50031,7 +53679,7 @@ public final class ProtobufSamples {
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDeviceOrBuilder> mediaDevicesBuilder_;
 
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice> getMediaDevicesList() {
           if (mediaDevicesBuilder_ == null) {
@@ -50041,7 +53689,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
          */
         public int getMediaDevicesCount() {
           if (mediaDevicesBuilder_ == null) {
@@ -50051,7 +53699,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice getMediaDevices(int index) {
           if (mediaDevicesBuilder_ == null) {
@@ -50061,7 +53709,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
          */
         public Builder setMediaDevices(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice value) {
@@ -50078,7 +53726,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
          */
         public Builder setMediaDevices(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice.Builder builderForValue) {
@@ -50092,7 +53740,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
          */
         public Builder addMediaDevices(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice value) {
           if (mediaDevicesBuilder_ == null) {
@@ -50108,7 +53756,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
          */
         public Builder addMediaDevices(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice value) {
@@ -50125,7 +53773,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
          */
         public Builder addMediaDevices(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice.Builder builderForValue) {
@@ -50139,7 +53787,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
          */
         public Builder addMediaDevices(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice.Builder builderForValue) {
@@ -50153,7 +53801,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
          */
         public Builder addAllMediaDevices(
             java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice> values) {
@@ -50168,12 +53816,12 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
          */
         public Builder clearMediaDevices() {
           if (mediaDevicesBuilder_ == null) {
             mediaDevices_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00001000);
+            bitField0_ = (bitField0_ & ~0x00004000);
             onChanged();
           } else {
             mediaDevicesBuilder_.clear();
@@ -50181,7 +53829,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
          */
         public Builder removeMediaDevices(int index) {
           if (mediaDevicesBuilder_ == null) {
@@ -50194,14 +53842,14 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice.Builder getMediaDevicesBuilder(
             int index) {
           return getMediaDevicesFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDeviceOrBuilder getMediaDevicesOrBuilder(
             int index) {
@@ -50211,7 +53859,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
          */
         public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDeviceOrBuilder> 
              getMediaDevicesOrBuilderList() {
@@ -50222,14 +53870,14 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice.Builder addMediaDevicesBuilder() {
           return getMediaDevicesFieldBuilder().addBuilder(
               org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice.Builder addMediaDevicesBuilder(
             int index) {
@@ -50237,7 +53885,7 @@ public final class ProtobufSamples {
               index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 13;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaDevice mediaDevices = 15;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice.Builder> 
              getMediaDevicesBuilderList() {
@@ -50250,7 +53898,7 @@ public final class ProtobufSamples {
             mediaDevicesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDevice.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaDeviceOrBuilder>(
                     mediaDevices_,
-                    ((bitField0_ & 0x00001000) != 0),
+                    ((bitField0_ & 0x00004000) != 0),
                     getParentForChildren(),
                     isClean());
             mediaDevices_ = null;
@@ -50261,9 +53909,9 @@ public final class ProtobufSamples {
         private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat> mediaSources_ =
           java.util.Collections.emptyList();
         private void ensureMediaSourcesIsMutable() {
-          if (!((bitField0_ & 0x00002000) != 0)) {
+          if (!((bitField0_ & 0x00008000) != 0)) {
             mediaSources_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat>(mediaSources_);
-            bitField0_ |= 0x00002000;
+            bitField0_ |= 0x00008000;
            }
         }
 
@@ -50271,7 +53919,7 @@ public final class ProtobufSamples {
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStatOrBuilder> mediaSourcesBuilder_;
 
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat> getMediaSourcesList() {
           if (mediaSourcesBuilder_ == null) {
@@ -50281,7 +53929,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
          */
         public int getMediaSourcesCount() {
           if (mediaSourcesBuilder_ == null) {
@@ -50291,7 +53939,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat getMediaSources(int index) {
           if (mediaSourcesBuilder_ == null) {
@@ -50301,7 +53949,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
          */
         public Builder setMediaSources(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat value) {
@@ -50318,7 +53966,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
          */
         public Builder setMediaSources(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat.Builder builderForValue) {
@@ -50332,7 +53980,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
          */
         public Builder addMediaSources(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat value) {
           if (mediaSourcesBuilder_ == null) {
@@ -50348,7 +53996,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
          */
         public Builder addMediaSources(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat value) {
@@ -50365,7 +54013,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
          */
         public Builder addMediaSources(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat.Builder builderForValue) {
@@ -50379,7 +54027,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
          */
         public Builder addMediaSources(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat.Builder builderForValue) {
@@ -50393,7 +54041,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
          */
         public Builder addAllMediaSources(
             java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat> values) {
@@ -50408,12 +54056,12 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
          */
         public Builder clearMediaSources() {
           if (mediaSourcesBuilder_ == null) {
             mediaSources_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00002000);
+            bitField0_ = (bitField0_ & ~0x00008000);
             onChanged();
           } else {
             mediaSourcesBuilder_.clear();
@@ -50421,7 +54069,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
          */
         public Builder removeMediaSources(int index) {
           if (mediaSourcesBuilder_ == null) {
@@ -50434,14 +54082,14 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat.Builder getMediaSourcesBuilder(
             int index) {
           return getMediaSourcesFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStatOrBuilder getMediaSourcesOrBuilder(
             int index) {
@@ -50451,7 +54099,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
          */
         public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStatOrBuilder> 
              getMediaSourcesOrBuilderList() {
@@ -50462,14 +54110,14 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat.Builder addMediaSourcesBuilder() {
           return getMediaSourcesFieldBuilder().addBuilder(
               org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat.Builder addMediaSourcesBuilder(
             int index) {
@@ -50477,7 +54125,7 @@ public final class ProtobufSamples {
               index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 14;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.MediaSourceStat mediaSources = 16;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat.Builder> 
              getMediaSourcesBuilderList() {
@@ -50490,7 +54138,7 @@ public final class ProtobufSamples {
             mediaSourcesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStat.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.MediaSourceStatOrBuilder>(
                     mediaSources_,
-                    ((bitField0_ & 0x00002000) != 0),
+                    ((bitField0_ & 0x00008000) != 0),
                     getParentForChildren(),
                     isClean());
             mediaSources_ = null;
@@ -50501,9 +54149,9 @@ public final class ProtobufSamples {
         private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack> outboundAudioTracks_ =
           java.util.Collections.emptyList();
         private void ensureOutboundAudioTracksIsMutable() {
-          if (!((bitField0_ & 0x00004000) != 0)) {
+          if (!((bitField0_ & 0x00010000) != 0)) {
             outboundAudioTracks_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack>(outboundAudioTracks_);
-            bitField0_ |= 0x00004000;
+            bitField0_ |= 0x00010000;
            }
         }
 
@@ -50511,7 +54159,7 @@ public final class ProtobufSamples {
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrackOrBuilder> outboundAudioTracksBuilder_;
 
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack> getOutboundAudioTracksList() {
           if (outboundAudioTracksBuilder_ == null) {
@@ -50521,7 +54169,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
          */
         public int getOutboundAudioTracksCount() {
           if (outboundAudioTracksBuilder_ == null) {
@@ -50531,7 +54179,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack getOutboundAudioTracks(int index) {
           if (outboundAudioTracksBuilder_ == null) {
@@ -50541,7 +54189,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
          */
         public Builder setOutboundAudioTracks(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack value) {
@@ -50558,7 +54206,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
          */
         public Builder setOutboundAudioTracks(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack.Builder builderForValue) {
@@ -50572,7 +54220,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
          */
         public Builder addOutboundAudioTracks(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack value) {
           if (outboundAudioTracksBuilder_ == null) {
@@ -50588,7 +54236,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
          */
         public Builder addOutboundAudioTracks(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack value) {
@@ -50605,7 +54253,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
          */
         public Builder addOutboundAudioTracks(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack.Builder builderForValue) {
@@ -50619,7 +54267,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
          */
         public Builder addOutboundAudioTracks(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack.Builder builderForValue) {
@@ -50633,7 +54281,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
          */
         public Builder addAllOutboundAudioTracks(
             java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack> values) {
@@ -50648,12 +54296,12 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
          */
         public Builder clearOutboundAudioTracks() {
           if (outboundAudioTracksBuilder_ == null) {
             outboundAudioTracks_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00004000);
+            bitField0_ = (bitField0_ & ~0x00010000);
             onChanged();
           } else {
             outboundAudioTracksBuilder_.clear();
@@ -50661,7 +54309,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
          */
         public Builder removeOutboundAudioTracks(int index) {
           if (outboundAudioTracksBuilder_ == null) {
@@ -50674,14 +54322,14 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack.Builder getOutboundAudioTracksBuilder(
             int index) {
           return getOutboundAudioTracksFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrackOrBuilder getOutboundAudioTracksOrBuilder(
             int index) {
@@ -50691,7 +54339,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
          */
         public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrackOrBuilder> 
              getOutboundAudioTracksOrBuilderList() {
@@ -50702,14 +54350,14 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack.Builder addOutboundAudioTracksBuilder() {
           return getOutboundAudioTracksFieldBuilder().addBuilder(
               org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack.Builder addOutboundAudioTracksBuilder(
             int index) {
@@ -50717,7 +54365,7 @@ public final class ProtobufSamples {
               index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 15;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundAudioTrack outboundAudioTracks = 17;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack.Builder> 
              getOutboundAudioTracksBuilderList() {
@@ -50730,7 +54378,7 @@ public final class ProtobufSamples {
             outboundAudioTracksBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrack.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundAudioTrackOrBuilder>(
                     outboundAudioTracks_,
-                    ((bitField0_ & 0x00004000) != 0),
+                    ((bitField0_ & 0x00010000) != 0),
                     getParentForChildren(),
                     isClean());
             outboundAudioTracks_ = null;
@@ -50741,9 +54389,9 @@ public final class ProtobufSamples {
         private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack> outboundVideoTracks_ =
           java.util.Collections.emptyList();
         private void ensureOutboundVideoTracksIsMutable() {
-          if (!((bitField0_ & 0x00008000) != 0)) {
+          if (!((bitField0_ & 0x00020000) != 0)) {
             outboundVideoTracks_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack>(outboundVideoTracks_);
-            bitField0_ |= 0x00008000;
+            bitField0_ |= 0x00020000;
            }
         }
 
@@ -50751,7 +54399,7 @@ public final class ProtobufSamples {
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrackOrBuilder> outboundVideoTracksBuilder_;
 
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack> getOutboundVideoTracksList() {
           if (outboundVideoTracksBuilder_ == null) {
@@ -50761,7 +54409,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
          */
         public int getOutboundVideoTracksCount() {
           if (outboundVideoTracksBuilder_ == null) {
@@ -50771,7 +54419,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack getOutboundVideoTracks(int index) {
           if (outboundVideoTracksBuilder_ == null) {
@@ -50781,7 +54429,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
          */
         public Builder setOutboundVideoTracks(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack value) {
@@ -50798,7 +54446,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
          */
         public Builder setOutboundVideoTracks(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack.Builder builderForValue) {
@@ -50812,7 +54460,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
          */
         public Builder addOutboundVideoTracks(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack value) {
           if (outboundVideoTracksBuilder_ == null) {
@@ -50828,7 +54476,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
          */
         public Builder addOutboundVideoTracks(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack value) {
@@ -50845,7 +54493,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
          */
         public Builder addOutboundVideoTracks(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack.Builder builderForValue) {
@@ -50859,7 +54507,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
          */
         public Builder addOutboundVideoTracks(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack.Builder builderForValue) {
@@ -50873,7 +54521,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
          */
         public Builder addAllOutboundVideoTracks(
             java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack> values) {
@@ -50888,12 +54536,12 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
          */
         public Builder clearOutboundVideoTracks() {
           if (outboundVideoTracksBuilder_ == null) {
             outboundVideoTracks_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00008000);
+            bitField0_ = (bitField0_ & ~0x00020000);
             onChanged();
           } else {
             outboundVideoTracksBuilder_.clear();
@@ -50901,7 +54549,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
          */
         public Builder removeOutboundVideoTracks(int index) {
           if (outboundVideoTracksBuilder_ == null) {
@@ -50914,14 +54562,14 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack.Builder getOutboundVideoTracksBuilder(
             int index) {
           return getOutboundVideoTracksFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrackOrBuilder getOutboundVideoTracksOrBuilder(
             int index) {
@@ -50931,7 +54579,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
          */
         public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrackOrBuilder> 
              getOutboundVideoTracksOrBuilderList() {
@@ -50942,14 +54590,14 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack.Builder addOutboundVideoTracksBuilder() {
           return getOutboundVideoTracksFieldBuilder().addBuilder(
               org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack.Builder addOutboundVideoTracksBuilder(
             int index) {
@@ -50957,7 +54605,7 @@ public final class ProtobufSamples {
               index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 16;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.OutboundVideoTrack outboundVideoTracks = 18;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack.Builder> 
              getOutboundVideoTracksBuilderList() {
@@ -50970,7 +54618,7 @@ public final class ProtobufSamples {
             outboundVideoTracksBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrack.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OutboundVideoTrackOrBuilder>(
                     outboundVideoTracks_,
-                    ((bitField0_ & 0x00008000) != 0),
+                    ((bitField0_ & 0x00020000) != 0),
                     getParentForChildren(),
                     isClean());
             outboundVideoTracks_ = null;
@@ -50981,9 +54629,9 @@ public final class ProtobufSamples {
         private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport> pcTransports_ =
           java.util.Collections.emptyList();
         private void ensurePcTransportsIsMutable() {
-          if (!((bitField0_ & 0x00010000) != 0)) {
+          if (!((bitField0_ & 0x00040000) != 0)) {
             pcTransports_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport>(pcTransports_);
-            bitField0_ |= 0x00010000;
+            bitField0_ |= 0x00040000;
            }
         }
 
@@ -50991,7 +54639,7 @@ public final class ProtobufSamples {
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransportOrBuilder> pcTransportsBuilder_;
 
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport> getPcTransportsList() {
           if (pcTransportsBuilder_ == null) {
@@ -51001,7 +54649,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
          */
         public int getPcTransportsCount() {
           if (pcTransportsBuilder_ == null) {
@@ -51011,7 +54659,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport getPcTransports(int index) {
           if (pcTransportsBuilder_ == null) {
@@ -51021,7 +54669,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
          */
         public Builder setPcTransports(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport value) {
@@ -51038,7 +54686,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
          */
         public Builder setPcTransports(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport.Builder builderForValue) {
@@ -51052,7 +54700,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
          */
         public Builder addPcTransports(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport value) {
           if (pcTransportsBuilder_ == null) {
@@ -51068,7 +54716,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
          */
         public Builder addPcTransports(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport value) {
@@ -51085,7 +54733,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
          */
         public Builder addPcTransports(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport.Builder builderForValue) {
@@ -51099,7 +54747,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
          */
         public Builder addPcTransports(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport.Builder builderForValue) {
@@ -51113,7 +54761,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
          */
         public Builder addAllPcTransports(
             java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport> values) {
@@ -51128,12 +54776,12 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
          */
         public Builder clearPcTransports() {
           if (pcTransportsBuilder_ == null) {
             pcTransports_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00010000);
+            bitField0_ = (bitField0_ & ~0x00040000);
             onChanged();
           } else {
             pcTransportsBuilder_.clear();
@@ -51141,7 +54789,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
          */
         public Builder removePcTransports(int index) {
           if (pcTransportsBuilder_ == null) {
@@ -51154,14 +54802,14 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport.Builder getPcTransportsBuilder(
             int index) {
           return getPcTransportsFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransportOrBuilder getPcTransportsOrBuilder(
             int index) {
@@ -51171,7 +54819,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
          */
         public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransportOrBuilder> 
              getPcTransportsOrBuilderList() {
@@ -51182,14 +54830,14 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport.Builder addPcTransportsBuilder() {
           return getPcTransportsFieldBuilder().addBuilder(
               org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport.Builder addPcTransportsBuilder(
             int index) {
@@ -51197,7 +54845,7 @@ public final class ProtobufSamples {
               index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 17;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.ClientSample.PeerConnectionTransport pcTransports = 19;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport.Builder> 
              getPcTransportsBuilderList() {
@@ -51210,7 +54858,7 @@ public final class ProtobufSamples {
             pcTransportsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransport.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PeerConnectionTransportOrBuilder>(
                     pcTransports_,
-                    ((bitField0_ & 0x00010000) != 0),
+                    ((bitField0_ & 0x00040000) != 0),
                     getParentForChildren(),
                     isClean());
             pcTransports_ = null;
@@ -51220,13 +54868,13 @@ public final class ProtobufSamples {
 
         private com.google.protobuf.LazyStringList userMediaErrors_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         private void ensureUserMediaErrorsIsMutable() {
-          if (!((bitField0_ & 0x00020000) != 0)) {
+          if (!((bitField0_ & 0x00080000) != 0)) {
             userMediaErrors_ = new com.google.protobuf.LazyStringArrayList(userMediaErrors_);
-            bitField0_ |= 0x00020000;
+            bitField0_ |= 0x00080000;
            }
         }
         /**
-         * <code>repeated string userMediaErrors = 18;</code>
+         * <code>repeated string userMediaErrors = 20;</code>
          * @return A list containing the userMediaErrors.
          */
         public com.google.protobuf.ProtocolStringList
@@ -51234,14 +54882,14 @@ public final class ProtobufSamples {
           return userMediaErrors_.getUnmodifiableView();
         }
         /**
-         * <code>repeated string userMediaErrors = 18;</code>
+         * <code>repeated string userMediaErrors = 20;</code>
          * @return The count of userMediaErrors.
          */
         public int getUserMediaErrorsCount() {
           return userMediaErrors_.size();
         }
         /**
-         * <code>repeated string userMediaErrors = 18;</code>
+         * <code>repeated string userMediaErrors = 20;</code>
          * @param index The index of the element to return.
          * @return The userMediaErrors at the given index.
          */
@@ -51249,7 +54897,7 @@ public final class ProtobufSamples {
           return userMediaErrors_.get(index);
         }
         /**
-         * <code>repeated string userMediaErrors = 18;</code>
+         * <code>repeated string userMediaErrors = 20;</code>
          * @param index The index of the value to return.
          * @return The bytes of the userMediaErrors at the given index.
          */
@@ -51258,7 +54906,7 @@ public final class ProtobufSamples {
           return userMediaErrors_.getByteString(index);
         }
         /**
-         * <code>repeated string userMediaErrors = 18;</code>
+         * <code>repeated string userMediaErrors = 20;</code>
          * @param index The index to set the value at.
          * @param value The userMediaErrors to set.
          * @return This builder for chaining.
@@ -51274,7 +54922,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated string userMediaErrors = 18;</code>
+         * <code>repeated string userMediaErrors = 20;</code>
          * @param value The userMediaErrors to add.
          * @return This builder for chaining.
          */
@@ -51289,7 +54937,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated string userMediaErrors = 18;</code>
+         * <code>repeated string userMediaErrors = 20;</code>
          * @param values The userMediaErrors to add.
          * @return This builder for chaining.
          */
@@ -51302,17 +54950,17 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated string userMediaErrors = 18;</code>
+         * <code>repeated string userMediaErrors = 20;</code>
          * @return This builder for chaining.
          */
         public Builder clearUserMediaErrors() {
           userMediaErrors_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-          bitField0_ = (bitField0_ & ~0x00020000);
+          bitField0_ = (bitField0_ & ~0x00080000);
           onChanged();
           return this;
         }
         /**
-         * <code>repeated string userMediaErrors = 18;</code>
+         * <code>repeated string userMediaErrors = 20;</code>
          * @param value The bytes of the userMediaErrors to add.
          * @return This builder for chaining.
          */
@@ -51329,14 +54977,14 @@ public final class ProtobufSamples {
 
         private java.lang.Object clientId_ = "";
         /**
-         * <code>required string clientId = 19;</code>
+         * <code>required string clientId = 21;</code>
          * @return Whether the clientId field is set.
          */
         public boolean hasClientId() {
-          return ((bitField0_ & 0x00040000) != 0);
+          return ((bitField0_ & 0x00100000) != 0);
         }
         /**
-         * <code>required string clientId = 19;</code>
+         * <code>required string clientId = 21;</code>
          * @return The clientId.
          */
         public java.lang.String getClientId() {
@@ -51354,7 +55002,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>required string clientId = 19;</code>
+         * <code>required string clientId = 21;</code>
          * @return The bytes for clientId.
          */
         public com.google.protobuf.ByteString
@@ -51371,7 +55019,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>required string clientId = 19;</code>
+         * <code>required string clientId = 21;</code>
          * @param value The clientId to set.
          * @return This builder for chaining.
          */
@@ -51380,23 +55028,23 @@ public final class ProtobufSamples {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00040000;
+  bitField0_ |= 0x00100000;
           clientId_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>required string clientId = 19;</code>
+         * <code>required string clientId = 21;</code>
          * @return This builder for chaining.
          */
         public Builder clearClientId() {
-          bitField0_ = (bitField0_ & ~0x00040000);
+          bitField0_ = (bitField0_ & ~0x00100000);
           clientId_ = getDefaultInstance().getClientId();
           onChanged();
           return this;
         }
         /**
-         * <code>required string clientId = 19;</code>
+         * <code>required string clientId = 21;</code>
          * @param value The bytes for clientId to set.
          * @return This builder for chaining.
          */
@@ -51405,7 +55053,7 @@ public final class ProtobufSamples {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00040000;
+  bitField0_ |= 0x00100000;
           clientId_ = value;
           onChanged();
           return this;
@@ -51413,15 +55061,15 @@ public final class ProtobufSamples {
 
         private long timestamp_ ;
         /**
-         * <code>required int64 timestamp = 20;</code>
+         * <code>required int64 timestamp = 22;</code>
          * @return Whether the timestamp field is set.
          */
         @java.lang.Override
         public boolean hasTimestamp() {
-          return ((bitField0_ & 0x00080000) != 0);
+          return ((bitField0_ & 0x00200000) != 0);
         }
         /**
-         * <code>required int64 timestamp = 20;</code>
+         * <code>required int64 timestamp = 22;</code>
          * @return The timestamp.
          */
         @java.lang.Override
@@ -51429,22 +55077,22 @@ public final class ProtobufSamples {
           return timestamp_;
         }
         /**
-         * <code>required int64 timestamp = 20;</code>
+         * <code>required int64 timestamp = 22;</code>
          * @param value The timestamp to set.
          * @return This builder for chaining.
          */
         public Builder setTimestamp(long value) {
-          bitField0_ |= 0x00080000;
+          bitField0_ |= 0x00200000;
           timestamp_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>required int64 timestamp = 20;</code>
+         * <code>required int64 timestamp = 22;</code>
          * @return This builder for chaining.
          */
         public Builder clearTimestamp() {
-          bitField0_ = (bitField0_ & ~0x00080000);
+          bitField0_ = (bitField0_ & ~0x00200000);
           timestamp_ = 0L;
           onChanged();
           return this;
@@ -51454,14 +55102,14 @@ public final class ProtobufSamples {
         private com.google.protobuf.SingleFieldBuilderV3<
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Browser, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Browser.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.BrowserOrBuilder> browserBuilder_;
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 21;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 23;</code>
          * @return Whether the browser field is set.
          */
         public boolean hasBrowser() {
-          return ((bitField0_ & 0x00100000) != 0);
+          return ((bitField0_ & 0x00400000) != 0);
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 21;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 23;</code>
          * @return The browser.
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Browser getBrowser() {
@@ -51472,7 +55120,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 21;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 23;</code>
          */
         public Builder setBrowser(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Browser value) {
           if (browserBuilder_ == null) {
@@ -51484,11 +55132,11 @@ public final class ProtobufSamples {
           } else {
             browserBuilder_.setMessage(value);
           }
-          bitField0_ |= 0x00100000;
+          bitField0_ |= 0x00400000;
           return this;
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 21;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 23;</code>
          */
         public Builder setBrowser(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Browser.Builder builderForValue) {
@@ -51498,15 +55146,15 @@ public final class ProtobufSamples {
           } else {
             browserBuilder_.setMessage(builderForValue.build());
           }
-          bitField0_ |= 0x00100000;
+          bitField0_ |= 0x00400000;
           return this;
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 21;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 23;</code>
          */
         public Builder mergeBrowser(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Browser value) {
           if (browserBuilder_ == null) {
-            if (((bitField0_ & 0x00100000) != 0) &&
+            if (((bitField0_ & 0x00400000) != 0) &&
                 browser_ != null &&
                 browser_ != org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Browser.getDefaultInstance()) {
               browser_ =
@@ -51518,11 +55166,11 @@ public final class ProtobufSamples {
           } else {
             browserBuilder_.mergeFrom(value);
           }
-          bitField0_ |= 0x00100000;
+          bitField0_ |= 0x00400000;
           return this;
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 21;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 23;</code>
          */
         public Builder clearBrowser() {
           if (browserBuilder_ == null) {
@@ -51531,19 +55179,19 @@ public final class ProtobufSamples {
           } else {
             browserBuilder_.clear();
           }
-          bitField0_ = (bitField0_ & ~0x00100000);
+          bitField0_ = (bitField0_ & ~0x00400000);
           return this;
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 21;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 23;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Browser.Builder getBrowserBuilder() {
-          bitField0_ |= 0x00100000;
+          bitField0_ |= 0x00400000;
           onChanged();
           return getBrowserFieldBuilder().getBuilder();
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 21;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 23;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.BrowserOrBuilder getBrowserOrBuilder() {
           if (browserBuilder_ != null) {
@@ -51554,7 +55202,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 21;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Browser browser = 23;</code>
          */
         private com.google.protobuf.SingleFieldBuilderV3<
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Browser, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Browser.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.BrowserOrBuilder> 
@@ -51572,14 +55220,14 @@ public final class ProtobufSamples {
 
         private java.lang.Object callId_ = "";
         /**
-         * <code>optional string callId = 22;</code>
+         * <code>optional string callId = 24;</code>
          * @return Whether the callId field is set.
          */
         public boolean hasCallId() {
-          return ((bitField0_ & 0x00200000) != 0);
+          return ((bitField0_ & 0x00800000) != 0);
         }
         /**
-         * <code>optional string callId = 22;</code>
+         * <code>optional string callId = 24;</code>
          * @return The callId.
          */
         public java.lang.String getCallId() {
@@ -51597,7 +55245,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional string callId = 22;</code>
+         * <code>optional string callId = 24;</code>
          * @return The bytes for callId.
          */
         public com.google.protobuf.ByteString
@@ -51614,7 +55262,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional string callId = 22;</code>
+         * <code>optional string callId = 24;</code>
          * @param value The callId to set.
          * @return This builder for chaining.
          */
@@ -51623,23 +55271,23 @@ public final class ProtobufSamples {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00200000;
+  bitField0_ |= 0x00800000;
           callId_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional string callId = 22;</code>
+         * <code>optional string callId = 24;</code>
          * @return This builder for chaining.
          */
         public Builder clearCallId() {
-          bitField0_ = (bitField0_ & ~0x00200000);
+          bitField0_ = (bitField0_ & ~0x00800000);
           callId_ = getDefaultInstance().getCallId();
           onChanged();
           return this;
         }
         /**
-         * <code>optional string callId = 22;</code>
+         * <code>optional string callId = 24;</code>
          * @param value The bytes for callId to set.
          * @return This builder for chaining.
          */
@@ -51648,7 +55296,7 @@ public final class ProtobufSamples {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00200000;
+  bitField0_ |= 0x00800000;
           callId_ = value;
           onChanged();
           return this;
@@ -51658,14 +55306,14 @@ public final class ProtobufSamples {
         private com.google.protobuf.SingleFieldBuilderV3<
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Engine, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Engine.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.EngineOrBuilder> engineBuilder_;
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 23;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 25;</code>
          * @return Whether the engine field is set.
          */
         public boolean hasEngine() {
-          return ((bitField0_ & 0x00400000) != 0);
+          return ((bitField0_ & 0x01000000) != 0);
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 23;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 25;</code>
          * @return The engine.
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Engine getEngine() {
@@ -51676,7 +55324,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 23;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 25;</code>
          */
         public Builder setEngine(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Engine value) {
           if (engineBuilder_ == null) {
@@ -51688,11 +55336,11 @@ public final class ProtobufSamples {
           } else {
             engineBuilder_.setMessage(value);
           }
-          bitField0_ |= 0x00400000;
+          bitField0_ |= 0x01000000;
           return this;
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 23;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 25;</code>
          */
         public Builder setEngine(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Engine.Builder builderForValue) {
@@ -51702,15 +55350,15 @@ public final class ProtobufSamples {
           } else {
             engineBuilder_.setMessage(builderForValue.build());
           }
-          bitField0_ |= 0x00400000;
+          bitField0_ |= 0x01000000;
           return this;
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 23;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 25;</code>
          */
         public Builder mergeEngine(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Engine value) {
           if (engineBuilder_ == null) {
-            if (((bitField0_ & 0x00400000) != 0) &&
+            if (((bitField0_ & 0x01000000) != 0) &&
                 engine_ != null &&
                 engine_ != org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Engine.getDefaultInstance()) {
               engine_ =
@@ -51722,11 +55370,11 @@ public final class ProtobufSamples {
           } else {
             engineBuilder_.mergeFrom(value);
           }
-          bitField0_ |= 0x00400000;
+          bitField0_ |= 0x01000000;
           return this;
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 23;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 25;</code>
          */
         public Builder clearEngine() {
           if (engineBuilder_ == null) {
@@ -51735,19 +55383,19 @@ public final class ProtobufSamples {
           } else {
             engineBuilder_.clear();
           }
-          bitField0_ = (bitField0_ & ~0x00400000);
+          bitField0_ = (bitField0_ & ~0x01000000);
           return this;
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 23;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 25;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Engine.Builder getEngineBuilder() {
-          bitField0_ |= 0x00400000;
+          bitField0_ |= 0x01000000;
           onChanged();
           return getEngineFieldBuilder().getBuilder();
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 23;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 25;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.EngineOrBuilder getEngineOrBuilder() {
           if (engineBuilder_ != null) {
@@ -51758,7 +55406,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 23;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Engine engine = 25;</code>
          */
         private com.google.protobuf.SingleFieldBuilderV3<
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Engine, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Engine.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.EngineOrBuilder> 
@@ -51776,14 +55424,14 @@ public final class ProtobufSamples {
 
         private java.lang.Object marker_ = "";
         /**
-         * <code>optional string marker = 24;</code>
+         * <code>optional string marker = 26;</code>
          * @return Whether the marker field is set.
          */
         public boolean hasMarker() {
-          return ((bitField0_ & 0x00800000) != 0);
+          return ((bitField0_ & 0x02000000) != 0);
         }
         /**
-         * <code>optional string marker = 24;</code>
+         * <code>optional string marker = 26;</code>
          * @return The marker.
          */
         public java.lang.String getMarker() {
@@ -51801,7 +55449,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional string marker = 24;</code>
+         * <code>optional string marker = 26;</code>
          * @return The bytes for marker.
          */
         public com.google.protobuf.ByteString
@@ -51818,7 +55466,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional string marker = 24;</code>
+         * <code>optional string marker = 26;</code>
          * @param value The marker to set.
          * @return This builder for chaining.
          */
@@ -51827,23 +55475,23 @@ public final class ProtobufSamples {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00800000;
+  bitField0_ |= 0x02000000;
           marker_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional string marker = 24;</code>
+         * <code>optional string marker = 26;</code>
          * @return This builder for chaining.
          */
         public Builder clearMarker() {
-          bitField0_ = (bitField0_ & ~0x00800000);
+          bitField0_ = (bitField0_ & ~0x02000000);
           marker_ = getDefaultInstance().getMarker();
           onChanged();
           return this;
         }
         /**
-         * <code>optional string marker = 24;</code>
+         * <code>optional string marker = 26;</code>
          * @param value The bytes for marker to set.
          * @return This builder for chaining.
          */
@@ -51852,7 +55500,7 @@ public final class ProtobufSamples {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00800000;
+  bitField0_ |= 0x02000000;
           marker_ = value;
           onChanged();
           return this;
@@ -51862,14 +55510,14 @@ public final class ProtobufSamples {
         private com.google.protobuf.SingleFieldBuilderV3<
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystem, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystem.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystemOrBuilder> osBuilder_;
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 25;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 27;</code>
          * @return Whether the os field is set.
          */
         public boolean hasOs() {
-          return ((bitField0_ & 0x01000000) != 0);
+          return ((bitField0_ & 0x04000000) != 0);
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 25;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 27;</code>
          * @return The os.
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystem getOs() {
@@ -51880,7 +55528,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 25;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 27;</code>
          */
         public Builder setOs(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystem value) {
           if (osBuilder_ == null) {
@@ -51892,11 +55540,11 @@ public final class ProtobufSamples {
           } else {
             osBuilder_.setMessage(value);
           }
-          bitField0_ |= 0x01000000;
+          bitField0_ |= 0x04000000;
           return this;
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 25;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 27;</code>
          */
         public Builder setOs(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystem.Builder builderForValue) {
@@ -51906,15 +55554,15 @@ public final class ProtobufSamples {
           } else {
             osBuilder_.setMessage(builderForValue.build());
           }
-          bitField0_ |= 0x01000000;
+          bitField0_ |= 0x04000000;
           return this;
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 25;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 27;</code>
          */
         public Builder mergeOs(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystem value) {
           if (osBuilder_ == null) {
-            if (((bitField0_ & 0x01000000) != 0) &&
+            if (((bitField0_ & 0x04000000) != 0) &&
                 os_ != null &&
                 os_ != org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystem.getDefaultInstance()) {
               os_ =
@@ -51926,11 +55574,11 @@ public final class ProtobufSamples {
           } else {
             osBuilder_.mergeFrom(value);
           }
-          bitField0_ |= 0x01000000;
+          bitField0_ |= 0x04000000;
           return this;
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 25;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 27;</code>
          */
         public Builder clearOs() {
           if (osBuilder_ == null) {
@@ -51939,19 +55587,19 @@ public final class ProtobufSamples {
           } else {
             osBuilder_.clear();
           }
-          bitField0_ = (bitField0_ & ~0x01000000);
+          bitField0_ = (bitField0_ & ~0x04000000);
           return this;
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 25;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 27;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystem.Builder getOsBuilder() {
-          bitField0_ |= 0x01000000;
+          bitField0_ |= 0x04000000;
           onChanged();
           return getOsFieldBuilder().getBuilder();
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 25;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 27;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystemOrBuilder getOsOrBuilder() {
           if (osBuilder_ != null) {
@@ -51962,7 +55610,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 25;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.OperationSystem os = 27;</code>
          */
         private com.google.protobuf.SingleFieldBuilderV3<
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystem, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystem.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.OperationSystemOrBuilder> 
@@ -51982,14 +55630,14 @@ public final class ProtobufSamples {
         private com.google.protobuf.SingleFieldBuilderV3<
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Platform, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Platform.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PlatformOrBuilder> platformBuilder_;
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 26;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 28;</code>
          * @return Whether the platform field is set.
          */
         public boolean hasPlatform() {
-          return ((bitField0_ & 0x02000000) != 0);
+          return ((bitField0_ & 0x08000000) != 0);
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 26;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 28;</code>
          * @return The platform.
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Platform getPlatform() {
@@ -52000,7 +55648,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 26;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 28;</code>
          */
         public Builder setPlatform(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Platform value) {
           if (platformBuilder_ == null) {
@@ -52012,11 +55660,11 @@ public final class ProtobufSamples {
           } else {
             platformBuilder_.setMessage(value);
           }
-          bitField0_ |= 0x02000000;
+          bitField0_ |= 0x08000000;
           return this;
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 26;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 28;</code>
          */
         public Builder setPlatform(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Platform.Builder builderForValue) {
@@ -52026,15 +55674,15 @@ public final class ProtobufSamples {
           } else {
             platformBuilder_.setMessage(builderForValue.build());
           }
-          bitField0_ |= 0x02000000;
+          bitField0_ |= 0x08000000;
           return this;
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 26;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 28;</code>
          */
         public Builder mergePlatform(org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Platform value) {
           if (platformBuilder_ == null) {
-            if (((bitField0_ & 0x02000000) != 0) &&
+            if (((bitField0_ & 0x08000000) != 0) &&
                 platform_ != null &&
                 platform_ != org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Platform.getDefaultInstance()) {
               platform_ =
@@ -52046,11 +55694,11 @@ public final class ProtobufSamples {
           } else {
             platformBuilder_.mergeFrom(value);
           }
-          bitField0_ |= 0x02000000;
+          bitField0_ |= 0x08000000;
           return this;
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 26;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 28;</code>
          */
         public Builder clearPlatform() {
           if (platformBuilder_ == null) {
@@ -52059,19 +55707,19 @@ public final class ProtobufSamples {
           } else {
             platformBuilder_.clear();
           }
-          bitField0_ = (bitField0_ & ~0x02000000);
+          bitField0_ = (bitField0_ & ~0x08000000);
           return this;
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 26;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 28;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Platform.Builder getPlatformBuilder() {
-          bitField0_ |= 0x02000000;
+          bitField0_ |= 0x08000000;
           onChanged();
           return getPlatformFieldBuilder().getBuilder();
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 26;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 28;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PlatformOrBuilder getPlatformOrBuilder() {
           if (platformBuilder_ != null) {
@@ -52082,7 +55730,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 26;</code>
+         * <code>optional .org.observertc.schemas.protobuf.Samples.ClientSample.Platform platform = 28;</code>
          */
         private com.google.protobuf.SingleFieldBuilderV3<
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Platform, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.Platform.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.ClientSample.PlatformOrBuilder> 
@@ -52100,14 +55748,14 @@ public final class ProtobufSamples {
 
         private java.lang.Object roomId_ = "";
         /**
-         * <code>optional string roomId = 27;</code>
+         * <code>optional string roomId = 29;</code>
          * @return Whether the roomId field is set.
          */
         public boolean hasRoomId() {
-          return ((bitField0_ & 0x04000000) != 0);
+          return ((bitField0_ & 0x10000000) != 0);
         }
         /**
-         * <code>optional string roomId = 27;</code>
+         * <code>optional string roomId = 29;</code>
          * @return The roomId.
          */
         public java.lang.String getRoomId() {
@@ -52125,7 +55773,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional string roomId = 27;</code>
+         * <code>optional string roomId = 29;</code>
          * @return The bytes for roomId.
          */
         public com.google.protobuf.ByteString
@@ -52142,7 +55790,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional string roomId = 27;</code>
+         * <code>optional string roomId = 29;</code>
          * @param value The roomId to set.
          * @return This builder for chaining.
          */
@@ -52151,23 +55799,23 @@ public final class ProtobufSamples {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x04000000;
+  bitField0_ |= 0x10000000;
           roomId_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional string roomId = 27;</code>
+         * <code>optional string roomId = 29;</code>
          * @return This builder for chaining.
          */
         public Builder clearRoomId() {
-          bitField0_ = (bitField0_ & ~0x04000000);
+          bitField0_ = (bitField0_ & ~0x10000000);
           roomId_ = getDefaultInstance().getRoomId();
           onChanged();
           return this;
         }
         /**
-         * <code>optional string roomId = 27;</code>
+         * <code>optional string roomId = 29;</code>
          * @param value The bytes for roomId to set.
          * @return This builder for chaining.
          */
@@ -52176,7 +55824,7 @@ public final class ProtobufSamples {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x04000000;
+  bitField0_ |= 0x10000000;
           roomId_ = value;
           onChanged();
           return this;
@@ -52184,15 +55832,15 @@ public final class ProtobufSamples {
 
         private int sampleSeq_ ;
         /**
-         * <code>optional int32 sampleSeq = 28;</code>
+         * <code>optional int32 sampleSeq = 30;</code>
          * @return Whether the sampleSeq field is set.
          */
         @java.lang.Override
         public boolean hasSampleSeq() {
-          return ((bitField0_ & 0x08000000) != 0);
+          return ((bitField0_ & 0x20000000) != 0);
         }
         /**
-         * <code>optional int32 sampleSeq = 28;</code>
+         * <code>optional int32 sampleSeq = 30;</code>
          * @return The sampleSeq.
          */
         @java.lang.Override
@@ -52200,22 +55848,22 @@ public final class ProtobufSamples {
           return sampleSeq_;
         }
         /**
-         * <code>optional int32 sampleSeq = 28;</code>
+         * <code>optional int32 sampleSeq = 30;</code>
          * @param value The sampleSeq to set.
          * @return This builder for chaining.
          */
         public Builder setSampleSeq(int value) {
-          bitField0_ |= 0x08000000;
+          bitField0_ |= 0x20000000;
           sampleSeq_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional int32 sampleSeq = 28;</code>
+         * <code>optional int32 sampleSeq = 30;</code>
          * @return This builder for chaining.
          */
         public Builder clearSampleSeq() {
-          bitField0_ = (bitField0_ & ~0x08000000);
+          bitField0_ = (bitField0_ & ~0x20000000);
           sampleSeq_ = 0;
           onChanged();
           return this;
@@ -52223,15 +55871,15 @@ public final class ProtobufSamples {
 
         private int timeZoneOffsetInHours_ ;
         /**
-         * <code>optional int32 timeZoneOffsetInHours = 29;</code>
+         * <code>optional int32 timeZoneOffsetInHours = 31;</code>
          * @return Whether the timeZoneOffsetInHours field is set.
          */
         @java.lang.Override
         public boolean hasTimeZoneOffsetInHours() {
-          return ((bitField0_ & 0x10000000) != 0);
+          return ((bitField0_ & 0x40000000) != 0);
         }
         /**
-         * <code>optional int32 timeZoneOffsetInHours = 29;</code>
+         * <code>optional int32 timeZoneOffsetInHours = 31;</code>
          * @return The timeZoneOffsetInHours.
          */
         @java.lang.Override
@@ -52239,22 +55887,22 @@ public final class ProtobufSamples {
           return timeZoneOffsetInHours_;
         }
         /**
-         * <code>optional int32 timeZoneOffsetInHours = 29;</code>
+         * <code>optional int32 timeZoneOffsetInHours = 31;</code>
          * @param value The timeZoneOffsetInHours to set.
          * @return This builder for chaining.
          */
         public Builder setTimeZoneOffsetInHours(int value) {
-          bitField0_ |= 0x10000000;
+          bitField0_ |= 0x40000000;
           timeZoneOffsetInHours_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional int32 timeZoneOffsetInHours = 29;</code>
+         * <code>optional int32 timeZoneOffsetInHours = 31;</code>
          * @return This builder for chaining.
          */
         public Builder clearTimeZoneOffsetInHours() {
-          bitField0_ = (bitField0_ & ~0x10000000);
+          bitField0_ = (bitField0_ & ~0x40000000);
           timeZoneOffsetInHours_ = 0;
           onChanged();
           return this;
@@ -52262,14 +55910,14 @@ public final class ProtobufSamples {
 
         private java.lang.Object userId_ = "";
         /**
-         * <code>optional string userId = 30;</code>
+         * <code>optional string userId = 32;</code>
          * @return Whether the userId field is set.
          */
         public boolean hasUserId() {
-          return ((bitField0_ & 0x20000000) != 0);
+          return ((bitField0_ & 0x80000000) != 0);
         }
         /**
-         * <code>optional string userId = 30;</code>
+         * <code>optional string userId = 32;</code>
          * @return The userId.
          */
         public java.lang.String getUserId() {
@@ -52287,7 +55935,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional string userId = 30;</code>
+         * <code>optional string userId = 32;</code>
          * @return The bytes for userId.
          */
         public com.google.protobuf.ByteString
@@ -52304,7 +55952,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional string userId = 30;</code>
+         * <code>optional string userId = 32;</code>
          * @param value The userId to set.
          * @return This builder for chaining.
          */
@@ -52313,23 +55961,23 @@ public final class ProtobufSamples {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x20000000;
+  bitField0_ |= 0x80000000;
           userId_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional string userId = 30;</code>
+         * <code>optional string userId = 32;</code>
          * @return This builder for chaining.
          */
         public Builder clearUserId() {
-          bitField0_ = (bitField0_ & ~0x20000000);
+          bitField0_ = (bitField0_ & ~0x80000000);
           userId_ = getDefaultInstance().getUserId();
           onChanged();
           return this;
         }
         /**
-         * <code>optional string userId = 30;</code>
+         * <code>optional string userId = 32;</code>
          * @param value The bytes for userId to set.
          * @return This builder for chaining.
          */
@@ -52338,7 +55986,7 @@ public final class ProtobufSamples {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x20000000;
+  bitField0_ |= 0x80000000;
           userId_ = value;
           onChanged();
           return this;
@@ -52401,177 +56049,201 @@ public final class ProtobufSamples {
         com.google.protobuf.MessageOrBuilder {
 
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+       */
+      java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent> 
+          getCustomSfuEventsList();
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+       */
+      org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent getCustomSfuEvents(int index);
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+       */
+      int getCustomSfuEventsCount();
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+       */
+      java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEventOrBuilder> 
+          getCustomSfuEventsOrBuilderList();
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+       */
+      org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEventOrBuilder getCustomSfuEventsOrBuilder(
+          int index);
+
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
        */
       java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats> 
           getExtensionStatsList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats getExtensionStats(int index);
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
        */
       int getExtensionStatsCount();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
        */
       java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStatsOrBuilder> 
           getExtensionStatsOrBuilderList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStatsOrBuilder getExtensionStatsOrBuilder(
           int index);
 
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
        */
       java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad> 
           getInboundRtpPadsList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad getInboundRtpPads(int index);
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
        */
       int getInboundRtpPadsCount();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
        */
       java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPadOrBuilder> 
           getInboundRtpPadsOrBuilderList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPadOrBuilder getInboundRtpPadsOrBuilder(
           int index);
 
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
        */
       java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad> 
           getOutboundRtpPadsList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad getOutboundRtpPads(int index);
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
        */
       int getOutboundRtpPadsCount();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
        */
       java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPadOrBuilder> 
           getOutboundRtpPadsOrBuilderList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPadOrBuilder getOutboundRtpPadsOrBuilder(
           int index);
 
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
        */
       java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel> 
           getSctpChannelsList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel getSctpChannels(int index);
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
        */
       int getSctpChannelsCount();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
        */
       java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannelOrBuilder> 
           getSctpChannelsOrBuilderList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannelOrBuilder getSctpChannelsOrBuilder(
           int index);
 
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
        */
       java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport> 
           getTransportsList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport getTransports(int index);
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
        */
       int getTransportsCount();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
        */
       java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransportOrBuilder> 
           getTransportsOrBuilderList();
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
        */
       org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransportOrBuilder getTransportsOrBuilder(
           int index);
 
       /**
-       * <code>required string sfuId = 6;</code>
+       * <code>required string sfuId = 7;</code>
        * @return Whether the sfuId field is set.
        */
       boolean hasSfuId();
       /**
-       * <code>required string sfuId = 6;</code>
+       * <code>required string sfuId = 7;</code>
        * @return The sfuId.
        */
       java.lang.String getSfuId();
       /**
-       * <code>required string sfuId = 6;</code>
+       * <code>required string sfuId = 7;</code>
        * @return The bytes for sfuId.
        */
       com.google.protobuf.ByteString
           getSfuIdBytes();
 
       /**
-       * <code>required int64 timestamp = 7;</code>
+       * <code>required int64 timestamp = 8;</code>
        * @return Whether the timestamp field is set.
        */
       boolean hasTimestamp();
       /**
-       * <code>required int64 timestamp = 7;</code>
+       * <code>required int64 timestamp = 8;</code>
        * @return The timestamp.
        */
       long getTimestamp();
 
       /**
-       * <code>optional string marker = 8;</code>
+       * <code>optional string marker = 9;</code>
        * @return Whether the marker field is set.
        */
       boolean hasMarker();
       /**
-       * <code>optional string marker = 8;</code>
+       * <code>optional string marker = 9;</code>
        * @return The marker.
        */
       java.lang.String getMarker();
       /**
-       * <code>optional string marker = 8;</code>
+       * <code>optional string marker = 9;</code>
        * @return The bytes for marker.
        */
       com.google.protobuf.ByteString
           getMarkerBytes();
 
       /**
-       * <code>optional int32 timeZoneOffsetInHours = 9;</code>
+       * <code>optional int32 timeZoneOffsetInHours = 10;</code>
        * @return Whether the timeZoneOffsetInHours field is set.
        */
       boolean hasTimeZoneOffsetInHours();
       /**
-       * <code>optional int32 timeZoneOffsetInHours = 9;</code>
+       * <code>optional int32 timeZoneOffsetInHours = 10;</code>
        * @return The timeZoneOffsetInHours.
        */
       int getTimeZoneOffsetInHours();
@@ -52589,6 +56261,7 @@ public final class ProtobufSamples {
         super(builder);
       }
       private SfuSample() {
+        customSfuEvents_ = java.util.Collections.emptyList();
         extensionStats_ = java.util.Collections.emptyList();
         inboundRtpPads_ = java.util.Collections.emptyList();
         outboundRtpPads_ = java.util.Collections.emptyList();
@@ -52631,67 +56304,76 @@ public final class ProtobufSamples {
                 break;
               case 10: {
                 if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                  extensionStats_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats>();
+                  customSfuEvents_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent>();
                   mutable_bitField0_ |= 0x00000001;
+                }
+                customSfuEvents_.add(
+                    input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.PARSER, extensionRegistry));
+                break;
+              }
+              case 18: {
+                if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+                  extensionStats_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats>();
+                  mutable_bitField0_ |= 0x00000002;
                 }
                 extensionStats_.add(
                     input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats.PARSER, extensionRegistry));
                 break;
               }
-              case 18: {
-                if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+              case 26: {
+                if (!((mutable_bitField0_ & 0x00000004) != 0)) {
                   inboundRtpPads_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad>();
-                  mutable_bitField0_ |= 0x00000002;
+                  mutable_bitField0_ |= 0x00000004;
                 }
                 inboundRtpPads_.add(
                     input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad.PARSER, extensionRegistry));
                 break;
               }
-              case 26: {
-                if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+              case 34: {
+                if (!((mutable_bitField0_ & 0x00000008) != 0)) {
                   outboundRtpPads_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad>();
-                  mutable_bitField0_ |= 0x00000004;
+                  mutable_bitField0_ |= 0x00000008;
                 }
                 outboundRtpPads_.add(
                     input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad.PARSER, extensionRegistry));
                 break;
               }
-              case 34: {
-                if (!((mutable_bitField0_ & 0x00000008) != 0)) {
+              case 42: {
+                if (!((mutable_bitField0_ & 0x00000010) != 0)) {
                   sctpChannels_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel>();
-                  mutable_bitField0_ |= 0x00000008;
+                  mutable_bitField0_ |= 0x00000010;
                 }
                 sctpChannels_.add(
                     input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel.PARSER, extensionRegistry));
                 break;
               }
-              case 42: {
-                if (!((mutable_bitField0_ & 0x00000010) != 0)) {
+              case 50: {
+                if (!((mutable_bitField0_ & 0x00000020) != 0)) {
                   transports_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport>();
-                  mutable_bitField0_ |= 0x00000010;
+                  mutable_bitField0_ |= 0x00000020;
                 }
                 transports_.add(
                     input.readMessage(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport.PARSER, extensionRegistry));
                 break;
               }
-              case 50: {
+              case 58: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x00000001;
                 sfuId_ = bs;
                 break;
               }
-              case 56: {
+              case 64: {
                 bitField0_ |= 0x00000002;
                 timestamp_ = input.readInt64();
                 break;
               }
-              case 66: {
+              case 74: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x00000004;
                 marker_ = bs;
                 break;
               }
-              case 72: {
+              case 80: {
                 bitField0_ |= 0x00000008;
                 timeZoneOffsetInHours_ = input.readInt32();
                 break;
@@ -52712,18 +56394,21 @@ public final class ProtobufSamples {
               e).setUnfinishedMessage(this);
         } finally {
           if (((mutable_bitField0_ & 0x00000001) != 0)) {
-            extensionStats_ = java.util.Collections.unmodifiableList(extensionStats_);
+            customSfuEvents_ = java.util.Collections.unmodifiableList(customSfuEvents_);
           }
           if (((mutable_bitField0_ & 0x00000002) != 0)) {
-            inboundRtpPads_ = java.util.Collections.unmodifiableList(inboundRtpPads_);
+            extensionStats_ = java.util.Collections.unmodifiableList(extensionStats_);
           }
           if (((mutable_bitField0_ & 0x00000004) != 0)) {
-            outboundRtpPads_ = java.util.Collections.unmodifiableList(outboundRtpPads_);
+            inboundRtpPads_ = java.util.Collections.unmodifiableList(inboundRtpPads_);
           }
           if (((mutable_bitField0_ & 0x00000008) != 0)) {
-            sctpChannels_ = java.util.Collections.unmodifiableList(sctpChannels_);
+            outboundRtpPads_ = java.util.Collections.unmodifiableList(outboundRtpPads_);
           }
           if (((mutable_bitField0_ & 0x00000010) != 0)) {
+            sctpChannels_ = java.util.Collections.unmodifiableList(sctpChannels_);
+          }
+          if (((mutable_bitField0_ & 0x00000020) != 0)) {
             transports_ = java.util.Collections.unmodifiableList(transports_);
           }
           this.unknownFields = unknownFields.build();
@@ -52741,6 +56426,1811 @@ public final class ProtobufSamples {
         return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.class, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.Builder.class);
+      }
+
+      public interface CustomSfuEventOrBuilder extends
+          // @@protoc_insertion_point(interface_extends:org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent)
+          com.google.protobuf.MessageOrBuilder {
+
+        /**
+         * <code>required string name = 1;</code>
+         * @return Whether the name field is set.
+         */
+        boolean hasName();
+        /**
+         * <code>required string name = 1;</code>
+         * @return The name.
+         */
+        java.lang.String getName();
+        /**
+         * <code>required string name = 1;</code>
+         * @return The bytes for name.
+         */
+        com.google.protobuf.ByteString
+            getNameBytes();
+
+        /**
+         * <code>optional string attachments = 2;</code>
+         * @return Whether the attachments field is set.
+         */
+        boolean hasAttachments();
+        /**
+         * <code>optional string attachments = 2;</code>
+         * @return The attachments.
+         */
+        java.lang.String getAttachments();
+        /**
+         * <code>optional string attachments = 2;</code>
+         * @return The bytes for attachments.
+         */
+        com.google.protobuf.ByteString
+            getAttachmentsBytes();
+
+        /**
+         * <code>optional string message = 3;</code>
+         * @return Whether the message field is set.
+         */
+        boolean hasMessage();
+        /**
+         * <code>optional string message = 3;</code>
+         * @return The message.
+         */
+        java.lang.String getMessage();
+        /**
+         * <code>optional string message = 3;</code>
+         * @return The bytes for message.
+         */
+        com.google.protobuf.ByteString
+            getMessageBytes();
+
+        /**
+         * <code>optional string sfuSinkId = 4;</code>
+         * @return Whether the sfuSinkId field is set.
+         */
+        boolean hasSfuSinkId();
+        /**
+         * <code>optional string sfuSinkId = 4;</code>
+         * @return The sfuSinkId.
+         */
+        java.lang.String getSfuSinkId();
+        /**
+         * <code>optional string sfuSinkId = 4;</code>
+         * @return The bytes for sfuSinkId.
+         */
+        com.google.protobuf.ByteString
+            getSfuSinkIdBytes();
+
+        /**
+         * <code>optional string sfuStreamId = 5;</code>
+         * @return Whether the sfuStreamId field is set.
+         */
+        boolean hasSfuStreamId();
+        /**
+         * <code>optional string sfuStreamId = 5;</code>
+         * @return The sfuStreamId.
+         */
+        java.lang.String getSfuStreamId();
+        /**
+         * <code>optional string sfuStreamId = 5;</code>
+         * @return The bytes for sfuStreamId.
+         */
+        com.google.protobuf.ByteString
+            getSfuStreamIdBytes();
+
+        /**
+         * <code>optional int64 timestamp = 6;</code>
+         * @return Whether the timestamp field is set.
+         */
+        boolean hasTimestamp();
+        /**
+         * <code>optional int64 timestamp = 6;</code>
+         * @return The timestamp.
+         */
+        long getTimestamp();
+
+        /**
+         * <code>optional string transportId = 7;</code>
+         * @return Whether the transportId field is set.
+         */
+        boolean hasTransportId();
+        /**
+         * <code>optional string transportId = 7;</code>
+         * @return The transportId.
+         */
+        java.lang.String getTransportId();
+        /**
+         * <code>optional string transportId = 7;</code>
+         * @return The bytes for transportId.
+         */
+        com.google.protobuf.ByteString
+            getTransportIdBytes();
+
+        /**
+         * <code>optional string value = 8;</code>
+         * @return Whether the value field is set.
+         */
+        boolean hasValue();
+        /**
+         * <code>optional string value = 8;</code>
+         * @return The value.
+         */
+        java.lang.String getValue();
+        /**
+         * <code>optional string value = 8;</code>
+         * @return The bytes for value.
+         */
+        com.google.protobuf.ByteString
+            getValueBytes();
+      }
+      /**
+       * Protobuf type {@code org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent}
+       */
+      public static final class CustomSfuEvent extends
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent)
+          CustomSfuEventOrBuilder {
+      private static final long serialVersionUID = 0L;
+        // Use CustomSfuEvent.newBuilder() to construct.
+        private CustomSfuEvent(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+          super(builder);
+        }
+        private CustomSfuEvent() {
+          name_ = "";
+          attachments_ = "";
+          message_ = "";
+          sfuSinkId_ = "";
+          sfuStreamId_ = "";
+          transportId_ = "";
+          value_ = "";
+        }
+
+        @java.lang.Override
+        @SuppressWarnings({"unused"})
+        protected java.lang.Object newInstance(
+            UnusedPrivateParameter unused) {
+          return new CustomSfuEvent();
+        }
+
+        @java.lang.Override
+        public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+          return this.unknownFields;
+        }
+        private CustomSfuEvent(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          this();
+          if (extensionRegistry == null) {
+            throw new java.lang.NullPointerException();
+          }
+          int mutable_bitField0_ = 0;
+          com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+              com.google.protobuf.UnknownFieldSet.newBuilder();
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                case 10: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000001;
+                  name_ = bs;
+                  break;
+                }
+                case 18: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000002;
+                  attachments_ = bs;
+                  break;
+                }
+                case 26: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000004;
+                  message_ = bs;
+                  break;
+                }
+                case 34: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000008;
+                  sfuSinkId_ = bs;
+                  break;
+                }
+                case 42: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000010;
+                  sfuStreamId_ = bs;
+                  break;
+                }
+                case 48: {
+                  bitField0_ |= 0x00000020;
+                  timestamp_ = input.readInt64();
+                  break;
+                }
+                case 58: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000040;
+                  transportId_ = bs;
+                  break;
+                }
+                case 66: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000080;
+                  value_ = bs;
+                  break;
+                }
+                default: {
+                  if (!parseUnknownField(
+                      input, unknownFields, extensionRegistry, tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(this);
+          } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(
+                e).setUnfinishedMessage(this);
+          } finally {
+            this.unknownFields = unknownFields.build();
+            makeExtensionsImmutable();
+          }
+        }
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_CustomSfuEvent_descriptor;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_CustomSfuEvent_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.class, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.Builder.class);
+        }
+
+        private int bitField0_;
+        public static final int NAME_FIELD_NUMBER = 1;
+        private volatile java.lang.Object name_;
+        /**
+         * <code>required string name = 1;</code>
+         * @return Whether the name field is set.
+         */
+        @java.lang.Override
+        public boolean hasName() {
+          return ((bitField0_ & 0x00000001) != 0);
+        }
+        /**
+         * <code>required string name = 1;</code>
+         * @return The name.
+         */
+        @java.lang.Override
+        public java.lang.String getName() {
+          java.lang.Object ref = name_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              name_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>required string name = 1;</code>
+         * @return The bytes for name.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getNameBytes() {
+          java.lang.Object ref = name_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            name_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int ATTACHMENTS_FIELD_NUMBER = 2;
+        private volatile java.lang.Object attachments_;
+        /**
+         * <code>optional string attachments = 2;</code>
+         * @return Whether the attachments field is set.
+         */
+        @java.lang.Override
+        public boolean hasAttachments() {
+          return ((bitField0_ & 0x00000002) != 0);
+        }
+        /**
+         * <code>optional string attachments = 2;</code>
+         * @return The attachments.
+         */
+        @java.lang.Override
+        public java.lang.String getAttachments() {
+          java.lang.Object ref = attachments_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              attachments_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>optional string attachments = 2;</code>
+         * @return The bytes for attachments.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getAttachmentsBytes() {
+          java.lang.Object ref = attachments_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            attachments_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int MESSAGE_FIELD_NUMBER = 3;
+        private volatile java.lang.Object message_;
+        /**
+         * <code>optional string message = 3;</code>
+         * @return Whether the message field is set.
+         */
+        @java.lang.Override
+        public boolean hasMessage() {
+          return ((bitField0_ & 0x00000004) != 0);
+        }
+        /**
+         * <code>optional string message = 3;</code>
+         * @return The message.
+         */
+        @java.lang.Override
+        public java.lang.String getMessage() {
+          java.lang.Object ref = message_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              message_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>optional string message = 3;</code>
+         * @return The bytes for message.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getMessageBytes() {
+          java.lang.Object ref = message_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            message_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int SFUSINKID_FIELD_NUMBER = 4;
+        private volatile java.lang.Object sfuSinkId_;
+        /**
+         * <code>optional string sfuSinkId = 4;</code>
+         * @return Whether the sfuSinkId field is set.
+         */
+        @java.lang.Override
+        public boolean hasSfuSinkId() {
+          return ((bitField0_ & 0x00000008) != 0);
+        }
+        /**
+         * <code>optional string sfuSinkId = 4;</code>
+         * @return The sfuSinkId.
+         */
+        @java.lang.Override
+        public java.lang.String getSfuSinkId() {
+          java.lang.Object ref = sfuSinkId_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              sfuSinkId_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>optional string sfuSinkId = 4;</code>
+         * @return The bytes for sfuSinkId.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getSfuSinkIdBytes() {
+          java.lang.Object ref = sfuSinkId_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            sfuSinkId_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int SFUSTREAMID_FIELD_NUMBER = 5;
+        private volatile java.lang.Object sfuStreamId_;
+        /**
+         * <code>optional string sfuStreamId = 5;</code>
+         * @return Whether the sfuStreamId field is set.
+         */
+        @java.lang.Override
+        public boolean hasSfuStreamId() {
+          return ((bitField0_ & 0x00000010) != 0);
+        }
+        /**
+         * <code>optional string sfuStreamId = 5;</code>
+         * @return The sfuStreamId.
+         */
+        @java.lang.Override
+        public java.lang.String getSfuStreamId() {
+          java.lang.Object ref = sfuStreamId_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              sfuStreamId_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>optional string sfuStreamId = 5;</code>
+         * @return The bytes for sfuStreamId.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getSfuStreamIdBytes() {
+          java.lang.Object ref = sfuStreamId_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            sfuStreamId_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int TIMESTAMP_FIELD_NUMBER = 6;
+        private long timestamp_;
+        /**
+         * <code>optional int64 timestamp = 6;</code>
+         * @return Whether the timestamp field is set.
+         */
+        @java.lang.Override
+        public boolean hasTimestamp() {
+          return ((bitField0_ & 0x00000020) != 0);
+        }
+        /**
+         * <code>optional int64 timestamp = 6;</code>
+         * @return The timestamp.
+         */
+        @java.lang.Override
+        public long getTimestamp() {
+          return timestamp_;
+        }
+
+        public static final int TRANSPORTID_FIELD_NUMBER = 7;
+        private volatile java.lang.Object transportId_;
+        /**
+         * <code>optional string transportId = 7;</code>
+         * @return Whether the transportId field is set.
+         */
+        @java.lang.Override
+        public boolean hasTransportId() {
+          return ((bitField0_ & 0x00000040) != 0);
+        }
+        /**
+         * <code>optional string transportId = 7;</code>
+         * @return The transportId.
+         */
+        @java.lang.Override
+        public java.lang.String getTransportId() {
+          java.lang.Object ref = transportId_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              transportId_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>optional string transportId = 7;</code>
+         * @return The bytes for transportId.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getTransportIdBytes() {
+          java.lang.Object ref = transportId_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            transportId_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int VALUE_FIELD_NUMBER = 8;
+        private volatile java.lang.Object value_;
+        /**
+         * <code>optional string value = 8;</code>
+         * @return Whether the value field is set.
+         */
+        @java.lang.Override
+        public boolean hasValue() {
+          return ((bitField0_ & 0x00000080) != 0);
+        }
+        /**
+         * <code>optional string value = 8;</code>
+         * @return The value.
+         */
+        @java.lang.Override
+        public java.lang.String getValue() {
+          java.lang.Object ref = value_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              value_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>optional string value = 8;</code>
+         * @return The bytes for value.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString
+            getValueBytes() {
+          java.lang.Object ref = value_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            value_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        private byte memoizedIsInitialized = -1;
+        @java.lang.Override
+        public final boolean isInitialized() {
+          byte isInitialized = memoizedIsInitialized;
+          if (isInitialized == 1) return true;
+          if (isInitialized == 0) return false;
+
+          if (!hasName()) {
+            memoizedIsInitialized = 0;
+            return false;
+          }
+          memoizedIsInitialized = 1;
+          return true;
+        }
+
+        @java.lang.Override
+        public void writeTo(com.google.protobuf.CodedOutputStream output)
+                            throws java.io.IOException {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
+          }
+          if (((bitField0_ & 0x00000002) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, attachments_);
+          }
+          if (((bitField0_ & 0x00000004) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, message_);
+          }
+          if (((bitField0_ & 0x00000008) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 4, sfuSinkId_);
+          }
+          if (((bitField0_ & 0x00000010) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 5, sfuStreamId_);
+          }
+          if (((bitField0_ & 0x00000020) != 0)) {
+            output.writeInt64(6, timestamp_);
+          }
+          if (((bitField0_ & 0x00000040) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 7, transportId_);
+          }
+          if (((bitField0_ & 0x00000080) != 0)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 8, value_);
+          }
+          unknownFields.writeTo(output);
+        }
+
+        @java.lang.Override
+        public int getSerializedSize() {
+          int size = memoizedSize;
+          if (size != -1) return size;
+
+          size = 0;
+          if (((bitField0_ & 0x00000001) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
+          }
+          if (((bitField0_ & 0x00000002) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, attachments_);
+          }
+          if (((bitField0_ & 0x00000004) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, message_);
+          }
+          if (((bitField0_ & 0x00000008) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, sfuSinkId_);
+          }
+          if (((bitField0_ & 0x00000010) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, sfuStreamId_);
+          }
+          if (((bitField0_ & 0x00000020) != 0)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeInt64Size(6, timestamp_);
+          }
+          if (((bitField0_ & 0x00000040) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, transportId_);
+          }
+          if (((bitField0_ & 0x00000080) != 0)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, value_);
+          }
+          size += unknownFields.getSerializedSize();
+          memoizedSize = size;
+          return size;
+        }
+
+        @java.lang.Override
+        public boolean equals(final java.lang.Object obj) {
+          if (obj == this) {
+           return true;
+          }
+          if (!(obj instanceof org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent)) {
+            return super.equals(obj);
+          }
+          org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent other = (org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent) obj;
+
+          if (hasName() != other.hasName()) return false;
+          if (hasName()) {
+            if (!getName()
+                .equals(other.getName())) return false;
+          }
+          if (hasAttachments() != other.hasAttachments()) return false;
+          if (hasAttachments()) {
+            if (!getAttachments()
+                .equals(other.getAttachments())) return false;
+          }
+          if (hasMessage() != other.hasMessage()) return false;
+          if (hasMessage()) {
+            if (!getMessage()
+                .equals(other.getMessage())) return false;
+          }
+          if (hasSfuSinkId() != other.hasSfuSinkId()) return false;
+          if (hasSfuSinkId()) {
+            if (!getSfuSinkId()
+                .equals(other.getSfuSinkId())) return false;
+          }
+          if (hasSfuStreamId() != other.hasSfuStreamId()) return false;
+          if (hasSfuStreamId()) {
+            if (!getSfuStreamId()
+                .equals(other.getSfuStreamId())) return false;
+          }
+          if (hasTimestamp() != other.hasTimestamp()) return false;
+          if (hasTimestamp()) {
+            if (getTimestamp()
+                != other.getTimestamp()) return false;
+          }
+          if (hasTransportId() != other.hasTransportId()) return false;
+          if (hasTransportId()) {
+            if (!getTransportId()
+                .equals(other.getTransportId())) return false;
+          }
+          if (hasValue() != other.hasValue()) return false;
+          if (hasValue()) {
+            if (!getValue()
+                .equals(other.getValue())) return false;
+          }
+          if (!unknownFields.equals(other.unknownFields)) return false;
+          return true;
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+          if (memoizedHashCode != 0) {
+            return memoizedHashCode;
+          }
+          int hash = 41;
+          hash = (19 * hash) + getDescriptor().hashCode();
+          if (hasName()) {
+            hash = (37 * hash) + NAME_FIELD_NUMBER;
+            hash = (53 * hash) + getName().hashCode();
+          }
+          if (hasAttachments()) {
+            hash = (37 * hash) + ATTACHMENTS_FIELD_NUMBER;
+            hash = (53 * hash) + getAttachments().hashCode();
+          }
+          if (hasMessage()) {
+            hash = (37 * hash) + MESSAGE_FIELD_NUMBER;
+            hash = (53 * hash) + getMessage().hashCode();
+          }
+          if (hasSfuSinkId()) {
+            hash = (37 * hash) + SFUSINKID_FIELD_NUMBER;
+            hash = (53 * hash) + getSfuSinkId().hashCode();
+          }
+          if (hasSfuStreamId()) {
+            hash = (37 * hash) + SFUSTREAMID_FIELD_NUMBER;
+            hash = (53 * hash) + getSfuStreamId().hashCode();
+          }
+          if (hasTimestamp()) {
+            hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+                getTimestamp());
+          }
+          if (hasTransportId()) {
+            hash = (37 * hash) + TRANSPORTID_FIELD_NUMBER;
+            hash = (53 * hash) + getTransportId().hashCode();
+          }
+          if (hasValue()) {
+            hash = (37 * hash) + VALUE_FIELD_NUMBER;
+            hash = (53 * hash) + getValue().hashCode();
+          }
+          hash = (29 * hash) + unknownFields.hashCode();
+          memoizedHashCode = hash;
+          return hash;
+        }
+
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent parseFrom(
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent parseFrom(
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent parseFrom(
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent parseFrom(
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent parseFrom(byte[] data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent parseFrom(
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent parseFrom(java.io.InputStream input)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent parseFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent parseDelimitedFrom(java.io.InputStream input)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent parseDelimitedFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent parseFrom(
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+        }
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent parseFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+        }
+
+        @java.lang.Override
+        public Builder newBuilderForType() { return newBuilder(); }
+        public static Builder newBuilder() {
+          return DEFAULT_INSTANCE.toBuilder();
+        }
+        public static Builder newBuilder(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent prototype) {
+          return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+        }
+        @java.lang.Override
+        public Builder toBuilder() {
+          return this == DEFAULT_INSTANCE
+              ? new Builder() : new Builder().mergeFrom(this);
+        }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          Builder builder = new Builder(parent);
+          return builder;
+        }
+        /**
+         * Protobuf type {@code org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent}
+         */
+        public static final class Builder extends
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent)
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEventOrBuilder {
+          public static final com.google.protobuf.Descriptors.Descriptor
+              getDescriptor() {
+            return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_CustomSfuEvent_descriptor;
+          }
+
+          @java.lang.Override
+          protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+              internalGetFieldAccessorTable() {
+            return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_CustomSfuEvent_fieldAccessorTable
+                .ensureFieldAccessorsInitialized(
+                    org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.class, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.Builder.class);
+          }
+
+          // Construct using org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.newBuilder()
+          private Builder() {
+            maybeForceBuilderInitialization();
+          }
+
+          private Builder(
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+          }
+          private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3
+                    .alwaysUseFieldBuilders) {
+            }
+          }
+          @java.lang.Override
+          public Builder clear() {
+            super.clear();
+            name_ = "";
+            bitField0_ = (bitField0_ & ~0x00000001);
+            attachments_ = "";
+            bitField0_ = (bitField0_ & ~0x00000002);
+            message_ = "";
+            bitField0_ = (bitField0_ & ~0x00000004);
+            sfuSinkId_ = "";
+            bitField0_ = (bitField0_ & ~0x00000008);
+            sfuStreamId_ = "";
+            bitField0_ = (bitField0_ & ~0x00000010);
+            timestamp_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000020);
+            transportId_ = "";
+            bitField0_ = (bitField0_ & ~0x00000040);
+            value_ = "";
+            bitField0_ = (bitField0_ & ~0x00000080);
+            return this;
+          }
+
+          @java.lang.Override
+          public com.google.protobuf.Descriptors.Descriptor
+              getDescriptorForType() {
+            return org.observertc.schemas.protobuf.ProtobufSamples.internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_CustomSfuEvent_descriptor;
+          }
+
+          @java.lang.Override
+          public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent getDefaultInstanceForType() {
+            return org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.getDefaultInstance();
+          }
+
+          @java.lang.Override
+          public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent build() {
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent result = buildPartial();
+            if (!result.isInitialized()) {
+              throw newUninitializedMessageException(result);
+            }
+            return result;
+          }
+
+          @java.lang.Override
+          public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent buildPartial() {
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent result = new org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent(this);
+            int from_bitField0_ = bitField0_;
+            int to_bitField0_ = 0;
+            if (((from_bitField0_ & 0x00000001) != 0)) {
+              to_bitField0_ |= 0x00000001;
+            }
+            result.name_ = name_;
+            if (((from_bitField0_ & 0x00000002) != 0)) {
+              to_bitField0_ |= 0x00000002;
+            }
+            result.attachments_ = attachments_;
+            if (((from_bitField0_ & 0x00000004) != 0)) {
+              to_bitField0_ |= 0x00000004;
+            }
+            result.message_ = message_;
+            if (((from_bitField0_ & 0x00000008) != 0)) {
+              to_bitField0_ |= 0x00000008;
+            }
+            result.sfuSinkId_ = sfuSinkId_;
+            if (((from_bitField0_ & 0x00000010) != 0)) {
+              to_bitField0_ |= 0x00000010;
+            }
+            result.sfuStreamId_ = sfuStreamId_;
+            if (((from_bitField0_ & 0x00000020) != 0)) {
+              result.timestamp_ = timestamp_;
+              to_bitField0_ |= 0x00000020;
+            }
+            if (((from_bitField0_ & 0x00000040) != 0)) {
+              to_bitField0_ |= 0x00000040;
+            }
+            result.transportId_ = transportId_;
+            if (((from_bitField0_ & 0x00000080) != 0)) {
+              to_bitField0_ |= 0x00000080;
+            }
+            result.value_ = value_;
+            result.bitField0_ = to_bitField0_;
+            onBuilt();
+            return result;
+          }
+
+          @java.lang.Override
+          public Builder clone() {
+            return super.clone();
+          }
+          @java.lang.Override
+          public Builder setField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+            return super.setField(field, value);
+          }
+          @java.lang.Override
+          public Builder clearField(
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+          }
+          @java.lang.Override
+          public Builder clearOneof(
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+          }
+          @java.lang.Override
+          public Builder setRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+          }
+          @java.lang.Override
+          public Builder addRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+          }
+          @java.lang.Override
+          public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (other instanceof org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent) {
+              return mergeFrom((org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent)other);
+            } else {
+              super.mergeFrom(other);
+              return this;
+            }
+          }
+
+          public Builder mergeFrom(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent other) {
+            if (other == org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.getDefaultInstance()) return this;
+            if (other.hasName()) {
+              bitField0_ |= 0x00000001;
+              name_ = other.name_;
+              onChanged();
+            }
+            if (other.hasAttachments()) {
+              bitField0_ |= 0x00000002;
+              attachments_ = other.attachments_;
+              onChanged();
+            }
+            if (other.hasMessage()) {
+              bitField0_ |= 0x00000004;
+              message_ = other.message_;
+              onChanged();
+            }
+            if (other.hasSfuSinkId()) {
+              bitField0_ |= 0x00000008;
+              sfuSinkId_ = other.sfuSinkId_;
+              onChanged();
+            }
+            if (other.hasSfuStreamId()) {
+              bitField0_ |= 0x00000010;
+              sfuStreamId_ = other.sfuStreamId_;
+              onChanged();
+            }
+            if (other.hasTimestamp()) {
+              setTimestamp(other.getTimestamp());
+            }
+            if (other.hasTransportId()) {
+              bitField0_ |= 0x00000040;
+              transportId_ = other.transportId_;
+              onChanged();
+            }
+            if (other.hasValue()) {
+              bitField0_ |= 0x00000080;
+              value_ = other.value_;
+              onChanged();
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+          }
+
+          @java.lang.Override
+          public final boolean isInitialized() {
+            if (!hasName()) {
+              return false;
+            }
+            return true;
+          }
+
+          @java.lang.Override
+          public Builder mergeFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent parsedMessage = null;
+            try {
+              parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+              parsedMessage = (org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent) e.getUnfinishedMessage();
+              throw e.unwrapIOException();
+            } finally {
+              if (parsedMessage != null) {
+                mergeFrom(parsedMessage);
+              }
+            }
+            return this;
+          }
+          private int bitField0_;
+
+          private java.lang.Object name_ = "";
+          /**
+           * <code>required string name = 1;</code>
+           * @return Whether the name field is set.
+           */
+          public boolean hasName() {
+            return ((bitField0_ & 0x00000001) != 0);
+          }
+          /**
+           * <code>required string name = 1;</code>
+           * @return The name.
+           */
+          public java.lang.String getName() {
+            java.lang.Object ref = name_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                name_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>required string name = 1;</code>
+           * @return The bytes for name.
+           */
+          public com.google.protobuf.ByteString
+              getNameBytes() {
+            java.lang.Object ref = name_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              name_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>required string name = 1;</code>
+           * @param value The name to set.
+           * @return This builder for chaining.
+           */
+          public Builder setName(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+            name_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>required string name = 1;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearName() {
+            bitField0_ = (bitField0_ & ~0x00000001);
+            name_ = getDefaultInstance().getName();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>required string name = 1;</code>
+           * @param value The bytes for name to set.
+           * @return This builder for chaining.
+           */
+          public Builder setNameBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+            name_ = value;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object attachments_ = "";
+          /**
+           * <code>optional string attachments = 2;</code>
+           * @return Whether the attachments field is set.
+           */
+          public boolean hasAttachments() {
+            return ((bitField0_ & 0x00000002) != 0);
+          }
+          /**
+           * <code>optional string attachments = 2;</code>
+           * @return The attachments.
+           */
+          public java.lang.String getAttachments() {
+            java.lang.Object ref = attachments_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                attachments_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>optional string attachments = 2;</code>
+           * @return The bytes for attachments.
+           */
+          public com.google.protobuf.ByteString
+              getAttachmentsBytes() {
+            java.lang.Object ref = attachments_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              attachments_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>optional string attachments = 2;</code>
+           * @param value The attachments to set.
+           * @return This builder for chaining.
+           */
+          public Builder setAttachments(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+            attachments_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string attachments = 2;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearAttachments() {
+            bitField0_ = (bitField0_ & ~0x00000002);
+            attachments_ = getDefaultInstance().getAttachments();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string attachments = 2;</code>
+           * @param value The bytes for attachments to set.
+           * @return This builder for chaining.
+           */
+          public Builder setAttachmentsBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+            attachments_ = value;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object message_ = "";
+          /**
+           * <code>optional string message = 3;</code>
+           * @return Whether the message field is set.
+           */
+          public boolean hasMessage() {
+            return ((bitField0_ & 0x00000004) != 0);
+          }
+          /**
+           * <code>optional string message = 3;</code>
+           * @return The message.
+           */
+          public java.lang.String getMessage() {
+            java.lang.Object ref = message_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                message_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>optional string message = 3;</code>
+           * @return The bytes for message.
+           */
+          public com.google.protobuf.ByteString
+              getMessageBytes() {
+            java.lang.Object ref = message_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              message_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>optional string message = 3;</code>
+           * @param value The message to set.
+           * @return This builder for chaining.
+           */
+          public Builder setMessage(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+            message_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string message = 3;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearMessage() {
+            bitField0_ = (bitField0_ & ~0x00000004);
+            message_ = getDefaultInstance().getMessage();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string message = 3;</code>
+           * @param value The bytes for message to set.
+           * @return This builder for chaining.
+           */
+          public Builder setMessageBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+            message_ = value;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object sfuSinkId_ = "";
+          /**
+           * <code>optional string sfuSinkId = 4;</code>
+           * @return Whether the sfuSinkId field is set.
+           */
+          public boolean hasSfuSinkId() {
+            return ((bitField0_ & 0x00000008) != 0);
+          }
+          /**
+           * <code>optional string sfuSinkId = 4;</code>
+           * @return The sfuSinkId.
+           */
+          public java.lang.String getSfuSinkId() {
+            java.lang.Object ref = sfuSinkId_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                sfuSinkId_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>optional string sfuSinkId = 4;</code>
+           * @return The bytes for sfuSinkId.
+           */
+          public com.google.protobuf.ByteString
+              getSfuSinkIdBytes() {
+            java.lang.Object ref = sfuSinkId_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              sfuSinkId_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>optional string sfuSinkId = 4;</code>
+           * @param value The sfuSinkId to set.
+           * @return This builder for chaining.
+           */
+          public Builder setSfuSinkId(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+            sfuSinkId_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string sfuSinkId = 4;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearSfuSinkId() {
+            bitField0_ = (bitField0_ & ~0x00000008);
+            sfuSinkId_ = getDefaultInstance().getSfuSinkId();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string sfuSinkId = 4;</code>
+           * @param value The bytes for sfuSinkId to set.
+           * @return This builder for chaining.
+           */
+          public Builder setSfuSinkIdBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+            sfuSinkId_ = value;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object sfuStreamId_ = "";
+          /**
+           * <code>optional string sfuStreamId = 5;</code>
+           * @return Whether the sfuStreamId field is set.
+           */
+          public boolean hasSfuStreamId() {
+            return ((bitField0_ & 0x00000010) != 0);
+          }
+          /**
+           * <code>optional string sfuStreamId = 5;</code>
+           * @return The sfuStreamId.
+           */
+          public java.lang.String getSfuStreamId() {
+            java.lang.Object ref = sfuStreamId_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                sfuStreamId_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>optional string sfuStreamId = 5;</code>
+           * @return The bytes for sfuStreamId.
+           */
+          public com.google.protobuf.ByteString
+              getSfuStreamIdBytes() {
+            java.lang.Object ref = sfuStreamId_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              sfuStreamId_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>optional string sfuStreamId = 5;</code>
+           * @param value The sfuStreamId to set.
+           * @return This builder for chaining.
+           */
+          public Builder setSfuStreamId(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+            sfuStreamId_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string sfuStreamId = 5;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearSfuStreamId() {
+            bitField0_ = (bitField0_ & ~0x00000010);
+            sfuStreamId_ = getDefaultInstance().getSfuStreamId();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string sfuStreamId = 5;</code>
+           * @param value The bytes for sfuStreamId to set.
+           * @return This builder for chaining.
+           */
+          public Builder setSfuStreamIdBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+            sfuStreamId_ = value;
+            onChanged();
+            return this;
+          }
+
+          private long timestamp_ ;
+          /**
+           * <code>optional int64 timestamp = 6;</code>
+           * @return Whether the timestamp field is set.
+           */
+          @java.lang.Override
+          public boolean hasTimestamp() {
+            return ((bitField0_ & 0x00000020) != 0);
+          }
+          /**
+           * <code>optional int64 timestamp = 6;</code>
+           * @return The timestamp.
+           */
+          @java.lang.Override
+          public long getTimestamp() {
+            return timestamp_;
+          }
+          /**
+           * <code>optional int64 timestamp = 6;</code>
+           * @param value The timestamp to set.
+           * @return This builder for chaining.
+           */
+          public Builder setTimestamp(long value) {
+            bitField0_ |= 0x00000020;
+            timestamp_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional int64 timestamp = 6;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearTimestamp() {
+            bitField0_ = (bitField0_ & ~0x00000020);
+            timestamp_ = 0L;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object transportId_ = "";
+          /**
+           * <code>optional string transportId = 7;</code>
+           * @return Whether the transportId field is set.
+           */
+          public boolean hasTransportId() {
+            return ((bitField0_ & 0x00000040) != 0);
+          }
+          /**
+           * <code>optional string transportId = 7;</code>
+           * @return The transportId.
+           */
+          public java.lang.String getTransportId() {
+            java.lang.Object ref = transportId_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                transportId_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>optional string transportId = 7;</code>
+           * @return The bytes for transportId.
+           */
+          public com.google.protobuf.ByteString
+              getTransportIdBytes() {
+            java.lang.Object ref = transportId_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              transportId_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>optional string transportId = 7;</code>
+           * @param value The transportId to set.
+           * @return This builder for chaining.
+           */
+          public Builder setTransportId(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+            transportId_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string transportId = 7;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearTransportId() {
+            bitField0_ = (bitField0_ & ~0x00000040);
+            transportId_ = getDefaultInstance().getTransportId();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string transportId = 7;</code>
+           * @param value The bytes for transportId to set.
+           * @return This builder for chaining.
+           */
+          public Builder setTransportIdBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+            transportId_ = value;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object value_ = "";
+          /**
+           * <code>optional string value = 8;</code>
+           * @return Whether the value field is set.
+           */
+          public boolean hasValue() {
+            return ((bitField0_ & 0x00000080) != 0);
+          }
+          /**
+           * <code>optional string value = 8;</code>
+           * @return The value.
+           */
+          public java.lang.String getValue() {
+            java.lang.Object ref = value_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                value_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>optional string value = 8;</code>
+           * @return The bytes for value.
+           */
+          public com.google.protobuf.ByteString
+              getValueBytes() {
+            java.lang.Object ref = value_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              value_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>optional string value = 8;</code>
+           * @param value The value to set.
+           * @return This builder for chaining.
+           */
+          public Builder setValue(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+            value_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string value = 8;</code>
+           * @return This builder for chaining.
+           */
+          public Builder clearValue() {
+            bitField0_ = (bitField0_ & ~0x00000080);
+            value_ = getDefaultInstance().getValue();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string value = 8;</code>
+           * @param value The bytes for value to set.
+           * @return This builder for chaining.
+           */
+          public Builder setValueBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+            value_ = value;
+            onChanged();
+            return this;
+          }
+          @java.lang.Override
+          public final Builder setUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+          }
+
+          @java.lang.Override
+          public final Builder mergeUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+          }
+
+
+          // @@protoc_insertion_point(builder_scope:org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent)
+        }
+
+        // @@protoc_insertion_point(class_scope:org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent)
+        private static final org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent DEFAULT_INSTANCE;
+        static {
+          DEFAULT_INSTANCE = new org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent();
+        }
+
+        public static org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent getDefaultInstance() {
+          return DEFAULT_INSTANCE;
+        }
+
+        @java.lang.Deprecated public static final com.google.protobuf.Parser<CustomSfuEvent>
+            PARSER = new com.google.protobuf.AbstractParser<CustomSfuEvent>() {
+          @java.lang.Override
+          public CustomSfuEvent parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new CustomSfuEvent(input, extensionRegistry);
+          }
+        };
+
+        public static com.google.protobuf.Parser<CustomSfuEvent> parser() {
+          return PARSER;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Parser<CustomSfuEvent> getParserForType() {
+          return PARSER;
+        }
+
+        @java.lang.Override
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent getDefaultInstanceForType() {
+          return DEFAULT_INSTANCE;
+        }
+
       }
 
       public interface SfuTransportOrBuilder extends
@@ -70137,17 +75627,57 @@ public final class ProtobufSamples {
       }
 
       private int bitField0_;
-      public static final int EXTENSIONSTATS_FIELD_NUMBER = 1;
+      public static final int CUSTOMSFUEVENTS_FIELD_NUMBER = 1;
+      private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent> customSfuEvents_;
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+       */
+      @java.lang.Override
+      public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent> getCustomSfuEventsList() {
+        return customSfuEvents_;
+      }
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+       */
+      @java.lang.Override
+      public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEventOrBuilder> 
+          getCustomSfuEventsOrBuilderList() {
+        return customSfuEvents_;
+      }
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+       */
+      @java.lang.Override
+      public int getCustomSfuEventsCount() {
+        return customSfuEvents_.size();
+      }
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+       */
+      @java.lang.Override
+      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent getCustomSfuEvents(int index) {
+        return customSfuEvents_.get(index);
+      }
+      /**
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+       */
+      @java.lang.Override
+      public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEventOrBuilder getCustomSfuEventsOrBuilder(
+          int index) {
+        return customSfuEvents_.get(index);
+      }
+
+      public static final int EXTENSIONSTATS_FIELD_NUMBER = 2;
       private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats> extensionStats_;
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
        */
       @java.lang.Override
       public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats> getExtensionStatsList() {
         return extensionStats_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
        */
       @java.lang.Override
       public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStatsOrBuilder> 
@@ -70155,21 +75685,21 @@ public final class ProtobufSamples {
         return extensionStats_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
        */
       @java.lang.Override
       public int getExtensionStatsCount() {
         return extensionStats_.size();
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats getExtensionStats(int index) {
         return extensionStats_.get(index);
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStatsOrBuilder getExtensionStatsOrBuilder(
@@ -70177,17 +75707,17 @@ public final class ProtobufSamples {
         return extensionStats_.get(index);
       }
 
-      public static final int INBOUNDRTPPADS_FIELD_NUMBER = 2;
+      public static final int INBOUNDRTPPADS_FIELD_NUMBER = 3;
       private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad> inboundRtpPads_;
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
        */
       @java.lang.Override
       public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad> getInboundRtpPadsList() {
         return inboundRtpPads_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
        */
       @java.lang.Override
       public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPadOrBuilder> 
@@ -70195,21 +75725,21 @@ public final class ProtobufSamples {
         return inboundRtpPads_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
        */
       @java.lang.Override
       public int getInboundRtpPadsCount() {
         return inboundRtpPads_.size();
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad getInboundRtpPads(int index) {
         return inboundRtpPads_.get(index);
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPadOrBuilder getInboundRtpPadsOrBuilder(
@@ -70217,17 +75747,17 @@ public final class ProtobufSamples {
         return inboundRtpPads_.get(index);
       }
 
-      public static final int OUTBOUNDRTPPADS_FIELD_NUMBER = 3;
+      public static final int OUTBOUNDRTPPADS_FIELD_NUMBER = 4;
       private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad> outboundRtpPads_;
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
        */
       @java.lang.Override
       public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad> getOutboundRtpPadsList() {
         return outboundRtpPads_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
        */
       @java.lang.Override
       public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPadOrBuilder> 
@@ -70235,21 +75765,21 @@ public final class ProtobufSamples {
         return outboundRtpPads_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
        */
       @java.lang.Override
       public int getOutboundRtpPadsCount() {
         return outboundRtpPads_.size();
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad getOutboundRtpPads(int index) {
         return outboundRtpPads_.get(index);
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPadOrBuilder getOutboundRtpPadsOrBuilder(
@@ -70257,17 +75787,17 @@ public final class ProtobufSamples {
         return outboundRtpPads_.get(index);
       }
 
-      public static final int SCTPCHANNELS_FIELD_NUMBER = 4;
+      public static final int SCTPCHANNELS_FIELD_NUMBER = 5;
       private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel> sctpChannels_;
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
        */
       @java.lang.Override
       public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel> getSctpChannelsList() {
         return sctpChannels_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
        */
       @java.lang.Override
       public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannelOrBuilder> 
@@ -70275,21 +75805,21 @@ public final class ProtobufSamples {
         return sctpChannels_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
        */
       @java.lang.Override
       public int getSctpChannelsCount() {
         return sctpChannels_.size();
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel getSctpChannels(int index) {
         return sctpChannels_.get(index);
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannelOrBuilder getSctpChannelsOrBuilder(
@@ -70297,17 +75827,17 @@ public final class ProtobufSamples {
         return sctpChannels_.get(index);
       }
 
-      public static final int TRANSPORTS_FIELD_NUMBER = 5;
+      public static final int TRANSPORTS_FIELD_NUMBER = 6;
       private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport> transports_;
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
        */
       @java.lang.Override
       public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport> getTransportsList() {
         return transports_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
        */
       @java.lang.Override
       public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransportOrBuilder> 
@@ -70315,21 +75845,21 @@ public final class ProtobufSamples {
         return transports_;
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
        */
       @java.lang.Override
       public int getTransportsCount() {
         return transports_.size();
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport getTransports(int index) {
         return transports_.get(index);
       }
       /**
-       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+       * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
        */
       @java.lang.Override
       public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransportOrBuilder getTransportsOrBuilder(
@@ -70337,10 +75867,10 @@ public final class ProtobufSamples {
         return transports_.get(index);
       }
 
-      public static final int SFUID_FIELD_NUMBER = 6;
+      public static final int SFUID_FIELD_NUMBER = 7;
       private volatile java.lang.Object sfuId_;
       /**
-       * <code>required string sfuId = 6;</code>
+       * <code>required string sfuId = 7;</code>
        * @return Whether the sfuId field is set.
        */
       @java.lang.Override
@@ -70348,7 +75878,7 @@ public final class ProtobufSamples {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>required string sfuId = 6;</code>
+       * <code>required string sfuId = 7;</code>
        * @return The sfuId.
        */
       @java.lang.Override
@@ -70367,7 +75897,7 @@ public final class ProtobufSamples {
         }
       }
       /**
-       * <code>required string sfuId = 6;</code>
+       * <code>required string sfuId = 7;</code>
        * @return The bytes for sfuId.
        */
       @java.lang.Override
@@ -70385,10 +75915,10 @@ public final class ProtobufSamples {
         }
       }
 
-      public static final int TIMESTAMP_FIELD_NUMBER = 7;
+      public static final int TIMESTAMP_FIELD_NUMBER = 8;
       private long timestamp_;
       /**
-       * <code>required int64 timestamp = 7;</code>
+       * <code>required int64 timestamp = 8;</code>
        * @return Whether the timestamp field is set.
        */
       @java.lang.Override
@@ -70396,7 +75926,7 @@ public final class ProtobufSamples {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>required int64 timestamp = 7;</code>
+       * <code>required int64 timestamp = 8;</code>
        * @return The timestamp.
        */
       @java.lang.Override
@@ -70404,10 +75934,10 @@ public final class ProtobufSamples {
         return timestamp_;
       }
 
-      public static final int MARKER_FIELD_NUMBER = 8;
+      public static final int MARKER_FIELD_NUMBER = 9;
       private volatile java.lang.Object marker_;
       /**
-       * <code>optional string marker = 8;</code>
+       * <code>optional string marker = 9;</code>
        * @return Whether the marker field is set.
        */
       @java.lang.Override
@@ -70415,7 +75945,7 @@ public final class ProtobufSamples {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
-       * <code>optional string marker = 8;</code>
+       * <code>optional string marker = 9;</code>
        * @return The marker.
        */
       @java.lang.Override
@@ -70434,7 +75964,7 @@ public final class ProtobufSamples {
         }
       }
       /**
-       * <code>optional string marker = 8;</code>
+       * <code>optional string marker = 9;</code>
        * @return The bytes for marker.
        */
       @java.lang.Override
@@ -70452,10 +75982,10 @@ public final class ProtobufSamples {
         }
       }
 
-      public static final int TIMEZONEOFFSETINHOURS_FIELD_NUMBER = 9;
+      public static final int TIMEZONEOFFSETINHOURS_FIELD_NUMBER = 10;
       private int timeZoneOffsetInHours_;
       /**
-       * <code>optional int32 timeZoneOffsetInHours = 9;</code>
+       * <code>optional int32 timeZoneOffsetInHours = 10;</code>
        * @return Whether the timeZoneOffsetInHours field is set.
        */
       @java.lang.Override
@@ -70463,7 +75993,7 @@ public final class ProtobufSamples {
         return ((bitField0_ & 0x00000008) != 0);
       }
       /**
-       * <code>optional int32 timeZoneOffsetInHours = 9;</code>
+       * <code>optional int32 timeZoneOffsetInHours = 10;</code>
        * @return The timeZoneOffsetInHours.
        */
       @java.lang.Override
@@ -70485,6 +76015,12 @@ public final class ProtobufSamples {
         if (!hasTimestamp()) {
           memoizedIsInitialized = 0;
           return false;
+        }
+        for (int i = 0; i < getCustomSfuEventsCount(); i++) {
+          if (!getCustomSfuEvents(i).isInitialized()) {
+            memoizedIsInitialized = 0;
+            return false;
+          }
         }
         for (int i = 0; i < getExtensionStatsCount(); i++) {
           if (!getExtensionStats(i).isInitialized()) {
@@ -70523,32 +76059,35 @@ public final class ProtobufSamples {
       @java.lang.Override
       public void writeTo(com.google.protobuf.CodedOutputStream output)
                           throws java.io.IOException {
+        for (int i = 0; i < customSfuEvents_.size(); i++) {
+          output.writeMessage(1, customSfuEvents_.get(i));
+        }
         for (int i = 0; i < extensionStats_.size(); i++) {
-          output.writeMessage(1, extensionStats_.get(i));
+          output.writeMessage(2, extensionStats_.get(i));
         }
         for (int i = 0; i < inboundRtpPads_.size(); i++) {
-          output.writeMessage(2, inboundRtpPads_.get(i));
+          output.writeMessage(3, inboundRtpPads_.get(i));
         }
         for (int i = 0; i < outboundRtpPads_.size(); i++) {
-          output.writeMessage(3, outboundRtpPads_.get(i));
+          output.writeMessage(4, outboundRtpPads_.get(i));
         }
         for (int i = 0; i < sctpChannels_.size(); i++) {
-          output.writeMessage(4, sctpChannels_.get(i));
+          output.writeMessage(5, sctpChannels_.get(i));
         }
         for (int i = 0; i < transports_.size(); i++) {
-          output.writeMessage(5, transports_.get(i));
+          output.writeMessage(6, transports_.get(i));
         }
         if (((bitField0_ & 0x00000001) != 0)) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 6, sfuId_);
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 7, sfuId_);
         }
         if (((bitField0_ & 0x00000002) != 0)) {
-          output.writeInt64(7, timestamp_);
+          output.writeInt64(8, timestamp_);
         }
         if (((bitField0_ & 0x00000004) != 0)) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 8, marker_);
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 9, marker_);
         }
         if (((bitField0_ & 0x00000008) != 0)) {
-          output.writeInt32(9, timeZoneOffsetInHours_);
+          output.writeInt32(10, timeZoneOffsetInHours_);
         }
         unknownFields.writeTo(output);
       }
@@ -70559,39 +76098,43 @@ public final class ProtobufSamples {
         if (size != -1) return size;
 
         size = 0;
+        for (int i = 0; i < customSfuEvents_.size(); i++) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(1, customSfuEvents_.get(i));
+        }
         for (int i = 0; i < extensionStats_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(1, extensionStats_.get(i));
+            .computeMessageSize(2, extensionStats_.get(i));
         }
         for (int i = 0; i < inboundRtpPads_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(2, inboundRtpPads_.get(i));
+            .computeMessageSize(3, inboundRtpPads_.get(i));
         }
         for (int i = 0; i < outboundRtpPads_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(3, outboundRtpPads_.get(i));
+            .computeMessageSize(4, outboundRtpPads_.get(i));
         }
         for (int i = 0; i < sctpChannels_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(4, sctpChannels_.get(i));
+            .computeMessageSize(5, sctpChannels_.get(i));
         }
         for (int i = 0; i < transports_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(5, transports_.get(i));
+            .computeMessageSize(6, transports_.get(i));
         }
         if (((bitField0_ & 0x00000001) != 0)) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, sfuId_);
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, sfuId_);
         }
         if (((bitField0_ & 0x00000002) != 0)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt64Size(7, timestamp_);
+            .computeInt64Size(8, timestamp_);
         }
         if (((bitField0_ & 0x00000004) != 0)) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, marker_);
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, marker_);
         }
         if (((bitField0_ & 0x00000008) != 0)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(9, timeZoneOffsetInHours_);
+            .computeInt32Size(10, timeZoneOffsetInHours_);
         }
         size += unknownFields.getSerializedSize();
         memoizedSize = size;
@@ -70608,6 +76151,8 @@ public final class ProtobufSamples {
         }
         org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample other = (org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample) obj;
 
+        if (!getCustomSfuEventsList()
+            .equals(other.getCustomSfuEventsList())) return false;
         if (!getExtensionStatsList()
             .equals(other.getExtensionStatsList())) return false;
         if (!getInboundRtpPadsList()
@@ -70649,6 +76194,10 @@ public final class ProtobufSamples {
         }
         int hash = 41;
         hash = (19 * hash) + getDescriptor().hashCode();
+        if (getCustomSfuEventsCount() > 0) {
+          hash = (37 * hash) + CUSTOMSFUEVENTS_FIELD_NUMBER;
+          hash = (53 * hash) + getCustomSfuEventsList().hashCode();
+        }
         if (getExtensionStatsCount() > 0) {
           hash = (37 * hash) + EXTENSIONSTATS_FIELD_NUMBER;
           hash = (53 * hash) + getExtensionStatsList().hashCode();
@@ -70814,6 +76363,7 @@ public final class ProtobufSamples {
         private void maybeForceBuilderInitialization() {
           if (com.google.protobuf.GeneratedMessageV3
                   .alwaysUseFieldBuilders) {
+            getCustomSfuEventsFieldBuilder();
             getExtensionStatsFieldBuilder();
             getInboundRtpPadsFieldBuilder();
             getOutboundRtpPadsFieldBuilder();
@@ -70824,44 +76374,50 @@ public final class ProtobufSamples {
         @java.lang.Override
         public Builder clear() {
           super.clear();
+          if (customSfuEventsBuilder_ == null) {
+            customSfuEvents_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            customSfuEventsBuilder_.clear();
+          }
           if (extensionStatsBuilder_ == null) {
             extensionStats_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000001);
+            bitField0_ = (bitField0_ & ~0x00000002);
           } else {
             extensionStatsBuilder_.clear();
           }
           if (inboundRtpPadsBuilder_ == null) {
             inboundRtpPads_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000004);
           } else {
             inboundRtpPadsBuilder_.clear();
           }
           if (outboundRtpPadsBuilder_ == null) {
             outboundRtpPads_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000004);
+            bitField0_ = (bitField0_ & ~0x00000008);
           } else {
             outboundRtpPadsBuilder_.clear();
           }
           if (sctpChannelsBuilder_ == null) {
             sctpChannels_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000008);
+            bitField0_ = (bitField0_ & ~0x00000010);
           } else {
             sctpChannelsBuilder_.clear();
           }
           if (transportsBuilder_ == null) {
             transports_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000010);
+            bitField0_ = (bitField0_ & ~0x00000020);
           } else {
             transportsBuilder_.clear();
           }
           sfuId_ = "";
-          bitField0_ = (bitField0_ & ~0x00000020);
-          timestamp_ = 0L;
           bitField0_ = (bitField0_ & ~0x00000040);
-          marker_ = "";
+          timestamp_ = 0L;
           bitField0_ = (bitField0_ & ~0x00000080);
-          timeZoneOffsetInHours_ = 0;
+          marker_ = "";
           bitField0_ = (bitField0_ & ~0x00000100);
+          timeZoneOffsetInHours_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000200);
           return this;
         }
 
@@ -70890,64 +76446,73 @@ public final class ProtobufSamples {
           org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample result = new org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample(this);
           int from_bitField0_ = bitField0_;
           int to_bitField0_ = 0;
-          if (extensionStatsBuilder_ == null) {
+          if (customSfuEventsBuilder_ == null) {
             if (((bitField0_ & 0x00000001) != 0)) {
-              extensionStats_ = java.util.Collections.unmodifiableList(extensionStats_);
+              customSfuEvents_ = java.util.Collections.unmodifiableList(customSfuEvents_);
               bitField0_ = (bitField0_ & ~0x00000001);
+            }
+            result.customSfuEvents_ = customSfuEvents_;
+          } else {
+            result.customSfuEvents_ = customSfuEventsBuilder_.build();
+          }
+          if (extensionStatsBuilder_ == null) {
+            if (((bitField0_ & 0x00000002) != 0)) {
+              extensionStats_ = java.util.Collections.unmodifiableList(extensionStats_);
+              bitField0_ = (bitField0_ & ~0x00000002);
             }
             result.extensionStats_ = extensionStats_;
           } else {
             result.extensionStats_ = extensionStatsBuilder_.build();
           }
           if (inboundRtpPadsBuilder_ == null) {
-            if (((bitField0_ & 0x00000002) != 0)) {
+            if (((bitField0_ & 0x00000004) != 0)) {
               inboundRtpPads_ = java.util.Collections.unmodifiableList(inboundRtpPads_);
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000004);
             }
             result.inboundRtpPads_ = inboundRtpPads_;
           } else {
             result.inboundRtpPads_ = inboundRtpPadsBuilder_.build();
           }
           if (outboundRtpPadsBuilder_ == null) {
-            if (((bitField0_ & 0x00000004) != 0)) {
+            if (((bitField0_ & 0x00000008) != 0)) {
               outboundRtpPads_ = java.util.Collections.unmodifiableList(outboundRtpPads_);
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x00000008);
             }
             result.outboundRtpPads_ = outboundRtpPads_;
           } else {
             result.outboundRtpPads_ = outboundRtpPadsBuilder_.build();
           }
           if (sctpChannelsBuilder_ == null) {
-            if (((bitField0_ & 0x00000008) != 0)) {
+            if (((bitField0_ & 0x00000010) != 0)) {
               sctpChannels_ = java.util.Collections.unmodifiableList(sctpChannels_);
-              bitField0_ = (bitField0_ & ~0x00000008);
+              bitField0_ = (bitField0_ & ~0x00000010);
             }
             result.sctpChannels_ = sctpChannels_;
           } else {
             result.sctpChannels_ = sctpChannelsBuilder_.build();
           }
           if (transportsBuilder_ == null) {
-            if (((bitField0_ & 0x00000010) != 0)) {
+            if (((bitField0_ & 0x00000020) != 0)) {
               transports_ = java.util.Collections.unmodifiableList(transports_);
-              bitField0_ = (bitField0_ & ~0x00000010);
+              bitField0_ = (bitField0_ & ~0x00000020);
             }
             result.transports_ = transports_;
           } else {
             result.transports_ = transportsBuilder_.build();
           }
-          if (((from_bitField0_ & 0x00000020) != 0)) {
+          if (((from_bitField0_ & 0x00000040) != 0)) {
             to_bitField0_ |= 0x00000001;
           }
           result.sfuId_ = sfuId_;
-          if (((from_bitField0_ & 0x00000040) != 0)) {
+          if (((from_bitField0_ & 0x00000080) != 0)) {
             result.timestamp_ = timestamp_;
             to_bitField0_ |= 0x00000002;
           }
-          if (((from_bitField0_ & 0x00000080) != 0)) {
+          if (((from_bitField0_ & 0x00000100) != 0)) {
             to_bitField0_ |= 0x00000004;
           }
           result.marker_ = marker_;
-          if (((from_bitField0_ & 0x00000100) != 0)) {
+          if (((from_bitField0_ & 0x00000200) != 0)) {
             result.timeZoneOffsetInHours_ = timeZoneOffsetInHours_;
             to_bitField0_ |= 0x00000008;
           }
@@ -71000,11 +76565,37 @@ public final class ProtobufSamples {
 
         public Builder mergeFrom(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample other) {
           if (other == org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.getDefaultInstance()) return this;
+          if (customSfuEventsBuilder_ == null) {
+            if (!other.customSfuEvents_.isEmpty()) {
+              if (customSfuEvents_.isEmpty()) {
+                customSfuEvents_ = other.customSfuEvents_;
+                bitField0_ = (bitField0_ & ~0x00000001);
+              } else {
+                ensureCustomSfuEventsIsMutable();
+                customSfuEvents_.addAll(other.customSfuEvents_);
+              }
+              onChanged();
+            }
+          } else {
+            if (!other.customSfuEvents_.isEmpty()) {
+              if (customSfuEventsBuilder_.isEmpty()) {
+                customSfuEventsBuilder_.dispose();
+                customSfuEventsBuilder_ = null;
+                customSfuEvents_ = other.customSfuEvents_;
+                bitField0_ = (bitField0_ & ~0x00000001);
+                customSfuEventsBuilder_ = 
+                  com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                     getCustomSfuEventsFieldBuilder() : null;
+              } else {
+                customSfuEventsBuilder_.addAllMessages(other.customSfuEvents_);
+              }
+            }
+          }
           if (extensionStatsBuilder_ == null) {
             if (!other.extensionStats_.isEmpty()) {
               if (extensionStats_.isEmpty()) {
                 extensionStats_ = other.extensionStats_;
-                bitField0_ = (bitField0_ & ~0x00000001);
+                bitField0_ = (bitField0_ & ~0x00000002);
               } else {
                 ensureExtensionStatsIsMutable();
                 extensionStats_.addAll(other.extensionStats_);
@@ -71017,7 +76608,7 @@ public final class ProtobufSamples {
                 extensionStatsBuilder_.dispose();
                 extensionStatsBuilder_ = null;
                 extensionStats_ = other.extensionStats_;
-                bitField0_ = (bitField0_ & ~0x00000001);
+                bitField0_ = (bitField0_ & ~0x00000002);
                 extensionStatsBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getExtensionStatsFieldBuilder() : null;
@@ -71030,7 +76621,7 @@ public final class ProtobufSamples {
             if (!other.inboundRtpPads_.isEmpty()) {
               if (inboundRtpPads_.isEmpty()) {
                 inboundRtpPads_ = other.inboundRtpPads_;
-                bitField0_ = (bitField0_ & ~0x00000002);
+                bitField0_ = (bitField0_ & ~0x00000004);
               } else {
                 ensureInboundRtpPadsIsMutable();
                 inboundRtpPads_.addAll(other.inboundRtpPads_);
@@ -71043,7 +76634,7 @@ public final class ProtobufSamples {
                 inboundRtpPadsBuilder_.dispose();
                 inboundRtpPadsBuilder_ = null;
                 inboundRtpPads_ = other.inboundRtpPads_;
-                bitField0_ = (bitField0_ & ~0x00000002);
+                bitField0_ = (bitField0_ & ~0x00000004);
                 inboundRtpPadsBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getInboundRtpPadsFieldBuilder() : null;
@@ -71056,7 +76647,7 @@ public final class ProtobufSamples {
             if (!other.outboundRtpPads_.isEmpty()) {
               if (outboundRtpPads_.isEmpty()) {
                 outboundRtpPads_ = other.outboundRtpPads_;
-                bitField0_ = (bitField0_ & ~0x00000004);
+                bitField0_ = (bitField0_ & ~0x00000008);
               } else {
                 ensureOutboundRtpPadsIsMutable();
                 outboundRtpPads_.addAll(other.outboundRtpPads_);
@@ -71069,7 +76660,7 @@ public final class ProtobufSamples {
                 outboundRtpPadsBuilder_.dispose();
                 outboundRtpPadsBuilder_ = null;
                 outboundRtpPads_ = other.outboundRtpPads_;
-                bitField0_ = (bitField0_ & ~0x00000004);
+                bitField0_ = (bitField0_ & ~0x00000008);
                 outboundRtpPadsBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getOutboundRtpPadsFieldBuilder() : null;
@@ -71082,7 +76673,7 @@ public final class ProtobufSamples {
             if (!other.sctpChannels_.isEmpty()) {
               if (sctpChannels_.isEmpty()) {
                 sctpChannels_ = other.sctpChannels_;
-                bitField0_ = (bitField0_ & ~0x00000008);
+                bitField0_ = (bitField0_ & ~0x00000010);
               } else {
                 ensureSctpChannelsIsMutable();
                 sctpChannels_.addAll(other.sctpChannels_);
@@ -71095,7 +76686,7 @@ public final class ProtobufSamples {
                 sctpChannelsBuilder_.dispose();
                 sctpChannelsBuilder_ = null;
                 sctpChannels_ = other.sctpChannels_;
-                bitField0_ = (bitField0_ & ~0x00000008);
+                bitField0_ = (bitField0_ & ~0x00000010);
                 sctpChannelsBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getSctpChannelsFieldBuilder() : null;
@@ -71108,7 +76699,7 @@ public final class ProtobufSamples {
             if (!other.transports_.isEmpty()) {
               if (transports_.isEmpty()) {
                 transports_ = other.transports_;
-                bitField0_ = (bitField0_ & ~0x00000010);
+                bitField0_ = (bitField0_ & ~0x00000020);
               } else {
                 ensureTransportsIsMutable();
                 transports_.addAll(other.transports_);
@@ -71121,7 +76712,7 @@ public final class ProtobufSamples {
                 transportsBuilder_.dispose();
                 transportsBuilder_ = null;
                 transports_ = other.transports_;
-                bitField0_ = (bitField0_ & ~0x00000010);
+                bitField0_ = (bitField0_ & ~0x00000020);
                 transportsBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getTransportsFieldBuilder() : null;
@@ -71131,7 +76722,7 @@ public final class ProtobufSamples {
             }
           }
           if (other.hasSfuId()) {
-            bitField0_ |= 0x00000020;
+            bitField0_ |= 0x00000040;
             sfuId_ = other.sfuId_;
             onChanged();
           }
@@ -71139,7 +76730,7 @@ public final class ProtobufSamples {
             setTimestamp(other.getTimestamp());
           }
           if (other.hasMarker()) {
-            bitField0_ |= 0x00000080;
+            bitField0_ |= 0x00000100;
             marker_ = other.marker_;
             onChanged();
           }
@@ -71158,6 +76749,11 @@ public final class ProtobufSamples {
           }
           if (!hasTimestamp()) {
             return false;
+          }
+          for (int i = 0; i < getCustomSfuEventsCount(); i++) {
+            if (!getCustomSfuEvents(i).isInitialized()) {
+              return false;
+            }
           }
           for (int i = 0; i < getExtensionStatsCount(); i++) {
             if (!getExtensionStats(i).isInitialized()) {
@@ -71207,12 +76803,252 @@ public final class ProtobufSamples {
         }
         private int bitField0_;
 
+        private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent> customSfuEvents_ =
+          java.util.Collections.emptyList();
+        private void ensureCustomSfuEventsIsMutable() {
+          if (!((bitField0_ & 0x00000001) != 0)) {
+            customSfuEvents_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent>(customSfuEvents_);
+            bitField0_ |= 0x00000001;
+           }
+        }
+
+        private com.google.protobuf.RepeatedFieldBuilderV3<
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEventOrBuilder> customSfuEventsBuilder_;
+
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+         */
+        public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent> getCustomSfuEventsList() {
+          if (customSfuEventsBuilder_ == null) {
+            return java.util.Collections.unmodifiableList(customSfuEvents_);
+          } else {
+            return customSfuEventsBuilder_.getMessageList();
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+         */
+        public int getCustomSfuEventsCount() {
+          if (customSfuEventsBuilder_ == null) {
+            return customSfuEvents_.size();
+          } else {
+            return customSfuEventsBuilder_.getCount();
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent getCustomSfuEvents(int index) {
+          if (customSfuEventsBuilder_ == null) {
+            return customSfuEvents_.get(index);
+          } else {
+            return customSfuEventsBuilder_.getMessage(index);
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+         */
+        public Builder setCustomSfuEvents(
+            int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent value) {
+          if (customSfuEventsBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureCustomSfuEventsIsMutable();
+            customSfuEvents_.set(index, value);
+            onChanged();
+          } else {
+            customSfuEventsBuilder_.setMessage(index, value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+         */
+        public Builder setCustomSfuEvents(
+            int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.Builder builderForValue) {
+          if (customSfuEventsBuilder_ == null) {
+            ensureCustomSfuEventsIsMutable();
+            customSfuEvents_.set(index, builderForValue.build());
+            onChanged();
+          } else {
+            customSfuEventsBuilder_.setMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+         */
+        public Builder addCustomSfuEvents(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent value) {
+          if (customSfuEventsBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureCustomSfuEventsIsMutable();
+            customSfuEvents_.add(value);
+            onChanged();
+          } else {
+            customSfuEventsBuilder_.addMessage(value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+         */
+        public Builder addCustomSfuEvents(
+            int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent value) {
+          if (customSfuEventsBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureCustomSfuEventsIsMutable();
+            customSfuEvents_.add(index, value);
+            onChanged();
+          } else {
+            customSfuEventsBuilder_.addMessage(index, value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+         */
+        public Builder addCustomSfuEvents(
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.Builder builderForValue) {
+          if (customSfuEventsBuilder_ == null) {
+            ensureCustomSfuEventsIsMutable();
+            customSfuEvents_.add(builderForValue.build());
+            onChanged();
+          } else {
+            customSfuEventsBuilder_.addMessage(builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+         */
+        public Builder addCustomSfuEvents(
+            int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.Builder builderForValue) {
+          if (customSfuEventsBuilder_ == null) {
+            ensureCustomSfuEventsIsMutable();
+            customSfuEvents_.add(index, builderForValue.build());
+            onChanged();
+          } else {
+            customSfuEventsBuilder_.addMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+         */
+        public Builder addAllCustomSfuEvents(
+            java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent> values) {
+          if (customSfuEventsBuilder_ == null) {
+            ensureCustomSfuEventsIsMutable();
+            com.google.protobuf.AbstractMessageLite.Builder.addAll(
+                values, customSfuEvents_);
+            onChanged();
+          } else {
+            customSfuEventsBuilder_.addAllMessages(values);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+         */
+        public Builder clearCustomSfuEvents() {
+          if (customSfuEventsBuilder_ == null) {
+            customSfuEvents_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00000001);
+            onChanged();
+          } else {
+            customSfuEventsBuilder_.clear();
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+         */
+        public Builder removeCustomSfuEvents(int index) {
+          if (customSfuEventsBuilder_ == null) {
+            ensureCustomSfuEventsIsMutable();
+            customSfuEvents_.remove(index);
+            onChanged();
+          } else {
+            customSfuEventsBuilder_.remove(index);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.Builder getCustomSfuEventsBuilder(
+            int index) {
+          return getCustomSfuEventsFieldBuilder().getBuilder(index);
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEventOrBuilder getCustomSfuEventsOrBuilder(
+            int index) {
+          if (customSfuEventsBuilder_ == null) {
+            return customSfuEvents_.get(index);  } else {
+            return customSfuEventsBuilder_.getMessageOrBuilder(index);
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+         */
+        public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEventOrBuilder> 
+             getCustomSfuEventsOrBuilderList() {
+          if (customSfuEventsBuilder_ != null) {
+            return customSfuEventsBuilder_.getMessageOrBuilderList();
+          } else {
+            return java.util.Collections.unmodifiableList(customSfuEvents_);
+          }
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.Builder addCustomSfuEventsBuilder() {
+          return getCustomSfuEventsFieldBuilder().addBuilder(
+              org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.getDefaultInstance());
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+         */
+        public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.Builder addCustomSfuEventsBuilder(
+            int index) {
+          return getCustomSfuEventsFieldBuilder().addBuilder(
+              index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.getDefaultInstance());
+        }
+        /**
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.CustomSfuEvent customSfuEvents = 1;</code>
+         */
+        public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.Builder> 
+             getCustomSfuEventsBuilderList() {
+          return getCustomSfuEventsFieldBuilder().getBuilderList();
+        }
+        private com.google.protobuf.RepeatedFieldBuilderV3<
+            org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEventOrBuilder> 
+            getCustomSfuEventsFieldBuilder() {
+          if (customSfuEventsBuilder_ == null) {
+            customSfuEventsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+                org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEvent.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.CustomSfuEventOrBuilder>(
+                    customSfuEvents_,
+                    ((bitField0_ & 0x00000001) != 0),
+                    getParentForChildren(),
+                    isClean());
+            customSfuEvents_ = null;
+          }
+          return customSfuEventsBuilder_;
+        }
+
         private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats> extensionStats_ =
           java.util.Collections.emptyList();
         private void ensureExtensionStatsIsMutable() {
-          if (!((bitField0_ & 0x00000001) != 0)) {
+          if (!((bitField0_ & 0x00000002) != 0)) {
             extensionStats_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats>(extensionStats_);
-            bitField0_ |= 0x00000001;
+            bitField0_ |= 0x00000002;
            }
         }
 
@@ -71220,7 +77056,7 @@ public final class ProtobufSamples {
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStatsOrBuilder> extensionStatsBuilder_;
 
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats> getExtensionStatsList() {
           if (extensionStatsBuilder_ == null) {
@@ -71230,7 +77066,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
          */
         public int getExtensionStatsCount() {
           if (extensionStatsBuilder_ == null) {
@@ -71240,7 +77076,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats getExtensionStats(int index) {
           if (extensionStatsBuilder_ == null) {
@@ -71250,7 +77086,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
          */
         public Builder setExtensionStats(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats value) {
@@ -71267,7 +77103,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
          */
         public Builder setExtensionStats(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats.Builder builderForValue) {
@@ -71281,7 +77117,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
          */
         public Builder addExtensionStats(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats value) {
           if (extensionStatsBuilder_ == null) {
@@ -71297,7 +77133,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
          */
         public Builder addExtensionStats(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats value) {
@@ -71314,7 +77150,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
          */
         public Builder addExtensionStats(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats.Builder builderForValue) {
@@ -71328,7 +77164,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
          */
         public Builder addExtensionStats(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats.Builder builderForValue) {
@@ -71342,7 +77178,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
          */
         public Builder addAllExtensionStats(
             java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats> values) {
@@ -71357,12 +77193,12 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
          */
         public Builder clearExtensionStats() {
           if (extensionStatsBuilder_ == null) {
             extensionStats_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000001);
+            bitField0_ = (bitField0_ & ~0x00000002);
             onChanged();
           } else {
             extensionStatsBuilder_.clear();
@@ -71370,7 +77206,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
          */
         public Builder removeExtensionStats(int index) {
           if (extensionStatsBuilder_ == null) {
@@ -71383,14 +77219,14 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats.Builder getExtensionStatsBuilder(
             int index) {
           return getExtensionStatsFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStatsOrBuilder getExtensionStatsOrBuilder(
             int index) {
@@ -71400,7 +77236,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
          */
         public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStatsOrBuilder> 
              getExtensionStatsOrBuilderList() {
@@ -71411,14 +77247,14 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats.Builder addExtensionStatsBuilder() {
           return getExtensionStatsFieldBuilder().addBuilder(
               org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats.Builder addExtensionStatsBuilder(
             int index) {
@@ -71426,7 +77262,7 @@ public final class ProtobufSamples {
               index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 1;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuExtensionStats extensionStats = 2;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats.Builder> 
              getExtensionStatsBuilderList() {
@@ -71439,7 +77275,7 @@ public final class ProtobufSamples {
             extensionStatsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStats.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuExtensionStatsOrBuilder>(
                     extensionStats_,
-                    ((bitField0_ & 0x00000001) != 0),
+                    ((bitField0_ & 0x00000002) != 0),
                     getParentForChildren(),
                     isClean());
             extensionStats_ = null;
@@ -71450,9 +77286,9 @@ public final class ProtobufSamples {
         private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad> inboundRtpPads_ =
           java.util.Collections.emptyList();
         private void ensureInboundRtpPadsIsMutable() {
-          if (!((bitField0_ & 0x00000002) != 0)) {
+          if (!((bitField0_ & 0x00000004) != 0)) {
             inboundRtpPads_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad>(inboundRtpPads_);
-            bitField0_ |= 0x00000002;
+            bitField0_ |= 0x00000004;
            }
         }
 
@@ -71460,7 +77296,7 @@ public final class ProtobufSamples {
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPadOrBuilder> inboundRtpPadsBuilder_;
 
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad> getInboundRtpPadsList() {
           if (inboundRtpPadsBuilder_ == null) {
@@ -71470,7 +77306,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
          */
         public int getInboundRtpPadsCount() {
           if (inboundRtpPadsBuilder_ == null) {
@@ -71480,7 +77316,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad getInboundRtpPads(int index) {
           if (inboundRtpPadsBuilder_ == null) {
@@ -71490,7 +77326,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
          */
         public Builder setInboundRtpPads(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad value) {
@@ -71507,7 +77343,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
          */
         public Builder setInboundRtpPads(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad.Builder builderForValue) {
@@ -71521,7 +77357,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
          */
         public Builder addInboundRtpPads(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad value) {
           if (inboundRtpPadsBuilder_ == null) {
@@ -71537,7 +77373,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
          */
         public Builder addInboundRtpPads(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad value) {
@@ -71554,7 +77390,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
          */
         public Builder addInboundRtpPads(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad.Builder builderForValue) {
@@ -71568,7 +77404,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
          */
         public Builder addInboundRtpPads(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad.Builder builderForValue) {
@@ -71582,7 +77418,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
          */
         public Builder addAllInboundRtpPads(
             java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad> values) {
@@ -71597,12 +77433,12 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
          */
         public Builder clearInboundRtpPads() {
           if (inboundRtpPadsBuilder_ == null) {
             inboundRtpPads_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000004);
             onChanged();
           } else {
             inboundRtpPadsBuilder_.clear();
@@ -71610,7 +77446,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
          */
         public Builder removeInboundRtpPads(int index) {
           if (inboundRtpPadsBuilder_ == null) {
@@ -71623,14 +77459,14 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad.Builder getInboundRtpPadsBuilder(
             int index) {
           return getInboundRtpPadsFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPadOrBuilder getInboundRtpPadsOrBuilder(
             int index) {
@@ -71640,7 +77476,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
          */
         public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPadOrBuilder> 
              getInboundRtpPadsOrBuilderList() {
@@ -71651,14 +77487,14 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad.Builder addInboundRtpPadsBuilder() {
           return getInboundRtpPadsFieldBuilder().addBuilder(
               org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad.Builder addInboundRtpPadsBuilder(
             int index) {
@@ -71666,7 +77502,7 @@ public final class ProtobufSamples {
               index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 2;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuInboundRtpPad inboundRtpPads = 3;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad.Builder> 
              getInboundRtpPadsBuilderList() {
@@ -71679,7 +77515,7 @@ public final class ProtobufSamples {
             inboundRtpPadsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPad.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuInboundRtpPadOrBuilder>(
                     inboundRtpPads_,
-                    ((bitField0_ & 0x00000002) != 0),
+                    ((bitField0_ & 0x00000004) != 0),
                     getParentForChildren(),
                     isClean());
             inboundRtpPads_ = null;
@@ -71690,9 +77526,9 @@ public final class ProtobufSamples {
         private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad> outboundRtpPads_ =
           java.util.Collections.emptyList();
         private void ensureOutboundRtpPadsIsMutable() {
-          if (!((bitField0_ & 0x00000004) != 0)) {
+          if (!((bitField0_ & 0x00000008) != 0)) {
             outboundRtpPads_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad>(outboundRtpPads_);
-            bitField0_ |= 0x00000004;
+            bitField0_ |= 0x00000008;
            }
         }
 
@@ -71700,7 +77536,7 @@ public final class ProtobufSamples {
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPadOrBuilder> outboundRtpPadsBuilder_;
 
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad> getOutboundRtpPadsList() {
           if (outboundRtpPadsBuilder_ == null) {
@@ -71710,7 +77546,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
          */
         public int getOutboundRtpPadsCount() {
           if (outboundRtpPadsBuilder_ == null) {
@@ -71720,7 +77556,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad getOutboundRtpPads(int index) {
           if (outboundRtpPadsBuilder_ == null) {
@@ -71730,7 +77566,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
          */
         public Builder setOutboundRtpPads(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad value) {
@@ -71747,7 +77583,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
          */
         public Builder setOutboundRtpPads(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad.Builder builderForValue) {
@@ -71761,7 +77597,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
          */
         public Builder addOutboundRtpPads(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad value) {
           if (outboundRtpPadsBuilder_ == null) {
@@ -71777,7 +77613,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
          */
         public Builder addOutboundRtpPads(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad value) {
@@ -71794,7 +77630,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
          */
         public Builder addOutboundRtpPads(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad.Builder builderForValue) {
@@ -71808,7 +77644,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
          */
         public Builder addOutboundRtpPads(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad.Builder builderForValue) {
@@ -71822,7 +77658,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
          */
         public Builder addAllOutboundRtpPads(
             java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad> values) {
@@ -71837,12 +77673,12 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
          */
         public Builder clearOutboundRtpPads() {
           if (outboundRtpPadsBuilder_ == null) {
             outboundRtpPads_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000004);
+            bitField0_ = (bitField0_ & ~0x00000008);
             onChanged();
           } else {
             outboundRtpPadsBuilder_.clear();
@@ -71850,7 +77686,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
          */
         public Builder removeOutboundRtpPads(int index) {
           if (outboundRtpPadsBuilder_ == null) {
@@ -71863,14 +77699,14 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad.Builder getOutboundRtpPadsBuilder(
             int index) {
           return getOutboundRtpPadsFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPadOrBuilder getOutboundRtpPadsOrBuilder(
             int index) {
@@ -71880,7 +77716,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
          */
         public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPadOrBuilder> 
              getOutboundRtpPadsOrBuilderList() {
@@ -71891,14 +77727,14 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad.Builder addOutboundRtpPadsBuilder() {
           return getOutboundRtpPadsFieldBuilder().addBuilder(
               org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad.Builder addOutboundRtpPadsBuilder(
             int index) {
@@ -71906,7 +77742,7 @@ public final class ProtobufSamples {
               index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 3;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuOutboundRtpPad outboundRtpPads = 4;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad.Builder> 
              getOutboundRtpPadsBuilderList() {
@@ -71919,7 +77755,7 @@ public final class ProtobufSamples {
             outboundRtpPadsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPad.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuOutboundRtpPadOrBuilder>(
                     outboundRtpPads_,
-                    ((bitField0_ & 0x00000004) != 0),
+                    ((bitField0_ & 0x00000008) != 0),
                     getParentForChildren(),
                     isClean());
             outboundRtpPads_ = null;
@@ -71930,9 +77766,9 @@ public final class ProtobufSamples {
         private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel> sctpChannels_ =
           java.util.Collections.emptyList();
         private void ensureSctpChannelsIsMutable() {
-          if (!((bitField0_ & 0x00000008) != 0)) {
+          if (!((bitField0_ & 0x00000010) != 0)) {
             sctpChannels_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel>(sctpChannels_);
-            bitField0_ |= 0x00000008;
+            bitField0_ |= 0x00000010;
            }
         }
 
@@ -71940,7 +77776,7 @@ public final class ProtobufSamples {
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannelOrBuilder> sctpChannelsBuilder_;
 
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel> getSctpChannelsList() {
           if (sctpChannelsBuilder_ == null) {
@@ -71950,7 +77786,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
          */
         public int getSctpChannelsCount() {
           if (sctpChannelsBuilder_ == null) {
@@ -71960,7 +77796,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel getSctpChannels(int index) {
           if (sctpChannelsBuilder_ == null) {
@@ -71970,7 +77806,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
          */
         public Builder setSctpChannels(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel value) {
@@ -71987,7 +77823,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
          */
         public Builder setSctpChannels(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel.Builder builderForValue) {
@@ -72001,7 +77837,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
          */
         public Builder addSctpChannels(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel value) {
           if (sctpChannelsBuilder_ == null) {
@@ -72017,7 +77853,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
          */
         public Builder addSctpChannels(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel value) {
@@ -72034,7 +77870,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
          */
         public Builder addSctpChannels(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel.Builder builderForValue) {
@@ -72048,7 +77884,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
          */
         public Builder addSctpChannels(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel.Builder builderForValue) {
@@ -72062,7 +77898,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
          */
         public Builder addAllSctpChannels(
             java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel> values) {
@@ -72077,12 +77913,12 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
          */
         public Builder clearSctpChannels() {
           if (sctpChannelsBuilder_ == null) {
             sctpChannels_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000008);
+            bitField0_ = (bitField0_ & ~0x00000010);
             onChanged();
           } else {
             sctpChannelsBuilder_.clear();
@@ -72090,7 +77926,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
          */
         public Builder removeSctpChannels(int index) {
           if (sctpChannelsBuilder_ == null) {
@@ -72103,14 +77939,14 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel.Builder getSctpChannelsBuilder(
             int index) {
           return getSctpChannelsFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannelOrBuilder getSctpChannelsOrBuilder(
             int index) {
@@ -72120,7 +77956,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
          */
         public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannelOrBuilder> 
              getSctpChannelsOrBuilderList() {
@@ -72131,14 +77967,14 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel.Builder addSctpChannelsBuilder() {
           return getSctpChannelsFieldBuilder().addBuilder(
               org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel.Builder addSctpChannelsBuilder(
             int index) {
@@ -72146,7 +77982,7 @@ public final class ProtobufSamples {
               index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 4;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuSctpChannel sctpChannels = 5;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel.Builder> 
              getSctpChannelsBuilderList() {
@@ -72159,7 +77995,7 @@ public final class ProtobufSamples {
             sctpChannelsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannel.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuSctpChannelOrBuilder>(
                     sctpChannels_,
-                    ((bitField0_ & 0x00000008) != 0),
+                    ((bitField0_ & 0x00000010) != 0),
                     getParentForChildren(),
                     isClean());
             sctpChannels_ = null;
@@ -72170,9 +78006,9 @@ public final class ProtobufSamples {
         private java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport> transports_ =
           java.util.Collections.emptyList();
         private void ensureTransportsIsMutable() {
-          if (!((bitField0_ & 0x00000010) != 0)) {
+          if (!((bitField0_ & 0x00000020) != 0)) {
             transports_ = new java.util.ArrayList<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport>(transports_);
-            bitField0_ |= 0x00000010;
+            bitField0_ |= 0x00000020;
            }
         }
 
@@ -72180,7 +78016,7 @@ public final class ProtobufSamples {
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransportOrBuilder> transportsBuilder_;
 
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport> getTransportsList() {
           if (transportsBuilder_ == null) {
@@ -72190,7 +78026,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
          */
         public int getTransportsCount() {
           if (transportsBuilder_ == null) {
@@ -72200,7 +78036,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport getTransports(int index) {
           if (transportsBuilder_ == null) {
@@ -72210,7 +78046,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
          */
         public Builder setTransports(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport value) {
@@ -72227,7 +78063,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
          */
         public Builder setTransports(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport.Builder builderForValue) {
@@ -72241,7 +78077,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
          */
         public Builder addTransports(org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport value) {
           if (transportsBuilder_ == null) {
@@ -72257,7 +78093,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
          */
         public Builder addTransports(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport value) {
@@ -72274,7 +78110,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
          */
         public Builder addTransports(
             org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport.Builder builderForValue) {
@@ -72288,7 +78124,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
          */
         public Builder addTransports(
             int index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport.Builder builderForValue) {
@@ -72302,7 +78138,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
          */
         public Builder addAllTransports(
             java.lang.Iterable<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport> values) {
@@ -72317,12 +78153,12 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
          */
         public Builder clearTransports() {
           if (transportsBuilder_ == null) {
             transports_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000010);
+            bitField0_ = (bitField0_ & ~0x00000020);
             onChanged();
           } else {
             transportsBuilder_.clear();
@@ -72330,7 +78166,7 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
          */
         public Builder removeTransports(int index) {
           if (transportsBuilder_ == null) {
@@ -72343,14 +78179,14 @@ public final class ProtobufSamples {
           return this;
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport.Builder getTransportsBuilder(
             int index) {
           return getTransportsFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransportOrBuilder getTransportsOrBuilder(
             int index) {
@@ -72360,7 +78196,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
          */
         public java.util.List<? extends org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransportOrBuilder> 
              getTransportsOrBuilderList() {
@@ -72371,14 +78207,14 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport.Builder addTransportsBuilder() {
           return getTransportsFieldBuilder().addBuilder(
               org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
          */
         public org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport.Builder addTransportsBuilder(
             int index) {
@@ -72386,7 +78222,7 @@ public final class ProtobufSamples {
               index, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport.getDefaultInstance());
         }
         /**
-         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 5;</code>
+         * <code>repeated .org.observertc.schemas.protobuf.Samples.SfuSample.SfuTransport transports = 6;</code>
          */
         public java.util.List<org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport.Builder> 
              getTransportsBuilderList() {
@@ -72399,7 +78235,7 @@ public final class ProtobufSamples {
             transportsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransport.Builder, org.observertc.schemas.protobuf.ProtobufSamples.Samples.SfuSample.SfuTransportOrBuilder>(
                     transports_,
-                    ((bitField0_ & 0x00000010) != 0),
+                    ((bitField0_ & 0x00000020) != 0),
                     getParentForChildren(),
                     isClean());
             transports_ = null;
@@ -72409,14 +78245,14 @@ public final class ProtobufSamples {
 
         private java.lang.Object sfuId_ = "";
         /**
-         * <code>required string sfuId = 6;</code>
+         * <code>required string sfuId = 7;</code>
          * @return Whether the sfuId field is set.
          */
         public boolean hasSfuId() {
-          return ((bitField0_ & 0x00000020) != 0);
+          return ((bitField0_ & 0x00000040) != 0);
         }
         /**
-         * <code>required string sfuId = 6;</code>
+         * <code>required string sfuId = 7;</code>
          * @return The sfuId.
          */
         public java.lang.String getSfuId() {
@@ -72434,7 +78270,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>required string sfuId = 6;</code>
+         * <code>required string sfuId = 7;</code>
          * @return The bytes for sfuId.
          */
         public com.google.protobuf.ByteString
@@ -72451,7 +78287,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>required string sfuId = 6;</code>
+         * <code>required string sfuId = 7;</code>
          * @param value The sfuId to set.
          * @return This builder for chaining.
          */
@@ -72460,23 +78296,23 @@ public final class ProtobufSamples {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
           sfuId_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>required string sfuId = 6;</code>
+         * <code>required string sfuId = 7;</code>
          * @return This builder for chaining.
          */
         public Builder clearSfuId() {
-          bitField0_ = (bitField0_ & ~0x00000020);
+          bitField0_ = (bitField0_ & ~0x00000040);
           sfuId_ = getDefaultInstance().getSfuId();
           onChanged();
           return this;
         }
         /**
-         * <code>required string sfuId = 6;</code>
+         * <code>required string sfuId = 7;</code>
          * @param value The bytes for sfuId to set.
          * @return This builder for chaining.
          */
@@ -72485,7 +78321,7 @@ public final class ProtobufSamples {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
           sfuId_ = value;
           onChanged();
           return this;
@@ -72493,15 +78329,15 @@ public final class ProtobufSamples {
 
         private long timestamp_ ;
         /**
-         * <code>required int64 timestamp = 7;</code>
+         * <code>required int64 timestamp = 8;</code>
          * @return Whether the timestamp field is set.
          */
         @java.lang.Override
         public boolean hasTimestamp() {
-          return ((bitField0_ & 0x00000040) != 0);
+          return ((bitField0_ & 0x00000080) != 0);
         }
         /**
-         * <code>required int64 timestamp = 7;</code>
+         * <code>required int64 timestamp = 8;</code>
          * @return The timestamp.
          */
         @java.lang.Override
@@ -72509,22 +78345,22 @@ public final class ProtobufSamples {
           return timestamp_;
         }
         /**
-         * <code>required int64 timestamp = 7;</code>
+         * <code>required int64 timestamp = 8;</code>
          * @param value The timestamp to set.
          * @return This builder for chaining.
          */
         public Builder setTimestamp(long value) {
-          bitField0_ |= 0x00000040;
+          bitField0_ |= 0x00000080;
           timestamp_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>required int64 timestamp = 7;</code>
+         * <code>required int64 timestamp = 8;</code>
          * @return This builder for chaining.
          */
         public Builder clearTimestamp() {
-          bitField0_ = (bitField0_ & ~0x00000040);
+          bitField0_ = (bitField0_ & ~0x00000080);
           timestamp_ = 0L;
           onChanged();
           return this;
@@ -72532,14 +78368,14 @@ public final class ProtobufSamples {
 
         private java.lang.Object marker_ = "";
         /**
-         * <code>optional string marker = 8;</code>
+         * <code>optional string marker = 9;</code>
          * @return Whether the marker field is set.
          */
         public boolean hasMarker() {
-          return ((bitField0_ & 0x00000080) != 0);
+          return ((bitField0_ & 0x00000100) != 0);
         }
         /**
-         * <code>optional string marker = 8;</code>
+         * <code>optional string marker = 9;</code>
          * @return The marker.
          */
         public java.lang.String getMarker() {
@@ -72557,7 +78393,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional string marker = 8;</code>
+         * <code>optional string marker = 9;</code>
          * @return The bytes for marker.
          */
         public com.google.protobuf.ByteString
@@ -72574,7 +78410,7 @@ public final class ProtobufSamples {
           }
         }
         /**
-         * <code>optional string marker = 8;</code>
+         * <code>optional string marker = 9;</code>
          * @param value The marker to set.
          * @return This builder for chaining.
          */
@@ -72583,23 +78419,23 @@ public final class ProtobufSamples {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000080;
+  bitField0_ |= 0x00000100;
           marker_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional string marker = 8;</code>
+         * <code>optional string marker = 9;</code>
          * @return This builder for chaining.
          */
         public Builder clearMarker() {
-          bitField0_ = (bitField0_ & ~0x00000080);
+          bitField0_ = (bitField0_ & ~0x00000100);
           marker_ = getDefaultInstance().getMarker();
           onChanged();
           return this;
         }
         /**
-         * <code>optional string marker = 8;</code>
+         * <code>optional string marker = 9;</code>
          * @param value The bytes for marker to set.
          * @return This builder for chaining.
          */
@@ -72608,7 +78444,7 @@ public final class ProtobufSamples {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000080;
+  bitField0_ |= 0x00000100;
           marker_ = value;
           onChanged();
           return this;
@@ -72616,15 +78452,15 @@ public final class ProtobufSamples {
 
         private int timeZoneOffsetInHours_ ;
         /**
-         * <code>optional int32 timeZoneOffsetInHours = 9;</code>
+         * <code>optional int32 timeZoneOffsetInHours = 10;</code>
          * @return Whether the timeZoneOffsetInHours field is set.
          */
         @java.lang.Override
         public boolean hasTimeZoneOffsetInHours() {
-          return ((bitField0_ & 0x00000100) != 0);
+          return ((bitField0_ & 0x00000200) != 0);
         }
         /**
-         * <code>optional int32 timeZoneOffsetInHours = 9;</code>
+         * <code>optional int32 timeZoneOffsetInHours = 10;</code>
          * @return The timeZoneOffsetInHours.
          */
         @java.lang.Override
@@ -72632,22 +78468,22 @@ public final class ProtobufSamples {
           return timeZoneOffsetInHours_;
         }
         /**
-         * <code>optional int32 timeZoneOffsetInHours = 9;</code>
+         * <code>optional int32 timeZoneOffsetInHours = 10;</code>
          * @param value The timeZoneOffsetInHours to set.
          * @return This builder for chaining.
          */
         public Builder setTimeZoneOffsetInHours(int value) {
-          bitField0_ |= 0x00000100;
+          bitField0_ |= 0x00000200;
           timeZoneOffsetInHours_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional int32 timeZoneOffsetInHours = 9;</code>
+         * <code>optional int32 timeZoneOffsetInHours = 10;</code>
          * @return This builder for chaining.
          */
         public Builder clearTimeZoneOffsetInHours() {
-          bitField0_ = (bitField0_ & ~0x00000100);
+          bitField0_ = (bitField0_ & ~0x00000200);
           timeZoneOffsetInHours_ = 0;
           onChanged();
           return this;
@@ -80552,6 +86388,16 @@ public final class ProtobufSamples {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_ExtensionStat_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomCallEvent_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomCallEvent_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomObserverEvent_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomObserverEvent_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_DataChannel_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -80617,6 +86463,11 @@ public final class ProtobufSamples {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_CustomSfuEvent_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_CustomSfuEvent_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuTransport_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -80666,7 +86517,7 @@ public final class ProtobufSamples {
   static {
     java.lang.String[] descriptorData = {
       "\n\025ProtobufSamples.proto\022\037org.observertc." +
-      "schemas.protobuf\"\202j\n\007Samples\022L\n\rclientSa" +
+      "schemas.protobuf\"\334o\n\007Samples\022L\n\rclientSa" +
       "mples\030\001 \003(\01325.org.observertc.schemas.pro" +
       "tobuf.Samples.ClientSample\022F\n\nsfuSamples" +
       "\030\002 \003(\01322.org.observertc.schemas.protobuf" +
@@ -80675,337 +86526,355 @@ public final class ProtobufSamples {
       "s.TurnSample\022C\n\010controls\030\004 \001(\01321.org.obs" +
       "ervertc.schemas.protobuf.Samples.Control" +
       "s\032.\n\010Controls\022\023\n\013accessClaim\030\001 \001(\t\022\r\n\005cl" +
-      "ose\030\002 \001(\010\032\211F\n\014ClientSample\022W\n\014certificat" +
+      "ose\030\002 \001(\010\032\341I\n\014ClientSample\022W\n\014certificat" +
       "es\030\001 \003(\0132A.org.observertc.schemas.protob" +
       "uf.Samples.ClientSample.Certificate\022U\n\006c" +
       "odecs\030\002 \003(\0132E.org.observertc.schemas.pro" +
       "tobuf.Samples.ClientSample.MediaCodecSta" +
-      "ts\022W\n\014dataChannels\030\003 \003(\0132A.org.observert" +
-      "c.schemas.protobuf.Samples.ClientSample." +
-      "DataChannel\022[\n\016extensionStats\030\004 \003(\0132C.or" +
-      "g.observertc.schemas.protobuf.Samples.Cl" +
-      "ientSample.ExtensionStat\022a\n\021iceCandidate" +
-      "Pairs\030\005 \003(\0132F.org.observertc.schemas.pro" +
-      "tobuf.Samples.ClientSample.IceCandidateP" +
-      "air\022c\n\022iceLocalCandidates\030\006 \003(\0132G.org.ob" +
-      "servertc.schemas.protobuf.Samples.Client" +
-      "Sample.IceLocalCandidate\022e\n\023iceRemoteCan" +
-      "didates\030\007 \003(\0132H.org.observertc.schemas.p" +
-      "rotobuf.Samples.ClientSample.IceRemoteCa" +
-      "ndidate\022\022\n\niceServers\030\010 \003(\t\022c\n\022inboundAu" +
-      "dioTracks\030\t \003(\0132G.org.observertc.schemas" +
-      ".protobuf.Samples.ClientSample.InboundAu" +
-      "dioTrack\022c\n\022inboundVideoTracks\030\n \003(\0132G.o" +
-      "rg.observertc.schemas.protobuf.Samples.C" +
-      "lientSample.InboundVideoTrack\022\021\n\tlocalSD" +
-      "Ps\030\013 \003(\t\022\030\n\020mediaConstraints\030\014 \003(\t\022W\n\014me" +
-      "diaDevices\030\r \003(\0132A.org.observertc.schema" +
-      "s.protobuf.Samples.ClientSample.MediaDev" +
-      "ice\022[\n\014mediaSources\030\016 \003(\0132E.org.observer" +
-      "tc.schemas.protobuf.Samples.ClientSample" +
-      ".MediaSourceStat\022e\n\023outboundAudioTracks\030" +
-      "\017 \003(\0132H.org.observertc.schemas.protobuf." +
-      "Samples.ClientSample.OutboundAudioTrack\022" +
-      "e\n\023outboundVideoTracks\030\020 \003(\0132H.org.obser" +
+      "ts\022_\n\020customCallEvents\030\003 \003(\0132E.org.obser" +
       "vertc.schemas.protobuf.Samples.ClientSam" +
-      "ple.OutboundVideoTrack\022c\n\014pcTransports\030\021" +
-      " \003(\0132M.org.observertc.schemas.protobuf.S" +
-      "amples.ClientSample.PeerConnectionTransp" +
-      "ort\022\027\n\017userMediaErrors\030\022 \003(\t\022\020\n\010clientId" +
-      "\030\023 \002(\t\022\021\n\ttimestamp\030\024 \002(\003\022N\n\007browser\030\025 \001" +
-      "(\0132=.org.observertc.schemas.protobuf.Sam" +
-      "ples.ClientSample.Browser\022\016\n\006callId\030\026 \001(" +
-      "\t\022L\n\006engine\030\027 \001(\0132<.org.observertc.schem" +
-      "as.protobuf.Samples.ClientSample.Engine\022" +
-      "\016\n\006marker\030\030 \001(\t\022Q\n\002os\030\031 \001(\0132E.org.observ" +
+      "ple.CustomCallEvent\022g\n\024customObserverEve" +
+      "nts\030\004 \003(\0132I.org.observertc.schemas.proto" +
+      "buf.Samples.ClientSample.CustomObserverE" +
+      "vent\022W\n\014dataChannels\030\005 \003(\0132A.org.observe" +
+      "rtc.schemas.protobuf.Samples.ClientSampl" +
+      "e.DataChannel\022[\n\016extensionStats\030\006 \003(\0132C." +
+      "org.observertc.schemas.protobuf.Samples." +
+      "ClientSample.ExtensionStat\022a\n\021iceCandida" +
+      "tePairs\030\007 \003(\0132F.org.observertc.schemas.p" +
+      "rotobuf.Samples.ClientSample.IceCandidat" +
+      "ePair\022c\n\022iceLocalCandidates\030\010 \003(\0132G.org." +
+      "observertc.schemas.protobuf.Samples.Clie" +
+      "ntSample.IceLocalCandidate\022e\n\023iceRemoteC" +
+      "andidates\030\t \003(\0132H.org.observertc.schemas" +
+      ".protobuf.Samples.ClientSample.IceRemote" +
+      "Candidate\022\022\n\niceServers\030\n \003(\t\022c\n\022inbound" +
+      "AudioTracks\030\013 \003(\0132G.org.observertc.schem" +
+      "as.protobuf.Samples.ClientSample.Inbound" +
+      "AudioTrack\022c\n\022inboundVideoTracks\030\014 \003(\0132G" +
+      ".org.observertc.schemas.protobuf.Samples" +
+      ".ClientSample.InboundVideoTrack\022\021\n\tlocal" +
+      "SDPs\030\r \003(\t\022\030\n\020mediaConstraints\030\016 \003(\t\022W\n\014" +
+      "mediaDevices\030\017 \003(\0132A.org.observertc.sche" +
+      "mas.protobuf.Samples.ClientSample.MediaD" +
+      "evice\022[\n\014mediaSources\030\020 \003(\0132E.org.observ" +
       "ertc.schemas.protobuf.Samples.ClientSamp" +
-      "le.OperationSystem\022P\n\010platform\030\032 \001(\0132>.o" +
-      "rg.observertc.schemas.protobuf.Samples.C" +
-      "lientSample.Platform\022\016\n\006roomId\030\033 \001(\t\022\021\n\t" +
-      "sampleSeq\030\034 \001(\005\022\035\n\025timeZoneOffsetInHours" +
-      "\030\035 \001(\005\022\016\n\006userId\030\036 \001(\t\032\'\n\006Engine\022\014\n\004name" +
-      "\030\001 \001(\t\022\017\n\007version\030\002 \001(\t\0327\n\010Platform\022\r\n\005m" +
-      "odel\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\022\016\n\006vendor\030\003 \001(\t" +
-      "\032(\n\007Browser\022\014\n\004name\030\001 \001(\t\022\017\n\007version\030\002 \001" +
-      "(\t\032E\n\017OperationSystem\022\014\n\004name\030\001 \001(\t\022\017\n\007v" +
-      "ersion\030\002 \001(\t\022\023\n\013versionName\030\003 \001(\t\0326\n\013Med" +
-      "iaDevice\022\n\n\002id\030\001 \001(\t\022\014\n\004kind\030\002 \001(\t\022\r\n\005la" +
-      "bel\030\003 \001(\t\032.\n\rExtensionStat\022\017\n\007payload\030\001 " +
-      "\002(\t\022\014\n\004type\030\002 \002(\t\032\316\001\n\013DataChannel\022\030\n\020pee" +
-      "rConnectionId\030\001 \002(\t\022\025\n\rbytesReceived\030\002 \001" +
-      "(\003\022\021\n\tbytesSent\030\003 \001(\003\022\035\n\025dataChannelIden" +
-      "tifier\030\004 \001(\005\022\r\n\005label\030\005 \001(\t\022\027\n\017messageRe" +
-      "ceived\030\006 \001(\005\022\023\n\013messageSent\030\007 \001(\005\022\020\n\010pro" +
-      "tocol\030\010 \001(\t\022\r\n\005state\030\t \001(\t\032\347\003\n\027PeerConne" +
-      "ctionTransport\022\030\n\020peerConnectionId\030\001 \002(\t" +
-      "\022\023\n\013transportId\030\002 \002(\t\022\025\n\rbytesReceived\030\003" +
-      " \001(\003\022\021\n\tbytesSent\030\004 \001(\003\022\022\n\ndtlsCipher\030\005 " +
-      "\001(\t\022\020\n\010dtlsRole\030\006 \001(\t\022\021\n\tdtlsState\030\007 \001(\t" +
-      "\022 \n\030iceLocalUsernameFragment\030\010 \001(\t\022\017\n\007ic" +
-      "eRole\030\t \001(\t\022\020\n\010iceState\030\n \001(\t\022\r\n\005label\030\013" +
-      " \001(\t\022\032\n\022localCertificateId\030\014 \001(\t\022\027\n\017pack" +
-      "etsReceived\030\r \001(\005\022\023\n\013packetsSent\030\016 \001(\005\022\033" +
-      "\n\023remoteCertificateId\030\017 \001(\t\022$\n\034selectedC" +
-      "andidatePairChanges\030\020 \001(\005\022\037\n\027selectedCan" +
-      "didatePairId\030\021 \001(\t\022\022\n\nsrtpCipher\030\022 \001(\t\022\020" +
-      "\n\010tlsGroup\030\023 \001(\t\022\022\n\ntlsVersion\030\024 \001(\t\032\231\005\n" +
-      "\020IceCandidatePair\022\027\n\017candidatePairId\030\001 \002" +
-      "(\t\022\030\n\020peerConnectionId\030\002 \002(\t\022 \n\030availabl" +
-      "eIncomingBitrate\030\003 \001(\001\022 \n\030availableOutgo" +
-      "ingBitrate\030\004 \001(\001\022\034\n\024bytesDiscardedOnSend" +
-      "\030\005 \001(\003\022\025\n\rbytesReceived\030\006 \001(\003\022\021\n\tbytesSe" +
-      "nt\030\007 \001(\003\022\033\n\023consentRequestsSent\030\010 \001(\005\022\034\n" +
-      "\024currentRoundTripTime\030\t \001(\001\022\r\n\005label\030\n \001" +
-      "(\t\022#\n\033lastPacketReceivedTimestamp\030\013 \001(\003\022" +
-      "\037\n\027lastPacketSentTimestamp\030\014 \001(\003\022\030\n\020loca" +
-      "lCandidateId\030\r \001(\t\022\021\n\tnominated\030\016 \001(\010\022\036\n" +
-      "\026packetsDiscardedOnSend\030\017 \001(\005\022\027\n\017packets" +
-      "Received\030\020 \001(\005\022\023\n\013packetsSent\030\021 \001(\005\022\031\n\021r" +
-      "emoteCandidateId\030\022 \001(\t\022\030\n\020requestsReceiv" +
-      "ed\030\023 \001(\005\022\024\n\014requestsSent\030\024 \001(\005\022\031\n\021respon" +
-      "sesReceived\030\025 \001(\005\022\025\n\rresponsesSent\030\026 \001(\005" +
-      "\022\r\n\005state\030\027 \001(\t\022\032\n\022totalRoundTripTime\030\030 " +
-      "\001(\001\022\023\n\013transportId\030\031 \001(\t\032\225\003\n\017MediaSource" +
-      "Stat\022\022\n\naudioLevel\030\001 \001(\001\022\036\n\026droppedSampl" +
-      "esDuration\030\002 \001(\001\022\034\n\024droppedSamplesEvents" +
-      "\030\003 \001(\005\022\026\n\016echoReturnLoss\030\004 \001(\001\022!\n\031echoRe" +
-      "turnLossEnhancement\030\005 \001(\001\022\016\n\006frames\030\006 \001(" +
-      "\005\022\027\n\017framesPerSecond\030\007 \001(\001\022\016\n\006height\030\010 \001" +
-      "(\005\022\014\n\004kind\030\t \001(\t\022\025\n\rrelayedSource\030\n \001(\010\022" +
-      "\030\n\020totalAudioEnergy\030\013 \001(\001\022\031\n\021totalCaptur" +
-      "eDelay\030\014 \001(\001\022\034\n\024totalSamplesCaptured\030\r \001" +
-      "(\001\022\034\n\024totalSamplesDuration\030\016 \001(\001\022\027\n\017trac" +
-      "kIdentifier\030\017 \001(\t\022\r\n\005width\030\020 \001(\005\032\205\001\n\017Med" +
-      "iaCodecStats\022\020\n\010channels\030\001 \001(\005\022\021\n\tclockR" +
-      "ate\030\002 \001(\005\022\021\n\tcodecType\030\003 \001(\t\022\020\n\010mimeType" +
-      "\030\004 \001(\t\022\023\n\013payloadType\030\005 \001(\t\022\023\n\013sdpFmtpLi" +
-      "ne\030\006 \001(\t\032x\n\013Certificate\022\031\n\021base64Certifi" +
-      "cate\030\001 \001(\t\022\023\n\013fingerprint\030\002 \001(\t\022\034\n\024finge" +
-      "rprintAlgorithm\030\003 \001(\t\022\033\n\023issuerCertifica" +
-      "teId\030\004 \001(\t\032\237\t\n\021InboundAudioTrack\022\014\n\004ssrc" +
-      "\030\001 \002(\003\022\022\n\naudioLevel\030\002 \001(\005\022\025\n\rbytesRecei" +
-      "ved\030\003 \001(\003\022\021\n\tbytesSent\030\004 \001(\003\022\030\n\020conceale" +
-      "dSamples\030\005 \001(\005\022\031\n\021concealmentEvents\030\006 \001(" +
-      "\005\022\035\n\025decoderImplementation\030\007 \001(\t\022!\n\031esti" +
-      "matedPlayoutTimestamp\030\010 \001(\003\022\033\n\023fecPacket" +
-      "sDiscarded\030\t \001(\005\022\032\n\022fecPacketsReceived\030\n" +
-      " \001(\005\022\033\n\023headerBytesReceived\030\013 \001(\003\022&\n\036ins" +
-      "ertedSamplesForDeceleration\030\014 \001(\005\022\016\n\006jit" +
-      "ter\030\r \001(\001\022\031\n\021jitterBufferDelay\030\016 \001(\001\022 \n\030" +
-      "jitterBufferEmittedCount\030\017 \001(\005\022 \n\030jitter" +
-      "BufferMinimumDelay\030\020 \001(\001\022\037\n\027jitterBuffer" +
-      "TargetDelay\030\021 \001(\001\022#\n\033lastPacketReceivedT" +
-      "imestamp\030\022 \001(\003\022\021\n\tnackCount\030\023 \001(\005\022\030\n\020pac" +
-      "ketsDiscarded\030\024 \001(\005\022\023\n\013packetsLost\030\025 \001(\005" +
-      "\022\027\n\017packetsReceived\030\026 \001(\005\022\023\n\013packetsSent" +
-      "\030\027 \001(\005\022\030\n\020peerConnectionId\030\030 \001(\t\022\026\n\016remo" +
-      "teClientId\030\031 \001(\t\022\027\n\017remoteTimestamp\030\032 \001(" +
-      "\003\022%\n\035removedSamplesForAcceleration\030\033 \001(\005" +
-      "\022\023\n\013reportsSent\030\034 \001(\005\022\025\n\rroundTripTime\030\035" +
-      " \001(\001\022!\n\031roundTripTimeMeasurements\030\036 \001(\005\022" +
-      "\021\n\tsfuSinkId\030\037 \001(\t\022\023\n\013sfuStreamId\030  \001(\t\022" +
-      "\036\n\026silentConcealedSamples\030! \001(\005\022\"\n\032synth" +
-      "esizedSamplesDuration\030\" \001(\005\022 \n\030synthesiz" +
-      "edSamplesEvents\030# \001(\005\022\030\n\020totalAudioEnerg" +
-      "y\030$ \001(\005\022\031\n\021totalPlayoutDelay\030% \001(\001\022\034\n\024to" +
-      "talProcessingDelay\030& \001(\001\022\032\n\022totalRoundTr" +
-      "ipTime\030\' \001(\001\022\031\n\021totalSamplesCount\030( \001(\005\022" +
-      "\034\n\024totalSamplesDuration\030) \001(\005\022\034\n\024totalSa" +
-      "mplesReceived\030* \001(\005\022\017\n\007trackId\030+ \001(\t\032\306\010\n" +
-      "\021InboundVideoTrack\022\014\n\004ssrc\030\001 \002(\003\022\025\n\rbyte" +
-      "sReceived\030\002 \001(\003\022\021\n\tbytesSent\030\003 \001(\003\022\035\n\025de" +
-      "coderImplementation\030\004 \001(\t\022!\n\031estimatedPl" +
-      "ayoutTimestamp\030\005 \001(\003\022\033\n\023fecPacketsDiscar" +
-      "ded\030\006 \001(\005\022\032\n\022fecPacketsReceived\030\007 \001(\005\022\020\n" +
-      "\010firCount\030\010 \001(\005\022\023\n\013frameHeight\030\t \001(\005\022\022\n\n" +
-      "frameWidth\030\n \001(\005\022\025\n\rframesDecoded\030\013 \001(\005\022" +
-      "\025\n\rframesDropped\030\014 \001(\005\022\027\n\017framesPerSecon" +
-      "d\030\r \001(\001\022\026\n\016framesReceived\030\016 \001(\005\022\033\n\023heade" +
-      "rBytesReceived\030\017 \001(\003\022\016\n\006jitter\030\020 \001(\001\022\031\n\021" +
-      "jitterBufferDelay\030\021 \001(\001\022 \n\030jitterBufferE" +
-      "mittedCount\030\022 \001(\005\022 \n\030jitterBufferMinimum" +
-      "Delay\030\023 \001(\001\022\037\n\027jitterBufferTargetDelay\030\024" +
-      " \001(\001\022\030\n\020keyFramesDecoded\030\025 \001(\005\022#\n\033lastPa" +
-      "cketReceivedTimestamp\030\026 \001(\003\022\021\n\tnackCount" +
-      "\030\027 \001(\005\022\030\n\020packetsDiscarded\030\030 \001(\005\022\023\n\013pack" +
-      "etsLost\030\031 \001(\005\022\027\n\017packetsReceived\030\032 \001(\005\022\023" +
-      "\n\013packetsSent\030\033 \001(\005\022\030\n\020peerConnectionId\030" +
-      "\034 \001(\t\022\020\n\010pliCount\030\035 \001(\005\022\r\n\005qpSum\030\036 \001(\003\022\026" +
-      "\n\016remoteClientId\030\037 \001(\t\022\027\n\017remoteTimestam" +
-      "p\030  \001(\003\022\023\n\013reportsSent\030! \001(\005\022\025\n\rroundTri" +
-      "pTime\030\" \001(\001\022!\n\031roundTripTimeMeasurements" +
-      "\030# \001(\005\022\021\n\tsfuSinkId\030$ \001(\t\022\023\n\013sfuStreamId" +
-      "\030% \001(\t\022\027\n\017totalDecodeTime\030& \001(\001\022\034\n\024total" +
-      "InterFrameDelay\030\' \001(\001\022\034\n\024totalProcessing" +
-      "Delay\030( \001(\001\022\032\n\022totalRoundTripTime\030) \001(\001\022" +
-      "#\n\033totalSquaredInterFrameDelay\030* \001(\001\022\017\n\007" +
-      "trackId\030+ \001(\t\032\346\006\n\022OutboundAudioTrack\022\014\n\004" +
-      "ssrc\030\001 \002(\003\022\016\n\006active\030\002 \001(\010\022\022\n\naudioLevel" +
-      "\030\003 \001(\001\022\033\n\023averageRtcpInterval\030\004 \001(\001\022\021\n\tb" +
-      "ytesSent\030\005 \001(\003\022\036\n\026droppedSamplesDuration" +
-      "\030\006 \001(\001\022\034\n\024droppedSamplesEvents\030\007 \001(\005\022\026\n\016" +
-      "echoReturnLoss\030\010 \001(\001\022!\n\031echoReturnLossEn" +
-      "hancement\030\t \001(\001\022\035\n\025encoderImplementation" +
-      "\030\n \001(\t\022\024\n\014fractionLost\030\013 \001(\001\022\027\n\017headerBy" +
-      "tesSent\030\014 \001(\003\022\016\n\006jitter\030\r \001(\001\022\021\n\tnackCou" +
-      "nt\030\016 \001(\005\022\023\n\013packetsLost\030\017 \001(\005\022\027\n\017packets" +
-      "Received\030\020 \001(\005\022\023\n\013packetsSent\030\021 \001(\005\022\030\n\020p" +
-      "eerConnectionId\030\022 \001(\t\022\025\n\rrelayedSource\030\023" +
-      " \001(\010\022\036\n\026retransmittedBytesSent\030\024 \001(\003\022 \n\030" +
-      "retransmittedPacketsSent\030\025 \001(\005\022\013\n\003rid\030\026 " +
-      "\001(\t\022\025\n\rroundTripTime\030\027 \001(\001\022!\n\031roundTripT" +
-      "imeMeasurements\030\030 \001(\005\022\023\n\013sfuStreamId\030\031 \001" +
-      "(\t\022\025\n\rtargetBitrate\030\032 \001(\005\022\030\n\020totalAudioE" +
-      "nergy\030\033 \001(\001\022\031\n\021totalCaptureDelay\030\034 \001(\001\022\037" +
-      "\n\027totalEncodedBytesTarget\030\035 \001(\003\022\034\n\024total" +
-      "PacketSendDelay\030\036 \001(\001\022\032\n\022totalRoundTripT" +
-      "ime\030\037 \001(\001\022\034\n\024totalSamplesCaptured\030  \001(\001\022" +
-      "\034\n\024totalSamplesDuration\030! \001(\001\022\017\n\007trackId" +
-      "\030\" \001(\t\032\207\t\n\022OutboundVideoTrack\022\014\n\004ssrc\030\001 " +
-      "\002(\003\022\016\n\006active\030\002 \001(\010\022\033\n\023averageRtcpInterv" +
-      "al\030\003 \001(\001\022\021\n\tbytesSent\030\004 \001(\003\022\035\n\025encoderIm" +
-      "plementation\030\005 \001(\t\022\020\n\010firCount\030\006 \001(\005\022\024\n\014" +
-      "fractionLost\030\007 \001(\001\022\023\n\013frameHeight\030\010 \001(\005\022" +
-      "\022\n\nframeWidth\030\t \001(\005\022\016\n\006frames\030\n \001(\005\022\025\n\rf" +
-      "ramesDropped\030\013 \001(\005\022\025\n\rframesEncoded\030\014 \001(" +
-      "\005\022\027\n\017framesPerSecond\030\r \001(\001\022\022\n\nframesSent" +
-      "\030\016 \001(\005\022\027\n\017headerBytesSent\030\017 \001(\003\022\016\n\006heigh" +
-      "t\030\020 \001(\005\022\026\n\016hugeFramesSent\030\021 \001(\005\022\016\n\006jitte" +
-      "r\030\022 \001(\001\022\030\n\020keyFramesEncoded\030\023 \001(\005\022\021\n\tnac" +
-      "kCount\030\024 \001(\005\022\023\n\013packetsLost\030\025 \001(\005\022\027\n\017pac" +
-      "ketsReceived\030\026 \001(\005\022\023\n\013packetsSent\030\027 \001(\005\022" +
-      "\030\n\020peerConnectionId\030\030 \001(\t\022\020\n\010pliCount\030\031 " +
-      "\001(\005\022\r\n\005qpSum\030\032 \001(\003\022*\n\"qualityLimitationD" +
-      "urationBandwidth\030\033 \001(\001\022$\n\034qualityLimitat" +
-      "ionDurationCPU\030\034 \001(\001\022%\n\035qualityLimitatio" +
-      "nDurationNone\030\035 \001(\001\022&\n\036qualityLimitation" +
-      "DurationOther\030\036 \001(\001\022\037\n\027qualityLimitation" +
-      "Reason\030\037 \001(\t\022*\n\"qualityLimitationResolut" +
-      "ionChanges\030  \001(\005\022\025\n\rrelayedSource\030! \001(\010\022" +
-      "\036\n\026retransmittedBytesSent\030\" \001(\003\022 \n\030retra" +
-      "nsmittedPacketsSent\030# \001(\005\022\013\n\003rid\030$ \001(\t\022\025" +
-      "\n\rroundTripTime\030% \001(\001\022!\n\031roundTripTimeMe" +
-      "asurements\030& \001(\005\022\023\n\013sfuStreamId\030\' \001(\t\022\025\n" +
-      "\rtargetBitrate\030( \001(\005\022\027\n\017totalEncodeTime\030" +
-      ") \001(\001\022\037\n\027totalEncodedBytesTarget\030* \001(\003\022\034" +
-      "\n\024totalPacketSendDelay\030+ \001(\001\022\032\n\022totalRou" +
-      "ndTripTime\030, \001(\001\022\017\n\007trackId\030- \001(\t\022\r\n\005wid" +
-      "th\030. \001(\005\032\267\001\n\021IceLocalCandidate\022\017\n\007addres" +
-      "s\030\001 \001(\t\022\025\n\rcandidateType\030\002 \001(\t\022\n\n\002id\030\003 \001" +
-      "(\t\022\030\n\020peerConnectionId\030\004 \001(\t\022\014\n\004port\030\005 \001" +
-      "(\005\022\020\n\010priority\030\006 \001(\003\022\020\n\010protocol\030\007 \001(\t\022\025" +
-      "\n\rrelayProtocol\030\010 \001(\t\022\013\n\003url\030\t \001(\t\032\270\001\n\022I" +
-      "ceRemoteCandidate\022\017\n\007address\030\001 \001(\t\022\025\n\rca" +
-      "ndidateType\030\002 \001(\t\022\n\n\002id\030\003 \001(\t\022\030\n\020peerCon" +
-      "nectionId\030\004 \001(\t\022\014\n\004port\030\005 \001(\005\022\020\n\010priorit" +
-      "y\030\006 \001(\003\022\020\n\010protocol\030\007 \001(\t\022\025\n\rrelayProtoc" +
-      "ol\030\010 \001(\t\022\013\n\003url\030\t \001(\t\032\222\032\n\tSfuSample\022\\\n\016e" +
-      "xtensionStats\030\001 \003(\0132D.org.observertc.sch" +
-      "emas.protobuf.Samples.SfuSample.SfuExten" +
-      "sionStats\022[\n\016inboundRtpPads\030\002 \003(\0132C.org." +
-      "observertc.schemas.protobuf.Samples.SfuS" +
-      "ample.SfuInboundRtpPad\022]\n\017outboundRtpPad" +
-      "s\030\003 \003(\0132D.org.observertc.schemas.protobu" +
-      "f.Samples.SfuSample.SfuOutboundRtpPad\022W\n" +
-      "\014sctpChannels\030\004 \003(\0132A.org.observertc.sch" +
-      "emas.protobuf.Samples.SfuSample.SfuSctpC" +
-      "hannel\022S\n\ntransports\030\005 \003(\0132?.org.observe" +
-      "rtc.schemas.protobuf.Samples.SfuSample.S" +
-      "fuTransport\022\r\n\005sfuId\030\006 \002(\t\022\021\n\ttimestamp\030" +
-      "\007 \002(\003\022\016\n\006marker\030\010 \001(\t\022\035\n\025timeZoneOffsetI" +
-      "nHours\030\t \001(\005\032\363\004\n\014SfuTransport\022\023\n\013transpo" +
-      "rtId\030\001 \002(\t\022\021\n\tdtlsState\030\002 \001(\t\022\017\n\007iceRole" +
-      "\030\003 \001(\t\022\020\n\010iceState\030\004 \001(\t\022\020\n\010internal\030\005 \001" +
-      "(\010\022\024\n\014localAddress\030\006 \001(\t\022\021\n\tlocalPort\030\007 " +
-      "\001(\005\022\020\n\010noReport\030\010 \001(\010\022\020\n\010protocol\030\t \001(\t\022" +
-      "\025\n\rremoteAddress\030\n \001(\t\022\022\n\nremotePort\030\013 \001" +
-      "(\005\022\030\n\020rtpBytesReceived\030\014 \001(\003\022\024\n\014rtpBytes" +
-      "Sent\030\r \001(\003\022\026\n\016rtpPacketsLost\030\016 \001(\005\022\032\n\022rt" +
-      "pPacketsReceived\030\017 \001(\005\022\026\n\016rtpPacketsSent" +
-      "\030\020 \001(\005\022\030\n\020rtxBytesReceived\030\021 \001(\003\022\024\n\014rtxB" +
-      "ytesSent\030\022 \001(\003\022\033\n\023rtxPacketsDiscarded\030\023 " +
-      "\001(\005\022\026\n\016rtxPacketsLost\030\024 \001(\005\022\032\n\022rtxPacket" +
-      "sReceived\030\025 \001(\005\022\026\n\016rtxPacketsSent\030\026 \001(\005\022" +
-      "\031\n\021sctpBytesReceived\030\027 \001(\003\022\025\n\rsctpBytesS" +
-      "ent\030\030 \001(\003\022\033\n\023sctpPacketsReceived\030\031 \001(\005\022\027" +
-      "\n\017sctpPacketsSent\030\032 \001(\005\022\021\n\tsctpState\030\033 \001" +
-      "(\t\032\315\006\n\020SfuInboundRtpPad\022\r\n\005padId\030\001 \002(\t\022\014" +
-      "\n\004ssrc\030\002 \002(\003\022\020\n\010streamId\030\003 \002(\t\022\023\n\013transp" +
-      "ortId\030\004 \002(\t\022\025\n\rbytesReceived\030\005 \001(\003\022\021\n\tcl" +
-      "ockRate\030\006 \001(\005\022\033\n\023fecPacketsDiscarded\030\007 \001" +
-      "(\005\022\032\n\022fecPacketsReceived\030\010 \001(\005\022\020\n\010firCou" +
-      "nt\030\t \001(\005\022\024\n\014fractionLost\030\n \001(\001\022\025\n\rframes" +
-      "Decoded\030\013 \001(\005\022\026\n\016framesReceived\030\014 \001(\005\022\020\n" +
-      "\010internal\030\r \001(\010\022\016\n\006jitter\030\016 \001(\001\022\030\n\020keyFr" +
-      "amesDecoded\030\017 \001(\005\022\021\n\tmediaType\030\020 \001(\t\022\020\n\010" +
-      "mimeType\030\021 \001(\t\022\021\n\tnackCount\030\022 \001(\005\022\020\n\010noR" +
-      "eport\030\023 \001(\010\022\030\n\020packetsDiscarded\030\024 \001(\005\022\031\n" +
-      "\021packetsDuplicated\030\025 \001(\005\022\037\n\027packetsFaile" +
-      "dDecryption\030\026 \001(\005\022\023\n\013packetsLost\030\027 \001(\005\022\027" +
-      "\n\017packetsReceived\030\030 \001(\005\022\027\n\017packetsRepair" +
-      "ed\030\031 \001(\005\022\023\n\013payloadType\030\032 \001(\005\022\020\n\010pliCoun" +
-      "t\030\033 \001(\005\022\013\n\003rid\030\034 \001(\t\022\025\n\rroundTripTime\030\035 " +
-      "\001(\001\022\022\n\nrtcpRrSent\030\036 \001(\005\022\026\n\016rtcpSrReceive" +
-      "d\030\037 \001(\005\022\033\n\023rtxPacketsDiscarded\030  \001(\005\022\032\n\022" +
-      "rtxPacketsReceived\030! \001(\005\022\017\n\007rtxSsrc\030\" \001(" +
-      "\003\022\023\n\013sdpFmtpLine\030# \001(\t\022\020\n\010sliCount\030$ \001(\005" +
-      "\022\025\n\rtargetBitrate\030% \001(\005\022\031\n\021voiceActivity" +
-      "Flag\030& \001(\010\032\202\007\n\021SfuOutboundRtpPad\022\r\n\005padI" +
-      "d\030\001 \002(\t\022\016\n\006sinkId\030\002 \002(\t\022\014\n\004ssrc\030\003 \002(\003\022\020\n" +
-      "\010streamId\030\004 \002(\t\022\023\n\013transportId\030\005 \002(\t\022\021\n\t" +
-      "bytesSent\030\006 \001(\003\022\016\n\006callId\030\007 \001(\t\022\020\n\010clien" +
-      "tId\030\010 \001(\t\022\021\n\tclockRate\030\t \001(\005\022\033\n\023fecPacke" +
-      "tsDiscarded\030\n \001(\005\022\026\n\016fecPacketsSent\030\013 \001(" +
-      "\005\022\020\n\010firCount\030\014 \001(\005\022\024\n\014fractionLost\030\r \001(" +
-      "\001\022\025\n\rframesEncoded\030\016 \001(\005\022\022\n\nframesSent\030\017" +
-      " \001(\005\022\020\n\010internal\030\020 \001(\010\022\016\n\006jitter\030\021 \001(\001\022\030" +
-      "\n\020keyFramesEncoded\030\022 \001(\005\022\021\n\tmediaType\030\023 " +
-      "\001(\t\022\020\n\010mimeType\030\024 \001(\t\022\021\n\tnackCount\030\025 \001(\005" +
-      "\022\020\n\010noReport\030\026 \001(\010\022\030\n\020packetsDiscarded\030\027" +
-      " \001(\005\022\031\n\021packetsDuplicated\030\030 \001(\005\022\037\n\027packe" +
-      "tsFailedEncryption\030\031 \001(\005\022\023\n\013packetsLost\030" +
-      "\032 \001(\005\022\034\n\024packetsRetransmitted\030\033 \001(\005\022\023\n\013p" +
-      "acketsSent\030\034 \001(\005\022\023\n\013payloadType\030\035 \001(\005\022\020\n" +
-      "\010pliCount\030\036 \001(\005\022\013\n\003rid\030\037 \001(\t\022\025\n\rroundTri" +
-      "pTime\030  \001(\001\022\026\n\016rtcpRrReceived\030! \001(\005\022\022\n\nr" +
-      "tcpSrSent\030\" \001(\005\022\033\n\023rtxPacketsDiscarded\030#" +
-      " \001(\005\022\026\n\016rtxPacketsSent\030$ \001(\005\022\017\n\007rtxSsrc\030" +
-      "% \001(\003\022\023\n\013sdpFmtpLine\030& \001(\t\022\020\n\010sliCount\030\'" +
-      " \001(\005\022\025\n\rtargetBitrate\030( \001(\005\022\017\n\007trackId\030)" +
-      " \001(\t\022\031\n\021voiceActivityFlag\030* \001(\010\032\354\002\n\016SfuS" +
-      "ctpChannel\022\021\n\tchannelId\030\001 \002(\t\022\020\n\010streamI" +
-      "d\030\002 \002(\t\022\023\n\013transportId\030\003 \002(\t\022\025\n\rbytesRec" +
-      "eived\030\004 \001(\003\022\021\n\tbytesSent\030\005 \001(\003\022\020\n\010intern" +
-      "al\030\006 \001(\010\022\r\n\005label\030\007 \001(\t\022\027\n\017messageReceiv" +
-      "ed\030\010 \001(\005\022\023\n\013messageSent\030\t \001(\005\022\020\n\010noRepor" +
-      "t\030\n \001(\010\022\020\n\010protocol\030\013 \001(\t\022\034\n\024sctpCongest" +
-      "ionWindow\030\014 \001(\001\022\017\n\007sctpMtu\030\r \001(\005\022\032\n\022sctp" +
-      "ReceiverWindow\030\016 \001(\001\022!\n\031sctpSmoothedRoun" +
-      "dTripTime\030\017 \001(\001\022\025\n\rsctpUnackData\030\020 \001(\005\0322" +
-      "\n\021SfuExtensionStats\022\017\n\007payload\030\001 \002(\t\022\014\n\004" +
-      "type\030\002 \002(\t\032\200\007\n\nTurnSample\022[\n\013allocations" +
-      "\030\001 \003(\0132F.org.observertc.schemas.protobuf" +
-      ".Samples.TurnSample.TurnPeerAllocation\022Q" +
-      "\n\010sessions\030\002 \003(\0132?.org.observertc.schema" +
-      "s.protobuf.Samples.TurnSample.TurnSessio" +
-      "n\022\020\n\010serverId\030\003 \002(\t\032\260\002\n\022TurnPeerAllocati" +
-      "on\022\016\n\006peerId\030\001 \002(\t\022\026\n\016relayedAddress\030\002 \002" +
-      "(\t\022\023\n\013relayedPort\030\003 \002(\005\022\021\n\tsessionId\030\004 \002" +
-      "(\t\022\031\n\021transportProtocol\030\005 \002(\t\022\023\n\013peerAdd" +
-      "ress\030\006 \001(\t\022\020\n\010peerPort\030\007 \001(\005\022\025\n\rreceived" +
-      "Bytes\030\010 \001(\003\022\027\n\017receivedPackets\030\t \001(\005\022\030\n\020" +
-      "receivingBitrate\030\n \001(\005\022\026\n\016sendingBitrate" +
-      "\030\013 \001(\005\022\021\n\tsentBytes\030\014 \001(\003\022\023\n\013sentPackets" +
-      "\030\r \001(\005\032\374\002\n\013TurnSession\022\021\n\tsessionId\030\001 \002(" +
-      "\t\022\025\n\rclientAddress\030\002 \001(\t\022\020\n\010clientId\030\003 \001" +
-      "(\t\022\022\n\nclientPort\030\004 \001(\005\022\033\n\023nonceExpiratio" +
-      "nTime\030\005 \001(\003\022\r\n\005realm\030\006 \001(\t\022\025\n\rreceivedBy" +
-      "tes\030\007 \001(\003\022\027\n\017receivedPackets\030\010 \001(\005\022\030\n\020re" +
-      "ceivingBitrate\030\t \001(\005\022\026\n\016sendingBitrate\030\n" +
-      " \001(\005\022\021\n\tsentBytes\030\013 \001(\003\022\023\n\013sentPackets\030\014" +
-      " \001(\005\022\025\n\rserverAddress\030\r \001(\t\022\022\n\nserverPor" +
-      "t\030\016 \001(\005\022\017\n\007started\030\017 \001(\003\022\031\n\021transportPro" +
-      "tocol\030\020 \001(\t\022\020\n\010username\030\021 \001(\t"
+      "le.MediaSourceStat\022e\n\023outboundAudioTrack" +
+      "s\030\021 \003(\0132H.org.observertc.schemas.protobu" +
+      "f.Samples.ClientSample.OutboundAudioTrac" +
+      "k\022e\n\023outboundVideoTracks\030\022 \003(\0132H.org.obs" +
+      "ervertc.schemas.protobuf.Samples.ClientS" +
+      "ample.OutboundVideoTrack\022c\n\014pcTransports" +
+      "\030\023 \003(\0132M.org.observertc.schemas.protobuf" +
+      ".Samples.ClientSample.PeerConnectionTran" +
+      "sport\022\027\n\017userMediaErrors\030\024 \003(\t\022\020\n\010client" +
+      "Id\030\025 \002(\t\022\021\n\ttimestamp\030\026 \002(\003\022N\n\007browser\030\027" +
+      " \001(\0132=.org.observertc.schemas.protobuf.S" +
+      "amples.ClientSample.Browser\022\016\n\006callId\030\030 " +
+      "\001(\t\022L\n\006engine\030\031 \001(\0132<.org.observertc.sch" +
+      "emas.protobuf.Samples.ClientSample.Engin" +
+      "e\022\016\n\006marker\030\032 \001(\t\022Q\n\002os\030\033 \001(\0132E.org.obse" +
+      "rvertc.schemas.protobuf.Samples.ClientSa" +
+      "mple.OperationSystem\022P\n\010platform\030\034 \001(\0132>" +
+      ".org.observertc.schemas.protobuf.Samples" +
+      ".ClientSample.Platform\022\016\n\006roomId\030\035 \001(\t\022\021" +
+      "\n\tsampleSeq\030\036 \001(\005\022\035\n\025timeZoneOffsetInHou" +
+      "rs\030\037 \001(\005\022\016\n\006userId\030  \001(\t\032\'\n\006Engine\022\014\n\004na" +
+      "me\030\001 \001(\t\022\017\n\007version\030\002 \001(\t\0327\n\010Platform\022\r\n" +
+      "\005model\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\022\016\n\006vendor\030\003 \001" +
+      "(\t\032(\n\007Browser\022\014\n\004name\030\001 \001(\t\022\017\n\007version\030\002" +
+      " \001(\t\032E\n\017OperationSystem\022\014\n\004name\030\001 \001(\t\022\017\n" +
+      "\007version\030\002 \001(\t\022\023\n\013versionName\030\003 \001(\t\0326\n\013M" +
+      "ediaDevice\022\n\n\002id\030\001 \001(\t\022\014\n\004kind\030\002 \001(\t\022\r\n\005" +
+      "label\030\003 \001(\t\032.\n\rExtensionStat\022\017\n\007payload\030" +
+      "\001 \002(\t\022\014\n\004type\030\002 \002(\t\032\227\001\n\017CustomCallEvent\022" +
+      "\014\n\004name\030\001 \002(\t\022\023\n\013attachments\030\002 \001(\t\022\024\n\014me" +
+      "diaTrackId\030\003 \001(\t\022\017\n\007message\030\004 \001(\t\022\030\n\020pee" +
+      "rConnectionId\030\005 \001(\t\022\021\n\ttimestamp\030\006 \001(\003\022\r" +
+      "\n\005value\030\007 \001(\t\032r\n\023CustomObserverEvent\022\014\n\004" +
+      "name\030\001 \002(\t\022\023\n\013attachments\030\002 \001(\t\022\024\n\014media" +
+      "TrackId\030\003 \001(\t\022\017\n\007message\030\004 \001(\t\022\021\n\ttimest" +
+      "amp\030\005 \001(\003\032\316\001\n\013DataChannel\022\030\n\020peerConnect" +
+      "ionId\030\001 \002(\t\022\025\n\rbytesReceived\030\002 \001(\003\022\021\n\tby" +
+      "tesSent\030\003 \001(\003\022\035\n\025dataChannelIdentifier\030\004" +
+      " \001(\005\022\r\n\005label\030\005 \001(\t\022\027\n\017messageReceived\030\006" +
+      " \001(\005\022\023\n\013messageSent\030\007 \001(\005\022\020\n\010protocol\030\010 " +
+      "\001(\t\022\r\n\005state\030\t \001(\t\032\347\003\n\027PeerConnectionTra" +
+      "nsport\022\030\n\020peerConnectionId\030\001 \002(\t\022\023\n\013tran" +
+      "sportId\030\002 \002(\t\022\025\n\rbytesReceived\030\003 \001(\003\022\021\n\t" +
+      "bytesSent\030\004 \001(\003\022\022\n\ndtlsCipher\030\005 \001(\t\022\020\n\010d" +
+      "tlsRole\030\006 \001(\t\022\021\n\tdtlsState\030\007 \001(\t\022 \n\030iceL" +
+      "ocalUsernameFragment\030\010 \001(\t\022\017\n\007iceRole\030\t " +
+      "\001(\t\022\020\n\010iceState\030\n \001(\t\022\r\n\005label\030\013 \001(\t\022\032\n\022" +
+      "localCertificateId\030\014 \001(\t\022\027\n\017packetsRecei" +
+      "ved\030\r \001(\005\022\023\n\013packetsSent\030\016 \001(\005\022\033\n\023remote" +
+      "CertificateId\030\017 \001(\t\022$\n\034selectedCandidate" +
+      "PairChanges\030\020 \001(\005\022\037\n\027selectedCandidatePa" +
+      "irId\030\021 \001(\t\022\022\n\nsrtpCipher\030\022 \001(\t\022\020\n\010tlsGro" +
+      "up\030\023 \001(\t\022\022\n\ntlsVersion\030\024 \001(\t\032\231\005\n\020IceCand" +
+      "idatePair\022\027\n\017candidatePairId\030\001 \002(\t\022\030\n\020pe" +
+      "erConnectionId\030\002 \002(\t\022 \n\030availableIncomin" +
+      "gBitrate\030\003 \001(\001\022 \n\030availableOutgoingBitra" +
+      "te\030\004 \001(\001\022\034\n\024bytesDiscardedOnSend\030\005 \001(\003\022\025" +
+      "\n\rbytesReceived\030\006 \001(\003\022\021\n\tbytesSent\030\007 \001(\003" +
+      "\022\033\n\023consentRequestsSent\030\010 \001(\005\022\034\n\024current" +
+      "RoundTripTime\030\t \001(\001\022\r\n\005label\030\n \001(\t\022#\n\033la" +
+      "stPacketReceivedTimestamp\030\013 \001(\003\022\037\n\027lastP" +
+      "acketSentTimestamp\030\014 \001(\003\022\030\n\020localCandida" +
+      "teId\030\r \001(\t\022\021\n\tnominated\030\016 \001(\010\022\036\n\026packets" +
+      "DiscardedOnSend\030\017 \001(\005\022\027\n\017packetsReceived" +
+      "\030\020 \001(\005\022\023\n\013packetsSent\030\021 \001(\005\022\031\n\021remoteCan" +
+      "didateId\030\022 \001(\t\022\030\n\020requestsReceived\030\023 \001(\005" +
+      "\022\024\n\014requestsSent\030\024 \001(\005\022\031\n\021responsesRecei" +
+      "ved\030\025 \001(\005\022\025\n\rresponsesSent\030\026 \001(\005\022\r\n\005stat" +
+      "e\030\027 \001(\t\022\032\n\022totalRoundTripTime\030\030 \001(\001\022\023\n\013t" +
+      "ransportId\030\031 \001(\t\032\225\003\n\017MediaSourceStat\022\022\n\n" +
+      "audioLevel\030\001 \001(\001\022\036\n\026droppedSamplesDurati" +
+      "on\030\002 \001(\001\022\034\n\024droppedSamplesEvents\030\003 \001(\005\022\026" +
+      "\n\016echoReturnLoss\030\004 \001(\001\022!\n\031echoReturnLoss" +
+      "Enhancement\030\005 \001(\001\022\016\n\006frames\030\006 \001(\005\022\027\n\017fra" +
+      "mesPerSecond\030\007 \001(\001\022\016\n\006height\030\010 \001(\005\022\014\n\004ki" +
+      "nd\030\t \001(\t\022\025\n\rrelayedSource\030\n \001(\010\022\030\n\020total" +
+      "AudioEnergy\030\013 \001(\001\022\031\n\021totalCaptureDelay\030\014" +
+      " \001(\001\022\034\n\024totalSamplesCaptured\030\r \001(\001\022\034\n\024to" +
+      "talSamplesDuration\030\016 \001(\001\022\027\n\017trackIdentif" +
+      "ier\030\017 \001(\t\022\r\n\005width\030\020 \001(\005\032\205\001\n\017MediaCodecS" +
+      "tats\022\020\n\010channels\030\001 \001(\005\022\021\n\tclockRate\030\002 \001(" +
+      "\005\022\021\n\tcodecType\030\003 \001(\t\022\020\n\010mimeType\030\004 \001(\t\022\023" +
+      "\n\013payloadType\030\005 \001(\t\022\023\n\013sdpFmtpLine\030\006 \001(\t" +
+      "\032x\n\013Certificate\022\031\n\021base64Certificate\030\001 \001" +
+      "(\t\022\023\n\013fingerprint\030\002 \001(\t\022\034\n\024fingerprintAl" +
+      "gorithm\030\003 \001(\t\022\033\n\023issuerCertificateId\030\004 \001" +
+      "(\t\032\237\t\n\021InboundAudioTrack\022\014\n\004ssrc\030\001 \002(\003\022\022" +
+      "\n\naudioLevel\030\002 \001(\005\022\025\n\rbytesReceived\030\003 \001(" +
+      "\003\022\021\n\tbytesSent\030\004 \001(\003\022\030\n\020concealedSamples" +
+      "\030\005 \001(\005\022\031\n\021concealmentEvents\030\006 \001(\005\022\035\n\025dec" +
+      "oderImplementation\030\007 \001(\t\022!\n\031estimatedPla" +
+      "youtTimestamp\030\010 \001(\003\022\033\n\023fecPacketsDiscard" +
+      "ed\030\t \001(\005\022\032\n\022fecPacketsReceived\030\n \001(\005\022\033\n\023" +
+      "headerBytesReceived\030\013 \001(\003\022&\n\036insertedSam" +
+      "plesForDeceleration\030\014 \001(\005\022\016\n\006jitter\030\r \001(" +
+      "\001\022\031\n\021jitterBufferDelay\030\016 \001(\001\022 \n\030jitterBu" +
+      "fferEmittedCount\030\017 \001(\005\022 \n\030jitterBufferMi" +
+      "nimumDelay\030\020 \001(\001\022\037\n\027jitterBufferTargetDe" +
+      "lay\030\021 \001(\001\022#\n\033lastPacketReceivedTimestamp" +
+      "\030\022 \001(\003\022\021\n\tnackCount\030\023 \001(\005\022\030\n\020packetsDisc" +
+      "arded\030\024 \001(\005\022\023\n\013packetsLost\030\025 \001(\005\022\027\n\017pack" +
+      "etsReceived\030\026 \001(\005\022\023\n\013packetsSent\030\027 \001(\005\022\030" +
+      "\n\020peerConnectionId\030\030 \001(\t\022\026\n\016remoteClient" +
+      "Id\030\031 \001(\t\022\027\n\017remoteTimestamp\030\032 \001(\003\022%\n\035rem" +
+      "ovedSamplesForAcceleration\030\033 \001(\005\022\023\n\013repo" +
+      "rtsSent\030\034 \001(\005\022\025\n\rroundTripTime\030\035 \001(\001\022!\n\031" +
+      "roundTripTimeMeasurements\030\036 \001(\005\022\021\n\tsfuSi" +
+      "nkId\030\037 \001(\t\022\023\n\013sfuStreamId\030  \001(\t\022\036\n\026silen" +
+      "tConcealedSamples\030! \001(\005\022\"\n\032synthesizedSa" +
+      "mplesDuration\030\" \001(\005\022 \n\030synthesizedSample" +
+      "sEvents\030# \001(\005\022\030\n\020totalAudioEnergy\030$ \001(\005\022" +
+      "\031\n\021totalPlayoutDelay\030% \001(\001\022\034\n\024totalProce" +
+      "ssingDelay\030& \001(\001\022\032\n\022totalRoundTripTime\030\'" +
+      " \001(\001\022\031\n\021totalSamplesCount\030( \001(\005\022\034\n\024total" +
+      "SamplesDuration\030) \001(\005\022\034\n\024totalSamplesRec" +
+      "eived\030* \001(\005\022\017\n\007trackId\030+ \001(\t\032\306\010\n\021Inbound" +
+      "VideoTrack\022\014\n\004ssrc\030\001 \002(\003\022\025\n\rbytesReceive" +
+      "d\030\002 \001(\003\022\021\n\tbytesSent\030\003 \001(\003\022\035\n\025decoderImp" +
+      "lementation\030\004 \001(\t\022!\n\031estimatedPlayoutTim" +
+      "estamp\030\005 \001(\003\022\033\n\023fecPacketsDiscarded\030\006 \001(" +
+      "\005\022\032\n\022fecPacketsReceived\030\007 \001(\005\022\020\n\010firCoun" +
+      "t\030\010 \001(\005\022\023\n\013frameHeight\030\t \001(\005\022\022\n\nframeWid" +
+      "th\030\n \001(\005\022\025\n\rframesDecoded\030\013 \001(\005\022\025\n\rframe" +
+      "sDropped\030\014 \001(\005\022\027\n\017framesPerSecond\030\r \001(\001\022" +
+      "\026\n\016framesReceived\030\016 \001(\005\022\033\n\023headerBytesRe" +
+      "ceived\030\017 \001(\003\022\016\n\006jitter\030\020 \001(\001\022\031\n\021jitterBu" +
+      "fferDelay\030\021 \001(\001\022 \n\030jitterBufferEmittedCo" +
+      "unt\030\022 \001(\005\022 \n\030jitterBufferMinimumDelay\030\023 " +
+      "\001(\001\022\037\n\027jitterBufferTargetDelay\030\024 \001(\001\022\030\n\020" +
+      "keyFramesDecoded\030\025 \001(\005\022#\n\033lastPacketRece" +
+      "ivedTimestamp\030\026 \001(\003\022\021\n\tnackCount\030\027 \001(\005\022\030" +
+      "\n\020packetsDiscarded\030\030 \001(\005\022\023\n\013packetsLost\030" +
+      "\031 \001(\005\022\027\n\017packetsReceived\030\032 \001(\005\022\023\n\013packet" +
+      "sSent\030\033 \001(\005\022\030\n\020peerConnectionId\030\034 \001(\t\022\020\n" +
+      "\010pliCount\030\035 \001(\005\022\r\n\005qpSum\030\036 \001(\003\022\026\n\016remote" +
+      "ClientId\030\037 \001(\t\022\027\n\017remoteTimestamp\030  \001(\003\022" +
+      "\023\n\013reportsSent\030! \001(\005\022\025\n\rroundTripTime\030\" " +
+      "\001(\001\022!\n\031roundTripTimeMeasurements\030# \001(\005\022\021" +
+      "\n\tsfuSinkId\030$ \001(\t\022\023\n\013sfuStreamId\030% \001(\t\022\027" +
+      "\n\017totalDecodeTime\030& \001(\001\022\034\n\024totalInterFra" +
+      "meDelay\030\' \001(\001\022\034\n\024totalProcessingDelay\030( " +
+      "\001(\001\022\032\n\022totalRoundTripTime\030) \001(\001\022#\n\033total" +
+      "SquaredInterFrameDelay\030* \001(\001\022\017\n\007trackId\030" +
+      "+ \001(\t\032\346\006\n\022OutboundAudioTrack\022\014\n\004ssrc\030\001 \002" +
+      "(\003\022\016\n\006active\030\002 \001(\010\022\022\n\naudioLevel\030\003 \001(\001\022\033" +
+      "\n\023averageRtcpInterval\030\004 \001(\001\022\021\n\tbytesSent" +
+      "\030\005 \001(\003\022\036\n\026droppedSamplesDuration\030\006 \001(\001\022\034" +
+      "\n\024droppedSamplesEvents\030\007 \001(\005\022\026\n\016echoRetu" +
+      "rnLoss\030\010 \001(\001\022!\n\031echoReturnLossEnhancemen" +
+      "t\030\t \001(\001\022\035\n\025encoderImplementation\030\n \001(\t\022\024" +
+      "\n\014fractionLost\030\013 \001(\001\022\027\n\017headerBytesSent\030" +
+      "\014 \001(\003\022\016\n\006jitter\030\r \001(\001\022\021\n\tnackCount\030\016 \001(\005" +
+      "\022\023\n\013packetsLost\030\017 \001(\005\022\027\n\017packetsReceived" +
+      "\030\020 \001(\005\022\023\n\013packetsSent\030\021 \001(\005\022\030\n\020peerConne" +
+      "ctionId\030\022 \001(\t\022\025\n\rrelayedSource\030\023 \001(\010\022\036\n\026" +
+      "retransmittedBytesSent\030\024 \001(\003\022 \n\030retransm" +
+      "ittedPacketsSent\030\025 \001(\005\022\013\n\003rid\030\026 \001(\t\022\025\n\rr" +
+      "oundTripTime\030\027 \001(\001\022!\n\031roundTripTimeMeasu" +
+      "rements\030\030 \001(\005\022\023\n\013sfuStreamId\030\031 \001(\t\022\025\n\rta" +
+      "rgetBitrate\030\032 \001(\005\022\030\n\020totalAudioEnergy\030\033 " +
+      "\001(\001\022\031\n\021totalCaptureDelay\030\034 \001(\001\022\037\n\027totalE" +
+      "ncodedBytesTarget\030\035 \001(\003\022\034\n\024totalPacketSe" +
+      "ndDelay\030\036 \001(\001\022\032\n\022totalRoundTripTime\030\037 \001(" +
+      "\001\022\034\n\024totalSamplesCaptured\030  \001(\001\022\034\n\024total" +
+      "SamplesDuration\030! \001(\001\022\017\n\007trackId\030\" \001(\t\032\207" +
+      "\t\n\022OutboundVideoTrack\022\014\n\004ssrc\030\001 \002(\003\022\016\n\006a" +
+      "ctive\030\002 \001(\010\022\033\n\023averageRtcpInterval\030\003 \001(\001" +
+      "\022\021\n\tbytesSent\030\004 \001(\003\022\035\n\025encoderImplementa" +
+      "tion\030\005 \001(\t\022\020\n\010firCount\030\006 \001(\005\022\024\n\014fraction" +
+      "Lost\030\007 \001(\001\022\023\n\013frameHeight\030\010 \001(\005\022\022\n\nframe" +
+      "Width\030\t \001(\005\022\016\n\006frames\030\n \001(\005\022\025\n\rframesDro" +
+      "pped\030\013 \001(\005\022\025\n\rframesEncoded\030\014 \001(\005\022\027\n\017fra" +
+      "mesPerSecond\030\r \001(\001\022\022\n\nframesSent\030\016 \001(\005\022\027" +
+      "\n\017headerBytesSent\030\017 \001(\003\022\016\n\006height\030\020 \001(\005\022" +
+      "\026\n\016hugeFramesSent\030\021 \001(\005\022\016\n\006jitter\030\022 \001(\001\022" +
+      "\030\n\020keyFramesEncoded\030\023 \001(\005\022\021\n\tnackCount\030\024" +
+      " \001(\005\022\023\n\013packetsLost\030\025 \001(\005\022\027\n\017packetsRece" +
+      "ived\030\026 \001(\005\022\023\n\013packetsSent\030\027 \001(\005\022\030\n\020peerC" +
+      "onnectionId\030\030 \001(\t\022\020\n\010pliCount\030\031 \001(\005\022\r\n\005q" +
+      "pSum\030\032 \001(\003\022*\n\"qualityLimitationDurationB" +
+      "andwidth\030\033 \001(\001\022$\n\034qualityLimitationDurat" +
+      "ionCPU\030\034 \001(\001\022%\n\035qualityLimitationDuratio" +
+      "nNone\030\035 \001(\001\022&\n\036qualityLimitationDuration" +
+      "Other\030\036 \001(\001\022\037\n\027qualityLimitationReason\030\037" +
+      " \001(\t\022*\n\"qualityLimitationResolutionChang" +
+      "es\030  \001(\005\022\025\n\rrelayedSource\030! \001(\010\022\036\n\026retra" +
+      "nsmittedBytesSent\030\" \001(\003\022 \n\030retransmitted" +
+      "PacketsSent\030# \001(\005\022\013\n\003rid\030$ \001(\t\022\025\n\rroundT" +
+      "ripTime\030% \001(\001\022!\n\031roundTripTimeMeasuremen" +
+      "ts\030& \001(\005\022\023\n\013sfuStreamId\030\' \001(\t\022\025\n\rtargetB" +
+      "itrate\030( \001(\005\022\027\n\017totalEncodeTime\030) \001(\001\022\037\n" +
+      "\027totalEncodedBytesTarget\030* \001(\003\022\034\n\024totalP" +
+      "acketSendDelay\030+ \001(\001\022\032\n\022totalRoundTripTi" +
+      "me\030, \001(\001\022\017\n\007trackId\030- \001(\t\022\r\n\005width\030. \001(\005" +
+      "\032\267\001\n\021IceLocalCandidate\022\017\n\007address\030\001 \001(\t\022" +
+      "\025\n\rcandidateType\030\002 \001(\t\022\n\n\002id\030\003 \001(\t\022\030\n\020pe" +
+      "erConnectionId\030\004 \001(\t\022\014\n\004port\030\005 \001(\005\022\020\n\010pr" +
+      "iority\030\006 \001(\003\022\020\n\010protocol\030\007 \001(\t\022\025\n\rrelayP" +
+      "rotocol\030\010 \001(\t\022\013\n\003url\030\t \001(\t\032\270\001\n\022IceRemote" +
+      "Candidate\022\017\n\007address\030\001 \001(\t\022\025\n\rcandidateT" +
+      "ype\030\002 \001(\t\022\n\n\002id\030\003 \001(\t\022\030\n\020peerConnectionI" +
+      "d\030\004 \001(\t\022\014\n\004port\030\005 \001(\005\022\020\n\010priority\030\006 \001(\003\022" +
+      "\020\n\010protocol\030\007 \001(\t\022\025\n\rrelayProtocol\030\010 \001(\t" +
+      "\022\013\n\003url\030\t \001(\t\032\224\034\n\tSfuSample\022Z\n\017customSfu" +
+      "Events\030\001 \003(\0132A.org.observertc.schemas.pr" +
+      "otobuf.Samples.SfuSample.CustomSfuEvent\022" +
+      "\\\n\016extensionStats\030\002 \003(\0132D.org.observertc" +
+      ".schemas.protobuf.Samples.SfuSample.SfuE" +
+      "xtensionStats\022[\n\016inboundRtpPads\030\003 \003(\0132C." +
+      "org.observertc.schemas.protobuf.Samples." +
+      "SfuSample.SfuInboundRtpPad\022]\n\017outboundRt" +
+      "pPads\030\004 \003(\0132D.org.observertc.schemas.pro" +
+      "tobuf.Samples.SfuSample.SfuOutboundRtpPa" +
+      "d\022W\n\014sctpChannels\030\005 \003(\0132A.org.observertc" +
+      ".schemas.protobuf.Samples.SfuSample.SfuS" +
+      "ctpChannel\022S\n\ntransports\030\006 \003(\0132?.org.obs" +
+      "ervertc.schemas.protobuf.Samples.SfuSamp" +
+      "le.SfuTransport\022\r\n\005sfuId\030\007 \002(\t\022\021\n\ttimest" +
+      "amp\030\010 \002(\003\022\016\n\006marker\030\t \001(\t\022\035\n\025timeZoneOff" +
+      "setInHours\030\n \001(\005\032\243\001\n\016CustomSfuEvent\022\014\n\004n" +
+      "ame\030\001 \002(\t\022\023\n\013attachments\030\002 \001(\t\022\017\n\007messag" +
+      "e\030\003 \001(\t\022\021\n\tsfuSinkId\030\004 \001(\t\022\023\n\013sfuStreamI" +
+      "d\030\005 \001(\t\022\021\n\ttimestamp\030\006 \001(\003\022\023\n\013transportI" +
+      "d\030\007 \001(\t\022\r\n\005value\030\010 \001(\t\032\363\004\n\014SfuTransport\022" +
+      "\023\n\013transportId\030\001 \002(\t\022\021\n\tdtlsState\030\002 \001(\t\022" +
+      "\017\n\007iceRole\030\003 \001(\t\022\020\n\010iceState\030\004 \001(\t\022\020\n\010in" +
+      "ternal\030\005 \001(\010\022\024\n\014localAddress\030\006 \001(\t\022\021\n\tlo" +
+      "calPort\030\007 \001(\005\022\020\n\010noReport\030\010 \001(\010\022\020\n\010proto" +
+      "col\030\t \001(\t\022\025\n\rremoteAddress\030\n \001(\t\022\022\n\nremo" +
+      "tePort\030\013 \001(\005\022\030\n\020rtpBytesReceived\030\014 \001(\003\022\024" +
+      "\n\014rtpBytesSent\030\r \001(\003\022\026\n\016rtpPacketsLost\030\016" +
+      " \001(\005\022\032\n\022rtpPacketsReceived\030\017 \001(\005\022\026\n\016rtpP" +
+      "acketsSent\030\020 \001(\005\022\030\n\020rtxBytesReceived\030\021 \001" +
+      "(\003\022\024\n\014rtxBytesSent\030\022 \001(\003\022\033\n\023rtxPacketsDi" +
+      "scarded\030\023 \001(\005\022\026\n\016rtxPacketsLost\030\024 \001(\005\022\032\n" +
+      "\022rtxPacketsReceived\030\025 \001(\005\022\026\n\016rtxPacketsS" +
+      "ent\030\026 \001(\005\022\031\n\021sctpBytesReceived\030\027 \001(\003\022\025\n\r" +
+      "sctpBytesSent\030\030 \001(\003\022\033\n\023sctpPacketsReceiv" +
+      "ed\030\031 \001(\005\022\027\n\017sctpPacketsSent\030\032 \001(\005\022\021\n\tsct" +
+      "pState\030\033 \001(\t\032\315\006\n\020SfuInboundRtpPad\022\r\n\005pad" +
+      "Id\030\001 \002(\t\022\014\n\004ssrc\030\002 \002(\003\022\020\n\010streamId\030\003 \002(\t" +
+      "\022\023\n\013transportId\030\004 \002(\t\022\025\n\rbytesReceived\030\005" +
+      " \001(\003\022\021\n\tclockRate\030\006 \001(\005\022\033\n\023fecPacketsDis" +
+      "carded\030\007 \001(\005\022\032\n\022fecPacketsReceived\030\010 \001(\005" +
+      "\022\020\n\010firCount\030\t \001(\005\022\024\n\014fractionLost\030\n \001(\001" +
+      "\022\025\n\rframesDecoded\030\013 \001(\005\022\026\n\016framesReceive" +
+      "d\030\014 \001(\005\022\020\n\010internal\030\r \001(\010\022\016\n\006jitter\030\016 \001(" +
+      "\001\022\030\n\020keyFramesDecoded\030\017 \001(\005\022\021\n\tmediaType" +
+      "\030\020 \001(\t\022\020\n\010mimeType\030\021 \001(\t\022\021\n\tnackCount\030\022 " +
+      "\001(\005\022\020\n\010noReport\030\023 \001(\010\022\030\n\020packetsDiscarde" +
+      "d\030\024 \001(\005\022\031\n\021packetsDuplicated\030\025 \001(\005\022\037\n\027pa" +
+      "cketsFailedDecryption\030\026 \001(\005\022\023\n\013packetsLo" +
+      "st\030\027 \001(\005\022\027\n\017packetsReceived\030\030 \001(\005\022\027\n\017pac" +
+      "ketsRepaired\030\031 \001(\005\022\023\n\013payloadType\030\032 \001(\005\022" +
+      "\020\n\010pliCount\030\033 \001(\005\022\013\n\003rid\030\034 \001(\t\022\025\n\rroundT" +
+      "ripTime\030\035 \001(\001\022\022\n\nrtcpRrSent\030\036 \001(\005\022\026\n\016rtc" +
+      "pSrReceived\030\037 \001(\005\022\033\n\023rtxPacketsDiscarded" +
+      "\030  \001(\005\022\032\n\022rtxPacketsReceived\030! \001(\005\022\017\n\007rt" +
+      "xSsrc\030\" \001(\003\022\023\n\013sdpFmtpLine\030# \001(\t\022\020\n\010sliC" +
+      "ount\030$ \001(\005\022\025\n\rtargetBitrate\030% \001(\005\022\031\n\021voi" +
+      "ceActivityFlag\030& \001(\010\032\202\007\n\021SfuOutboundRtpP" +
+      "ad\022\r\n\005padId\030\001 \002(\t\022\016\n\006sinkId\030\002 \002(\t\022\014\n\004ssr" +
+      "c\030\003 \002(\003\022\020\n\010streamId\030\004 \002(\t\022\023\n\013transportId" +
+      "\030\005 \002(\t\022\021\n\tbytesSent\030\006 \001(\003\022\016\n\006callId\030\007 \001(" +
+      "\t\022\020\n\010clientId\030\010 \001(\t\022\021\n\tclockRate\030\t \001(\005\022\033" +
+      "\n\023fecPacketsDiscarded\030\n \001(\005\022\026\n\016fecPacket" +
+      "sSent\030\013 \001(\005\022\020\n\010firCount\030\014 \001(\005\022\024\n\014fractio" +
+      "nLost\030\r \001(\001\022\025\n\rframesEncoded\030\016 \001(\005\022\022\n\nfr" +
+      "amesSent\030\017 \001(\005\022\020\n\010internal\030\020 \001(\010\022\016\n\006jitt" +
+      "er\030\021 \001(\001\022\030\n\020keyFramesEncoded\030\022 \001(\005\022\021\n\tme" +
+      "diaType\030\023 \001(\t\022\020\n\010mimeType\030\024 \001(\t\022\021\n\tnackC" +
+      "ount\030\025 \001(\005\022\020\n\010noReport\030\026 \001(\010\022\030\n\020packetsD" +
+      "iscarded\030\027 \001(\005\022\031\n\021packetsDuplicated\030\030 \001(" +
+      "\005\022\037\n\027packetsFailedEncryption\030\031 \001(\005\022\023\n\013pa" +
+      "cketsLost\030\032 \001(\005\022\034\n\024packetsRetransmitted\030" +
+      "\033 \001(\005\022\023\n\013packetsSent\030\034 \001(\005\022\023\n\013payloadTyp" +
+      "e\030\035 \001(\005\022\020\n\010pliCount\030\036 \001(\005\022\013\n\003rid\030\037 \001(\t\022\025" +
+      "\n\rroundTripTime\030  \001(\001\022\026\n\016rtcpRrReceived\030" +
+      "! \001(\005\022\022\n\nrtcpSrSent\030\" \001(\005\022\033\n\023rtxPacketsD" +
+      "iscarded\030# \001(\005\022\026\n\016rtxPacketsSent\030$ \001(\005\022\017" +
+      "\n\007rtxSsrc\030% \001(\003\022\023\n\013sdpFmtpLine\030& \001(\t\022\020\n\010" +
+      "sliCount\030\' \001(\005\022\025\n\rtargetBitrate\030( \001(\005\022\017\n" +
+      "\007trackId\030) \001(\t\022\031\n\021voiceActivityFlag\030* \001(" +
+      "\010\032\354\002\n\016SfuSctpChannel\022\021\n\tchannelId\030\001 \002(\t\022" +
+      "\020\n\010streamId\030\002 \002(\t\022\023\n\013transportId\030\003 \002(\t\022\025" +
+      "\n\rbytesReceived\030\004 \001(\003\022\021\n\tbytesSent\030\005 \001(\003" +
+      "\022\020\n\010internal\030\006 \001(\010\022\r\n\005label\030\007 \001(\t\022\027\n\017mes" +
+      "sageReceived\030\010 \001(\005\022\023\n\013messageSent\030\t \001(\005\022" +
+      "\020\n\010noReport\030\n \001(\010\022\020\n\010protocol\030\013 \001(\t\022\034\n\024s" +
+      "ctpCongestionWindow\030\014 \001(\001\022\017\n\007sctpMtu\030\r \001" +
+      "(\005\022\032\n\022sctpReceiverWindow\030\016 \001(\001\022!\n\031sctpSm" +
+      "oothedRoundTripTime\030\017 \001(\001\022\025\n\rsctpUnackDa" +
+      "ta\030\020 \001(\005\0322\n\021SfuExtensionStats\022\017\n\007payload" +
+      "\030\001 \002(\t\022\014\n\004type\030\002 \002(\t\032\200\007\n\nTurnSample\022[\n\013a" +
+      "llocations\030\001 \003(\0132F.org.observertc.schema" +
+      "s.protobuf.Samples.TurnSample.TurnPeerAl" +
+      "location\022Q\n\010sessions\030\002 \003(\0132?.org.observe" +
+      "rtc.schemas.protobuf.Samples.TurnSample." +
+      "TurnSession\022\020\n\010serverId\030\003 \002(\t\032\260\002\n\022TurnPe" +
+      "erAllocation\022\016\n\006peerId\030\001 \002(\t\022\026\n\016relayedA" +
+      "ddress\030\002 \002(\t\022\023\n\013relayedPort\030\003 \002(\005\022\021\n\tses" +
+      "sionId\030\004 \002(\t\022\031\n\021transportProtocol\030\005 \002(\t\022" +
+      "\023\n\013peerAddress\030\006 \001(\t\022\020\n\010peerPort\030\007 \001(\005\022\025" +
+      "\n\rreceivedBytes\030\010 \001(\003\022\027\n\017receivedPackets" +
+      "\030\t \001(\005\022\030\n\020receivingBitrate\030\n \001(\005\022\026\n\016send" +
+      "ingBitrate\030\013 \001(\005\022\021\n\tsentBytes\030\014 \001(\003\022\023\n\013s" +
+      "entPackets\030\r \001(\005\032\374\002\n\013TurnSession\022\021\n\tsess" +
+      "ionId\030\001 \002(\t\022\025\n\rclientAddress\030\002 \001(\t\022\020\n\010cl" +
+      "ientId\030\003 \001(\t\022\022\n\nclientPort\030\004 \001(\005\022\033\n\023nonc" +
+      "eExpirationTime\030\005 \001(\003\022\r\n\005realm\030\006 \001(\t\022\025\n\r" +
+      "receivedBytes\030\007 \001(\003\022\027\n\017receivedPackets\030\010" +
+      " \001(\005\022\030\n\020receivingBitrate\030\t \001(\005\022\026\n\016sendin" +
+      "gBitrate\030\n \001(\005\022\021\n\tsentBytes\030\013 \001(\003\022\023\n\013sen" +
+      "tPackets\030\014 \001(\005\022\025\n\rserverAddress\030\r \001(\t\022\022\n" +
+      "\nserverPort\030\016 \001(\005\022\017\n\007started\030\017 \001(\003\022\031\n\021tr" +
+      "ansportProtocol\030\020 \001(\t\022\020\n\010username\030\021 \001(\t"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -81028,7 +86897,7 @@ public final class ProtobufSamples {
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor,
-        new java.lang.String[] { "Certificates", "Codecs", "DataChannels", "ExtensionStats", "IceCandidatePairs", "IceLocalCandidates", "IceRemoteCandidates", "IceServers", "InboundAudioTracks", "InboundVideoTracks", "LocalSDPs", "MediaConstraints", "MediaDevices", "MediaSources", "OutboundAudioTracks", "OutboundVideoTracks", "PcTransports", "UserMediaErrors", "ClientId", "Timestamp", "Browser", "CallId", "Engine", "Marker", "Os", "Platform", "RoomId", "SampleSeq", "TimeZoneOffsetInHours", "UserId", });
+        new java.lang.String[] { "Certificates", "Codecs", "CustomCallEvents", "CustomObserverEvents", "DataChannels", "ExtensionStats", "IceCandidatePairs", "IceLocalCandidates", "IceRemoteCandidates", "IceServers", "InboundAudioTracks", "InboundVideoTracks", "LocalSDPs", "MediaConstraints", "MediaDevices", "MediaSources", "OutboundAudioTracks", "OutboundVideoTracks", "PcTransports", "UserMediaErrors", "ClientId", "Timestamp", "Browser", "CallId", "Engine", "Marker", "Os", "Platform", "RoomId", "SampleSeq", "TimeZoneOffsetInHours", "UserId", });
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_Engine_descriptor =
       internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(0);
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_Engine_fieldAccessorTable = new
@@ -81065,74 +86934,86 @@ public final class ProtobufSamples {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_ExtensionStat_descriptor,
         new java.lang.String[] { "Payload", "Type", });
-    internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_DataChannel_descriptor =
+    internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomCallEvent_descriptor =
       internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(6);
+    internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomCallEvent_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomCallEvent_descriptor,
+        new java.lang.String[] { "Name", "Attachments", "MediaTrackId", "Message", "PeerConnectionId", "Timestamp", "Value", });
+    internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomObserverEvent_descriptor =
+      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(7);
+    internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomObserverEvent_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_CustomObserverEvent_descriptor,
+        new java.lang.String[] { "Name", "Attachments", "MediaTrackId", "Message", "Timestamp", });
+    internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_DataChannel_descriptor =
+      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(8);
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_DataChannel_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_DataChannel_descriptor,
         new java.lang.String[] { "PeerConnectionId", "BytesReceived", "BytesSent", "DataChannelIdentifier", "Label", "MessageReceived", "MessageSent", "Protocol", "State", });
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_PeerConnectionTransport_descriptor =
-      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(7);
+      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(9);
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_PeerConnectionTransport_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_PeerConnectionTransport_descriptor,
         new java.lang.String[] { "PeerConnectionId", "TransportId", "BytesReceived", "BytesSent", "DtlsCipher", "DtlsRole", "DtlsState", "IceLocalUsernameFragment", "IceRole", "IceState", "Label", "LocalCertificateId", "PacketsReceived", "PacketsSent", "RemoteCertificateId", "SelectedCandidatePairChanges", "SelectedCandidatePairId", "SrtpCipher", "TlsGroup", "TlsVersion", });
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_IceCandidatePair_descriptor =
-      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(8);
+      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(10);
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_IceCandidatePair_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_IceCandidatePair_descriptor,
         new java.lang.String[] { "CandidatePairId", "PeerConnectionId", "AvailableIncomingBitrate", "AvailableOutgoingBitrate", "BytesDiscardedOnSend", "BytesReceived", "BytesSent", "ConsentRequestsSent", "CurrentRoundTripTime", "Label", "LastPacketReceivedTimestamp", "LastPacketSentTimestamp", "LocalCandidateId", "Nominated", "PacketsDiscardedOnSend", "PacketsReceived", "PacketsSent", "RemoteCandidateId", "RequestsReceived", "RequestsSent", "ResponsesReceived", "ResponsesSent", "State", "TotalRoundTripTime", "TransportId", });
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_MediaSourceStat_descriptor =
-      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(9);
+      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(11);
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_MediaSourceStat_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_MediaSourceStat_descriptor,
         new java.lang.String[] { "AudioLevel", "DroppedSamplesDuration", "DroppedSamplesEvents", "EchoReturnLoss", "EchoReturnLossEnhancement", "Frames", "FramesPerSecond", "Height", "Kind", "RelayedSource", "TotalAudioEnergy", "TotalCaptureDelay", "TotalSamplesCaptured", "TotalSamplesDuration", "TrackIdentifier", "Width", });
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_MediaCodecStats_descriptor =
-      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(10);
+      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(12);
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_MediaCodecStats_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_MediaCodecStats_descriptor,
         new java.lang.String[] { "Channels", "ClockRate", "CodecType", "MimeType", "PayloadType", "SdpFmtpLine", });
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_Certificate_descriptor =
-      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(11);
+      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(13);
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_Certificate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_Certificate_descriptor,
         new java.lang.String[] { "Base64Certificate", "Fingerprint", "FingerprintAlgorithm", "IssuerCertificateId", });
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_InboundAudioTrack_descriptor =
-      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(12);
+      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(14);
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_InboundAudioTrack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_InboundAudioTrack_descriptor,
         new java.lang.String[] { "Ssrc", "AudioLevel", "BytesReceived", "BytesSent", "ConcealedSamples", "ConcealmentEvents", "DecoderImplementation", "EstimatedPlayoutTimestamp", "FecPacketsDiscarded", "FecPacketsReceived", "HeaderBytesReceived", "InsertedSamplesForDeceleration", "Jitter", "JitterBufferDelay", "JitterBufferEmittedCount", "JitterBufferMinimumDelay", "JitterBufferTargetDelay", "LastPacketReceivedTimestamp", "NackCount", "PacketsDiscarded", "PacketsLost", "PacketsReceived", "PacketsSent", "PeerConnectionId", "RemoteClientId", "RemoteTimestamp", "RemovedSamplesForAcceleration", "ReportsSent", "RoundTripTime", "RoundTripTimeMeasurements", "SfuSinkId", "SfuStreamId", "SilentConcealedSamples", "SynthesizedSamplesDuration", "SynthesizedSamplesEvents", "TotalAudioEnergy", "TotalPlayoutDelay", "TotalProcessingDelay", "TotalRoundTripTime", "TotalSamplesCount", "TotalSamplesDuration", "TotalSamplesReceived", "TrackId", });
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_InboundVideoTrack_descriptor =
-      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(13);
+      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(15);
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_InboundVideoTrack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_InboundVideoTrack_descriptor,
         new java.lang.String[] { "Ssrc", "BytesReceived", "BytesSent", "DecoderImplementation", "EstimatedPlayoutTimestamp", "FecPacketsDiscarded", "FecPacketsReceived", "FirCount", "FrameHeight", "FrameWidth", "FramesDecoded", "FramesDropped", "FramesPerSecond", "FramesReceived", "HeaderBytesReceived", "Jitter", "JitterBufferDelay", "JitterBufferEmittedCount", "JitterBufferMinimumDelay", "JitterBufferTargetDelay", "KeyFramesDecoded", "LastPacketReceivedTimestamp", "NackCount", "PacketsDiscarded", "PacketsLost", "PacketsReceived", "PacketsSent", "PeerConnectionId", "PliCount", "QpSum", "RemoteClientId", "RemoteTimestamp", "ReportsSent", "RoundTripTime", "RoundTripTimeMeasurements", "SfuSinkId", "SfuStreamId", "TotalDecodeTime", "TotalInterFrameDelay", "TotalProcessingDelay", "TotalRoundTripTime", "TotalSquaredInterFrameDelay", "TrackId", });
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_OutboundAudioTrack_descriptor =
-      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(14);
+      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(16);
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_OutboundAudioTrack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_OutboundAudioTrack_descriptor,
         new java.lang.String[] { "Ssrc", "Active", "AudioLevel", "AverageRtcpInterval", "BytesSent", "DroppedSamplesDuration", "DroppedSamplesEvents", "EchoReturnLoss", "EchoReturnLossEnhancement", "EncoderImplementation", "FractionLost", "HeaderBytesSent", "Jitter", "NackCount", "PacketsLost", "PacketsReceived", "PacketsSent", "PeerConnectionId", "RelayedSource", "RetransmittedBytesSent", "RetransmittedPacketsSent", "Rid", "RoundTripTime", "RoundTripTimeMeasurements", "SfuStreamId", "TargetBitrate", "TotalAudioEnergy", "TotalCaptureDelay", "TotalEncodedBytesTarget", "TotalPacketSendDelay", "TotalRoundTripTime", "TotalSamplesCaptured", "TotalSamplesDuration", "TrackId", });
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_OutboundVideoTrack_descriptor =
-      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(15);
+      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(17);
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_OutboundVideoTrack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_OutboundVideoTrack_descriptor,
         new java.lang.String[] { "Ssrc", "Active", "AverageRtcpInterval", "BytesSent", "EncoderImplementation", "FirCount", "FractionLost", "FrameHeight", "FrameWidth", "Frames", "FramesDropped", "FramesEncoded", "FramesPerSecond", "FramesSent", "HeaderBytesSent", "Height", "HugeFramesSent", "Jitter", "KeyFramesEncoded", "NackCount", "PacketsLost", "PacketsReceived", "PacketsSent", "PeerConnectionId", "PliCount", "QpSum", "QualityLimitationDurationBandwidth", "QualityLimitationDurationCPU", "QualityLimitationDurationNone", "QualityLimitationDurationOther", "QualityLimitationReason", "QualityLimitationResolutionChanges", "RelayedSource", "RetransmittedBytesSent", "RetransmittedPacketsSent", "Rid", "RoundTripTime", "RoundTripTimeMeasurements", "SfuStreamId", "TargetBitrate", "TotalEncodeTime", "TotalEncodedBytesTarget", "TotalPacketSendDelay", "TotalRoundTripTime", "TrackId", "Width", });
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_IceLocalCandidate_descriptor =
-      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(16);
+      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(18);
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_IceLocalCandidate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_IceLocalCandidate_descriptor,
         new java.lang.String[] { "Address", "CandidateType", "Id", "PeerConnectionId", "Port", "Priority", "Protocol", "RelayProtocol", "Url", });
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_IceRemoteCandidate_descriptor =
-      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(17);
+      internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_descriptor.getNestedTypes().get(19);
     internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_IceRemoteCandidate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_ClientSample_IceRemoteCandidate_descriptor,
@@ -81142,33 +87023,39 @@ public final class ProtobufSamples {
     internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_descriptor,
-        new java.lang.String[] { "ExtensionStats", "InboundRtpPads", "OutboundRtpPads", "SctpChannels", "Transports", "SfuId", "Timestamp", "Marker", "TimeZoneOffsetInHours", });
-    internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuTransport_descriptor =
+        new java.lang.String[] { "CustomSfuEvents", "ExtensionStats", "InboundRtpPads", "OutboundRtpPads", "SctpChannels", "Transports", "SfuId", "Timestamp", "Marker", "TimeZoneOffsetInHours", });
+    internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_CustomSfuEvent_descriptor =
       internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_descriptor.getNestedTypes().get(0);
+    internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_CustomSfuEvent_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_CustomSfuEvent_descriptor,
+        new java.lang.String[] { "Name", "Attachments", "Message", "SfuSinkId", "SfuStreamId", "Timestamp", "TransportId", "Value", });
+    internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuTransport_descriptor =
+      internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_descriptor.getNestedTypes().get(1);
     internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuTransport_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuTransport_descriptor,
         new java.lang.String[] { "TransportId", "DtlsState", "IceRole", "IceState", "Internal", "LocalAddress", "LocalPort", "NoReport", "Protocol", "RemoteAddress", "RemotePort", "RtpBytesReceived", "RtpBytesSent", "RtpPacketsLost", "RtpPacketsReceived", "RtpPacketsSent", "RtxBytesReceived", "RtxBytesSent", "RtxPacketsDiscarded", "RtxPacketsLost", "RtxPacketsReceived", "RtxPacketsSent", "SctpBytesReceived", "SctpBytesSent", "SctpPacketsReceived", "SctpPacketsSent", "SctpState", });
     internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuInboundRtpPad_descriptor =
-      internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_descriptor.getNestedTypes().get(1);
+      internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_descriptor.getNestedTypes().get(2);
     internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuInboundRtpPad_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuInboundRtpPad_descriptor,
         new java.lang.String[] { "PadId", "Ssrc", "StreamId", "TransportId", "BytesReceived", "ClockRate", "FecPacketsDiscarded", "FecPacketsReceived", "FirCount", "FractionLost", "FramesDecoded", "FramesReceived", "Internal", "Jitter", "KeyFramesDecoded", "MediaType", "MimeType", "NackCount", "NoReport", "PacketsDiscarded", "PacketsDuplicated", "PacketsFailedDecryption", "PacketsLost", "PacketsReceived", "PacketsRepaired", "PayloadType", "PliCount", "Rid", "RoundTripTime", "RtcpRrSent", "RtcpSrReceived", "RtxPacketsDiscarded", "RtxPacketsReceived", "RtxSsrc", "SdpFmtpLine", "SliCount", "TargetBitrate", "VoiceActivityFlag", });
     internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuOutboundRtpPad_descriptor =
-      internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_descriptor.getNestedTypes().get(2);
+      internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_descriptor.getNestedTypes().get(3);
     internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuOutboundRtpPad_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuOutboundRtpPad_descriptor,
         new java.lang.String[] { "PadId", "SinkId", "Ssrc", "StreamId", "TransportId", "BytesSent", "CallId", "ClientId", "ClockRate", "FecPacketsDiscarded", "FecPacketsSent", "FirCount", "FractionLost", "FramesEncoded", "FramesSent", "Internal", "Jitter", "KeyFramesEncoded", "MediaType", "MimeType", "NackCount", "NoReport", "PacketsDiscarded", "PacketsDuplicated", "PacketsFailedEncryption", "PacketsLost", "PacketsRetransmitted", "PacketsSent", "PayloadType", "PliCount", "Rid", "RoundTripTime", "RtcpRrReceived", "RtcpSrSent", "RtxPacketsDiscarded", "RtxPacketsSent", "RtxSsrc", "SdpFmtpLine", "SliCount", "TargetBitrate", "TrackId", "VoiceActivityFlag", });
     internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuSctpChannel_descriptor =
-      internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_descriptor.getNestedTypes().get(3);
+      internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_descriptor.getNestedTypes().get(4);
     internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuSctpChannel_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuSctpChannel_descriptor,
         new java.lang.String[] { "ChannelId", "StreamId", "TransportId", "BytesReceived", "BytesSent", "Internal", "Label", "MessageReceived", "MessageSent", "NoReport", "Protocol", "SctpCongestionWindow", "SctpMtu", "SctpReceiverWindow", "SctpSmoothedRoundTripTime", "SctpUnackData", });
     internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuExtensionStats_descriptor =
-      internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_descriptor.getNestedTypes().get(4);
+      internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_descriptor.getNestedTypes().get(5);
     internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuExtensionStats_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_protobuf_Samples_SfuSample_SfuExtensionStats_descriptor,
