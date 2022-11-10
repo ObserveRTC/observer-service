@@ -8,6 +8,7 @@ import io.reactivex.rxjava3.subjects.Subject;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.ServerTimestamps;
+import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.MediaKind;
 import org.observertc.observer.configs.ObserverConfig;
@@ -148,34 +149,41 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
 
         for (var observedRoom : observedClientSamples.observedRooms()) {
             var call = calls.get(observedRoom.getServiceRoomId());
-            if (call == null) {
-                logger.warn("Cannot find call for service {}, room {}",
-                        observedRoom.getServiceRoomId().serviceId,
-                        observedRoom.getServiceRoomId().roomId
-                );
-                continue;
-            }
-            call.touchBySample(observedRoom.getMaxTimestamp());
-            call.touchByServer(this.serverTimestamps.instant().toEpochMilli());
-
             for (var observedClient : observedRoom) {
-                var client = call.getClient(observedClient.getClientId());
-                var remedyClient = remedyClients.get(observedClient.getClientId());
-                if (client == null && remedyClient != null) {
-                    client = remedyClient;
+                var clientId = observedClient.getClientId();
+                if (clientId == null) {
+                    logger.warn("ClientId was not for samples", JsonUtils.objectToString(observedClient.observedClientSamples()));
+                    continue;
+                }
+                Client client = null;
+                if (call == null) {
+                    client = remedyClients.get(clientId);
+                    if (client == null) {
+                        logger.warn("Observed Sample has a Client {} neither belongs to any active call nor remedy clients", clientId);
+                        continue;
+                    }
                     call = client.getCall();
                     if (call == null) {
                         logger.warn("Remedy client {} for service: {}, room: {} referencing to a call {} does not exists.",
-                                remedyClient.getClientId(),
-                                remedyClient.getServiceId(),
-                                remedyClient.getRoomId(),
-                                remedyClient.getCallId()
+                                client.getClientId(),
+                                client.getServiceId(),
+                                client.getRoomId(),
+                                client.getCallId()
                         );
                         continue;
                     }
-                    call.touchBySample(observedClient.getMaxTimestamp());
-                    call.touchByServer(this.serverTimestamps.instant().toEpochMilli());
+                } else {
+                    client = call.getClient(observedClient.getClientId());
                 }
+                if (call == null) {
+                    logger.warn("Cannot find call for service {}, room {}",
+                            observedRoom.getServiceRoomId().serviceId,
+                            observedRoom.getServiceRoomId().roomId
+                    );
+                    continue;
+                }
+                call.touchBySample(observedRoom.getMaxTimestamp());
+                call.touchByServer(this.serverTimestamps.instant().toEpochMilli());
                 if (client == null) {
                     try {
                         client = call.addClient(

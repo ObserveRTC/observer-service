@@ -142,31 +142,10 @@ public class HamokService  implements InfoSource {
             }
             return false;
         }
-
-        var sentTwoTimesHello = (2 * this.config.storageGrid.sendingHelloTimeoutInMs) / 1000;
-        var elapsedSecSinceReady = this.endpoint.elapsedSecSinceReady();
         if ((this.alreadyLoggedFlags & 2) == 0) {
-            logger.info("Observer service endpoint is ready");
-            logger.info("Elapsed secs since endpoint is ready {}s, we must wait for two HELLO packets ({}s) before we check the next stage ", elapsedSecSinceReady, sentTwoTimesHello);
+            logger.info("Ready");
             this.alreadyLoggedFlags += 2;
         }
-
-        if (elapsedSecSinceReady < sentTwoTimesHello) {
-            return false;
-        }
-        if ((this.alreadyLoggedFlags & 4) == 0) {
-            logger.info("Number of remote endpoints {}, leader {}", this.remotePeers.size(), this.storageGrid.endpoints().getLeaderEndpointId());
-            this.alreadyLoggedFlags += 4;
-        }
-
-        if (0 < this.remotePeers.size() && this.storageGrid.endpoints().getLeaderEndpointId() == null) {
-            return false;
-        }
-        if ((this.alreadyLoggedFlags & 8) == 0) {
-            logger.info("Ready");
-            this.alreadyLoggedFlags += 8;
-        }
-        this.alreadyLoggedFlags = this.alreadyLoggedFlags & 0xFE;
         return true;
     }
 
