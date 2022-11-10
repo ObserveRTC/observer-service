@@ -159,7 +159,11 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                 if (call == null) {
                     client = remedyClients.get(clientId);
                     if (client == null) {
-                        logger.warn("Observed Sample has a Client {} neither belongs to any active call nor remedy clients", clientId);
+                        logger.warn("Observed Sample has a Client {} neither belongs to any active call nor remedy clients. roomId: {}, serviceId: {}",
+                                clientId,
+                                observedRoom.getServiceRoomId().roomId,
+                                observedRoom.getServiceRoomId().serviceId
+                        );
                         continue;
                     }
                     call = client.getCall();
