@@ -66,7 +66,7 @@ public class BackgroundTasksExecutor {
         this.started = true;
         this.tasks.clear();
         this.fire();
-        logger.info("Repository sweeper service has been started");
+        logger.info("Background Task executor has been started");
     }
 
     public void stop() {
@@ -79,7 +79,7 @@ public class BackgroundTasksExecutor {
         }
         this.tasks.clear();
         this.started = false;
-        logger.info("Repository sweeper service has been stopped");
+        logger.info("Background Task executor has been stopped");
     }
 
     private void run() {

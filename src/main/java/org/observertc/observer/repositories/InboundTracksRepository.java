@@ -75,9 +75,9 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
 
         var checkCollision = new AtomicBoolean(false);
         this.storage.detectedEntryCollisions().subscribe(detectedCollision -> {
-            logger.warn("Detected colliding items in {} for key {}", STORAGE_ID, detectedCollision.key());
-            this.dump("Before colliding check");
             if (checkCollision.compareAndSet(false, true)) {
+                logger.warn("Detected colliding items in {} for key {}", STORAGE_ID, detectedCollision.key());
+                this.dump("Before colliding check");
                 this.backgroundTasksExecutor.addTask(ChainedTask.<Void>builder()
                         .withName("Remove collisions for storage: " + STORAGE_ID)
                         .withLogger(logger)

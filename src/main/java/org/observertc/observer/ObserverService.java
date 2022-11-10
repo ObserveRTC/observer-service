@@ -56,6 +56,9 @@ public class ObserverService {
     @Inject
     ReportSinks reportSinks;
 
+    @Inject
+    BackgroundTasksExecutor backgroundTasksExecutor;
+
     @PostConstruct
     void setup() {
         this.samplesCollector
@@ -107,6 +110,9 @@ public class ObserverService {
             return;
         }
         this.run = true;
+        if (!this.backgroundTasksExecutor.isStarted()) {
+            this.backgroundTasksExecutor.start();
+        }
         logger.info("Started");
     }
 
@@ -116,6 +122,9 @@ public class ObserverService {
             return;
         }
         this.run = false;
+        if (this.backgroundTasksExecutor.isStarted()) {
+            this.backgroundTasksExecutor.stop();
+        }
         logger.info("Stopped");
     }
 
