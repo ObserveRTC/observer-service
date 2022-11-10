@@ -51,6 +51,7 @@ observer:
       enabled: true
 
   repository:
+    useBackups: false
     callMaxIdleTimeInS: 300
     sfuTransportMaxIdleTimeInS: 300
 

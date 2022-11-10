@@ -128,6 +128,8 @@ public class ObserverConfig {
 	@ConfigurationProperties("repository")
 	public static class RepositoryConfig {
 
+		public boolean useBackups = false;
+
 		@Min(3)
 		public int callMaxIdleTimeInS = 3;
 

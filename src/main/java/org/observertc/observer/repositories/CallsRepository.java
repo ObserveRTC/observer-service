@@ -40,13 +40,16 @@ public class CallsRepository implements RepositoryStorageMetrics {
     private CachedFetches<String, Call> fetched;
 
     @Inject
+    private ObserverConfig observerConfig;
+
+    @Inject
+    private Backups backups;
+
+    @Inject
     private HamokService service;
 
     @Inject
     private ClientsRepository clientsRepositoryRepo;
-
-    @Inject
-    private ObserverConfig.InternalBuffersConfig bufferConfig;
 
     @Inject
     private BackgroundTasksExecutor backgroundTasksExecutor;
@@ -89,17 +92,22 @@ public class CallsRepository implements RepositoryStorageMetrics {
                 })
 //                .setExpiration(5 * 60 * 60 * 1000)
                 .build();
-        this.storage = this.service.getStorageGrid().separatedStorage(baseStorage)
+        var storageBuilder = this.service.getStorageGrid().separatedStorage(baseStorage)
                 .setKeyCodec(String::getBytes, String::new)
                 .setValueCodec(
                         Mapper.create(Models.Call::toByteArray, logger)::map,
                         Mapper.<byte[], Models.Call>create(bytes -> Models.Call.parseFrom(bytes), logger)::map
                 )
-                .setMaxCollectedStorageEvents(bufferConfig.debouncers.maxItems)
-                .setMaxCollectedStorageTimeInMs(bufferConfig.debouncers.maxTimeInMs)
+                .setMaxCollectedStorageEvents(this.observerConfig.buffers.debouncers.maxItems)
+                .setMaxCollectedStorageTimeInMs(this.observerConfig.buffers.debouncers.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
-                .setMaxMessageValues(MAX_VALUES)
-                .build();
+                .setMaxMessageValues(MAX_VALUES);
+
+        if (this.observerConfig.repository.useBackups) {
+            storageBuilder.setDistributedBackups(this.backups);
+        }
+
+        this.storage = storageBuilder.build();
 
         var checkCollision = new AtomicBoolean(false);
         this.storage.detectedEntryCollisions().subscribe(detectedCollision -> {

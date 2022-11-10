@@ -35,7 +35,11 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
     private HamokService service;
 
     @Inject
-    private ObserverConfig.InternalBuffersConfig bufferConfig;
+    private ObserverConfig observerConfig;
+
+    @Inject
+    private Backups backups;
+
 
     @Inject
     BeanProvider<SfusRepository> sfusRepositoryBeanProvider;
@@ -59,17 +63,23 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
                 .setConcurrency(true)
                 .setId(STORAGE_ID)
                 .build();
-        this.storage = this.service.getStorageGrid().separatedStorage(baseStorage)
+        var storageBuilder = this.service.getStorageGrid().separatedStorage(baseStorage)
                 .setKeyCodec(SerDeUtils.createStrToByteFunc(), SerDeUtils.createBytesToStr())
                 .setValueCodec(
                         Mapper.create(Models.SfuTransport::toByteArray, logger)::map,
                         Mapper.<byte[], Models.SfuTransport>create(bytes -> Models.SfuTransport.parseFrom(bytes), logger)::map
                 )
-                .setMaxCollectedStorageEvents(bufferConfig.debouncers.maxItems)
-                .setMaxCollectedStorageTimeInMs(bufferConfig.debouncers.maxTimeInMs)
+                .setMaxCollectedStorageEvents(this.observerConfig.buffers.debouncers.maxItems)
+                .setMaxCollectedStorageTimeInMs(this.observerConfig.buffers.debouncers.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
                 .setMaxMessageValues(MAX_VALUES)
-                .build();
+                ;
+
+        if (this.observerConfig.repository.useBackups) {
+            storageBuilder.setDistributedBackups(this.backups);
+        }
+
+        this.storage = storageBuilder.build();
 
         this.fetched = CachedFetches.<String, SfuTransport>builder()
                 .onFetchOne(this::fetchOne)

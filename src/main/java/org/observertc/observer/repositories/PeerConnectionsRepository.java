@@ -48,7 +48,10 @@ public class PeerConnectionsRepository implements RepositoryStorageMetrics {
     OutboundTracksRepository outboundTracksRepository;
 
     @Inject
-    private ObserverConfig.RepositoryConfig config;
+    private ObserverConfig observerConfig;
+
+    @Inject
+    private Backups backups;
 
     @Inject
     private HamokService hamokService;
@@ -66,7 +69,7 @@ public class PeerConnectionsRepository implements RepositoryStorageMetrics {
                 .setConcurrency(true)
 //                .setExpiration(config.peerConnectionsMaxIdleTime * 1000)
                 .build();
-        this.storage = this.hamokService.getStorageGrid().separatedStorage(baseStorage)
+        var storageBuilder = this.hamokService.getStorageGrid().separatedStorage(baseStorage)
                 .setKeyCodec(SerDeUtils.createStrToByteFunc(), SerDeUtils.createBytesToStr())
                 .setValueCodec(
                         Mapper.create(Models.PeerConnection::toByteArray, logger)::map,
@@ -76,7 +79,12 @@ public class PeerConnectionsRepository implements RepositoryStorageMetrics {
                 .setMaxCollectedStorageTimeInMs(bufferConfig.debouncers.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
                 .setMaxMessageValues(MAX_VALUES)
-                .build();
+        ;
+        if (this.observerConfig.repository.useBackups) {
+            storageBuilder.setDistributedBackups(this.backups);
+        }
+
+        this.storage = storageBuilder.build();
 
         var checkCollision = new AtomicBoolean(false);
         this.storage.detectedEntryCollisions().subscribe(detectedCollision -> {

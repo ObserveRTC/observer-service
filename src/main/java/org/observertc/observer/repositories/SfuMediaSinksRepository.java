@@ -35,7 +35,11 @@ public class SfuMediaSinksRepository implements RepositoryStorageMetrics {
     private HamokService service;
 
     @Inject
-    private ObserverConfig.InternalBuffersConfig bufferConfig;
+    private ObserverConfig observerConfig;
+
+    @Inject
+    private Backups backups;
+
 
     @Inject
     BeanProvider<SfuTransportsRepository> sfuTransportsRepositoryBeanProvider;
@@ -53,17 +57,24 @@ public class SfuMediaSinksRepository implements RepositoryStorageMetrics {
                 .setConcurrency(true)
                 .setId(STORAGE_ID)
                 .build();
-        this.storage = this.service.getStorageGrid().separatedStorage(baseStorage)
+        var storageBuilder = this.service.getStorageGrid().separatedStorage(baseStorage)
                 .setKeyCodec(SerDeUtils.createStrToByteFunc(), SerDeUtils.createBytesToStr())
                 .setValueCodec(
                         Mapper.create(Models.SfuMediaSink::toByteArray, logger)::map,
                         Mapper.<byte[], Models.SfuMediaSink>create(bytes -> Models.SfuMediaSink.parseFrom(bytes), logger)::map
                 )
-                .setMaxCollectedStorageEvents(bufferConfig.debouncers.maxItems)
-                .setMaxCollectedStorageTimeInMs(bufferConfig.debouncers.maxTimeInMs)
+                .setMaxCollectedStorageEvents(this.observerConfig.buffers.debouncers.maxItems)
+                .setMaxCollectedStorageTimeInMs(this.observerConfig.buffers.debouncers.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
                 .setMaxMessageValues(MAX_VALUES)
-                .build();
+                ;
+
+        if (this.observerConfig.repository.useBackups) {
+            storageBuilder.setDistributedBackups(this.backups);
+        }
+
+        this.storage = storageBuilder.build();
+
         this.fetched = CachedFetches.<String, SfuMediaSink>builder()
                 .onFetchOne(this::fetchOne)
                 .onFetchAll(this::fetchAll)

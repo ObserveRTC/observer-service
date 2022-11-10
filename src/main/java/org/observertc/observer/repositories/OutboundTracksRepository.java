@@ -42,7 +42,10 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
     BeanProvider<PeerConnectionsRepository> peerConnectionsRepositoryBeanProvider;
 
     @Inject
-    private ObserverConfig.RepositoryConfig config;
+    private ObserverConfig observerConfig;
+
+    @Inject
+    private Backups backups;
 
     @Inject
     private HamokService hamokService;
@@ -60,7 +63,7 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
                 .setConcurrency(true)
 //                .setExpiration(config.mediaTracksMaxIdleTimeInS * 1000)
                 .build();
-        this.storage = this.hamokService.getStorageGrid().separatedStorage(baseStorage)
+        var storageBuilder = this.hamokService.getStorageGrid().separatedStorage(baseStorage)
                 .setKeyCodec(SerDeUtils.createStrToByteFunc(), SerDeUtils.createBytesToStr())
                 .setValueCodec(
                         Mapper.create(Models.OutboundTrack::toByteArray, logger)::map,
@@ -70,7 +73,13 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
                 .setMaxCollectedStorageTimeInMs(bufferConfig.debouncers.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
                 .setMaxMessageValues(MAX_VALUES)
-                .build();
+                ;
+
+        if (this.observerConfig.repository.useBackups) {
+            storageBuilder.setDistributedBackups(this.backups);
+        }
+
+        this.storage = storageBuilder.build();
 
         var checkCollision = new AtomicBoolean(false);
         this.storage.detectedEntryCollisions().subscribe(detectedCollision -> {

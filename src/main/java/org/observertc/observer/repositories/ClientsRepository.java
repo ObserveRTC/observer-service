@@ -45,7 +45,10 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
     BeanProvider<CallsRepository> callsProvider;
 
     @Inject
-    private ObserverConfig.RepositoryConfig config;
+    private ObserverConfig observerConfig;
+
+    @Inject
+    private Backups backups;
 
     @Inject
     private HamokService hamokService;
@@ -63,7 +66,7 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
                 .setConcurrency(true)
 //                .setExpiration(config.clientMaxIdleTimeInS * 1000, Schedulers.io())
                 .build();
-        this.storage = this.hamokService.getStorageGrid().<String, Models.Client>separatedStorage(baseStorage)
+        var storageBuilder = this.hamokService.getStorageGrid().<String, Models.Client>separatedStorage(baseStorage)
                 .setKeyCodec(SerDeUtils.createStrToByteFunc(), SerDeUtils.createBytesToStr())
                 .setValueCodec(
                         Mapper.create(Models.Client::toByteArray, logger)::map,
@@ -73,7 +76,13 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
                 .setMaxCollectedStorageTimeInMs(buffersConfig.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
                 .setMaxMessageValues(MAX_VALUES)
-                .build();
+        ;
+
+        if (this.observerConfig.repository.useBackups) {
+            storageBuilder.setDistributedBackups(this.backups);
+        }
+
+        this.storage = storageBuilder.build();
 
         var checkCollision = new AtomicBoolean(false);
         this.storage.detectedEntryCollisions().subscribe(detectedCollision -> {
