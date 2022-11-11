@@ -127,6 +127,17 @@ public final class Utils {
         };
     }
 
+    public static String getStackTrace() {
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        if (stackTrace == null) {
+            return null;
+        }
+        return Arrays.asList(Thread.currentThread().getStackTrace()).stream()
+                .map(StackTraceElement::toString)
+                .filter(str -> str.contains("observertc"))
+                .collect(Collectors.joining("\n"));
+    }
+
     /**
      * Check if a a value is non null. Returns true if it is NOT null.
      * if it is null it gets the stacktrace and log as warning any related code line.
@@ -137,16 +148,12 @@ public final class Utils {
         if (Objects.nonNull(subject)) {
             return true;
         }
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        var stackTrace = getStackTrace();
         if (stackTrace == null) {
             logger.warn("Null value is detected where it does not supposed to be.");
             return false;
         }
-        var stackTrackStr = Arrays.asList(Thread.currentThread().getStackTrace()).stream()
-                .map(StackTraceElement::toString)
-                .filter(str -> str.contains("observertc"))
-                .collect(Collectors.joining("\n"));
-        logger.warn("Null value is detected where it does not supposed to be. {}", stackTrackStr);
+        logger.warn("Null value is detected where it does not supposed to be. {}", stackTrace);
         return false;
     }
 
