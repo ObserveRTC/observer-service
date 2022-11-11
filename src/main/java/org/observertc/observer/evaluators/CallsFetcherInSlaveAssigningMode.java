@@ -85,6 +85,12 @@ class CallsFetcherInSlaveAssigningMode implements CallsFetcher {
             }
             if (existingCall != null) {
                 // thats a remedy client in a remedy call
+                logger.info("Found remedy client. clientId: {}, prev callId: {}, room: {}, service: {}",
+                        clientId,
+                        existingCall.getCallId(),
+                        existingRoom.getServiceRoomId().roomId,
+                        existingRoom.getServiceRoomId().serviceId
+                );
                 remedyClientIds.add(clientId);
                 continue;
             }
@@ -119,8 +125,10 @@ class CallsFetcherInSlaveAssigningMode implements CallsFetcher {
                         observedRoom.getMinTimestamp()
                 ));
             }
+            logger.info("Calls to create: {}", JsonUtils.objectToString(callsToCreate));
             if (0 < callsToCreate.size()) {
                 var createdCallsResult = this.createCalls(callsToCreate);
+                logger.info("createdCallsResult: {}", JsonUtils.objectToString(createdCallsResult));
                 activeCallIds.addAll(createdCallsResult.createdCallIds);
                 activeCallIds.addAll(createdCallsResult.existingCallIds);
 
