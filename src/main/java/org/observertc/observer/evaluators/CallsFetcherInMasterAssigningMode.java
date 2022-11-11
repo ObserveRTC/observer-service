@@ -138,7 +138,8 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
         );
         return new CallsFetcherResult(
                 actualCalls,
-                Collections.emptyMap()
+                Collections.emptyMap(),
+                Collections.emptySet()
         );
     }
 

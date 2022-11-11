@@ -57,7 +57,7 @@ class CallsFetcherInSlaveAssigningModeTest {
 
         var callsFetcherResult = this.observedCallsFetcher.fetchFor(observedClientSamples);
         Assertions.assertEquals(1, callsFetcherResult.actualCalls().size());
-        Assertions.assertEquals(0, callsFetcherResult.remedyClients().size());
+        Assertions.assertEquals(0, callsFetcherResult.existingRemedyClients().size());
 
         var aliceRoom = this.roomsRepository.get(aliceClientSample.getServiceRoomId());
         var aliceCall = callsFetcherResult.actualCalls().get(aliceRoom.getServiceRoomId());
@@ -94,7 +94,7 @@ class CallsFetcherInSlaveAssigningModeTest {
                 .build();
         var callFetchResult = this.observedCallsFetcher.fetchFor(observedClientSamples_2);
         Assertions.assertEquals(1, callFetchResult.actualCalls().size());
-        Assertions.assertEquals(1, callFetchResult.remedyClients().size());
+        Assertions.assertEquals(1, callFetchResult.existingRemedyClients().size());
 
         var aliceCall = this.callsRepository.get(oldCallId);
         var bobCall = this.callsRepository.get(newCallId);

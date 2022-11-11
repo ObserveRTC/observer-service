@@ -66,7 +66,7 @@ class CallsFetcherInSlaveAssigningMode implements CallsFetcher {
             var existingCall = existingCalls.get(callId);
             var existingRoom = existingRooms.get(serviceRoomId);
             if (existingRoom == null) {
-                // we should create a new room with the callId. btw we need to check if there is onlt one callId for the room
+                // we should create a new room with the callId. btw we need to check if there is only one callId for the room
                 var assignedCallIdToCreate = roomsToCreate.put(serviceRoomId, callId);
                 if (assignedCallIdToCreate != null && !assignedCallIdToCreate.equals(callId)) {
                     logger.warn("Ambiguous call room relation observed in the reported measurements. Service: {}, Room: {}. colliding callIds for newly created room: {}, {}",
@@ -197,16 +197,26 @@ class CallsFetcherInSlaveAssigningMode implements CallsFetcher {
                             return c1;
                         }
                 ));
-        var remedyClients = Utils.firstNotNull(this.clientsRepository.fetchRecursivelyUpwards(remedyClientIds), Collections.<String, Client>emptyMap());
-        logger.info("roomsToCreate: {}\nroomsToAlter: {}\nactiveCallIds: {}\nremedyClientIds: {}",
+        var existingRemedyClients = Utils.firstNotNull(this.clientsRepository.fetchRecursivelyUpwards(remedyClientIds), Collections.<String, Client>emptyMap());
+        Set<String> unregisteredRemedyClientIds;
+        if (existingRemedyClients.size() < remedyClientIds.size()) {
+            unregisteredRemedyClientIds = remedyClientIds.stream()
+                    .filter(clientId -> !existingRemedyClients.containsKey(clientId))
+                    .collect(Collectors.toSet());
+        } else {
+            unregisteredRemedyClientIds = Collections.emptySet();
+        }
+        logger.info("roomsToCreate: {}\nroomsToAlter: {}\nactiveCallIds: {}\nremedyClientIds: {}\nunregisteredRemedyClientIds: {}",
                 JsonUtils.objectToString(roomsToCreate),
                 JsonUtils.objectToString(roomsToAlter),
                 JsonUtils.objectToString(activeCallIds),
-                JsonUtils.objectToString(remedyClientIds)
+                JsonUtils.objectToString(remedyClientIds),
+                JsonUtils.objectToString(unregisteredRemedyClientIds)
         );
         return new CallsFetcherResult(
                 actualCalls,
-                remedyClients
+                existingRemedyClients,
+                unregisteredRemedyClientIds
         );
     }
 

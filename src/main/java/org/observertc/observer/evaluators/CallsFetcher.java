@@ -7,12 +7,14 @@ import org.observertc.observer.samples.ServiceRoomId;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 public interface CallsFetcher {
 
     final static CallsFetcherResult EMPTY_RESULT = new CallsFetcherResult(
             Collections.EMPTY_MAP,
-            Collections.EMPTY_MAP
+            Collections.EMPTY_MAP,
+            Collections.EMPTY_SET
     );
 
     record CallsFetcherResult(
@@ -27,7 +29,14 @@ public interface CallsFetcher {
              * not the activeCall pointed by the existing Room, but there calls still exists
              * for clients reporting to it noted as remedy clients
              */
-            Map<String, Client> remedyClients
+            Map<String, Client> existingRemedyClients,
+
+            /**
+             * This is a set for clients, whose callId pointing to a remedy call, but the reporting clients are
+             * never registered in observer. So they are new clients reporting to an old call not accept
+             * new clients anymore
+             */
+            Set<String> unregisteredRemedyClientIds
     ) {
 
     }

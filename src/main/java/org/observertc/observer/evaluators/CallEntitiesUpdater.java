@@ -27,10 +27,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.time.Instant;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -129,17 +126,20 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
 
     private void process(ObservedClientSamples observedClientSamples) {
         Map<ServiceRoomId, Call> calls;
-        Map<String, Client> remedyClients;
+        Map<String, Client> existingRemedyClients;
+        Set<String> unregisteredRemedyClientIds;
         switch (config.callIdAssignMode) {
             case SLAVE -> {
                 var fetchedCallsForRooms = this.callsFetcherInSlaveAssigningMode.fetchFor(observedClientSamples);
                 calls = fetchedCallsForRooms.actualCalls();
-                remedyClients = fetchedCallsForRooms.remedyClients();
+                existingRemedyClients = fetchedCallsForRooms.existingRemedyClients();
+                unregisteredRemedyClientIds = fetchedCallsForRooms.unregisteredRemedyClientIds();
             }
             default -> {
                 var fetchedCallsForRooms = this.callsFetcherInMasterAssigningMode.fetchFor(observedClientSamples);
                 calls = fetchedCallsForRooms.actualCalls();
-                remedyClients = fetchedCallsForRooms.remedyClients();
+                existingRemedyClients = fetchedCallsForRooms.existingRemedyClients();
+                unregisteredRemedyClientIds = fetchedCallsForRooms.unregisteredRemedyClientIds();
             }
         }
         var newClientModels = new LinkedList<Models.Client>();
@@ -157,13 +157,25 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                 }
                 Client client = null;
                 if (call == null) {
-                    client = remedyClients.get(clientId);
+                    client = existingRemedyClients.get(clientId);
                     if (client == null) {
-                        logger.warn("Observed Sample has a Client {} neither belongs to any active call nor remedy clients. roomId: {}, serviceId: {}",
-                                clientId,
-                                observedRoom.getServiceRoomId().roomId,
-                                observedRoom.getServiceRoomId().serviceId
-                        );
+                        if (unregisteredRemedyClientIds == null || unregisteredRemedyClientIds.contains(clientId)) {
+                            var remedyCallId = observedClient.streamObservedClientSamples()
+                                    .map(c -> c.getClientSample().callId)
+                                    .filter(Objects::nonNull)
+                                    .findFirst()
+                                    .orElse(null);
+                            logger.info("Client ({}) is not registered and it reports to a remedy call {} does not accept new clients",
+                                    clientId,
+                                    remedyCallId
+                            );
+                        } else {
+                            logger.warn("Observed Sample has a Client {} neither belongs to any active call nor remedy clients. roomId: {}, serviceId: {}",
+                                    clientId,
+                                    observedRoom.getServiceRoomId().roomId,
+                                    observedRoom.getServiceRoomId().serviceId
+                            );
+                        }
                         continue;
                     }
                     call = client.getCall();
