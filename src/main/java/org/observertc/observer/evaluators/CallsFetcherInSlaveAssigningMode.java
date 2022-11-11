@@ -2,6 +2,7 @@ package org.observertc.observer.evaluators;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.evaluators.eventreports.CallStartedReports;
 import org.observertc.observer.repositories.*;
@@ -189,7 +190,12 @@ class CallsFetcherInSlaveAssigningMode implements CallsFetcher {
                         }
                 ));
         var remedyClients = Utils.firstNotNull(this.clientsRepository.fetchRecursivelyUpwards(remedyClientIds), Collections.<String, Client>emptyMap());
-
+        logger.info("roomsToCreate: {}\nroomsToAlter: {}\nactiveCallIds: {}\nremedyClientIds: {}",
+                JsonUtils.objectToString(roomsToCreate),
+                JsonUtils.objectToString(roomsToAlter),
+                JsonUtils.objectToString(activeCallIds),
+                JsonUtils.objectToString(remedyClientIds)
+        );
         return new CallsFetcherResult(
                 actualCalls,
                 remedyClients
