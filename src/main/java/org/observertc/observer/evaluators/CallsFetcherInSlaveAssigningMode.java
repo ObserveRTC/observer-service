@@ -125,7 +125,7 @@ class CallsFetcherInSlaveAssigningMode implements CallsFetcher {
                         observedRoom.getMinTimestamp()
                 ));
             }
-            logger.info("Calls to create: {}", JsonUtils.objectToString(callsToCreate));
+//            logger.info("Calls to create: {}", JsonUtils.objectToString(callsToCreate));
             if (0 < callsToCreate.size()) {
                 var createdCallsResult = this.createCalls(callsToCreate);
                 logger.info("createdCallsResult: {}", JsonUtils.objectToString(createdCallsResult));
@@ -206,13 +206,13 @@ class CallsFetcherInSlaveAssigningMode implements CallsFetcher {
         } else {
             unregisteredRemedyClientIds = Collections.emptySet();
         }
-        logger.info("roomsToCreate: {}\nroomsToAlter: {}\nactiveCallIds: {}\nremedyClientIds: {}\nunregisteredRemedyClientIds: {}",
-                JsonUtils.objectToString(roomsToCreate),
-                JsonUtils.objectToString(roomsToAlter),
-                JsonUtils.objectToString(activeCallIds),
-                JsonUtils.objectToString(remedyClientIds),
-                JsonUtils.objectToString(unregisteredRemedyClientIds)
-        );
+//        logger.info("roomsToCreate: {}\nroomsToAlter: {}\nactiveCallIds: {}\nremedyClientIds: {}\nunregisteredRemedyClientIds: {}",
+//                JsonUtils.objectToString(roomsToCreate),
+//                JsonUtils.objectToString(roomsToAlter),
+//                JsonUtils.objectToString(activeCallIds),
+//                JsonUtils.objectToString(remedyClientIds),
+//                JsonUtils.objectToString(unregisteredRemedyClientIds)
+//        );
         return new CallsFetcherResult(
                 actualCalls,
                 existingRemedyClients,

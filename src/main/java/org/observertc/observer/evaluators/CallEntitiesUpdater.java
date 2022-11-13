@@ -133,13 +133,13 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                 var fetchedCallsForRooms = this.callsFetcherInSlaveAssigningMode.fetchFor(observedClientSamples);
                 calls = fetchedCallsForRooms.actualCalls();
                 existingRemedyClients = fetchedCallsForRooms.existingRemedyClients();
-                unregisteredRemedyClientIds = fetchedCallsForRooms.unregisteredRemedyClientIds();
+                unregisteredRemedyClientIds = Utils.firstNotNull(fetchedCallsForRooms.unregisteredRemedyClientIds(), Collections.emptySet());
             }
             default -> {
                 var fetchedCallsForRooms = this.callsFetcherInMasterAssigningMode.fetchFor(observedClientSamples);
                 calls = fetchedCallsForRooms.actualCalls();
                 existingRemedyClients = fetchedCallsForRooms.existingRemedyClients();
-                unregisteredRemedyClientIds = fetchedCallsForRooms.unregisteredRemedyClientIds();
+                unregisteredRemedyClientIds = Utils.firstNotNull(fetchedCallsForRooms.unregisteredRemedyClientIds(), Collections.emptySet());
             }
         }
         var newClientModels = new LinkedList<Models.Client>();
@@ -148,36 +148,16 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
         var newOutboundTrackModels = new LinkedList<Models.OutboundTrack>();
 
         for (var observedRoom : observedClientSamples.observedRooms()) {
-            var call = calls.get(observedRoom.getServiceRoomId());
+            Call call = null;
             for (var observedClient : observedRoom) {
                 var clientId = observedClient.getClientId();
                 if (clientId == null) {
                     logger.warn("ClientId was not for samples", JsonUtils.objectToString(observedClient.observedClientSamples()));
                     continue;
                 }
-                Client client = null;
-                if (call == null) {
-                    client = existingRemedyClients.get(clientId);
-                    if (client == null) {
-                        if (unregisteredRemedyClientIds == null || unregisteredRemedyClientIds.contains(clientId)) {
-                            var remedyCallId = observedClient.streamObservedClientSamples()
-                                    .map(c -> c.getClientSample().callId)
-                                    .filter(Objects::nonNull)
-                                    .findFirst()
-                                    .orElse(null);
-                            logger.info("Client ({}) is not registered and it reports to a remedy call {} does not accept new clients",
-                                    clientId,
-                                    remedyCallId
-                            );
-                        } else {
-                            logger.warn("Observed Sample has a Client {} neither belongs to any active call nor remedy clients. roomId: {}, serviceId: {}",
-                                    clientId,
-                                    observedRoom.getServiceRoomId().roomId,
-                                    observedRoom.getServiceRoomId().serviceId
-                            );
-                        }
-                        continue;
-                    }
+                var client = existingRemedyClients.get(clientId);
+                if (client != null) {
+                    // it's a remedy client
                     call = client.getCall();
                     if (call == null) {
                         logger.warn("Remedy client {} for service: {}, room: {} referencing to a call {} does not exists.",
@@ -188,15 +168,30 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                         );
                         continue;
                     }
-                } else {
-                    client = call.getClient(observedClient.getClientId());
-                }
-                if (call == null) {
-                    logger.warn("Cannot find call for service {}, room {}",
-                            observedRoom.getServiceRoomId().serviceId,
-                            observedRoom.getServiceRoomId().roomId
+                } else if (unregisteredRemedyClientIds.contains(clientId)){
+                    // this is a new client, but points to a remedy call
+                    var remedyCallId = observedClient.streamObservedClientSamples()
+                            .map(c -> c.getClientSample().callId)
+                            .filter(Objects::nonNull)
+                            .findFirst()
+                            .orElse(null);
+                    logger.info("Client ({}) is not registered and it reports to a remedy call {} does not accept new clients. room: {}, service: {}",
+                            clientId,
+                            remedyCallId,
+                            observedRoom.getServiceRoomId().roomId,
+                            observedRoom.getServiceRoomId().serviceId
                     );
                     continue;
+                } else {
+                    // this should belong to a normal call fetched previously
+                    call = calls.get(observedRoom.getServiceRoomId());
+                    if (call == null) {
+                        logger.warn("Cannot find call for service {}, room {}",
+                                observedRoom.getServiceRoomId().serviceId,
+                                observedRoom.getServiceRoomId().roomId
+                        );
+                        continue;
+                    }
                 }
                 call.touchBySample(observedRoom.getMaxTimestamp());
                 call.touchByServer(this.serverTimestamps.instant().toEpochMilli());
@@ -447,17 +442,5 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
             return;
         }
         this.callsRepository.removeAll(expiredCalls.keySet());
-
-//        var removedCallIds = this.callsRepository.removeAll(expiredCalls.keySet());
-//        var removedCallModels = new LinkedList<Models.Call>();
-//        for (var expiredCall : expiredCalls.values()) {
-//            if (!removedCallIds.contains(expiredCall.getCallId())) {
-//                continue;
-//            }
-//            removedCallModels.add(expiredCall.getModel());
-//        }
-//        if (0 < removedCallModels.size()) {
-//            this.callEndedReports.accept(removedCallModels);
-//        }
     }
 }

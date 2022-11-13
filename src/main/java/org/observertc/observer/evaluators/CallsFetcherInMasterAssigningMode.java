@@ -2,7 +2,6 @@ package org.observertc.observer.evaluators;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.evaluators.eventreports.CallStartedReports;
 import org.observertc.observer.repositories.Call;
@@ -41,10 +40,10 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
             return EMPTY_RESULT;
         }
         var createRoomsResult = this.createRooms(observedClientSamples);
-        logger.info("Fetched Rooms. createdRooms: {}, existingRooms: {}",
-                JsonUtils.objectToString(createRoomsResult.createdRooms.values().stream().map(Room::getRoomId).collect(Collectors.toList())),
-                JsonUtils.objectToString(createRoomsResult.existingRooms.values().stream().map(Room::getRoomId).collect(Collectors.toList()))
-        );
+//        logger.info("Fetched Rooms. createdRooms: {}, existingRooms: {}",
+//                JsonUtils.objectToString(createRoomsResult.createdRooms.values().stream().map(Room::getRoomId).collect(Collectors.toList())),
+//                JsonUtils.objectToString(createRoomsResult.existingRooms.values().stream().map(Room::getRoomId).collect(Collectors.toList()))
+//        );
         var callIds = new HashSet<String>();
         if (0 < createRoomsResult.existingRooms.size()) {
             callIds.addAll(createRoomsResult.existingRooms.values().stream()
@@ -131,11 +130,11 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
             }
         }
         this.callsRepository.dump();
-        logger.info("Actual CallIds: {} \n FetchedCalls: {} \n Calls: {} \n",
-                JsonUtils.objectToString(callIds),
-                JsonUtils.objectToString(fetchedCalls.values().stream().map(c -> String.format("%s::%s", c.getCallId(), c.getRoomId())).collect(Collectors.toList())),
-                JsonUtils.objectToString(actualCalls.values().stream().map(c -> String.format("%s::%s", c.getRoomId(), c.getCallId())).collect(Collectors.toList()))
-        );
+//        logger.info("Actual CallIds: {} \n FetchedCalls: {} \n Calls: {} \n",
+//                JsonUtils.objectToString(callIds),
+//                JsonUtils.objectToString(fetchedCalls.values().stream().map(c -> String.format("%s::%s", c.getCallId(), c.getRoomId())).collect(Collectors.toList())),
+//                JsonUtils.objectToString(actualCalls.values().stream().map(c -> String.format("%s::%s", c.getRoomId(), c.getCallId())).collect(Collectors.toList()))
+//        );
         return new CallsFetcherResult(
                 actualCalls,
                 Collections.emptyMap(),
