@@ -192,6 +192,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                         );
                         continue;
                     }
+                    client = call.getClient(clientId);
                 }
                 call.touchBySample(observedRoom.getMaxTimestamp());
                 call.touchByServer(this.serverTimestamps.instant().toEpochMilli());
