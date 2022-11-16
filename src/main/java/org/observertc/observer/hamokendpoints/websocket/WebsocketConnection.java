@@ -9,12 +9,14 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.enums.Opcode;
 import org.java_websocket.enums.ReadyState;
 import org.java_websocket.handshake.ServerHandshake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
+import java.nio.ByteBuffer;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -51,12 +53,20 @@ public class WebsocketConnection {
     private final String serverUri;
     private final ObjectMapper mapper;
     private final Scheduler scheduler;
+    private final int maxMessageSize;
 
-    public WebsocketConnection(ConnectionBuffer buffer, String serverUri, ObjectMapper mapper, Scheduler scheduler) {
+    public WebsocketConnection(
+            ConnectionBuffer buffer,
+            String serverUri,
+            ObjectMapper mapper,
+            Scheduler scheduler,
+            int maxMessageSize
+    ) {
         this.buffer = buffer;
         this.serverUri = serverUri;
         this.mapper = mapper;
         this.scheduler = scheduler;
+        this.maxMessageSize = maxMessageSize;
     }
 
     public String getServerUri() {
@@ -103,16 +113,38 @@ public class WebsocketConnection {
         client.close();
     }
 
-    public void send(String message) {
+    public void send(byte[] message) {
         var client = this.client.get();
         if (client == null || client.getReadyState() != ReadyState.OPEN) {
             this.buffer.add(message);
             return;
         }
-        while (this.buffer.isEmpty() == false) {
-            client.send(this.buffer.poll());
+        for (boolean messageSent = false; this.buffer.isEmpty() == false || messageSent == false; ) {
+            byte[] data;
+            if (this.buffer.isEmpty()) {
+                data = message;
+                messageSent = true;
+            } else {
+                data = this.buffer.poll();
+            }
+
+            if (this.maxMessageSize <= 0) {
+                client.send(data);
+                continue;
+            }
+
+            ByteBuffer byteBuffer = ByteBuffer.wrap(data);
+            for (int position = this.maxMessageSize; ; position += this.maxMessageSize) {
+                if (position < byteBuffer.capacity()) {
+                    byteBuffer.limit(position);
+                    client.sendFragmentedFrame(Opcode.BINARY, byteBuffer, false);
+                    continue;
+                }
+                byteBuffer.limit(byteBuffer.capacity());
+                client.sendFragmentedFrame(Opcode.BINARY, byteBuffer, true);
+                break;
+            }
         }
-        client.send(message);
     }
 
     public Observable<RemoteIdentifiers> remoteIdentifiers() {

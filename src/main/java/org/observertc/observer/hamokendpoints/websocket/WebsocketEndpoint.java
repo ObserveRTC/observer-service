@@ -16,7 +16,9 @@ import org.observertc.observer.hamokendpoints.HamokEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +50,7 @@ public class WebsocketEndpoint implements HamokEndpoint {
     private final long createdTimestampInSec = Instant.now().getEpochSecond();
     private final ExecutorService connectingExecutor = Executors.newSingleThreadExecutor();
 
-    WebsocketEndpoint(RemotePeerDiscovery discovery, String serverHost, int serverPort) {
+    WebsocketEndpoint(RemotePeerDiscovery discovery, String serverHost, int serverPort, int maxMessageSize) {
         this.discovery = discovery;
         this.serverHost = serverHost;
         this.serverPort = serverPort;
@@ -56,7 +58,7 @@ public class WebsocketEndpoint implements HamokEndpoint {
             if (message == null) {
                 return;
             }
-            var data = this.mapper.writeValueAsString(message);
+            var data = this.mapper.writeValueAsBytes(message);
             if (data == null) {
                 logger.warn("Tried to send null data");
                 return;
@@ -95,7 +97,8 @@ public class WebsocketEndpoint implements HamokEndpoint {
                             ConnectionBuffer.discardingBuffer(),
                             serverUri,
                             this.mapper,
-                            Schedulers.from(connectingExecutor)
+                            Schedulers.from(connectingExecutor),
+                            maxMessageSize
                     );
                     logger.info("Add connection to {}. RemoteHost: {}, remotePort: {}",
                             connection.getServerUri(),
@@ -226,6 +229,27 @@ public class WebsocketEndpoint implements HamokEndpoint {
 //                    logger.info("Got message from {}, {}", createUri(serverHost, serverPort), message.type);
                     inboundChannel.onNext(message);
                 } catch (JsonProcessingException e) {
+                    logger.warn("Error occurred while deserializing message", e);
+                    return;
+                }
+            }
+
+            @Override
+            public void onMessage(WebSocket conn, ByteBuffer data) {
+                Message message = null;
+                try {
+                    var bytes = data.array();
+                    if (bytes == null || bytes.length < 1) {
+                        logger.info("Got empty message from {}", createUri(serverHost, serverPort));
+                        return;
+                    }
+                    message = mapper.readValue(bytes, Message.class);
+//                    logger.info("Got message from {}, {}", createUri(serverHost, serverPort), message.type);
+                    inboundChannel.onNext(message);
+                } catch (JsonProcessingException e) {
+                    logger.warn("Error occurred while deserializing message", e);
+                    return;
+                } catch (IOException e) {
                     logger.warn("Error occurred while deserializing message", e);
                     return;
                 }

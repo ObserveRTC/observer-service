@@ -17,4 +17,6 @@ public class WebsocketEndpointConfig {
     @NotNull
     public Map<String, Object> discovery;
 
+    public int maxMessageSize = 5000;
+
 }

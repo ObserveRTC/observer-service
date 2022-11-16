@@ -34,7 +34,12 @@ public class WebsocketEndpointBuilder extends AbstractBuilder implements Endpoin
             logger.warn("Error occurred while retrieving localhost name. the default will be used, which is localhost", e);
             serverHost = "localhost";
         }
-        return new WebsocketEndpoint(discovery, serverHost, config.serverPort);
+        return new WebsocketEndpoint(
+                discovery,
+                serverHost,
+                config.serverPort,
+                config.maxMessageSize
+        );
     }
 
 
