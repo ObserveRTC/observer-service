@@ -126,7 +126,15 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
                     );
                     continue;
                 }
-                clientSample.callId = callId;
+                if (clientSample.callId != null) {
+                    logger.warn("CallId {} is provided in service {} at room {}, though the callIdAssignMode is MASTER. Change it to SLAVE if you want the client to control the assigned callId.",
+                            clientSample.callId,
+                            observedRoom.getServiceRoomId().serviceId,
+                            observedRoom.getServiceRoomId().roomId
+                    );
+                    clientSample.callId = callId;
+                }
+
             }
         }
         this.callsRepository.dump();
