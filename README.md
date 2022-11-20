@@ -126,7 +126,7 @@ The observer configuration can be divided into the following components:
  * **sinks**: define connections observer generated Reports are forwarded to (mongoDB, kafka, etc.).
  * **repository** define properties of the repository the observer stores data in (media track expiration time, peer connection expiration time).
  * **buffers** defines the properties of the internal buffers (samples buffering time, reports buffering time, etc.)
- * **hazelcast**:  defines the settings of the [hazelcast](https://hazelcast.com) the service uses.
+ * **hamok**:  defines the settings of the [hamok](https://github.com/balazskreith/hamok) distributed object storage the service uses.
 
 Here is an example for the observer configuration part:
 
@@ -268,12 +268,93 @@ observer:
   # Detailed description is in the Configuration section
   sinks: {}
 
-  hazelcast:
-    # custom config for hazelcast storage
-    config:
-      cluster-name: my-hz-cluster
+  # settings related to hamok distributed object storage 
+   # and discovery of other observer instances to form a cluster
+  hamok:
+    # settings related to the storage grid the observer shares objects through
+    storageGrid:
+       # the retention time in minutes the Raft keeps logs for
+       raftMaxLogEntriesRetentionTimeInMinutes: 5
+       
+       # the period of the heartbeat for the leader
+       heartbeatInMs: 150
+       
+       # the timeout for a follower when it does not get a heartbeat
+       followerMaxIdleInMs: 30000
+       
+       # maximum time for a request between storage grids to exchange
+       requestTimeoutInMs: 90000
     
+    # endpoint related settings
+    endpoint: {}
+       # The type of the endpoint hamok uses to communicate
+       type: WebsocketEndpoint
+       config:
+          # the hostname
+          serverHost: "localhost"
+          # the port number to offer a websocket connection
+          serverPort: 5600
+          
+          # Discovery strategy to discover another endpoint
+          discovery:
+             type: StaticDiscovery
+             config:
+                peers:
+                   my-other-wonderful-peer:
+                      port: 5603
+                      host: "localhost"
 ```
+
+#### Hamok endpoints
+
+##### Websocket Endpoint
+
+```yaml
+endpoint: {}
+    # The type of the endpoint hamok uses to communicate
+    type: WebsocketEndpoint
+    config:
+       # the hostname
+       serverHost: "localhost"
+       # the port number to offer a websocket connection
+       serverPort: 5600
+       
+       # Discovery strategy to discover another endpoint
+       discovery: {}
+```
+
+
+#### Hamok discovery strategies
+
+##### Static Discovery strategy
+
+```yaml
+ discovery:
+    type: StaticDiscovery
+    config:
+       peers:
+          my-other-wonderful-peer:
+             port: 5603
+             host: "localhost"
+```
+
+
+##### Kubernetes Discovery Strategy
+
+```yaml
+ discovery:
+    type: K8sPodsDiscovery
+    config:
+       # The namespace where the instance is runninng in
+       namespace: "default"
+       
+       # prefix for the service the pods are installed by
+       prefix: "observertc"
+       
+       # the port number on which the remote peer accepts a connection to
+       port: 5601# 
+```
+
 
 #### AWS Credentials
 

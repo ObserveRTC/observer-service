@@ -2,6 +2,7 @@ package org.observertc.schemas.samples;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
 * Observer created reports related to events (call started, call ended, client joined, etc...) indicated by the incoming samples.
