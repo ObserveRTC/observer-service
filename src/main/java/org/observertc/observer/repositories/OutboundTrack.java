@@ -14,14 +14,17 @@ public class OutboundTrack {
     private final PeerConnectionsRepository peerConnectionsRepository;
     private final AtomicReference<Models.OutboundTrack> modelHolder;
     private final OutboundTracksRepository outboundTracksRepository;
+    private final SfuMediaStreamsRepository sfuMediaStreamsRepository;
 
     OutboundTrack(PeerConnectionsRepository peerConnectionsRepository,
                   Models.OutboundTrack model,
-                  OutboundTracksRepository outboundTracksRepository
+                  OutboundTracksRepository outboundTracksRepository,
+                  SfuMediaStreamsRepository sfuMediaStreamsRepository
     ) {
         this.peerConnectionsRepository = peerConnectionsRepository;
         this.modelHolder = new AtomicReference<>(model);
         this.outboundTracksRepository = outboundTracksRepository;
+        this.sfuMediaStreamsRepository = sfuMediaStreamsRepository;
         this.serviceRoomId = ServiceRoomId.make(model.getServiceId(), model.getRoomId());
     }
 
@@ -127,6 +130,28 @@ public class OutboundTrack {
             return false;
         }
         return model.getSsrcList().contains(ssrc);
+    }
+
+    public SfuMediaStream getMediaStream() {
+        var model = this.modelHolder.get();
+        if (!model.hasSfuStreamId()) {
+            return null;
+        }
+        var sfuStreamId = model.getSfuStreamId();
+        var sfuMediaStream = this.sfuMediaStreamsRepository.get(sfuStreamId);
+        if (sfuMediaStream != null) {
+            return sfuMediaStream;
+        }
+        var sfuMediaStreamModel = Models.SfuMediaStream.newBuilder()
+                .setSfuStreamId(model.getSfuStreamId())
+                .setCallId(model.getCallId())
+                .setTrackId(model.getTrackId())
+                .setKind(model.getKind())
+                .setClientId(model.getClientId())
+                .setServiceId(model.getServiceId())
+                .build();
+        this.sfuMediaStreamsRepository.update(sfuMediaStreamModel);
+        return this.sfuMediaStreamsRepository.wrapSfuMediaStream(sfuMediaStreamModel);
     }
 
     public void addSSRC(Long ssrc) {

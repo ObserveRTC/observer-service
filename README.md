@@ -171,25 +171,15 @@ observer:
       enabled: true
 
   repository:
-    # the maximum idle time (no new sample received to update that track) 
-    # for a media track object after which it is removed from the repository
-    mediaTracksMaxIdleTimeInS: 300
-    # the maximum idle time for a client object after which it is removed from the repository
-    clientMaxIdleTimeInS: 300
+    # indicate if the repositories storages in hamok should use distributed backup service or not.
+    # NOTE: Distributed backup service increases traffic and volume of data stored in the memory
+    useBackups: false
+    # the maximum idle time for a call object after which it is removed from the repository
+    callMaxIdleTimeInS: 300
     # the maximum idle time for an SFU object after which it is removed from the repository
     sfuMaxIdleTimeInS: 60
     # the maximum idle time for a Sfu Transport object after which it is removed from the repository
     sfuTransportMaxIdleTimeInS: 600
-    # the maximum idle time for an SFU Rtp pad after which it is removed from the repository
-    sfuRtpPadMaxIdleTimeInS: 600
-    # the maximum idle time for an peer connection object after  which it is removed from the repository
-    peerConnectionsMaxIdleTime: 300
-    # sets up a timer to evict all expired sfu transport and clients 
-    # DEFAULT is 5 mins (300 * 1000)
-    evictExpiredEntriesPeriodInMs: 300000
-    # adds an offset to expiration thresholds in eviction. THis is due to not collide with expiration 
-    # ongoing processes
-    evictExpiredEntriesThresholdOffsetInMs: 10000
 
   buffers:
     # settings of the buffer collect samples from the sources

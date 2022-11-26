@@ -105,6 +105,29 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
         }
     }
 
+    public Map<String, Sfu> fetchRecursively(Set<String> sfuTransportIds) {
+        if (sfuTransportIds == null || sfuTransportIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        var result = this.getAll(sfuTransportIds);
+        var sfuStreamIds = result.values().stream()
+                .map(SfuTransport::get)
+                .flatMap(s -> s.stream())
+                .collect(Collectors.toSet());
+
+        var sfuSinkIds = result.values().stream()
+                .map(SfuTransport::get)
+                .flatMap(s -> s.stream())
+                .collect(Collectors.toSet());
+
+        var sfuSctpStreamIds = result.values().stream()
+                .map(SfuTransport::get)
+                .flatMap(s -> s.stream())
+                .collect(Collectors.toSet());
+        this.sfuTransportsRepository.fetchRecursively(transportIds);
+        return result;
+    }
+
     public synchronized void deleteAll(Set<String> sfuTransportIds) {
         if (sfuTransportIds == null || sfuTransportIds.size() < 1) {
             return;

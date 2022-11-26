@@ -81,6 +81,10 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
         }
     }
 
+    private void process2(ObservedSfuSamples observedSfuSamples) {
+//        var observedSfus = this.sfusRepository.
+    }
+
     private void process(ObservedSfuSamples observedSfuSamples) {
         if (observedSfuSamples.isEmpty()) {
             return;

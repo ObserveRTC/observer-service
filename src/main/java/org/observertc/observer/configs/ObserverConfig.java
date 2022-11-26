@@ -131,31 +131,10 @@ public class ObserverConfig {
 		public boolean useBackups = false;
 
 		@Min(3)
-		public int callMaxIdleTimeInS = 3;
+		public int callMaxIdleTimeInS;
 
-//		@Min(3)
-//		public int mediaTracksMaxIdleTimeInS;
-//
-//		@Min(3)
-//		public int peerConnectionsMaxIdleTime;
-//
-//		@Min(3)
-//		public int clientMaxIdleTimeInS;
-//
-//		@Min(3)
-//		public int sfuMaxIdleTimeInS;
-//
 		@Min(3)
 		public int sfuTransportMaxIdleTimeInS;
-//
-//		@Min(3)
-//		public int sfuRtpPadMaxIdleTimeInS;
-//
-//		@Min(-1)
-//		public long evictExpiredEntriesPeriodInMs;
-//
-//		@Min(-1)
-//		public long evictExpiredEntriesThresholdOffsetInMs = 0;
 	}
 
 	// Evaluators Config

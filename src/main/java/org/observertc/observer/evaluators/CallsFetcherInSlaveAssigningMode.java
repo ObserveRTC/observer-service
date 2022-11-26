@@ -2,7 +2,6 @@ package org.observertc.observer.evaluators;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.evaluators.eventreports.CallStartedReports;
 import org.observertc.observer.repositories.*;
@@ -128,7 +127,7 @@ class CallsFetcherInSlaveAssigningMode implements CallsFetcher {
 //            logger.info("Calls to create: {}", JsonUtils.objectToString(callsToCreate));
             if (0 < callsToCreate.size()) {
                 var createdCallsResult = this.createCalls(callsToCreate);
-                logger.info("createdCallsResult: {}", JsonUtils.objectToString(createdCallsResult));
+//                logger.info("createdCallsResult: {}", JsonUtils.objectToString(createdCallsResult));
                 activeCallIds.addAll(createdCallsResult.createdCallIds);
                 activeCallIds.addAll(createdCallsResult.existingCallIds);
 

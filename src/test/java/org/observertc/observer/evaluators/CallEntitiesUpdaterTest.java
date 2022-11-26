@@ -11,6 +11,7 @@ import org.observertc.observer.utils.ObservedSamplesGenerator;
 
 import java.time.Instant;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @MicronautTest(environments = "test")
@@ -62,7 +63,7 @@ class CallEntitiesUpdaterTest {
         Assertions.assertNotNull(aliceRoom);
         Assertions.assertNotNull(bobRoom);
 
-        var calls = this.callsRepository.getAll(observedClientSamples.getCallIds());
+        var calls = this.callsRepository.getAll(Set.of(callId));
         Assertions.assertEquals(1, calls.size());
 
         var aliceCall = calls.get(aliceRoom.getCallId());

@@ -12,19 +12,15 @@ import java.util.Objects;
 public interface ObservedRoom extends Iterable<ObservedClient> {
 
     ServiceRoomId getServiceRoomId();
-    String getCallId();
     String getMarker();
     Long getMinTimestamp();
     Long getMaxTimestamp();
 
     Iterable<ObservedClientSample> observedClientSamples();
-    void setCallId(String callId);
-
 
     class Builder implements ObservedRoom {
         final ObservedClientSamples.Builder observedClientSamples;
         private final ServiceRoomId serviceRoomId;
-        private String callId = null;
 
         private Map<String, ObservedClient> clients = new HashMap<>();
 
@@ -43,41 +39,30 @@ public interface ObservedRoom extends Iterable<ObservedClient> {
                 this.clients.put(observedClient.getClientId(), observedClient);
             }
             observedClient.add(clientSample);
-            if (this.callId == null) {
-                if (clientSample.callId != null) {
-                    this.observedClientSamples.callIds.add(clientSample.callId);
-                }
-                this.callId = clientSample.callId;
-            }
         }
 
-        @Override
-        public void setCallId(String callId) {
-            if (this.callId != null) {
-                this.observedClientSamples.callIds.remove(this.callId);
-            }
-
-            for (var observedClient : this.clients.values()) {
-                for (var observedClientSample : observedClient.observedClientSamples()) {
-                    var clientSample = observedClientSample.getClientSample();
-                    if (clientSample.callId != null) {
-                        this.observedClientSamples.callIds.remove(clientSample.callId);
-                    }
-                    clientSample.callId = callId;
-                }
-            }
-            this.callId = callId;
-            this.observedClientSamples.callIds.add(this.callId);
-        }
+//        @Override
+//        public void setCallId(String callId) {
+//            if (this.callId != null) {
+//                this.observedClientSamples.callIds.remove(this.callId);
+//            }
+//
+//            for (var observedClient : this.clients.values()) {
+//                for (var observedClientSample : observedClient.observedClientSamples()) {
+//                    var clientSample = observedClientSample.getClientSample();
+//                    if (clientSample.callId != null) {
+//                        this.observedClientSamples.callIds.remove(clientSample.callId);
+//                    }
+//                    clientSample.callId = callId;
+//                }
+//            }
+//            this.callId = callId;
+//            this.observedClientSamples.callIds.add(this.callId);
+//        }
 
         @Override
         public ServiceRoomId getServiceRoomId() {
             return this.serviceRoomId;
-        }
-
-        @Override
-        public String getCallId() {
-            return this.callId;
         }
 
         @Override

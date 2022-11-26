@@ -135,7 +135,6 @@ message SfuMediaStream {
   required string trackId = 7;
 
   repeated string sfuInboundSfuRtpPadIds = 8;
-
 }
 
 message Sfu {
@@ -164,10 +163,15 @@ message SfuTransport {
   optional string mediaUnitId = 7;
   optional string marker = 8;
 
-  repeated string inboundRtpPadIds = 9;
-  repeated string outboundRtpPadIds = 10;
+//  repeated string inboundRtpPadIds = 9;
+//  repeated string outboundRtpPadIds = 10;
+
+  repeated string mediaStreamIds = 9;
+  repeated string mediaSinkIds = 10;
   repeated string sctpStreamIds = 11;
 }
+
+
 
 message SfuInboundRtpPad {
   required string serviceId = 1;

@@ -110,6 +110,19 @@ public class SfusRepository implements RepositoryStorageMetrics {
         });
     }
 
+    public Map<String, Sfu> fetchRecursively(Set<String> sfuIds) {
+        if (sfuIds == null || sfuIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        var result = this.getAll(sfuIds);
+        var transportIds = result.values().stream()
+                .map(Sfu::getSfuTransportIds)
+                .flatMap(s -> s.stream())
+                .collect(Collectors.toSet());
+        this.sfuTransportsRepository.fetchRecursively(transportIds);
+        return result;
+    }
+
     public synchronized void save() {
         if (0 < this.deleted.size()) {
             var sfus = Try.<Map<String, Sfu>>wrap(() -> this.getAll(this.deleted), Collections.emptyMap());

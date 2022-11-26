@@ -42,6 +42,9 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
     BeanProvider<PeerConnectionsRepository> peerConnectionsRepositoryBeanProvider;
 
     @Inject
+    private SfuMediaStreamsRepository sfuMediaStreamsRepository;
+
+    @Inject
     private ObserverConfig observerConfig;
 
     @Inject
@@ -172,6 +175,22 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
         this.fetched.clear();
     }
 
+    public Iterator<OutboundTrack> iterator() {
+        var it = this.storage.iterator();
+        return new Iterator<OutboundTrack>() {
+            @Override
+            public boolean hasNext() {
+                return it.hasNext();
+            }
+
+            @Override
+            public OutboundTrack next() {
+                var entry = it.next();
+                return wrapOutboundAudioTrack(entry.getValue());
+            }
+        };
+    }
+
     @Override
     public String storageId() {
         return this.storage.getId();
@@ -214,7 +233,8 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
         var result = new OutboundTrack(
                 this.peerConnectionsRepositoryBeanProvider.get(),
                 model,
-                this
+                this,
+                this.sfuMediaStreamsRepository
         );
         this.fetched.add(result.getTrackId(), result);
         return result;

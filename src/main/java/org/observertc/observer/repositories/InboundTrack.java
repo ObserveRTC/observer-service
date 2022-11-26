@@ -14,14 +14,17 @@ public class InboundTrack {
     private final PeerConnectionsRepository peerConnectionsRepository;
     private final AtomicReference<Models.InboundTrack> modelHolder;
     private final InboundTracksRepository inboundTracksRepository;
+    private final SfuMediaSinksRepository sfuMediaSinksRepository;
 
     InboundTrack(PeerConnectionsRepository peerConnectionsRepository,
                  Models.InboundTrack model,
-                 InboundTracksRepository inboundTracksRepository
+                 InboundTracksRepository inboundTracksRepository,
+                 SfuMediaSinksRepository sfuMediaSinksRepository
     ) {
         this.peerConnectionsRepository = peerConnectionsRepository;
         this.modelHolder = new AtomicReference<>(model);
         this.inboundTracksRepository = inboundTracksRepository;
+        this.sfuMediaSinksRepository = sfuMediaSinksRepository;
         this.serviceRoomId = ServiceRoomId.make(model.getServiceId(), model.getRoomId());
     }
 
@@ -122,6 +125,30 @@ public class InboundTrack {
             return null;
         }
         return model.getSfuSinkId();
+    }
+
+    public SfuMediaSink getMediaSink() {
+        var model = this.modelHolder.get();
+        if (!model.hasSfuStreamId()) {
+            return null;
+        }
+        var sfuStreamId = model.getSfuStreamId();
+        var sfuSinkId = model.getSfuSinkId();
+        var sfuMediaSInk = this.sfuMediaSinksRepository.get(sfuStreamId);
+        if (sfuMediaSInk != null) {
+            return sfuMediaSInk;
+        }
+        var sfuMediaStreamModel = Models.SfuMediaSink.newBuilder()
+                .setSfuStreamId(model.getSfuStreamId())
+                .setCallId(model.getCallId())
+                .setTrackId(model.getTrackId())
+                .setKind(model.getKind())
+                .setClientId(model.getClientId())
+                .setServiceId(model.getServiceId())
+                .setSfuSinkId(sfuSinkId)
+                .build();
+        this.sfuMediaSinksRepository.update(sfuMediaStreamModel);
+        return this.sfuMediaSinksRepository.wrap(sfuMediaStreamModel);
     }
 
     public List<Long> getSSSRCs() {

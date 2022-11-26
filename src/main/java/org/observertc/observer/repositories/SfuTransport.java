@@ -89,6 +89,14 @@ public class SfuTransport {
         return model.getMarker();
     }
 
+//    public Collection<String> getStreamIds() {
+//        var model = this.modelHolder.get();
+//        if (model.getInboundRtpPadIdsCount() < 1) {
+//            return Collections.emptyList();
+//        }
+//        return model.getInboundRtpPadIdsList();
+//    }
+
     public Collection<String> getInboundRtpPadIds() {
         var model = this.modelHolder.get();
         if (model.getInboundRtpPadIdsCount() < 1) {

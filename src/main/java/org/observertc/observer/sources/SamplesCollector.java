@@ -6,11 +6,9 @@ import io.reactivex.rxjava3.subjects.Subject;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.common.JsonUtils;
-import org.observertc.observer.common.MinuteToTimeZoneOffsetConverter;
 import org.observertc.observer.common.ObservableCollector;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.samples.ObservedClientSamples;
-import org.observertc.observer.samples.ObservedSfuSample;
 import org.observertc.observer.samples.ObservedSfuSamples;
 import org.observertc.observer.samples.SamplesVisitor;
 import org.slf4j.Logger;
@@ -38,14 +36,12 @@ public class SamplesCollector {
         return this.observedSfuSamplesSubject;
     }
 
-    private final MinuteToTimeZoneOffsetConverter minuteToTimeZoneOffsetConverter;
     private final ObservableCollector<ReceivedSamples> collector;
 
     public SamplesCollector(ObserverConfig observerConfig) {
         var maxItems = observerConfig.buffers.samplesCollector.maxItems;
         var maxTimeInMs = observerConfig.buffers.samplesCollector.maxTimeInMs;
 
-        this.minuteToTimeZoneOffsetConverter = new MinuteToTimeZoneOffsetConverter();
         this.collector = ObservableCollector.<ReceivedSamples>builder()
                 .withMaxTimeInMs(maxTimeInMs)
                 .withMaxItems(maxItems)
@@ -77,14 +73,14 @@ public class SamplesCollector {
 
 
     public void accept(ReceivedSamples receivedSamples) {
+        if (receivedSamples.samples == null) {
+            return;
+        }
         if (!this.observerConfig.sources.acceptClientSamples) {
             receivedSamples.samples.clientSamples = null;
         }
         if (!this.observerConfig.sources.acceptSfuSamples) {
             receivedSamples.samples.sfuSamples = null;
-        }
-        if (receivedSamples.samples == null) {
-            return;
         }
         if (receivedSamples.samples.clientSamples == null && receivedSamples.samples.sfuSamples == null) {
             return;
@@ -123,22 +119,14 @@ public class SamplesCollector {
                     });
 
 
-            if (this.observerConfig.sources.acceptSfuSamples) {
-                SamplesVisitor.streamSfuSamples(receivedSample.samples)
-                        .forEach(sfuSample -> {
-                            var timeZoneId = this.minuteToTimeZoneOffsetConverter.apply(sfuSample.timeZoneOffsetInHours);
-//                        if (this.useServerTimestamps) {
-//                            sfuSample.timestamp = Instant.now().toEpochMilli();
-//                        }
-                            var observedSfuSample =  ObservedSfuSample.builder()
-                                    .setMediaUnitId(receivedSample.mediaUnitId)
-                                    .setServiceId(receivedSample.serviceId)
-                                    .setTimeZoneId(timeZoneId)
-                                    .setSfuSample(sfuSample)
-                                    .build();
-                            observedSfuSamplesBuilder.addObservedSfuSample(observedSfuSample);
-                        });
-            }
+            SamplesVisitor.streamSfuSamples(receivedSample.samples)
+                    .forEach(sfuSample -> {
+                        observedSfuSamplesBuilder.add(
+                                receivedSample.serviceId,
+                                receivedSample.mediaUnitId,
+                                sfuSample
+                        );
+                    });
 
         }
         var observedClientSamples = observedClientSamplesBuilder.build();

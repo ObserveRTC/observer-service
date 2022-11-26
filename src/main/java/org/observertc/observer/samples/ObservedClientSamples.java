@@ -32,16 +32,11 @@ public interface ObservedClientSamples extends Iterable<ObservedClientSample> {
     }
 
     boolean isEmpty();
-
-    Stream<ObservedClientSample> stream();
-
-    Iterable<ObservedRoom> observedRooms();
-
     int size();
-
+    Stream<ObservedClientSample> stream();
+    Iterable<ObservedRoom> observedRooms();
     ObservedRoom getRoom(ServiceRoomId serviceRoomId);
 
-    Set<String> getCallIds();
     Set<ServiceRoomId> getServiceRoomIds();
     Set<String> getClientIds();
     Set<String> getPeerConnectionIds();
@@ -50,7 +45,6 @@ public interface ObservedClientSamples extends Iterable<ObservedClientSample> {
 
     class Builder {
         MinuteToTimeZoneOffsetConverter minuteToTimeZoneOffsetConverter = new MinuteToTimeZoneOffsetConverter();
-        Set<String> callIds = new HashSet<>();
         Set<String> clientIds = new HashSet<>();
         Set<String> peerConnectionIds = new HashSet<>();
         Set<String> inboundTrackIds = new HashSet<>();
@@ -102,11 +96,6 @@ public interface ObservedClientSamples extends Iterable<ObservedClientSample> {
                 @Override
                 public ObservedRoom getRoom(ServiceRoomId serviceRoomId) {
                     return observedServiceRooms.get(serviceRoomId);
-                }
-
-                @Override
-                public Set<String> getCallIds() {
-                    return callIds;
                 }
 
                 @Override

@@ -22,7 +22,6 @@ public interface ObservedSfuSample {
         private String mediaUnitId = null;
         private String timeZoneId = null;
         private Samples.SfuSample sfuSample = null;
-        private ServiceRoomId serviceRoomId = null;
 
         public ObservedSfuSample.Builder setServiceId(String value) {
             this.serviceId = value;

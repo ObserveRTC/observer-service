@@ -43,6 +43,9 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
     BeanProvider<PeerConnectionsRepository> peerConnectionsRepositoryBeanProvider;
 
     @Inject
+    private SfuMediaSinksRepository sfuMediaSinksRepository;
+
+    @Inject
     private ObserverConfig observerConfig;
 
     @Inject
@@ -202,7 +205,8 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
         var result =  new InboundTrack(
                 this.peerConnectionsRepositoryBeanProvider.get(),
                 model,
-                this
+                this,
+                this.sfuMediaSinksRepository
         );
         this.fetched.add(result.getTrackId(), result);
         return result;

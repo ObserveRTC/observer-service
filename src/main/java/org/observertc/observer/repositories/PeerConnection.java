@@ -180,10 +180,6 @@ public class PeerConnection {
 
         this.updateModel(newModel);
         this.inboundTracksRepository.update(inboundTrackModel);
-        if (sfuStreamId != null && sfuSinkId != null) {
-            // TODO: add SfuMediaSink here
-
-        }
         return this.inboundTracksRepository.wrapInboundTrack(inboundTrackModel);
     }
 

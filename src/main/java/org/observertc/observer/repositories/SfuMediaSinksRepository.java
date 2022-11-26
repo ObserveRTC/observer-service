@@ -163,7 +163,7 @@ public class SfuMediaSinksRepository implements RepositoryStorageMetrics {
         if (model == null) {
             return null;
         }
-        return this.wrapSfuSink(model);
+        return this.wrap(model);
     }
 
     private Map<String, SfuMediaSink> fetchAll(Set<String> sfuMediaSinkIds) {
@@ -176,7 +176,7 @@ public class SfuMediaSinksRepository implements RepositoryStorageMetrics {
                 Map.Entry::getKey,
                 entry -> {
                     var model = entry.getValue();
-                    return this.wrapSfuSink(model);
+                    return this.wrap(model);
                 }
         ));
     }
@@ -185,7 +185,7 @@ public class SfuMediaSinksRepository implements RepositoryStorageMetrics {
         this.storage.checkCollidingEntries();
     }
 
-    SfuMediaSink wrapSfuSink(Models.SfuMediaSink model) {
+    SfuMediaSink wrap(Models.SfuMediaSink model) {
         var result = new SfuMediaSink(
                 model,
                 this,
