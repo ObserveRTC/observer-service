@@ -15,7 +15,7 @@ public class SfuTransport {
     private final SfuTransportsRepository sfuTransportsRepository;
     private final SfuInboundRtpPadsRepository sfuInboundRtpPadsRepository;
     private final SfuOutboundRtpPadsRepository sfuOutboundRtpPadsRepository;
-    private final SfuSctpStreamsRepository sfuSctpStreamsRepository;
+    private final SfuSctpChannelsRepository sfuSctpStreamsRepository;
 
     SfuTransport(
             Models.SfuTransport model,
@@ -23,7 +23,7 @@ public class SfuTransport {
             SfuTransportsRepository sfuTransportsRepository,
             SfuInboundRtpPadsRepository sfuInboundRtpPadsRepository,
             SfuOutboundRtpPadsRepository sfuOutboundRtpPadsRepository,
-            SfuSctpStreamsRepository sfuSctpStreamsRepository
+            SfuSctpChannelsRepository sfuSctpStreamsRepository
     ) {
         this.modelHolder = new AtomicReference<>(model);
         this.sfusRepository = sfusRepository;
@@ -281,69 +281,70 @@ public class SfuTransport {
     }
 
 
-    public Collection<String> getSctpStreamIds() {
+    public Collection<String> getSctpChannelIds() {
         var model = this.modelHolder.get();
-        if (model.getSctpStreamIdsCount() < 1) {
+        if (model.getSctpChannelIdsCount() < 1) {
             return Collections.emptyList();
         }
-        return model.getSctpStreamIdsList();
+        return model.getSctpChannelIdsList();
     }
 
-    public SfuSctpStream getSctpStream(String sctpStreamId) {
+    public SfuSctpChannel getSctpChannel(String sctpStreamId) {
         var model = this.modelHolder.get();
-        if (model.getSctpStreamIdsCount() < 1) {
+        if (model.getSctpChannelIdsCount() < 1) {
             return null;
         }
         return this.sfuSctpStreamsRepository.get(sctpStreamId);
     }
 
-    public Map<String, SfuSctpStream> getSctpStreams() {
+    public Map<String, SfuSctpChannel> getSctpStreams() {
         var model = this.modelHolder.get();
-        if (model.getSctpStreamIdsCount() < 1) {
+        if (model.getSctpChannelIdsCount() < 1) {
             return Collections.emptyMap();
         }
-        var sctpStreamIds = this.getSctpStreamIds();
+        var sctpStreamIds = this.getSctpChannelIds();
         return this.sfuSctpStreamsRepository.getAll(sctpStreamIds);
     }
 
-    public SfuSctpStream addSctpStream(String sctpStreamId, Long timestamp, String marker) throws AlreadyCreatedException {
+    public SfuSctpChannel addSctpChannel(String sctpStreamId, String sctpChannelId, Long timestamp, String marker) throws AlreadyCreatedException {
         var model = modelHolder.get();
-        if (0 < model.getSctpStreamIdsCount()) {
-            var sctpStreamIds = model.getSctpStreamIdsList();
-            if (sctpStreamIds.contains(sctpStreamId)) {
-                throw AlreadyCreatedException.wrapSfuSctpStream(sctpStreamId);
+        if (0 < model.getSctpChannelIdsCount()) {
+            var sctpChannelIds = model.getSctpChannelIdsList();
+            if (sctpChannelIds.contains(sctpChannelId)) {
+                throw AlreadyCreatedException.wrapSfuSctpStream(sctpChannelId);
             }
         }
 
-        var sctpStreamModelBuilder = Models.SfuSctpStream.newBuilder()
+        var sctpChannelModelBuilder = Models.SfuSctpChannel.newBuilder()
                 .setServiceId(model.getServiceId())
                 .setSfuId(model.getSfuId())
                 .setSfuTransportId(model.getTransportId())
                 .setSfuSctpStreamId(sctpStreamId)
+                .setSfuSctpChannelId(sctpChannelId)
                 .setOpened(timestamp)
                 .setTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
                 ;
 
         if (marker != null) {
-            sctpStreamModelBuilder.setMarker(marker);
+            sctpChannelModelBuilder.setMarker(marker);
         }
-        var sctpStreamModel = sctpStreamModelBuilder.build();
+        var sctpStreamModel = sctpChannelModelBuilder.build();
         var newModel = Models.SfuTransport.newBuilder(model)
-                .addSctpStreamIds(sctpStreamId)
+                .addSctpChannelIds(sctpChannelId)
                 .build();
 
         this.updateModel(newModel);
         this.sfuSctpStreamsRepository.update(sctpStreamModel);
-        return this.sfuSctpStreamsRepository.wrapSfuSctpStream(sctpStreamModel);
+        return this.sfuSctpStreamsRepository.wrap(sctpStreamModel);
     }
 
     public boolean removeSctpStream(String sctpStreamId) {
         var model = modelHolder.get();
-        if (model.getSctpStreamIdsCount() < 1) {
+        if (model.getSctpChannelIdsCount() < 1) {
             return false;
         }
-        var sctpStreamIds = model.getSctpStreamIdsList();
+        var sctpStreamIds = model.getSctpChannelIdsList();
         if (!sctpStreamIds.contains(sctpStreamId)) {
             return false;
         }
@@ -351,7 +352,7 @@ public class SfuTransport {
                 .collect(Collectors.toSet());
 
         var newModel = Models.SfuTransport.newBuilder(model)
-                .clearSctpStreamIds()
+                .clearSctpChannelIds()
                 .addAllOutboundRtpPadIds(newSctpStreamIds)
                 .build();
 

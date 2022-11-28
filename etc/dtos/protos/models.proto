@@ -121,7 +121,9 @@ message SfuMediaSink {
   required string peerConnectionId = 7;
   required string trackId = 8;
 
-  repeated string outboundSfuRtpPadIds = 9;
+  optional string userId = 9;
+
+  repeated string outboundSfuRtpPadIds = 10;
 }
 
 message SfuMediaStream {
@@ -134,7 +136,10 @@ message SfuMediaStream {
   required string peerConnectionId = 6;
   required string trackId = 7;
 
-  repeated string sfuInboundSfuRtpPadIds = 8;
+  optional string userId = 8;
+
+  repeated string sfuInboundSfuRtpPadIds = 9;
+  repeated string sfuMediaSinkIds = 10;
 }
 
 message Sfu {
@@ -163,12 +168,9 @@ message SfuTransport {
   optional string mediaUnitId = 7;
   optional string marker = 8;
 
-//  repeated string inboundRtpPadIds = 9;
-//  repeated string outboundRtpPadIds = 10;
-
-  repeated string mediaStreamIds = 9;
-  repeated string mediaSinkIds = 10;
-  repeated string sctpStreamIds = 11;
+  repeated string inboundRtpPadIds = 9;
+  repeated string outboundRtpPadIds = 10;
+  repeated string sctpChannelIds = 11;
 }
 
 
@@ -206,17 +208,18 @@ message SfuOutboundRtpPad {
   optional string marker = 12;
 }
 
-message SfuSctpStream {
+message SfuSctpChannel {
   required string serviceId = 1;
 
   required string sfuId = 2;
   required string sfuTransportId = 3;
   required string sfuSctpStreamId = 4;
-  required uint64 opened = 5;
+  required string sfuSctpChannelId = 5;
+  required uint64 opened = 6;
 
-  optional uint64 touched = 6;
-  optional string mediaUnitId = 7;
-  optional string marker = 8;
+  optional uint64 touched = 7;
+  optional string mediaUnitId = 8;
+  optional string marker = 9;
 
 
 }

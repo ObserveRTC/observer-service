@@ -129,26 +129,36 @@ public class InboundTrack {
 
     public SfuMediaSink getMediaSink() {
         var model = this.modelHolder.get();
-        if (!model.hasSfuStreamId()) {
+        if (!model.hasSfuSinkId()) {
             return null;
         }
-        var sfuStreamId = model.getSfuStreamId();
         var sfuSinkId = model.getSfuSinkId();
-        var sfuMediaSInk = this.sfuMediaSinksRepository.get(sfuStreamId);
-        if (sfuMediaSInk != null) {
-            return sfuMediaSInk;
+        return  this.sfuMediaSinksRepository.get(sfuSinkId);
+    }
+
+    boolean createMediaSink() {
+        var model = this.modelHolder.get();
+        if (!model.hasSfuStreamId() || !model.hasSfuSinkId()) {
+            return false;
         }
-        var sfuMediaStreamModel = Models.SfuMediaSink.newBuilder()
+
+        var sfuMediaStreamModelBuilder = Models.SfuMediaSink.newBuilder()
+                .setServiceId(model.getServiceId())
                 .setSfuStreamId(model.getSfuStreamId())
+                .setSfuSinkId(model.getSfuSinkId())
+
                 .setCallId(model.getCallId())
+                .setClientId(model.getClientId())
+                .setPeerConnectionId(model.getPeerConnectionId())
                 .setTrackId(model.getTrackId())
                 .setKind(model.getKind())
-                .setClientId(model.getClientId())
-                .setServiceId(model.getServiceId())
-                .setSfuSinkId(sfuSinkId)
-                .build();
-        this.sfuMediaSinksRepository.update(sfuMediaStreamModel);
-        return this.sfuMediaSinksRepository.wrap(sfuMediaStreamModel);
+                ;
+
+        if (model.hasUserId()) {
+            sfuMediaStreamModelBuilder.setUserId(model.getUserId());
+        }
+        this.sfuMediaSinksRepository.update(sfuMediaStreamModelBuilder.build());
+        return true;
     }
 
     public List<Long> getSSSRCs() {

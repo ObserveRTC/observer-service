@@ -24,35 +24,38 @@ public interface ObservedSfuSctpChannel extends Iterable<Samples.SfuSample.SfuSc
 
         private static final Logger logger = LoggerFactory.getLogger(Builder.class);
 
-        private String sctpChannelId = null;
-        final ObservedSfuSctpStream.Builder observedSfuSctpStream;
+        private String sfuSctpStreamId;
+        private String sctpChannelId;
+        final ObservedSfuTransport.Builder observedSfuTransport;
         private List<Samples.SfuSample.SfuSctpChannel> sfuSctpChannelSamples = new LinkedList<>();
 
-        public Builder(ObservedSfuSctpStream.Builder observedSfuSctpStream, String sctpChannelId) {
-            this.observedSfuSctpStream = observedSfuSctpStream;
+        public Builder(ObservedSfuTransport.Builder observedSfuTransport, String sfuSctpStreamId, String sctpChannelId) {
+            this.observedSfuTransport = observedSfuTransport;
             this.sctpChannelId = sctpChannelId;
+            this.sfuSctpStreamId = sfuSctpStreamId;
 
-            ObservedSfuSamples.Builder root = this.observedSfuSctpStream.observedSfuTransport.observedSfu.observedSfuSamples;
+            ObservedSfuSamples.Builder root = this.observedSfuTransport.observedSfu.observedSfuSamples;
+            root.sctpStreamIds.add(sfuSctpStreamId);
             root.sctpChannelIds.add(sctpChannelId);
         }
 
-        public void addSctpChannelSample(Samples.SfuSample.SfuSctpChannel sfuSctpChannel) {
+        public void add(Samples.SfuSample.SfuSctpChannel sfuSctpChannel) {
             this.sfuSctpChannelSamples.add(sfuSctpChannel);
         }
 
         @Override
         public String getSfuId() {
-            return observedSfuSctpStream.getSfuId();
+            return observedSfuTransport.getSfuId();
         }
 
         @Override
         public String getSfuTransportId() {
-            return observedSfuSctpStream.getSfuTransportId();
+            return observedSfuTransport.getSfuTransportId();
         }
 
         @Override
         public String getSfuSctpStreamId() {
-            return observedSfuSctpStream.getSfuSctpStreamId();
+            return sfuSctpStreamId;
         }
 
         @Override
@@ -62,22 +65,22 @@ public interface ObservedSfuSctpChannel extends Iterable<Samples.SfuSample.SfuSc
 
         @Override
         public ObservedSfuTransport getObservedTransport() {
-            return observedSfuSctpStream.getObservedTransport();
+            return observedSfuTransport;
         }
 
         @Override
         public Long getMinTimestamp() {
-            return observedSfuSctpStream.getMinTimestamp();
+            return observedSfuTransport.getMinTimestamp();
         }
 
         @Override
         public Long getMaxTimestamp() {
-            return observedSfuSctpStream.getMaxTimestamp();
+            return observedSfuTransport.getMaxTimestamp();
         }
 
         @Override
         public String getMarker() {
-            return observedSfuSctpStream.getMarker();
+            return observedSfuTransport.getMarker();
         }
 
         @Override

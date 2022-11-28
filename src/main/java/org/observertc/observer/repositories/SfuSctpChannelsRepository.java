@@ -21,13 +21,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Singleton
-public class SfuSctpStreamsRepository implements RepositoryStorageMetrics {
+public class SfuSctpChannelsRepository implements RepositoryStorageMetrics {
 
-    private static final Logger logger = LoggerFactory.getLogger(SfuSctpStreamsRepository.class);
+    private static final Logger logger = LoggerFactory.getLogger(SfuSctpChannelsRepository.class);
 
     private static final String STORAGE_ID = "observertc-sfu-sctp-streams";
 
-    private SeparatedStorage<String, Models.SfuSctpStream> storage;
+    private SeparatedStorage<String, Models.SfuSctpChannel> storage;
     private static final int MAX_KEYS = 1000;
     private static final int MAX_VALUES = 100;
 
@@ -44,21 +44,21 @@ public class SfuSctpStreamsRepository implements RepositoryStorageMetrics {
     @Inject
     BeanProvider<SfuTransportsRepository> sfuTransportsRepositoryBeanProvider;
 
-    private Map<String, Models.SfuSctpStream> updated;
+    private Map<String, Models.SfuSctpChannel> updated;
     private Set<String> deleted;
-    private CachedFetches<String, SfuSctpStream> fetched;
+    private CachedFetches<String, SfuSctpChannel> fetched;
 
     @PostConstruct
     void setup() {
-        var baseStorage = new MemoryStorageBuilder<String, Models.SfuSctpStream>()
+        var baseStorage = new MemoryStorageBuilder<String, Models.SfuSctpChannel>()
                 .setConcurrency(true)
                 .setId(STORAGE_ID)
                 .build();
         var storageBuilder = this.service.getStorageGrid().separatedStorage(baseStorage)
                 .setKeyCodec(SerDeUtils.createStrToByteFunc(), SerDeUtils.createBytesToStr())
                 .setValueCodec(
-                        Mapper.create(Models.SfuSctpStream::toByteArray, logger)::map,
-                        Mapper.<byte[], Models.SfuSctpStream>create(bytes -> Models.SfuSctpStream.parseFrom(bytes), logger)::map
+                        Mapper.create(Models.SfuSctpChannel::toByteArray, logger)::map,
+                        Mapper.<byte[], Models.SfuSctpChannel>create(bytes -> Models.SfuSctpChannel.parseFrom(bytes), logger)::map
                 )
                 .setMaxCollectedStorageEvents(this.observerConfig.buffers.debouncers.maxItems)
                 .setMaxCollectedStorageTimeInMs(this.observerConfig.buffers.debouncers.maxTimeInMs)
@@ -72,7 +72,7 @@ public class SfuSctpStreamsRepository implements RepositoryStorageMetrics {
 
         this.storage = storageBuilder.build();
 
-        this.fetched = CachedFetches.<String, SfuSctpStream>builder()
+        this.fetched = CachedFetches.<String, SfuSctpChannel>builder()
                 .onFetchOne(this::fetchOne)
                 .onFetchAll(this::fetchAll)
                 .build();
@@ -80,10 +80,10 @@ public class SfuSctpStreamsRepository implements RepositoryStorageMetrics {
         this.deleted = new HashSet<>();
     }
 
-    synchronized void update(Models.SfuSctpStream sfuSctpStream) {
-        var sctpStreamId = sfuSctpStream.getSfuSctpStreamId();
-        this.updated.put(sctpStreamId, sfuSctpStream);
-        var removed = this.deleted.remove(sctpStreamId);
+    synchronized void update(Models.SfuSctpChannel sfuSctpChannel) {
+        var sctpChannelId = sfuSctpChannel.getSfuSctpChannelId();
+        this.updated.put(sctpChannelId, sfuSctpChannel);
+        var removed = this.deleted.remove(sctpChannelId);
         if (removed) {
             logger.debug("In this transaction, SfuSctpStream was deleted before it was updated");
         }
@@ -131,23 +131,23 @@ public class SfuSctpStreamsRepository implements RepositoryStorageMetrics {
         return this.storage.localSize();
     }
 
-    Observable<List<ModifiedStorageEntry<String, Models.SfuSctpStream>>> observableDeletedEntries() {
+    Observable<List<ModifiedStorageEntry<String, Models.SfuSctpChannel>>> observableDeletedEntries() {
         return this.storage.collectedEvents().deletedEntries();
     }
 
-    Observable<List<ModifiedStorageEntry<String, Models.SfuSctpStream>>> observableExpiredEntries() {
+    Observable<List<ModifiedStorageEntry<String, Models.SfuSctpChannel>>> observableExpiredEntries() {
         return this.storage.collectedEvents().expiredEntries();
     }
 
-    Observable<List<ModifiedStorageEntry<String, Models.SfuSctpStream>>> observableCreatedEntries() {
+    Observable<List<ModifiedStorageEntry<String, Models.SfuSctpChannel>>> observableCreatedEntries() {
         return this.storage.collectedEvents().createdEntries();
     }
 
-    public SfuSctpStream get(String sctpStreamId) {
+    public SfuSctpChannel get(String sctpStreamId) {
         return this.fetched.get(sctpStreamId);
     }
 
-    public Map<String, SfuSctpStream> getAll(Collection<String> sctpStreamIds) {
+    public Map<String, SfuSctpChannel> getAll(Collection<String> sctpStreamIds) {
         if (sctpStreamIds == null || sctpStreamIds.size() < 1) {
             return Collections.emptyMap();
         }
@@ -155,15 +155,15 @@ public class SfuSctpStreamsRepository implements RepositoryStorageMetrics {
         return this.fetched.getAll(set);
     }
 
-    private SfuSctpStream fetchOne(String sfuSctpStreamId) {
+    private SfuSctpChannel fetchOne(String sfuSctpStreamId) {
         var model = Try.wrap(() -> this.storage.get(sfuSctpStreamId), null);
         if (model == null) {
             return null;
         }
-        return this.wrapSfuSctpStream(model);
+        return this.wrap(model);
     }
 
-    private Map<String, SfuSctpStream> fetchAll(Set<String> sfuSctpStreamIds) {
+    private Map<String, SfuSctpChannel> fetchAll(Set<String> sfuSctpStreamIds) {
         var models = Try.wrap(() -> this.storage.getAll(sfuSctpStreamIds), null);
 
         if (models == null || models.isEmpty()) {
@@ -173,7 +173,7 @@ public class SfuSctpStreamsRepository implements RepositoryStorageMetrics {
                 Map.Entry::getKey,
                 entry -> {
                     var model = entry.getValue();
-                    return this.wrapSfuSctpStream(model);
+                    return this.wrap(model);
                 }
         ));
     }
@@ -182,8 +182,8 @@ public class SfuSctpStreamsRepository implements RepositoryStorageMetrics {
         this.storage.checkCollidingEntries();
     }
 
-    SfuSctpStream wrapSfuSctpStream(Models.SfuSctpStream model) {
-        var result = new SfuSctpStream(
+    SfuSctpChannel wrap(Models.SfuSctpChannel model) {
+        var result = new SfuSctpChannel(
                 model,
                 this,
                 this.sfuTransportsRepositoryBeanProvider.get()

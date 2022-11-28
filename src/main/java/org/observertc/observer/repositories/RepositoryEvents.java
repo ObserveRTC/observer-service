@@ -46,7 +46,7 @@ public class RepositoryEvents {
     SfuOutboundRtpPadsRepository sfuOutboundRtpPadsRepository;
 
     @Inject
-    SfuSctpStreamsRepository sfuSctpStreamsRepository;
+    SfuSctpChannelsRepository sfuSctpChannelsRepository;
 
     @Inject
     ObserverConfig config;
@@ -148,8 +148,8 @@ public class RepositoryEvents {
                 );
     }
 
-    public Observable<List<Models.SfuSctpStream>> deletedSfuSctpStream() {
-        return this.sfuSctpStreamsRepository.observableDeletedEntries()
+    public Observable<List<Models.SfuSctpChannel>> deletedSfuSctpChannel() {
+        return this.sfuSctpChannelsRepository.observableDeletedEntries()
                 .map(events ->
                         events.stream().map(ModifiedStorageEntry::getOldValue).collect(Collectors.toList())
                 );

@@ -1,6 +1,5 @@
 package org.observertc.observer.evaluators;
 
-import io.micronaut.context.BeanProvider;
 import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
@@ -10,17 +9,18 @@ import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.depots.*;
 import org.observertc.observer.metrics.EvaluatorMetrics;
 import org.observertc.observer.reports.Report;
-import org.observertc.observer.repositories.tasks.MatchInternalSfuRtpPads;
+import org.observertc.observer.repositories.*;
 import org.observertc.observer.samples.ObservedSfuSamples;
 import org.observertc.observer.samples.SfuSampleVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Prototype
 public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
@@ -30,8 +30,20 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
     @Inject
     EvaluatorMetrics exposedMetrics;
 
+//    @Inject
+//    BeanProvider<MatchInternalSfuRtpPads> matchInternalSfuRtpPads;
+
     @Inject
-    BeanProvider<MatchInternalSfuRtpPads> matchInternalSfuRtpPads;
+    SfuInboundRtpPadsRepository sfuInboundRtpPadsRepository;
+
+    @Inject
+    SfuOutboundRtpPadsRepository sfuOutboundRtpPadsRepository;
+
+    @Inject
+    SfuMediaSinksRepository sfuMediaSinksRepository;
+
+    @Inject
+    SfuMediaStreamsRepository sfuMediaStreamsRepository;
 
     @Inject
     ObserverConfig.EvaluatorsConfig.SfuSamplesAnalyserConfig config;
@@ -64,19 +76,78 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
         }
     }
 
+    private Map<String, SfuOutboundRtpPad> getInternalSfuInboundRtpPadToSfuOutboundRtpPad(Map<String, SfuInboundRtpPad> sfuInboundRtpPads) {
+        var streamIdToInternalInboundRtpPads = sfuInboundRtpPads.values().stream()
+                .filter(sfuInboundRtpPad -> sfuInboundRtpPad.isInternal() && sfuInboundRtpPad.getSfuStreamId() != null)
+                .collect(groupingBy(SfuInboundRtpPad::getSfuStreamId));
+        if (streamIdToInternalInboundRtpPads.size() < 1) {
+            return Collections.emptyMap();
+        }
+        var mediaStreams = this.sfuMediaStreamsRepository.getAll(streamIdToInternalInboundRtpPads.keySet());
+        if (mediaStreams == null || mediaStreams.size() < 1) {
+            return Collections.emptyMap();
+        }
+        var mediaSinkIds = mediaStreams.values().stream()
+                .map(SfuMediaStream::getSfuMediaSinkIds)
+                .filter(Objects::nonNull)
+                .flatMap(s -> s.stream())
+                .collect(Collectors.toSet());
+        var mediaSinks = this.sfuMediaSinksRepository.getAll(mediaSinkIds);
+        if (mediaSinks == null || mediaSinks.size() < 1) {
+            return Collections.emptyMap();
+        }
+        var sfuOutboundRtpPadIds = mediaSinks.values().stream()
+                .map(SfuMediaSink::getSfuOutboundSfuRtpPadIds)
+                .flatMap(s -> s.stream())
+                .collect(Collectors.toSet());
+        if (sfuOutboundRtpPadIds == null || sfuOutboundRtpPadIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        var sfuOutboundRtpPads = this.sfuOutboundRtpPadsRepository.getAll(sfuOutboundRtpPadIds);
+        var result = new HashMap<String, SfuOutboundRtpPad>();
+        for (var entry : streamIdToInternalInboundRtpPads.entrySet()) {
+            var mediaStreamId = entry.getKey();
+            var mediaStream = mediaStreams.get(mediaStreamId);
+            if (mediaStream == null || mediaStream.getSfuMediaSinkIds() == null) {
+                continue;
+            }
+            var internalInboundRtpPads = entry.getValue();
+            for (var sfuInternalInboundRtpPad : internalInboundRtpPads) {
+                SfuOutboundRtpPad foundSfuOutboundRtpPad = null;
+                for (var mediaSinkId : mediaStream.getSfuMediaSinkIds()) {
+                    var mediaSink = mediaSinks.get(mediaSinkId);
+                    if (mediaSink == null) {
+                        continue;
+                    }
+                    var outboundRtpPadIds = mediaSink.getSfuOutboundSfuRtpPadIds();
+                    if (outboundRtpPadIds == null || outboundRtpPadIds.size() < 1) {
+                        continue;
+                    }
+                    for (var sfuOutboundRtpPad : sfuOutboundRtpPads.values()) {
+                        if (sfuOutboundRtpPad.getSSRC() != null && sfuOutboundRtpPad.getSSRC().equals(sfuInternalInboundRtpPad.getSSRC())) {
+                            foundSfuOutboundRtpPad = sfuOutboundRtpPad;
+                            break;
+                        }
+                    }
+                    if (foundSfuOutboundRtpPad != null) {
+                        break;
+                    }
+                }
+                if (foundSfuOutboundRtpPad != null) {
+                    result.put(sfuInternalInboundRtpPad.getRtpPadId(), foundSfuOutboundRtpPad);
+                }
+            }
+        }
+        return result;
+    }
+
     private void process(ObservedSfuSamples observedSfuSamples) {
         if (observedSfuSamples.isEmpty()) {
             return;
         }
-        var task = this.matchInternalSfuRtpPads.get()
-                .whereSfuInboundRtpPadIds(observedSfuSamples.getInboundRtpPadIds())
-                ;
-        if (!task.execute().succeeded()) {
-            logger.warn("Interrupted execution of component due to unsuccessful task execution");
-            return;
-        }
-        var taskResult = task.getResult();
-        var internalInboundRtpPadMatches = taskResult.internalInboundRtpPadMatches;
+        var sfuInboundRtpPads = this.sfuInboundRtpPadsRepository.fetchRecursively(observedSfuSamples.getInboundRtpPadIds());
+        var sfuOutboundRtpPads = this.sfuOutboundRtpPadsRepository.fetchRecursively(observedSfuSamples.getOutboundRtpPadIds());
+        var internalSfuInboundRtpPadToSfuOutboundRtpPad = this.getInternalSfuInboundRtpPadToSfuOutboundRtpPad(sfuInboundRtpPads);
         for (var observedSfuSample : observedSfuSamples) {
             var sfuSample = observedSfuSample.getSfuSample();
             SfuSampleVisitor.streamTransports(sfuSample).forEach(sfuTransport -> {
@@ -89,51 +160,58 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
                         .assemble();
             });
 
-            SfuSampleVisitor.streamInboundRtpPads(sfuSample).forEach(sfuInboundRtpPad -> {
-                if (Boolean.TRUE.equals(sfuInboundRtpPad.noReport)) {
+            SfuSampleVisitor.streamInboundRtpPads(sfuSample).forEach(sfuInboundRtpPadSample -> {
+                if (Boolean.TRUE.equals(sfuInboundRtpPadSample.noReport)) {
                     return;
                 }
-
-                var inboundRtpPadMatch = internalInboundRtpPadMatches.get(sfuInboundRtpPad.padId);
-                if (Boolean.TRUE.equals(sfuInboundRtpPad.internal)) {
-                    if (inboundRtpPadMatch != null) {
+                var sfuInboundRtpPad = sfuInboundRtpPads.get(sfuInboundRtpPadSample.padId);
+                if (sfuInboundRtpPad != null) {
+                    SfuMediaStream sfuMediaStream = sfuInboundRtpPad != null ? sfuInboundRtpPad.getSfuStream() : null;
+                    if (sfuMediaStream != null) {
                         this.sfuInboundRtpPadReportsDepot
-                                .setRemoteSfuId(inboundRtpPadMatch.remoteSfuId())
-                                .setRemoteTransportId(inboundRtpPadMatch.remoteSfuTransportId())
-                                .setRemoteSinkId(inboundRtpPadMatch.remoteSinkId())
-                                .setRemoteRtpPadId(inboundRtpPadMatch.remoteOutboundRtpPadId())
+                                .setCallId(sfuMediaStream.getCallId())
+                                .setClientId(sfuMediaStream.getClientId())
+                                .setTrackId(sfuMediaStream.getTrackId())
                         ;
-                    } else if (config.dropUnmatchedInternalInboundReports) {
-                        this.sfuInboundRtpPadReportsDepot.clean();
-                        return;
+                    }
+                    if (sfuInboundRtpPad.isInternal() && sfuInboundRtpPad.getSfuStreamId() != null) {
+                        var internalSfuOutboundRtpPad = internalSfuInboundRtpPadToSfuOutboundRtpPad.get(sfuInboundRtpPad.getRtpPadId());
+                        if (internalSfuOutboundRtpPad != null) {
+                            this.sfuInboundRtpPadReportsDepot
+                                    .setRemoteSfuId(internalSfuOutboundRtpPad.getSfuId())
+                                    .setRemoteTransportId(internalSfuOutboundRtpPad.getSfuTransportId())
+                                    .setRemoteSinkId(internalSfuOutboundRtpPad.getSfuSinkId())
+                                    .setRemoteRtpPadId(internalSfuOutboundRtpPad.getRtpPadId())
+                            ;
+                        } else if (config.dropUnmatchedInternalInboundReports) {
+                            this.sfuInboundRtpPadReportsDepot.clean();
+                            return;
+                        }
                     }
                 }
+
                 this.sfuInboundRtpPadReportsDepot
                         .setObservedSfuSample(observedSfuSample)
-                        .setSfuInboundRtpPad(sfuInboundRtpPad)
+                        .setSfuInboundRtpPad(sfuInboundRtpPadSample)
                         .assemble();
             });
 
-            SfuSampleVisitor.streamOutboundRtpPads(sfuSample).forEach(sfuOutboundRtpPad -> {
-                if (Boolean.TRUE.equals(sfuOutboundRtpPad.noReport)) {
+            SfuSampleVisitor.streamOutboundRtpPads(sfuSample).forEach(sfuOutboundRtpPadSample -> {
+                if (Boolean.TRUE.equals(sfuOutboundRtpPadSample.noReport)) {
                     return;
                 }
-//                UUID sfuSinkId = sfuOutboundRtpPad.sinkId;
-//                if (Objects.nonNull(sfuSinkId)) {
-//                    var sfuSink = sfuSinks.get(sfuSinkId);
-//                    if (Objects.nonNull(sfuSink)) {
-//                        this.sfuOutboundRtpPadReportsDepot
-//                                .setCallId(sfuSink.callId)
-//                                .setTrackId(sfuSink.trackId)
-//                                .setClientId(sfuSink.clientId)
-//                        ;
-//                    } else if (config.dropUnmatchedOutboundReports) {
-//                        return;
-//                    }
-//                }
+                var sfuOutboundRtpPad = sfuOutboundRtpPads.get(sfuOutboundRtpPadSample.padId);
+                SfuMediaSink sfuMediaSink = sfuOutboundRtpPad != null ? sfuOutboundRtpPad.getSfuSink() : null;
+                if (sfuMediaSink != null) {
+                    this.sfuInboundRtpPadReportsDepot
+                            .setCallId(sfuMediaSink.getCallId())
+                            .setClientId(sfuMediaSink.getClientId())
+                            .setTrackId(sfuMediaSink.getTrackId())
+                    ;
+                }
                 this.sfuOutboundRtpPadReportsDepot
                         .setObservedSfuSample(observedSfuSample)
-                        .setSfuOutboundRtpPad(sfuOutboundRtpPad)
+                        .setSfuOutboundRtpPad(sfuOutboundRtpPadSample)
                         .assemble();
             });
 

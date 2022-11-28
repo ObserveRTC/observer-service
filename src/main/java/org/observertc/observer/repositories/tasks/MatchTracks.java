@@ -29,6 +29,9 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
     InboundTracksRepository inboundTracksRepository;
 
     @Inject
+    SfuMediaStreamsRepository sfuMediaStreamsRepository;
+
+    @Inject
     ClientsRepository clientsRepository;
 
     @Inject
@@ -59,55 +62,29 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
                         logger.error("This Task cannot be chained!");
             })
             .addActionStage("Match By Sfu StreamId", () -> {
-                var localOutboundTracks = this.outboundTracksRepository.getAll(this.outboundTrackIds);
-                if (localOutboundTracks == null || localOutboundTracks.size() < 1) {
-                    return;
-                }
-                var callIds = localOutboundTracks.values().stream().map(t -> t.getCallId()).collect(Collectors.toSet());
-                var calls = this.callsRepository.fetchRecursively(callIds);
-                var clients = calls.values().stream().flatMap(call -> call.getClients().entrySet().stream())
-                        .collect(Collectors.toMap(
-                                Map.Entry::getKey,
-                                Map.Entry::getValue,
-                                (oldV, newV) -> newV
-                        ));
-                var peerConnections = clients.values().stream()
-                        .flatMap(c -> c.getPeerConnections().entrySet().stream())
-                        .collect(Collectors.toMap(
-                                Map.Entry::getKey,
-                                Map.Entry::getValue,
-                                (oldV, newV) -> newV
-                        ));
-                var outboundTracks = peerConnections.values().stream()
-                        .flatMap(p -> p.getOutboundTracks().entrySet().stream())
-                        .collect(Collectors.toMap(
-                                Map.Entry::getKey,
-                                Map.Entry::getValue,
-                                (oldV, newV) -> newV
-                        ));
-
-                var outboundTracksBySfuStreamIds = this.mapOutboundTracksBySfuStreamIds(outboundTracks.values());
-                if (outboundTracksBySfuStreamIds == null || outboundTracksBySfuStreamIds.size() < 1) {
-                    return;
-                }
                 var inboundTracks = this.inboundTracksRepository.getAll(this.inboundTrackIds);
                 if (inboundTracks == null || inboundTracks.size() < 1) {
                     return;
                 }
+
+                // to fetch streams before it is accessed
+                var sfuStreamIds = inboundTracks.values().stream()
+                        .map(InboundTrack::getSfuStreamId)
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toSet());
+                if (0 < sfuStreamIds.size()) {
+                    this.sfuMediaStreamsRepository.getAll(sfuStreamIds);
+                }
+
                 for (var inboundTrack : inboundTracks.values()) {
-                    var sfuStreamId = inboundTrack.getSfuStreamId();
-                    if (sfuStreamId == null) {
+                    var mediaSink = inboundTrack.getMediaSink();
+                    if (mediaSink == null) {
                         continue;
                     }
-                    var outboundTrack = outboundTracksBySfuStreamIds.get(sfuStreamId);
-                    if (outboundTrack == null) {
-                        return;
-                    }
-                    if (!outboundTrack.getCallId().equals(inboundTrack.getCallId())) {
-                        logger.warn("CallId must be equal to match outbound tracks to inbound tracks. InboundTrack: {}, OutboundTrack: {}", inboundTrack, outboundTrack);
+                    var mediaStream = mediaSink.getMediaStream();
+                    if (mediaStream == null) {
                         continue;
                     }
-                    // match
                     var match = new Match(
                             inboundTrack.getTrackId(),
                             inboundTrack.getPeerConnectionId(),
@@ -115,13 +92,13 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
                             inboundTrack.getUserId(),
                             inboundTrack.getCallId(),
                             inboundTrack.getServiceRoomId(),
-                            outboundTrack.getClientId(),
-                            outboundTrack.getUserId(),
-                            outboundTrack.getPeerConnectionId(),
-                            outboundTrack.getTrackId()
+                            mediaStream.getClientId(),
+                            mediaStream.getUserId(),
+                            mediaStream.getPeerConnectionId(),
+                            mediaStream.getTrackId()
                     );
                     this.result.inboundMatches.put(match.inboundTrackId, match);
-                    this.matchedOutboundTrackIds.add(outboundTrack.getTrackId());
+                    this.matchedOutboundTrackIds.add(mediaStream.getTrackId());
                 }
             })
             .addActionStage("Match By SSRC", () -> {

@@ -57,6 +57,9 @@ public class SfuInboundRtpPad {
 
     public boolean isInternal() {
         var model = this.modelHolder.get();
+        if (!model.hasInternal()) {
+            return false;
+        }
         return model.getInternal();
     }
 

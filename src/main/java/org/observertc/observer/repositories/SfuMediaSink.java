@@ -2,24 +2,27 @@ package org.observertc.observer.repositories;
 
 import org.observertc.schemas.dtos.Models;
 
+import java.util.Collections;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 public class SfuMediaSink {
 
     private final AtomicReference<Models.SfuMediaSink> modelHolder;
     private final SfuMediaSinksRepository sfuMediaSinksRepository;
-    private final SfuTransportsRepository sfuTransportsRepository;
+    private final SfuMediaStreamsRepository sfuMediaStreamsRepository;
     private final SfuOutboundRtpPadsRepository sfuOutboundRtpPadsRepository;
 
     SfuMediaSink(
             Models.SfuMediaSink model,
             SfuMediaSinksRepository sfuMediaSinksRepository,
-            SfuTransportsRepository sfuTransportsRepository,
+            SfuMediaStreamsRepository sfuMediaStreamsRepository,
             SfuOutboundRtpPadsRepository sfuOutboundRtpPadsRepository
     ) {
         this.modelHolder = new AtomicReference<>(model);
         this.sfuMediaSinksRepository = sfuMediaSinksRepository;
-        this.sfuTransportsRepository = sfuTransportsRepository;
+        this.sfuMediaStreamsRepository = sfuMediaStreamsRepository;
         this.sfuOutboundRtpPadsRepository = sfuOutboundRtpPadsRepository;
     }
 
@@ -33,9 +36,86 @@ public class SfuMediaSink {
         return model.getSfuStreamId();
     }
 
+    public SfuMediaStream getMediaStream() {
+        var model = this.modelHolder.get();
+        if (!model.hasSfuStreamId()) {
+            return null;
+        }
+        return this.sfuMediaStreamsRepository.get(model.getSfuStreamId());
+    }
+
     public String getSfuSinkId() {
         var model = this.modelHolder.get();
         return model.getSfuSinkId();
+    }
+
+    public String getCallId() {
+        var model = this.modelHolder.get();
+        if (!model.hasCallId()) {
+            return null;
+        }
+        return model.getCallId();
+    }
+
+    public String getClientId() {
+        var model = this.modelHolder.get();
+        if (!model.hasClientId()) {
+            return null;
+        }
+        return model.getClientId();
+    }
+
+    public String getPeerConnectionId() {
+        var model = this.modelHolder.get();
+        if (!model.hasPeerConnectionId()) {
+            return null;
+        }
+        return model.getPeerConnectionId();
+    }
+
+    public String getTrackId() {
+        var model = this.modelHolder.get();
+        if (!model.hasTrackId()) {
+            return null;
+        }
+        return model.getTrackId();
+    }
+
+    public String getUserId() {
+        var model = this.modelHolder.get();
+        if (!model.hasUserId()) {
+            return null;
+        }
+        return model.getUserId();
+    }
+
+    public boolean hasSfuOutboundRtpPadId(String rtpPadId) {
+        var model = modelHolder.get();
+        if (model.getOutboundSfuRtpPadIdsCount() < 1) {
+            return false;
+        }
+        var outboundSfuRtpPadIds = model.getOutboundSfuRtpPadIdsList();
+        return outboundSfuRtpPadIds.contains(rtpPadId);
+    }
+
+    public void addSfuOutboundRtpPadId(String rtpPadId) {
+        var model = modelHolder.get();
+        if (this.hasSfuOutboundRtpPadId(rtpPadId)) {
+            throw AlreadyCreatedException.wrapSfuInboundRtpPad(rtpPadId);
+        }
+        var newModel = Models.SfuMediaSink.newBuilder(model)
+                .addOutboundSfuRtpPadIds(rtpPadId)
+                .build();
+        this.updateModel(newModel);
+    }
+
+    public Set<String> getSfuOutboundSfuRtpPadIds() {
+        var model = modelHolder.get();
+        if (model.getOutboundSfuRtpPadIdsCount() < 1) {
+            return Collections.emptySet();
+        }
+        var list = model.getOutboundSfuRtpPadIdsList();
+        return list.stream().collect(Collectors.toSet());
     }
 
     @Override

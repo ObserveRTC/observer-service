@@ -3,6 +3,8 @@ package org.observertc.observer.repositories;
 import org.observertc.observer.configs.MediaKind;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.schemas.dtos.Models;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -11,6 +13,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class PeerConnection {
+
+    private static final Logger logger = LoggerFactory.getLogger(PeerConnection.class);
 
     private final ServiceRoomId serviceRoomId;
     private final ClientsRepository clientsRepository;
@@ -180,7 +184,21 @@ public class PeerConnection {
 
         this.updateModel(newModel);
         this.inboundTracksRepository.update(inboundTrackModel);
-        return this.inboundTracksRepository.wrapInboundTrack(inboundTrackModel);
+        var result = this.inboundTracksRepository.wrapInboundTrack(inboundTrackModel);
+
+        if (sfuStreamId != null && sfuSinkId != null) {
+            // create mediaSink
+            if (!result.createMediaSink()) {
+                logger.warn("Media Sink {} has not been created for track {} in room {}, mediaUnit: {} service: {}",
+                        sfuSinkId,
+                        trackId,
+                        serviceRoomId.roomId,
+                        serviceRoomId.serviceId,
+                        getMediaUnitId()
+                );
+            }
+        }
+        return result;
     }
 
     public boolean removeInboundTrack(String trackId) {
@@ -265,7 +283,19 @@ public class PeerConnection {
         this.updateModel(newModel);
         this.outboundTracksRepository.update(outboundTrackModel);
 
-        return this.outboundTracksRepository.wrapOutboundAudioTrack(outboundTrackModel);
+        var result = this.outboundTracksRepository.wrapOutboundAudioTrack(outboundTrackModel);
+        if (sfuStreamId != null) {
+            // create mediaSink
+            if (!result.createMediaStream()) {
+                logger.warn("Media Sink {} has not been created for track {} in room {}, mediaUnit: {} service: {}",
+                        trackId,
+                        serviceRoomId.roomId,
+                        serviceRoomId.serviceId,
+                        getMediaUnitId()
+                );
+            }
+        }
+        return result;
     }
 
     public boolean removeOutboundTrack(String trackId) {

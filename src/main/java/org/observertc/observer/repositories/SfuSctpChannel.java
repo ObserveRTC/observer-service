@@ -4,15 +4,15 @@ import org.observertc.schemas.dtos.Models;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class SfuSctpStream {
+public class SfuSctpChannel {
 
-    private final AtomicReference<Models.SfuSctpStream> modelHolder;
-    private final SfuSctpStreamsRepository sfuSctpStreamsRepository;
+    private final AtomicReference<Models.SfuSctpChannel> modelHolder;
+    private final SfuSctpChannelsRepository sfuSctpStreamsRepository;
     private final SfuTransportsRepository sfuTransportsRepository;
 
-    SfuSctpStream(
-            Models.SfuSctpStream model,
-            SfuSctpStreamsRepository sfuSctpStreamsRepository,
+    SfuSctpChannel(
+            Models.SfuSctpChannel model,
+            SfuSctpChannelsRepository sfuSctpStreamsRepository,
             SfuTransportsRepository sfuTransportsRepository
     ) {
         this.modelHolder = new AtomicReference<>(model);
@@ -60,7 +60,7 @@ public class SfuSctpStream {
 
     public void touch(Long timestamp) {
         var model = modelHolder.get();
-        var newModel = Models.SfuSctpStream.newBuilder(model)
+        var newModel = Models.SfuSctpChannel.newBuilder(model)
                 .setTouched(timestamp)
                 .build();
         this.updateModel(newModel);
@@ -76,7 +76,7 @@ public class SfuSctpStream {
         return model.getMarker();
     }
 
-    public Models.SfuSctpStream getModel() {
+    public Models.SfuSctpChannel getModel() {
         return this.modelHolder.get();
     }
 
@@ -86,7 +86,7 @@ public class SfuSctpStream {
         return model.toString();
     }
 
-    private void updateModel(Models.SfuSctpStream newModel) {
+    private void updateModel(Models.SfuSctpChannel newModel) {
         this.modelHolder.set(newModel);
         this.sfuSctpStreamsRepository.update(newModel);
     }

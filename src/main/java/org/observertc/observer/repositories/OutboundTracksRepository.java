@@ -130,8 +130,16 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
         return this.fetched.getAll(set);
     }
 
-    public Map<String, OutboundTrack> fetchRecursively(Set<String> inboundTrackIds) {
-        return this.getAll(inboundTrackIds);
+    public Map<String, OutboundTrack> fetchRecursively(Set<String> outboundTrackIds) {
+        var result = this.getAll(outboundTrackIds);
+        var sfuStreamIds = result.values().stream()
+                .map(OutboundTrack::getSfuStreamId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        if (0 < sfuStreamIds.size()) {
+            this.sfuMediaStreamsRepository.getAll(sfuStreamIds);
+        }
+        return result;
     }
 
     synchronized void update(Models.OutboundTrack OutboundAudioTrack) {
@@ -165,6 +173,13 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
 
     public synchronized void save() {
         if (0 < this.deleted.size()) {
+            var sfuStreamIds = this.updated.values().stream()
+                    .filter(Models.OutboundTrack::hasSfuStreamId)
+                    .map(Models.OutboundTrack::getSfuStreamId)
+                    .collect(Collectors.toSet());
+            if (0 < sfuStreamIds.size()) {
+                this.sfuMediaStreamsRepository.deleteAll(sfuStreamIds);
+            }
             Try.wrap(() -> this.storage.deleteAll(this.deleted));
             this.deleted.clear();
         }
@@ -172,6 +187,7 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
             Try.wrap(() -> this.storage.setAll(this.updated));
             this.updated.clear();
         }
+        this.sfuMediaStreamsRepository.save();
         this.fetched.clear();
     }
 

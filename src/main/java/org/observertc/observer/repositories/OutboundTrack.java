@@ -138,20 +138,29 @@ public class OutboundTrack {
             return null;
         }
         var sfuStreamId = model.getSfuStreamId();
-        var sfuMediaStream = this.sfuMediaStreamsRepository.get(sfuStreamId);
-        if (sfuMediaStream != null) {
-            return sfuMediaStream;
+        return this.sfuMediaStreamsRepository.get(sfuStreamId);
+    }
+
+    boolean createMediaStream() {
+        var model = this.modelHolder.get();
+        if (!model.hasSfuStreamId()) {
+            return false;
         }
-        var sfuMediaStreamModel = Models.SfuMediaStream.newBuilder()
+        var sfuMediaStreamModelBuilder = Models.SfuMediaStream.newBuilder()
+                .setServiceId(model.getServiceId())
                 .setSfuStreamId(model.getSfuStreamId())
                 .setCallId(model.getCallId())
+                .setClientId(model.getClientId())
+                .setPeerConnectionId(model.getPeerConnectionId())
                 .setTrackId(model.getTrackId())
                 .setKind(model.getKind())
-                .setClientId(model.getClientId())
-                .setServiceId(model.getServiceId())
-                .build();
-        this.sfuMediaStreamsRepository.update(sfuMediaStreamModel);
-        return this.sfuMediaStreamsRepository.wrapSfuMediaStream(sfuMediaStreamModel);
+                ;
+
+        if (model.hasUserId()) {
+            sfuMediaStreamModelBuilder.setUserId(model.getUserId());
+        }
+        this.sfuMediaStreamsRepository.update(sfuMediaStreamModelBuilder.build());
+        return true;
     }
 
     public void addSSRC(Long ssrc) {

@@ -154,7 +154,20 @@ public class SfuInboundRtpPadsRepository implements RepositoryStorageMetrics {
         return this.fetched.getAll(set);
     }
 
-
+    public Map<String, SfuInboundRtpPad> fetchRecursively(Set<String> sfuInboundRtpPadIds) {
+        if (sfuInboundRtpPadIds == null || sfuInboundRtpPadIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        var result = this.getAll(sfuInboundRtpPadIds);
+        var sfuStreamIds = result.values().stream()
+                .map(SfuInboundRtpPad::getSfuStreamId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        if (0 < sfuInboundRtpPadIds.size()) {
+            this.sfuMediaStreamsRepository.getAll(sfuStreamIds);
+        }
+        return result;
+    }
 
     private SfuInboundRtpPad fetchOne(String rtpPadId) {
         var model = Try.wrap(() -> this.storage.get(rtpPadId), null);

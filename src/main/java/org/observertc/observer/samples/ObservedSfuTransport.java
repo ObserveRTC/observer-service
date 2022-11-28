@@ -19,22 +19,27 @@ public interface ObservedSfuTransport extends Iterable<Samples.SfuSample.SfuTran
     String getMarker();
     String getMediaUnitId();
 
-    Iterable<ObservedSfuStream> observedSfuStreams();
-    Iterable<ObservedSfuSink> observedSfuSinks();
-    Iterable<ObservedSfuSctpStream> observedSfuSctpStream();
+    Iterable<ObservedSfuInboundRtpPad> observedSfuInboundRtpPads();
+    Iterable<ObservedSfuOutboundRtpPad> observedSfuOutboundRtpPads();
+    Iterable<ObservedSfuSctpChannel> observedSfuSctpChannels();
+
+    boolean getInternal();
 
     class Builder implements ObservedSfuTransport {
         private final String transportId;
         final ObservedSfu.Builder observedSfu;
-        private Map<String, ObservedSfuStream> observedSfuStreams = new HashMap<>();
-        private Map<String, ObservedSfuSink> observedSfuSinks = new HashMap<>();
-        private Map<String, ObservedSfuSctpStream> observedSfuSctpStreams = new HashMap<>();
+        private final boolean internal;
+        private Map<String, ObservedSfuInboundRtpPad> observedSfuInboundRtpPads = new HashMap<>();
+        private Map<String, ObservedSfuOutboundRtpPad> observedSfuOutboundRtpPads = new HashMap<>();
+        private Map<String, ObservedSfuSctpChannel> observedSfuSctpChannels = new HashMap<>();
 
         private List<Samples.SfuSample.SfuTransport> sfuTransportSamples = new LinkedList<>();
 
-        Builder(ObservedSfu.Builder observedSfu, String transportId) {
+        Builder(ObservedSfu.Builder observedSfu, String transportId, boolean internal) {
             this.observedSfu = observedSfu;
             this.transportId = transportId;
+            this.internal = internal;
+            observedSfu.observedSfuSamples.transportIds.add(transportId);
         }
 
         public void add(Samples.SfuSample.SfuTransport sfuTransportSample) {
@@ -50,12 +55,12 @@ public interface ObservedSfuTransport extends Iterable<Samples.SfuSample.SfuTran
                 );
                 return;
             }
-            ObservedSfuStream.Builder observedSfuStream = (ObservedSfuStream.Builder) this.observedSfuStreams.get(sfuInboundRtpPadSample.streamId);
-            if (observedSfuStream == null) {
-                observedSfuStream = new ObservedSfuStream.Builder(this, sfuInboundRtpPadSample.streamId);
-                this.observedSfuStreams.put(observedSfuStream.getSfuStreamId(), observedSfuStream);
+            ObservedSfuInboundRtpPad.Builder observedSfuInboundRtpPad = (ObservedSfuInboundRtpPad.Builder) this.observedSfuInboundRtpPads.get(sfuInboundRtpPadSample.padId);
+            if (observedSfuInboundRtpPad == null) {
+                observedSfuInboundRtpPad = new ObservedSfuInboundRtpPad.Builder(this, sfuInboundRtpPadSample.streamId, sfuInboundRtpPadSample.padId, sfuInboundRtpPadSample.ssrc);
+                this.observedSfuInboundRtpPads.put(sfuInboundRtpPadSample.padId, observedSfuInboundRtpPad);
             }
-            observedSfuStream.addInboundRtpPad(sfuInboundRtpPadSample);
+            observedSfuInboundRtpPad.add(sfuInboundRtpPadSample);
         }
 
         public void addSfuOutboundRtpPad(Samples.SfuSample.SfuOutboundRtpPad sfuOutboundRtpPadSample) {
@@ -67,12 +72,18 @@ public interface ObservedSfuTransport extends Iterable<Samples.SfuSample.SfuTran
                 );
                 return;
             }
-            ObservedSfuSink.Builder observedSfuSink = (ObservedSfuSink.Builder) this.observedSfuSinks.get(sfuOutboundRtpPadSample.sinkId);
-            if (observedSfuSink == null) {
-                observedSfuSink = new ObservedSfuSink.Builder(this, sfuOutboundRtpPadSample.streamId, sfuOutboundRtpPadSample.sinkId);
-                this.observedSfuSinks.put(observedSfuSink.getSfuSinkId(), observedSfuSink);
+            ObservedSfuOutboundRtpPad.Builder observedSfuOutboundRtpPad = (ObservedSfuOutboundRtpPad.Builder) this.observedSfuOutboundRtpPads.get(sfuOutboundRtpPadSample.padId);
+            if (observedSfuOutboundRtpPad == null) {
+                observedSfuOutboundRtpPad = new ObservedSfuOutboundRtpPad.Builder(
+                        this,
+                        sfuOutboundRtpPadSample.streamId,
+                        sfuOutboundRtpPadSample.sinkId,
+                        sfuOutboundRtpPadSample.padId,
+                        sfuOutboundRtpPadSample.ssrc
+                );
+                this.observedSfuOutboundRtpPads.put(sfuOutboundRtpPadSample.padId, observedSfuOutboundRtpPad);
             }
-            observedSfuSink.addOutboundRtpPad(sfuOutboundRtpPadSample);
+            observedSfuOutboundRtpPad.add(sfuOutboundRtpPadSample);
         }
 
         public void addSfuSctpChannel(Samples.SfuSample.SfuSctpChannel sfuSctpChannelSample) {
@@ -84,12 +95,12 @@ public interface ObservedSfuTransport extends Iterable<Samples.SfuSample.SfuTran
                 );
                 return;
             }
-            ObservedSfuSctpStream.Builder observedSfuSctpStream = (ObservedSfuSctpStream.Builder) this.observedSfuSctpStreams.get(sfuSctpChannelSample.streamId);
-            if (observedSfuSctpStream == null) {
-                observedSfuSctpStream = new ObservedSfuSctpStream.Builder(this, sfuSctpChannelSample.streamId);
-                this.observedSfuSctpStreams.put(sfuSctpChannelSample.streamId, observedSfuSctpStream);
+            ObservedSfuSctpChannel.Builder observedSfuSctpChannel = (ObservedSfuSctpChannel.Builder) this.observedSfuSctpChannels.get(sfuSctpChannelSample.streamId);
+            if (observedSfuSctpChannel == null) {
+                observedSfuSctpChannel = new ObservedSfuSctpChannel.Builder(this, sfuSctpChannelSample.streamId, sfuSctpChannelSample.channelId);
+                this.observedSfuSctpChannels.put(sfuSctpChannelSample.streamId, observedSfuSctpChannel);
             }
-            observedSfuSctpStream.addSctpChannel(sfuSctpChannelSample);
+            observedSfuSctpChannel.add(sfuSctpChannelSample);
         }
 
         @Override
@@ -123,18 +134,23 @@ public interface ObservedSfuTransport extends Iterable<Samples.SfuSample.SfuTran
         }
 
         @Override
-        public Iterable<ObservedSfuStream> observedSfuStreams() {
-            return () -> observedSfuStreams.values().iterator();
+        public Iterable<ObservedSfuInboundRtpPad> observedSfuInboundRtpPads() {
+            return () -> this.observedSfuInboundRtpPads.values().iterator();
         }
 
         @Override
-        public Iterable<ObservedSfuSink> observedSfuSinks() {
-            return () -> observedSfuSinks.values().iterator();
+        public Iterable<ObservedSfuOutboundRtpPad> observedSfuOutboundRtpPads() {
+            return () -> this.observedSfuOutboundRtpPads.values().iterator();
         }
 
         @Override
-        public Iterable<ObservedSfuSctpStream> observedSfuSctpStream() {
-            return () -> observedSfuSctpStreams.values().iterator();
+        public Iterable<ObservedSfuSctpChannel> observedSfuSctpChannels() {
+            return () -> this.observedSfuSctpChannels.values().iterator();
+        }
+
+        @Override
+        public boolean getInternal() {
+            return internal;
         }
 
         @NotNull

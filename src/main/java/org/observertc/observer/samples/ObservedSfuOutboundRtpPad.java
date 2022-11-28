@@ -14,23 +14,29 @@ public interface ObservedSfuOutboundRtpPad extends Iterable<Samples.SfuSample.Sf
     String getSfuSinkId();
     String getPadId();
 
-    ObservedSfuSink getObservedSfuSink();
+    ObservedSfuTransport getObservedSfuTransport();
     Long getMinTimestamp();
     Long getMaxTimestamp();
     String getMarker();
 
+    Long getSsrc();
+
     class Builder implements ObservedSfuOutboundRtpPad {
-        private String sfuStreamId = null;
-        private String sfuSinkId = null;
+        private final String sfuStreamId;
+        private final String sfuSinkId;
         private final String padId;
-        private final ObservedSfuSink.Builder observedSfuSink;
+        private final Long SSRC;
+        final ObservedSfuTransport.Builder observedSfuTransport;
         private List<Samples.SfuSample.SfuOutboundRtpPad> outboundRtpPads = new LinkedList<>();
 
-        public Builder(ObservedSfuSink.Builder observedSfuSink, String padId) {
-            this.observedSfuSink = observedSfuSink;
+        public Builder(ObservedSfuTransport.Builder observedSfuTransport, String sfuStreamId, String sfuSinkId, String padId, Long SSRC) {
+            this.observedSfuTransport = observedSfuTransport;
+            this.sfuStreamId = sfuStreamId;
+            this.sfuSinkId = sfuSinkId;
             this.padId = padId;
+            this.SSRC = SSRC;
 
-            ObservedSfuSamples.Builder root = this.observedSfuSink.observedSfuTransport.observedSfu.observedSfuSamples;
+            ObservedSfuSamples.Builder root = this.observedSfuTransport.observedSfu.observedSfuSamples;
             root.outboundRtpPadIds.add(padId);
         }
 
@@ -40,12 +46,12 @@ public interface ObservedSfuOutboundRtpPad extends Iterable<Samples.SfuSample.Sf
 
         @Override
         public String getSfuId() {
-            return observedSfuSink.getSfuId();
+            return observedSfuTransport.getSfuId();
         }
 
         @Override
         public String getSfuTransportId() {
-            return observedSfuSink.getSfuTransportId();
+            return observedSfuTransport.getSfuTransportId();
         }
 
         @Override
@@ -64,23 +70,28 @@ public interface ObservedSfuOutboundRtpPad extends Iterable<Samples.SfuSample.Sf
         }
 
         @Override
-        public ObservedSfuSink getObservedSfuSink() {
-            return observedSfuSink;
+        public ObservedSfuTransport getObservedSfuTransport() {
+            return observedSfuTransport;
         }
 
         @Override
         public Long getMinTimestamp() {
-            return observedSfuSink.getMinTimestamp();
+            return observedSfuTransport.getMinTimestamp();
         }
 
         @Override
         public Long getMaxTimestamp() {
-            return observedSfuSink.getMaxTimestamp();
+            return observedSfuTransport.getMaxTimestamp();
         }
 
         @Override
         public String getMarker() {
-            return observedSfuSink.getMarker();
+            return observedSfuTransport.getMarker();
+        }
+
+        @Override
+        public Long getSsrc() {
+            return SSRC;
         }
 
         @Override

@@ -56,7 +56,7 @@ public class RepositoryMetrics {
                     SfuTransportsRepository sfuTransportsRepository,
                     SfuInboundRtpPadsRepository sfuInboundRtpPadsRepository,
                     SfuOutboundRtpPadsRepository sfuOutboundRtpPadsRepository,
-                    SfuSctpStreamsRepository sfuSctpStreamsRepository
+                    SfuSctpChannelsRepository sfuSctpStreamsRepository
     ) {
         this.storageMetrics = List.of(
                 callsRepository,

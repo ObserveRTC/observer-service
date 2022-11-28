@@ -6,7 +6,7 @@ import org.observertc.observer.utils.ObservedSamplesGenerator;
 import java.util.UUID;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class SfuSctpStreamReportsDepotTest {
+class SfuSctpChannelsReportsDepotTest {
     private final ObservedSamplesGenerator generator = new ObservedSamplesGenerator();
     private SfuSctpStreamReportsDepot depot = new SfuSctpStreamReportsDepot();
 

@@ -147,6 +147,14 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
     }
 
     public Map<String, InboundTrack> fetchRecursively(Set<String> inboundTrackIds) {
+        var result = this.getAll(inboundTrackIds);
+        var sfuSinkIds = result.values().stream()
+                .map(InboundTrack::getSfuSinkId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        if (0 < sfuSinkIds.size()) {
+            this.sfuMediaSinksRepository.getAll(sfuSinkIds);
+        }
         return this.getAll(inboundTrackIds);
     }
 
@@ -181,6 +189,13 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
 
     public synchronized void save() {
         if (0 < this.deleted.size()) {
+            var sfuSinkIds = this.updated.values().stream()
+                    .filter(Models.InboundTrack::hasSfuSinkId)
+                    .map(Models.InboundTrack::getSfuSinkId)
+                    .collect(Collectors.toSet());
+            if (0 < sfuSinkIds.size()) {
+                this.sfuMediaSinksRepository.deleteAll(sfuSinkIds);
+            }
             Try.wrap(() -> this.storage.deleteAll(this.deleted));
             this.deleted.clear();
         }
@@ -188,6 +203,7 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
             Try.wrap(() -> this.storage.setAll(this.updated));
             this.updated.clear();
         }
+        this.sfuMediaSinksRepository.save();
         this.fetched.clear();
     }
 

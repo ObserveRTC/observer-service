@@ -68,10 +68,12 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
         }
     }
 
+
     private void process(ObservedClientSamples observedClientSamples) {
         if (observedClientSamples.isEmpty()) {
             return;
         }
+
         var task = this.matchTracks.get()
                 .whereOutboundTrackIds(observedClientSamples.getOutboundTrackIds())
                 .whereInboundTrackIds(observedClientSamples.getInboundTrackIds())

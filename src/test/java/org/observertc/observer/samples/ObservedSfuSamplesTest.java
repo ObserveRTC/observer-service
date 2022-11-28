@@ -61,7 +61,7 @@ class ObservedSfuSamplesTest {
                 .addObservedSfuSample(observedSample)
                 .build();
 
-        boolean equals = TestUtils.equalSets(expectedIds, observedSamples.getSctpStreamIds());
+        boolean equals = TestUtils.equalSets(expectedIds, observedSamples.getSctpChannelIds());
         Assertions.assertTrue(equals);
     }
 

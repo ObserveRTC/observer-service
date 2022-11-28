@@ -51,7 +51,7 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
     SfuOutboundRtpPadsRepository sfuOutboundRtpPadsRepository;
 
     @Inject
-    SfuSctpStreamsRepository sfuSctpStreamsRepository;
+    SfuSctpChannelsRepository sfuSctpChannelsRepository;
 
     private Map<String, Models.SfuTransport> updated;
     private Set<String> deleted;
@@ -105,26 +105,33 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
         }
     }
 
-    public Map<String, Sfu> fetchRecursively(Set<String> sfuTransportIds) {
+    public Map<String, SfuTransport> fetchRecursively(Set<String> sfuTransportIds) {
         if (sfuTransportIds == null || sfuTransportIds.size() < 1) {
             return Collections.emptyMap();
         }
         var result = this.getAll(sfuTransportIds);
-        var sfuStreamIds = result.values().stream()
-                .map(SfuTransport::get)
+        var sfuInboundRtpPadIds = result.values().stream()
+                .map(SfuTransport::getInboundRtpPadIds)
                 .flatMap(s -> s.stream())
                 .collect(Collectors.toSet());
+        if (0 < sfuInboundRtpPadIds.size()) {
+            this.sfuInboundRtpPadsRepository.fetchRecursively(sfuInboundRtpPadIds);
+        }
+        var sfuOutboundRtpPadIds = result.values().stream()
+                .map(SfuTransport::getOutboundRtpPadIds)
+                .flatMap(s -> s.stream())
+                .collect(Collectors.toSet());
+        if (0 < sfuOutboundRtpPadIds.size()) {
+            this.sfuOutboundRtpPadsRepository.fetchRecursively(sfuOutboundRtpPadIds);
+        }
 
-        var sfuSinkIds = result.values().stream()
-                .map(SfuTransport::get)
+        var sfuSctpChannelIds = result.values().stream()
+                .map(SfuTransport::getSctpChannelIds)
                 .flatMap(s -> s.stream())
                 .collect(Collectors.toSet());
-
-        var sfuSctpStreamIds = result.values().stream()
-                .map(SfuTransport::get)
-                .flatMap(s -> s.stream())
-                .collect(Collectors.toSet());
-        this.sfuTransportsRepository.fetchRecursively(transportIds);
+        if (0 < sfuSctpChannelIds.size()) {
+            this.sfuSctpChannelsRepository.getAll(sfuSctpChannelIds);
+        }
         return result;
     }
 
@@ -150,7 +157,7 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
             for (var sfuTransport : sfuTransports.values()) {
                 sfuInboundRtpPadIds.addAll(sfuTransport.getInboundRtpPadIds());
                 sfuOutboundRtpPadIds.addAll(sfuTransport.getOutboundRtpPadIds());
-                sfuSctpStreamIds.addAll(sfuTransport.getSctpStreamIds());
+                sfuSctpStreamIds.addAll(sfuTransport.getSctpChannelIds());
             }
             if (0 < sfuInboundRtpPadIds.size()) {
                 this.sfuInboundRtpPadsRepository.deleteAll(sfuInboundRtpPadIds);
@@ -159,7 +166,7 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
                 this.sfuOutboundRtpPadsRepository.deleteAll(sfuOutboundRtpPadIds);
             }
             if (0 < sfuSctpStreamIds.size()) {
-                this.sfuSctpStreamsRepository.deleteAll(sfuSctpStreamIds);
+                this.sfuSctpChannelsRepository.deleteAll(sfuSctpStreamIds);
             }
             Try.wrap(() -> this.storage.deleteAll(this.deleted));
             this.deleted.clear();
@@ -170,7 +177,7 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
         }
         this.sfuInboundRtpPadsRepository.save();
         this.sfuOutboundRtpPadsRepository.save();
-        this.sfuSctpStreamsRepository.save();
+        this.sfuSctpChannelsRepository.save();
         this.fetched.clear();
     }
 
@@ -242,7 +249,7 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
                 this,
                 this.sfuInboundRtpPadsRepository,
                 this.sfuOutboundRtpPadsRepository,
-                this.sfuSctpStreamsRepository
+                this.sfuSctpChannelsRepository
         );
         this.fetched.add(result.getSfuTransportId(), result);
         return result;

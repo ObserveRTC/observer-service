@@ -16,6 +16,7 @@ public interface ObservedSfu extends Iterable<Samples.SfuSample> {
     Long getMinTimestamp();
     Long getMaxTimestamp();
 
+    String getServiceId();
     String getMediaUnitId();
 
     Stream<ObservedSfuSample> streamObservedSfuSamples();
@@ -59,7 +60,7 @@ public interface ObservedSfu extends Iterable<Samples.SfuSample> {
                 }
                 ObservedSfuTransport.Builder observedSfuTransport = (ObservedSfuTransport.Builder) this.observedSfuTransports.get(sfuTransportSample.transportId);
                 if (observedSfuTransport == null) {
-                    observedSfuTransport = new ObservedSfuTransport.Builder(this, sfuTransportSample.transportId);
+                    observedSfuTransport = new ObservedSfuTransport.Builder(this, sfuTransportSample.transportId, Boolean.TRUE.equals(sfuTransportSample.internal));
                     this.observedSfuTransports.put(observedSfuTransport.getSfuTransportId(), observedSfuTransport);
                 }
             });
@@ -71,7 +72,7 @@ public interface ObservedSfu extends Iterable<Samples.SfuSample> {
                 }
                 ObservedSfuTransport.Builder observedSfuTransport = (ObservedSfuTransport.Builder) this.observedSfuTransports.get(sfuInboundRtpPad.transportId);
                 if (observedSfuTransport == null) {
-                    observedSfuTransport = new ObservedSfuTransport.Builder(this, sfuInboundRtpPad.transportId);
+                    observedSfuTransport = new ObservedSfuTransport.Builder(this, sfuInboundRtpPad.transportId, Boolean.TRUE.equals(sfuInboundRtpPad.internal));
                     this.observedSfuTransports.put(observedSfuTransport.getSfuTransportId(), observedSfuTransport);
                 }
                 observedSfuTransport.addSfuInboundRtpPad(sfuInboundRtpPad);
@@ -84,7 +85,7 @@ public interface ObservedSfu extends Iterable<Samples.SfuSample> {
                 }
                 ObservedSfuTransport.Builder observedSfuTransport = (ObservedSfuTransport.Builder) this.observedSfuTransports.get(sfuOutboundRtpPad.transportId);
                 if (observedSfuTransport == null) {
-                    observedSfuTransport = new ObservedSfuTransport.Builder(this, sfuOutboundRtpPad.transportId);
+                    observedSfuTransport = new ObservedSfuTransport.Builder(this, sfuOutboundRtpPad.transportId, Boolean.TRUE.equals(sfuOutboundRtpPad.internal));
                     this.observedSfuTransports.put(observedSfuTransport.getSfuTransportId(), observedSfuTransport);
                 }
                 observedSfuTransport.addSfuOutboundRtpPad(sfuOutboundRtpPad);
@@ -97,7 +98,7 @@ public interface ObservedSfu extends Iterable<Samples.SfuSample> {
                 }
                 ObservedSfuTransport.Builder observedSfuTransport = (ObservedSfuTransport.Builder) this.observedSfuTransports.get(sfuSctpChannel.transportId);
                 if (observedSfuTransport == null) {
-                    observedSfuTransport = new ObservedSfuTransport.Builder(this, sfuSctpChannel.transportId);
+                    observedSfuTransport = new ObservedSfuTransport.Builder(this, sfuSctpChannel.transportId, Boolean.TRUE.equals(sfuSctpChannel.internal));
                     this.observedSfuTransports.put(observedSfuTransport.getSfuTransportId(), observedSfuTransport);
                 }
                 observedSfuTransport.addSfuSctpChannel(sfuSctpChannel);
@@ -131,6 +132,11 @@ public interface ObservedSfu extends Iterable<Samples.SfuSample> {
         @Override
         public Long getMaxTimestamp() {
             return maxTimestamp;
+        }
+
+        @Override
+        public String getServiceId() {
+            return serviceId;
         }
 
         @Override
