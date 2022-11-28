@@ -7,12 +7,14 @@ import io.reactivex.rxjava3.subjects.Subject;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.common.Utils;
+import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.eventreports.*;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.repositories.*;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.schemas.dtos.Models;
 import org.observertc.schemas.reports.CallEventReport;
+import org.observertc.schemas.reports.ObserverEventReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +36,9 @@ public class CallEventReportsAdder {
     private final Subject<List<Report>> input = PublishSubject.create();
     private final Subject<List<Report>> output = PublishSubject.create();
     private final List<Report> collectedReports = new LinkedList<>();
+
+    @Inject
+    ObserverConfig observerConfig;
 
     @Inject
     RepositoryEvents repositoryEvents;
@@ -86,6 +91,9 @@ public class CallEventReportsAdder {
     @Inject
     OutboundTrackRemovedReports outboundTrackRemovedReports;
 
+    @Inject
+    CallSummaryReports callSummaryReports;
+
     @PostConstruct
     void setup() {
 
@@ -134,6 +142,9 @@ public class CallEventReportsAdder {
         this.outboundTrackRemovedReports.getOutput()
                 .subscribe(this::collectCallEventReports);
 
+        this.callSummaryReports.getOutput()
+                .subscribe(this::collectObserverEventReports);
+
         this.input.subscribe(incomingReports -> {
             var forwardedReports = new LinkedList<Report>();
             if (incomingReports != null && 0 < incomingReports.size()) {
@@ -165,6 +176,16 @@ public class CallEventReportsAdder {
         return this.output;
     }
 
+    private void collectObserverEventReports(List<ObserverEventReport> observerEventReports) {
+        if (observerEventReports.size() < 1) {
+            return;
+        }
+        var reports = observerEventReports.stream().map(Report::fromObserverEventReport).collect(Collectors.toList());
+        synchronized (this) {
+            this.collectedReports.addAll(reports);
+        }
+    }
+
     private void collectCallEventReports(List<CallEventReport> callEventReports) {
         if (callEventReports.size() < 1) {
             return;
@@ -180,10 +201,14 @@ public class CallEventReportsAdder {
             logger.warn("Expired call models should not be null or less than 1");
             return;
         }
-
+        var endedCallIds = callModels.stream().map(Models.Call::getCallId).collect(Collectors.toSet());
+        if (this.observerConfig.evaluators.observerReports.createCallSummaryReports && endedCallIds != null && 0 < endedCallIds.size()) {
+            // make summary report
+        }
         var serviceRoomsToCallIds = callModels.stream().collect(groupingBy(callModel -> ServiceRoomId.make(callModel.getServiceId(), callModel.getRoomId())));
         var rooms = Utils.firstNotNull(this.roomsRepository.getAll(serviceRoomsToCallIds.keySet()), Collections.<ServiceRoomId, Room>emptyMap());
         var roomsToDelete = new HashSet<ServiceRoomId>();
+
         for (var entry : serviceRoomsToCallIds.entrySet()) {
             var serviceRoomId = entry.getKey();
             var callIds = entry.getValue();

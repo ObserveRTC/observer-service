@@ -143,9 +143,17 @@ public class ObserverConfig {
 	@ConfigurationProperties("evaluators")
 	public static class EvaluatorsConfig {
 
+		public ObserverReports observerReports= new ObserverReports();
+
+		@ConfigurationProperties(("observerReports"))
+		public static class ObserverReports {
+			public boolean createCallSummaryReports = true;
+		}
+
 		public Obfuscator obfuscator = new Obfuscator();
 
-		@ConfigurationProperties(("obfuscator"))
+
+        @ConfigurationProperties(("obfuscator"))
 		public static class Obfuscator {
 			public boolean enabled = false;
 			public ObfuscationType iceAddresses = ObfuscationType.ANONYMIZATION;
