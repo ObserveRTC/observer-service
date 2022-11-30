@@ -9,8 +9,7 @@
         </encoder>
     </appender>
 
-    <logger name="io.github.balazskreith.hamok" level="info" />
-    <logger name="io.github.balazskreith.hamok" level="info" />
+    <logger name="io.github.balazskreith.hamok" level="trace" />
 
     <root level="info">
         <appender-ref ref="STDOUT" />

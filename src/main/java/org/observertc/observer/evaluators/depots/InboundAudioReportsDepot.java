@@ -20,7 +20,6 @@ public class InboundAudioReportsDepot implements Supplier<List<InboundAudioTrack
     private String remoteUserId = null;
     private String remotePeerConnectionId = null;
     private String remoteTrackId = null;
-    private String label = null;
 
     private ObservedClientSample observedClientSample = null;
     private Samples.ClientSample.InboundAudioTrack inboundAudioTrack = null;
@@ -98,7 +97,6 @@ public class InboundAudioReportsDepot implements Supplier<List<InboundAudioTrack
                     .setPeerConnectionId(inboundAudioTrack.peerConnectionId)
                     .setLabel(peerConnectionLabel)
                     .setTrackId(inboundAudioTrack.trackId)
-                    .setLabel(this.label)
 
                     /* Remote Identifier */
                     .setRemoteClientId(this.remoteClientId)
