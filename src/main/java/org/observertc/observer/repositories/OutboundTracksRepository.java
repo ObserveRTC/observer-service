@@ -173,7 +173,8 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
 
     public synchronized void save() {
         if (0 < this.deleted.size()) {
-            var sfuStreamIds = this.updated.values().stream()
+            var outboundTracks = this.storage.getAll(this.deleted);
+            var sfuStreamIds = outboundTracks.values().stream()
                     .filter(Models.OutboundTrack::hasSfuStreamId)
                     .map(Models.OutboundTrack::getSfuStreamId)
                     .collect(Collectors.toSet());

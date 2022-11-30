@@ -96,6 +96,31 @@ public class SfuOutboundRtpPad {
         return model.getMarker();
     }
 
+    public SfuMediaSink getMediaSink() {
+        var model = this.modelHolder.get();
+        if (!model.hasSfuSinkId()) {
+            return null;
+        }
+        var sfuSinkId = model.getSfuSinkId();
+        return this.sfuMediaSinksRepository.get(sfuSinkId);
+    }
+
+    boolean createMediaSink() {
+        var model = this.modelHolder.get();
+        if (!model.hasSfuStreamId() || !model.hasSfuSinkId()) {
+            return false;
+        }
+
+        var sfuMediaSinkModelBuilder = Models.SfuMediaSink.newBuilder()
+                .setServiceId(model.getServiceId())
+                .setSfuStreamId(model.getSfuStreamId())
+                .setSfuSinkId(model.getSfuSinkId())
+                .setInternal(true)
+                ;
+        this.sfuMediaSinksRepository.update(sfuMediaSinkModelBuilder.build());
+        return true;
+    }
+
     public Models.SfuOutboundRtpPad getModel() {
         return this.modelHolder.get();
     }

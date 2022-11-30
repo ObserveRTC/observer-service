@@ -1,6 +1,8 @@
 package org.observertc.observer.repositories;
 
 import org.observertc.schemas.dtos.Models;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -9,6 +11,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class SfuTransport {
+
+    private static final Logger logger = LoggerFactory.getLogger(SfuTransport.class);
 
     private final AtomicReference<Models.SfuTransport> modelHolder;
     private final SfusRepository sfusRepository;
@@ -255,7 +259,14 @@ public class SfuTransport {
 
         this.updateModel(newModel);
         this.sfuOutboundRtpPadsRepository.update(sfuOutboundRtpPadModel);
-        return this.sfuOutboundRtpPadsRepository.wrapSfuOutboundRtpPad(sfuOutboundRtpPadModel);
+        var result = this.sfuOutboundRtpPadsRepository.wrapSfuOutboundRtpPad(sfuOutboundRtpPadModel);
+        if (result != null && model.getInternal() && sfuStreamId != null && sfuSinkId != null) {
+            // add MediaSink
+            if (!result.createMediaSink()) {
+                logger.warn("Cannot add internal media sink for media stream {}", sfuStreamId);
+            }
+        }
+        return result;
     }
 
     public boolean removeOutboundRtpPad(String rtpPadId) {

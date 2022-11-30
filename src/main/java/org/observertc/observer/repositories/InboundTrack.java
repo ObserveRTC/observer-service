@@ -142,10 +142,11 @@ public class InboundTrack {
             return false;
         }
 
-        var sfuMediaStreamModelBuilder = Models.SfuMediaSink.newBuilder()
+        var sfuMediaSinkModelBuilder = Models.SfuMediaSink.newBuilder()
                 .setServiceId(model.getServiceId())
                 .setSfuStreamId(model.getSfuStreamId())
                 .setSfuSinkId(model.getSfuSinkId())
+                .setInternal(false)
 
                 .setCallId(model.getCallId())
                 .setClientId(model.getClientId())
@@ -155,9 +156,9 @@ public class InboundTrack {
                 ;
 
         if (model.hasUserId()) {
-            sfuMediaStreamModelBuilder.setUserId(model.getUserId());
+            sfuMediaSinkModelBuilder.setUserId(model.getUserId());
         }
-        this.sfuMediaSinksRepository.update(sfuMediaStreamModelBuilder.build());
+        this.sfuMediaSinksRepository.update(sfuMediaSinkModelBuilder.build());
         return true;
     }
 

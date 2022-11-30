@@ -258,7 +258,6 @@ public class CallsRepository implements RepositoryStorageMetrics {
                 Try.wrap(() -> this.storage.setAll(this.updated));
             }
             this.updated.clear();
-
         }
         this.clientsRepositoryRepo.save();
         this.fetched.clear();

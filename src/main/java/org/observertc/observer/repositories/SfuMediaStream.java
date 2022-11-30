@@ -134,7 +134,7 @@ public class SfuMediaStream {
         if (model.getSfuMediaSinkIdsCount() < 1) {
             return Collections.emptySet();
         }
-        var list = model.getSfuInboundSfuRtpPadIdsList();
+        var list = model.getSfuMediaSinkIdsList();
         return list.stream().collect(Collectors.toSet());
     }
 

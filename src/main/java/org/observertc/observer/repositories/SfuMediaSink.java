@@ -1,5 +1,6 @@
 package org.observertc.observer.repositories;
 
+import org.observertc.observer.configs.MediaKind;
 import org.observertc.schemas.dtos.Models;
 
 import java.util.Collections;
@@ -44,6 +45,14 @@ public class SfuMediaSink {
         return this.sfuMediaStreamsRepository.get(model.getSfuStreamId());
     }
 
+    public boolean isInternal() {
+        var model = this.modelHolder.get();
+        if (!model.hasInternal()) {
+            return false;
+        }
+        return model.getInternal();
+    }
+
     public String getSfuSinkId() {
         var model = this.modelHolder.get();
         return model.getSfuSinkId();
@@ -63,6 +72,14 @@ public class SfuMediaSink {
             return null;
         }
         return model.getClientId();
+    }
+
+    public MediaKind getKind() {
+        var model = this.modelHolder.get();
+        if (!model.hasKind()) {
+            return null;
+        }
+        return MediaKind.valueOf(model.getKind());
     }
 
     public String getPeerConnectionId() {

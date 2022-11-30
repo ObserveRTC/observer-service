@@ -98,6 +98,7 @@ public class InboundAudioReportsDepot implements Supplier<List<InboundAudioTrack
                     .setPeerConnectionId(inboundAudioTrack.peerConnectionId)
                     .setLabel(peerConnectionLabel)
                     .setTrackId(inboundAudioTrack.trackId)
+                    .setLabel(this.label)
 
                     /* Remote Identifier */
                     .setRemoteClientId(this.remoteClientId)
@@ -113,10 +114,6 @@ public class InboundAudioReportsDepot implements Supplier<List<InboundAudioTrack
                     .setTrackId(inboundAudioTrack.trackId)
                     .setSfuStreamId(inboundAudioTrack.sfuStreamId)
                     .setSfuSinkId(inboundAudioTrack.sfuSinkId)
-                    .setRemoteTrackId(this.remoteTrackId)
-                    .setRemoteUserId(this.remoteUserId)
-                    .setRemoteClientId(this.remoteClientId)
-                    .setRemotePeerConnectionId(this.remotePeerConnectionId)
                     .setSampleSeq(clientSample.sampleSeq)
                     .setSsrc(inboundAudioTrack.ssrc)
                     .setPacketsReceived(inboundAudioTrack.packetsReceived)

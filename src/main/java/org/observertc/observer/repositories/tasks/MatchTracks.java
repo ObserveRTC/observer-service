@@ -79,15 +79,15 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
                 for (var inboundTrack : inboundTracks.values()) {
                     var mediaSink = inboundTrack.getMediaSink();
                     if (mediaSink == null) {
-                        logger.warn("No mediaSink is found for track {}", inboundTrack.getTrackId());
+                        logger.trace("No mediaSink is found for track {}", inboundTrack.getTrackId());
                         continue;
                     }
                     var mediaStream = mediaSink.getMediaStream();
                     if (mediaStream == null) {
-                        logger.warn("No mediaStream is found for sink {}, for track: {}", mediaSink.getSfuSinkId(), inboundTrack.getTrackId());
+                        logger.trace("No mediaStream is found for sink {}, for track: {}", mediaSink.getSfuSinkId(), inboundTrack.getTrackId());
                         continue;
                     }
-                    logger.info("Matched Media Tracks: Inbound trackId: {}, pcId: {}, userId: {}, clientId: {} callId: {}, room: {}, remoteClientId: {} removeUserId: {}, remotePcId: {}, remoteTrackId: {}",
+                    logger.debug("Matched Media Tracks: Inbound trackId: {}, pcId: {}, userId: {}, clientId: {} callId: {}, room: {}, remoteClientId: {} removeUserId: {}, remotePcId: {}, remoteTrackId: {}",
                             inboundTrack.getTrackId(),
                             inboundTrack.getPeerConnectionId(),
                             inboundTrack.getClientId(),

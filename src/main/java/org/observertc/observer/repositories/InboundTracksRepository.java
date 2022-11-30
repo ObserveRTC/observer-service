@@ -189,7 +189,8 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
 
     public synchronized void save() {
         if (0 < this.deleted.size()) {
-            var sfuSinkIds = this.updated.values().stream()
+            var inboundTracks = this.storage.getAll(this.deleted);
+            var sfuSinkIds = inboundTracks.values().stream()
                     .filter(Models.InboundTrack::hasSfuSinkId)
                     .map(Models.InboundTrack::getSfuSinkId)
                     .collect(Collectors.toSet());

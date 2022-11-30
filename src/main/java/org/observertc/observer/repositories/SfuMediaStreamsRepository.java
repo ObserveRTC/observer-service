@@ -40,7 +40,6 @@ public class SfuMediaStreamsRepository implements RepositoryStorageMetrics {
     @Inject
     private Backups backups;
 
-
     @Inject
     private BeanProvider<SfuTransportsRepository> sfuTransportsRepositoryBeanProvider;
 
@@ -119,6 +118,15 @@ public class SfuMediaStreamsRepository implements RepositoryStorageMetrics {
 
     public synchronized void save() {
         if (0 < this.deleted.size()) {
+            var sfuMediaStreams = this.storage.getAll(this.deleted);
+            var sfuSinkIds = sfuMediaStreams.values().stream()
+                            .filter(sfuMediaStream -> 0 < sfuMediaStream.getSfuInboundSfuRtpPadIdsCount())
+                            .map(Models.SfuMediaStream::getSfuMediaSinkIdsList)
+                            .flatMap(s -> s.stream())
+                            .collect(Collectors.toSet());
+            if (0 < sfuSinkIds.size()) {
+                this.sfuMediaSinksRepositoryBeanProvider.get().deleteAll(sfuSinkIds);
+            }
             Try.wrap(() -> this.storage.deleteAll(this.deleted));
             this.deleted.clear();
         }
@@ -126,6 +134,7 @@ public class SfuMediaStreamsRepository implements RepositoryStorageMetrics {
             Try.wrap(() -> this.storage.setAll(this.updated));
             this.updated.clear();
         }
+        this.sfuMediaSinksRepositoryBeanProvider.get().save();
         this.fetched.clear();
     }
 

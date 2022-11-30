@@ -114,16 +114,16 @@ message SfuMediaSink {
   required string serviceId = 1;
   required string sfuStreamId = 2;
   required string sfuSinkId = 3;
-  required string kind = 4;
+  required bool internal = 4;
 
-  required string callId = 5;
-  required string clientId = 6;
-  required string peerConnectionId = 7;
-  required string trackId = 8;
+  optional string kind = 5;
+  optional string callId = 6;
+  optional string clientId = 7;
+  optional string peerConnectionId = 8;
+  optional string trackId = 9;
+  optional string userId = 10;
 
-  optional string userId = 9;
-
-  repeated string outboundSfuRtpPadIds = 10;
+  repeated string outboundSfuRtpPadIds = 11;
 }
 
 message SfuMediaStream {

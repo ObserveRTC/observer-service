@@ -13736,126 +13736,137 @@ public final class Models {
         getSfuSinkIdBytes();
 
     /**
-     * <code>required string kind = 4;</code>
+     * <code>required bool internal = 4;</code>
+     * @return Whether the internal field is set.
+     */
+    boolean hasInternal();
+    /**
+     * <code>required bool internal = 4;</code>
+     * @return The internal.
+     */
+    boolean getInternal();
+
+    /**
+     * <code>optional string kind = 5;</code>
      * @return Whether the kind field is set.
      */
     boolean hasKind();
     /**
-     * <code>required string kind = 4;</code>
+     * <code>optional string kind = 5;</code>
      * @return The kind.
      */
     java.lang.String getKind();
     /**
-     * <code>required string kind = 4;</code>
+     * <code>optional string kind = 5;</code>
      * @return The bytes for kind.
      */
     com.google.protobuf.ByteString
         getKindBytes();
 
     /**
-     * <code>required string callId = 5;</code>
+     * <code>optional string callId = 6;</code>
      * @return Whether the callId field is set.
      */
     boolean hasCallId();
     /**
-     * <code>required string callId = 5;</code>
+     * <code>optional string callId = 6;</code>
      * @return The callId.
      */
     java.lang.String getCallId();
     /**
-     * <code>required string callId = 5;</code>
+     * <code>optional string callId = 6;</code>
      * @return The bytes for callId.
      */
     com.google.protobuf.ByteString
         getCallIdBytes();
 
     /**
-     * <code>required string clientId = 6;</code>
+     * <code>optional string clientId = 7;</code>
      * @return Whether the clientId field is set.
      */
     boolean hasClientId();
     /**
-     * <code>required string clientId = 6;</code>
+     * <code>optional string clientId = 7;</code>
      * @return The clientId.
      */
     java.lang.String getClientId();
     /**
-     * <code>required string clientId = 6;</code>
+     * <code>optional string clientId = 7;</code>
      * @return The bytes for clientId.
      */
     com.google.protobuf.ByteString
         getClientIdBytes();
 
     /**
-     * <code>required string peerConnectionId = 7;</code>
+     * <code>optional string peerConnectionId = 8;</code>
      * @return Whether the peerConnectionId field is set.
      */
     boolean hasPeerConnectionId();
     /**
-     * <code>required string peerConnectionId = 7;</code>
+     * <code>optional string peerConnectionId = 8;</code>
      * @return The peerConnectionId.
      */
     java.lang.String getPeerConnectionId();
     /**
-     * <code>required string peerConnectionId = 7;</code>
+     * <code>optional string peerConnectionId = 8;</code>
      * @return The bytes for peerConnectionId.
      */
     com.google.protobuf.ByteString
         getPeerConnectionIdBytes();
 
     /**
-     * <code>required string trackId = 8;</code>
+     * <code>optional string trackId = 9;</code>
      * @return Whether the trackId field is set.
      */
     boolean hasTrackId();
     /**
-     * <code>required string trackId = 8;</code>
+     * <code>optional string trackId = 9;</code>
      * @return The trackId.
      */
     java.lang.String getTrackId();
     /**
-     * <code>required string trackId = 8;</code>
+     * <code>optional string trackId = 9;</code>
      * @return The bytes for trackId.
      */
     com.google.protobuf.ByteString
         getTrackIdBytes();
 
     /**
-     * <code>optional string userId = 9;</code>
+     * <code>optional string userId = 10;</code>
      * @return Whether the userId field is set.
      */
     boolean hasUserId();
     /**
-     * <code>optional string userId = 9;</code>
+     * <code>optional string userId = 10;</code>
      * @return The userId.
      */
     java.lang.String getUserId();
     /**
-     * <code>optional string userId = 9;</code>
+     * <code>optional string userId = 10;</code>
      * @return The bytes for userId.
      */
     com.google.protobuf.ByteString
         getUserIdBytes();
 
     /**
-     * <code>repeated string outboundSfuRtpPadIds = 10;</code>
+     * <code>repeated string outboundSfuRtpPadIds = 11;</code>
      * @return A list containing the outboundSfuRtpPadIds.
      */
     java.util.List<java.lang.String>
         getOutboundSfuRtpPadIdsList();
     /**
-     * <code>repeated string outboundSfuRtpPadIds = 10;</code>
+     * <code>repeated string outboundSfuRtpPadIds = 11;</code>
      * @return The count of outboundSfuRtpPadIds.
      */
     int getOutboundSfuRtpPadIdsCount();
     /**
-     * <code>repeated string outboundSfuRtpPadIds = 10;</code>
+     * <code>repeated string outboundSfuRtpPadIds = 11;</code>
      * @param index The index of the element to return.
      * @return The outboundSfuRtpPadIds at the given index.
      */
     java.lang.String getOutboundSfuRtpPadIds(int index);
     /**
-     * <code>repeated string outboundSfuRtpPadIds = 10;</code>
+     * <code>repeated string outboundSfuRtpPadIds = 11;</code>
      * @param index The index of the value to return.
      * @return The bytes of the outboundSfuRtpPadIds at the given index.
      */
@@ -13936,47 +13947,52 @@ public final class Models {
               sfuSinkId_ = bs;
               break;
             }
-            case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+            case 32: {
               bitField0_ |= 0x00000008;
-              kind_ = bs;
+              internal_ = input.readBool();
               break;
             }
             case 42: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              callId_ = bs;
+              kind_ = bs;
               break;
             }
             case 50: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              clientId_ = bs;
+              callId_ = bs;
               break;
             }
             case 58: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              peerConnectionId_ = bs;
+              clientId_ = bs;
               break;
             }
             case 66: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
-              trackId_ = bs;
+              peerConnectionId_ = bs;
               break;
             }
             case 74: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              userId_ = bs;
+              trackId_ = bs;
               break;
             }
             case 82: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              if (!((mutable_bitField0_ & 0x00000200) != 0)) {
+              bitField0_ |= 0x00000200;
+              userId_ = bs;
+              break;
+            }
+            case 90: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              if (!((mutable_bitField0_ & 0x00000400) != 0)) {
                 outboundSfuRtpPadIds_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000200;
+                mutable_bitField0_ |= 0x00000400;
               }
               outboundSfuRtpPadIds_.add(bs);
               break;
@@ -13996,7 +14012,7 @@ public final class Models {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000200) != 0)) {
+        if (((mutable_bitField0_ & 0x00000400) != 0)) {
           outboundSfuRtpPadIds_ = outboundSfuRtpPadIds_.getUnmodifiableView();
         }
         this.unknownFields = unknownFields.build();
@@ -14161,18 +14177,37 @@ public final class Models {
       }
     }
 
-    public static final int KIND_FIELD_NUMBER = 4;
+    public static final int INTERNAL_FIELD_NUMBER = 4;
+    private boolean internal_;
+    /**
+     * <code>required bool internal = 4;</code>
+     * @return Whether the internal field is set.
+     */
+    @java.lang.Override
+    public boolean hasInternal() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <code>required bool internal = 4;</code>
+     * @return The internal.
+     */
+    @java.lang.Override
+    public boolean getInternal() {
+      return internal_;
+    }
+
+    public static final int KIND_FIELD_NUMBER = 5;
     private volatile java.lang.Object kind_;
     /**
-     * <code>required string kind = 4;</code>
+     * <code>optional string kind = 5;</code>
      * @return Whether the kind field is set.
      */
     @java.lang.Override
     public boolean hasKind() {
-      return ((bitField0_ & 0x00000008) != 0);
+      return ((bitField0_ & 0x00000010) != 0);
     }
     /**
-     * <code>required string kind = 4;</code>
+     * <code>optional string kind = 5;</code>
      * @return The kind.
      */
     @java.lang.Override
@@ -14191,7 +14226,7 @@ public final class Models {
       }
     }
     /**
-     * <code>required string kind = 4;</code>
+     * <code>optional string kind = 5;</code>
      * @return The bytes for kind.
      */
     @java.lang.Override
@@ -14209,18 +14244,18 @@ public final class Models {
       }
     }
 
-    public static final int CALLID_FIELD_NUMBER = 5;
+    public static final int CALLID_FIELD_NUMBER = 6;
     private volatile java.lang.Object callId_;
     /**
-     * <code>required string callId = 5;</code>
+     * <code>optional string callId = 6;</code>
      * @return Whether the callId field is set.
      */
     @java.lang.Override
     public boolean hasCallId() {
-      return ((bitField0_ & 0x00000010) != 0);
+      return ((bitField0_ & 0x00000020) != 0);
     }
     /**
-     * <code>required string callId = 5;</code>
+     * <code>optional string callId = 6;</code>
      * @return The callId.
      */
     @java.lang.Override
@@ -14239,7 +14274,7 @@ public final class Models {
       }
     }
     /**
-     * <code>required string callId = 5;</code>
+     * <code>optional string callId = 6;</code>
      * @return The bytes for callId.
      */
     @java.lang.Override
@@ -14257,18 +14292,18 @@ public final class Models {
       }
     }
 
-    public static final int CLIENTID_FIELD_NUMBER = 6;
+    public static final int CLIENTID_FIELD_NUMBER = 7;
     private volatile java.lang.Object clientId_;
     /**
-     * <code>required string clientId = 6;</code>
+     * <code>optional string clientId = 7;</code>
      * @return Whether the clientId field is set.
      */
     @java.lang.Override
     public boolean hasClientId() {
-      return ((bitField0_ & 0x00000020) != 0);
+      return ((bitField0_ & 0x00000040) != 0);
     }
     /**
-     * <code>required string clientId = 6;</code>
+     * <code>optional string clientId = 7;</code>
      * @return The clientId.
      */
     @java.lang.Override
@@ -14287,7 +14322,7 @@ public final class Models {
       }
     }
     /**
-     * <code>required string clientId = 6;</code>
+     * <code>optional string clientId = 7;</code>
      * @return The bytes for clientId.
      */
     @java.lang.Override
@@ -14305,18 +14340,18 @@ public final class Models {
       }
     }
 
-    public static final int PEERCONNECTIONID_FIELD_NUMBER = 7;
+    public static final int PEERCONNECTIONID_FIELD_NUMBER = 8;
     private volatile java.lang.Object peerConnectionId_;
     /**
-     * <code>required string peerConnectionId = 7;</code>
+     * <code>optional string peerConnectionId = 8;</code>
      * @return Whether the peerConnectionId field is set.
      */
     @java.lang.Override
     public boolean hasPeerConnectionId() {
-      return ((bitField0_ & 0x00000040) != 0);
+      return ((bitField0_ & 0x00000080) != 0);
     }
     /**
-     * <code>required string peerConnectionId = 7;</code>
+     * <code>optional string peerConnectionId = 8;</code>
      * @return The peerConnectionId.
      */
     @java.lang.Override
@@ -14335,7 +14370,7 @@ public final class Models {
       }
     }
     /**
-     * <code>required string peerConnectionId = 7;</code>
+     * <code>optional string peerConnectionId = 8;</code>
      * @return The bytes for peerConnectionId.
      */
     @java.lang.Override
@@ -14353,18 +14388,18 @@ public final class Models {
       }
     }
 
-    public static final int TRACKID_FIELD_NUMBER = 8;
+    public static final int TRACKID_FIELD_NUMBER = 9;
     private volatile java.lang.Object trackId_;
     /**
-     * <code>required string trackId = 8;</code>
+     * <code>optional string trackId = 9;</code>
      * @return Whether the trackId field is set.
      */
     @java.lang.Override
     public boolean hasTrackId() {
-      return ((bitField0_ & 0x00000080) != 0);
+      return ((bitField0_ & 0x00000100) != 0);
     }
     /**
-     * <code>required string trackId = 8;</code>
+     * <code>optional string trackId = 9;</code>
      * @return The trackId.
      */
     @java.lang.Override
@@ -14383,7 +14418,7 @@ public final class Models {
       }
     }
     /**
-     * <code>required string trackId = 8;</code>
+     * <code>optional string trackId = 9;</code>
      * @return The bytes for trackId.
      */
     @java.lang.Override
@@ -14401,18 +14436,18 @@ public final class Models {
       }
     }
 
-    public static final int USERID_FIELD_NUMBER = 9;
+    public static final int USERID_FIELD_NUMBER = 10;
     private volatile java.lang.Object userId_;
     /**
-     * <code>optional string userId = 9;</code>
+     * <code>optional string userId = 10;</code>
      * @return Whether the userId field is set.
      */
     @java.lang.Override
     public boolean hasUserId() {
-      return ((bitField0_ & 0x00000100) != 0);
+      return ((bitField0_ & 0x00000200) != 0);
     }
     /**
-     * <code>optional string userId = 9;</code>
+     * <code>optional string userId = 10;</code>
      * @return The userId.
      */
     @java.lang.Override
@@ -14431,7 +14466,7 @@ public final class Models {
       }
     }
     /**
-     * <code>optional string userId = 9;</code>
+     * <code>optional string userId = 10;</code>
      * @return The bytes for userId.
      */
     @java.lang.Override
@@ -14449,10 +14484,10 @@ public final class Models {
       }
     }
 
-    public static final int OUTBOUNDSFURTPPADIDS_FIELD_NUMBER = 10;
+    public static final int OUTBOUNDSFURTPPADIDS_FIELD_NUMBER = 11;
     private com.google.protobuf.LazyStringList outboundSfuRtpPadIds_;
     /**
-     * <code>repeated string outboundSfuRtpPadIds = 10;</code>
+     * <code>repeated string outboundSfuRtpPadIds = 11;</code>
      * @return A list containing the outboundSfuRtpPadIds.
      */
     public com.google.protobuf.ProtocolStringList
@@ -14460,14 +14495,14 @@ public final class Models {
       return outboundSfuRtpPadIds_;
     }
     /**
-     * <code>repeated string outboundSfuRtpPadIds = 10;</code>
+     * <code>repeated string outboundSfuRtpPadIds = 11;</code>
      * @return The count of outboundSfuRtpPadIds.
      */
     public int getOutboundSfuRtpPadIdsCount() {
       return outboundSfuRtpPadIds_.size();
     }
     /**
-     * <code>repeated string outboundSfuRtpPadIds = 10;</code>
+     * <code>repeated string outboundSfuRtpPadIds = 11;</code>
      * @param index The index of the element to return.
      * @return The outboundSfuRtpPadIds at the given index.
      */
@@ -14475,7 +14510,7 @@ public final class Models {
       return outboundSfuRtpPadIds_.get(index);
     }
     /**
-     * <code>repeated string outboundSfuRtpPadIds = 10;</code>
+     * <code>repeated string outboundSfuRtpPadIds = 11;</code>
      * @param index The index of the value to return.
      * @return The bytes of the outboundSfuRtpPadIds at the given index.
      */
@@ -14503,23 +14538,7 @@ public final class Models {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasKind()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasCallId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasClientId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasPeerConnectionId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasTrackId()) {
+      if (!hasInternal()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -14540,25 +14559,28 @@ public final class Models {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, sfuSinkId_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, kind_);
+        output.writeBool(4, internal_);
       }
       if (((bitField0_ & 0x00000010) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, callId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, kind_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, clientId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, callId_);
       }
       if (((bitField0_ & 0x00000040) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, peerConnectionId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, clientId_);
       }
       if (((bitField0_ & 0x00000080) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, trackId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, peerConnectionId_);
       }
       if (((bitField0_ & 0x00000100) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, userId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, trackId_);
+      }
+      if (((bitField0_ & 0x00000200) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, userId_);
       }
       for (int i = 0; i < outboundSfuRtpPadIds_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, outboundSfuRtpPadIds_.getRaw(i));
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, outboundSfuRtpPadIds_.getRaw(i));
       }
       unknownFields.writeTo(output);
     }
@@ -14579,22 +14601,26 @@ public final class Models {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, sfuSinkId_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, kind_);
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(4, internal_);
       }
       if (((bitField0_ & 0x00000010) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, callId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, kind_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, clientId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, callId_);
       }
       if (((bitField0_ & 0x00000040) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, peerConnectionId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, clientId_);
       }
       if (((bitField0_ & 0x00000080) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, trackId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, peerConnectionId_);
       }
       if (((bitField0_ & 0x00000100) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, userId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, trackId_);
+      }
+      if (((bitField0_ & 0x00000200) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, userId_);
       }
       {
         int dataSize = 0;
@@ -14633,6 +14659,11 @@ public final class Models {
       if (hasSfuSinkId()) {
         if (!getSfuSinkId()
             .equals(other.getSfuSinkId())) return false;
+      }
+      if (hasInternal() != other.hasInternal()) return false;
+      if (hasInternal()) {
+        if (getInternal()
+            != other.getInternal()) return false;
       }
       if (hasKind() != other.hasKind()) return false;
       if (hasKind()) {
@@ -14688,6 +14719,11 @@ public final class Models {
       if (hasSfuSinkId()) {
         hash = (37 * hash) + SFUSINKID_FIELD_NUMBER;
         hash = (53 * hash) + getSfuSinkId().hashCode();
+      }
+      if (hasInternal()) {
+        hash = (37 * hash) + INTERNAL_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getInternal());
       }
       if (hasKind()) {
         hash = (37 * hash) + KIND_FIELD_NUMBER;
@@ -14856,20 +14892,22 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000002);
         sfuSinkId_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
-        kind_ = "";
+        internal_ = false;
         bitField0_ = (bitField0_ & ~0x00000008);
-        callId_ = "";
+        kind_ = "";
         bitField0_ = (bitField0_ & ~0x00000010);
-        clientId_ = "";
+        callId_ = "";
         bitField0_ = (bitField0_ & ~0x00000020);
-        peerConnectionId_ = "";
+        clientId_ = "";
         bitField0_ = (bitField0_ & ~0x00000040);
-        trackId_ = "";
+        peerConnectionId_ = "";
         bitField0_ = (bitField0_ & ~0x00000080);
-        userId_ = "";
+        trackId_ = "";
         bitField0_ = (bitField0_ & ~0x00000100);
-        outboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        userId_ = "";
         bitField0_ = (bitField0_ & ~0x00000200);
+        outboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
 
@@ -14911,32 +14949,36 @@ public final class Models {
         }
         result.sfuSinkId_ = sfuSinkId_;
         if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.internal_ = internal_;
           to_bitField0_ |= 0x00000008;
         }
-        result.kind_ = kind_;
         if (((from_bitField0_ & 0x00000010) != 0)) {
           to_bitField0_ |= 0x00000010;
         }
-        result.callId_ = callId_;
+        result.kind_ = kind_;
         if (((from_bitField0_ & 0x00000020) != 0)) {
           to_bitField0_ |= 0x00000020;
         }
-        result.clientId_ = clientId_;
+        result.callId_ = callId_;
         if (((from_bitField0_ & 0x00000040) != 0)) {
           to_bitField0_ |= 0x00000040;
         }
-        result.peerConnectionId_ = peerConnectionId_;
+        result.clientId_ = clientId_;
         if (((from_bitField0_ & 0x00000080) != 0)) {
           to_bitField0_ |= 0x00000080;
         }
-        result.trackId_ = trackId_;
+        result.peerConnectionId_ = peerConnectionId_;
         if (((from_bitField0_ & 0x00000100) != 0)) {
           to_bitField0_ |= 0x00000100;
         }
+        result.trackId_ = trackId_;
+        if (((from_bitField0_ & 0x00000200) != 0)) {
+          to_bitField0_ |= 0x00000200;
+        }
         result.userId_ = userId_;
-        if (((bitField0_ & 0x00000200) != 0)) {
+        if (((bitField0_ & 0x00000400) != 0)) {
           outboundSfuRtpPadIds_ = outboundSfuRtpPadIds_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000200);
+          bitField0_ = (bitField0_ & ~0x00000400);
         }
         result.outboundSfuRtpPadIds_ = outboundSfuRtpPadIds_;
         result.bitField0_ = to_bitField0_;
@@ -15003,40 +15045,43 @@ public final class Models {
           sfuSinkId_ = other.sfuSinkId_;
           onChanged();
         }
+        if (other.hasInternal()) {
+          setInternal(other.getInternal());
+        }
         if (other.hasKind()) {
-          bitField0_ |= 0x00000008;
+          bitField0_ |= 0x00000010;
           kind_ = other.kind_;
           onChanged();
         }
         if (other.hasCallId()) {
-          bitField0_ |= 0x00000010;
+          bitField0_ |= 0x00000020;
           callId_ = other.callId_;
           onChanged();
         }
         if (other.hasClientId()) {
-          bitField0_ |= 0x00000020;
+          bitField0_ |= 0x00000040;
           clientId_ = other.clientId_;
           onChanged();
         }
         if (other.hasPeerConnectionId()) {
-          bitField0_ |= 0x00000040;
+          bitField0_ |= 0x00000080;
           peerConnectionId_ = other.peerConnectionId_;
           onChanged();
         }
         if (other.hasTrackId()) {
-          bitField0_ |= 0x00000080;
+          bitField0_ |= 0x00000100;
           trackId_ = other.trackId_;
           onChanged();
         }
         if (other.hasUserId()) {
-          bitField0_ |= 0x00000100;
+          bitField0_ |= 0x00000200;
           userId_ = other.userId_;
           onChanged();
         }
         if (!other.outboundSfuRtpPadIds_.isEmpty()) {
           if (outboundSfuRtpPadIds_.isEmpty()) {
             outboundSfuRtpPadIds_ = other.outboundSfuRtpPadIds_;
-            bitField0_ = (bitField0_ & ~0x00000200);
+            bitField0_ = (bitField0_ & ~0x00000400);
           } else {
             ensureOutboundSfuRtpPadIdsIsMutable();
             outboundSfuRtpPadIds_.addAll(other.outboundSfuRtpPadIds_);
@@ -15059,19 +15104,7 @@ public final class Models {
         if (!hasSfuSinkId()) {
           return false;
         }
-        if (!hasKind()) {
-          return false;
-        }
-        if (!hasCallId()) {
-          return false;
-        }
-        if (!hasClientId()) {
-          return false;
-        }
-        if (!hasPeerConnectionId()) {
-          return false;
-        }
-        if (!hasTrackId()) {
+        if (!hasInternal()) {
           return false;
         }
         return true;
@@ -15349,16 +15382,55 @@ public final class Models {
         return this;
       }
 
-      private java.lang.Object kind_ = "";
+      private boolean internal_ ;
       /**
-       * <code>required string kind = 4;</code>
-       * @return Whether the kind field is set.
+       * <code>required bool internal = 4;</code>
+       * @return Whether the internal field is set.
        */
-      public boolean hasKind() {
+      @java.lang.Override
+      public boolean hasInternal() {
         return ((bitField0_ & 0x00000008) != 0);
       }
       /**
-       * <code>required string kind = 4;</code>
+       * <code>required bool internal = 4;</code>
+       * @return The internal.
+       */
+      @java.lang.Override
+      public boolean getInternal() {
+        return internal_;
+      }
+      /**
+       * <code>required bool internal = 4;</code>
+       * @param value The internal to set.
+       * @return This builder for chaining.
+       */
+      public Builder setInternal(boolean value) {
+        bitField0_ |= 0x00000008;
+        internal_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool internal = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearInternal() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        internal_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object kind_ = "";
+      /**
+       * <code>optional string kind = 5;</code>
+       * @return Whether the kind field is set.
+       */
+      public boolean hasKind() {
+        return ((bitField0_ & 0x00000010) != 0);
+      }
+      /**
+       * <code>optional string kind = 5;</code>
        * @return The kind.
        */
       public java.lang.String getKind() {
@@ -15376,7 +15448,7 @@ public final class Models {
         }
       }
       /**
-       * <code>required string kind = 4;</code>
+       * <code>optional string kind = 5;</code>
        * @return The bytes for kind.
        */
       public com.google.protobuf.ByteString
@@ -15393,7 +15465,7 @@ public final class Models {
         }
       }
       /**
-       * <code>required string kind = 4;</code>
+       * <code>optional string kind = 5;</code>
        * @param value The kind to set.
        * @return This builder for chaining.
        */
@@ -15402,23 +15474,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  bitField0_ |= 0x00000010;
         kind_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string kind = 4;</code>
+       * <code>optional string kind = 5;</code>
        * @return This builder for chaining.
        */
       public Builder clearKind() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         kind_ = getDefaultInstance().getKind();
         onChanged();
         return this;
       }
       /**
-       * <code>required string kind = 4;</code>
+       * <code>optional string kind = 5;</code>
        * @param value The bytes for kind to set.
        * @return This builder for chaining.
        */
@@ -15427,7 +15499,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  bitField0_ |= 0x00000010;
         kind_ = value;
         onChanged();
         return this;
@@ -15435,14 +15507,14 @@ public final class Models {
 
       private java.lang.Object callId_ = "";
       /**
-       * <code>required string callId = 5;</code>
+       * <code>optional string callId = 6;</code>
        * @return Whether the callId field is set.
        */
       public boolean hasCallId() {
-        return ((bitField0_ & 0x00000010) != 0);
+        return ((bitField0_ & 0x00000020) != 0);
       }
       /**
-       * <code>required string callId = 5;</code>
+       * <code>optional string callId = 6;</code>
        * @return The callId.
        */
       public java.lang.String getCallId() {
@@ -15460,7 +15532,7 @@ public final class Models {
         }
       }
       /**
-       * <code>required string callId = 5;</code>
+       * <code>optional string callId = 6;</code>
        * @return The bytes for callId.
        */
       public com.google.protobuf.ByteString
@@ -15477,7 +15549,7 @@ public final class Models {
         }
       }
       /**
-       * <code>required string callId = 5;</code>
+       * <code>optional string callId = 6;</code>
        * @param value The callId to set.
        * @return This builder for chaining.
        */
@@ -15486,23 +15558,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000010;
+  bitField0_ |= 0x00000020;
         callId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string callId = 5;</code>
+       * <code>optional string callId = 6;</code>
        * @return This builder for chaining.
        */
       public Builder clearCallId() {
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000020);
         callId_ = getDefaultInstance().getCallId();
         onChanged();
         return this;
       }
       /**
-       * <code>required string callId = 5;</code>
+       * <code>optional string callId = 6;</code>
        * @param value The bytes for callId to set.
        * @return This builder for chaining.
        */
@@ -15511,7 +15583,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000010;
+  bitField0_ |= 0x00000020;
         callId_ = value;
         onChanged();
         return this;
@@ -15519,14 +15591,14 @@ public final class Models {
 
       private java.lang.Object clientId_ = "";
       /**
-       * <code>required string clientId = 6;</code>
+       * <code>optional string clientId = 7;</code>
        * @return Whether the clientId field is set.
        */
       public boolean hasClientId() {
-        return ((bitField0_ & 0x00000020) != 0);
+        return ((bitField0_ & 0x00000040) != 0);
       }
       /**
-       * <code>required string clientId = 6;</code>
+       * <code>optional string clientId = 7;</code>
        * @return The clientId.
        */
       public java.lang.String getClientId() {
@@ -15544,7 +15616,7 @@ public final class Models {
         }
       }
       /**
-       * <code>required string clientId = 6;</code>
+       * <code>optional string clientId = 7;</code>
        * @return The bytes for clientId.
        */
       public com.google.protobuf.ByteString
@@ -15561,7 +15633,7 @@ public final class Models {
         }
       }
       /**
-       * <code>required string clientId = 6;</code>
+       * <code>optional string clientId = 7;</code>
        * @param value The clientId to set.
        * @return This builder for chaining.
        */
@@ -15570,23 +15642,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
         clientId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string clientId = 6;</code>
+       * <code>optional string clientId = 7;</code>
        * @return This builder for chaining.
        */
       public Builder clearClientId() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         clientId_ = getDefaultInstance().getClientId();
         onChanged();
         return this;
       }
       /**
-       * <code>required string clientId = 6;</code>
+       * <code>optional string clientId = 7;</code>
        * @param value The bytes for clientId to set.
        * @return This builder for chaining.
        */
@@ -15595,7 +15667,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
         clientId_ = value;
         onChanged();
         return this;
@@ -15603,14 +15675,14 @@ public final class Models {
 
       private java.lang.Object peerConnectionId_ = "";
       /**
-       * <code>required string peerConnectionId = 7;</code>
+       * <code>optional string peerConnectionId = 8;</code>
        * @return Whether the peerConnectionId field is set.
        */
       public boolean hasPeerConnectionId() {
-        return ((bitField0_ & 0x00000040) != 0);
+        return ((bitField0_ & 0x00000080) != 0);
       }
       /**
-       * <code>required string peerConnectionId = 7;</code>
+       * <code>optional string peerConnectionId = 8;</code>
        * @return The peerConnectionId.
        */
       public java.lang.String getPeerConnectionId() {
@@ -15628,7 +15700,7 @@ public final class Models {
         }
       }
       /**
-       * <code>required string peerConnectionId = 7;</code>
+       * <code>optional string peerConnectionId = 8;</code>
        * @return The bytes for peerConnectionId.
        */
       public com.google.protobuf.ByteString
@@ -15645,7 +15717,7 @@ public final class Models {
         }
       }
       /**
-       * <code>required string peerConnectionId = 7;</code>
+       * <code>optional string peerConnectionId = 8;</code>
        * @param value The peerConnectionId to set.
        * @return This builder for chaining.
        */
@@ -15654,23 +15726,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000040;
+  bitField0_ |= 0x00000080;
         peerConnectionId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string peerConnectionId = 7;</code>
+       * <code>optional string peerConnectionId = 8;</code>
        * @return This builder for chaining.
        */
       public Builder clearPeerConnectionId() {
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000080);
         peerConnectionId_ = getDefaultInstance().getPeerConnectionId();
         onChanged();
         return this;
       }
       /**
-       * <code>required string peerConnectionId = 7;</code>
+       * <code>optional string peerConnectionId = 8;</code>
        * @param value The bytes for peerConnectionId to set.
        * @return This builder for chaining.
        */
@@ -15679,7 +15751,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000040;
+  bitField0_ |= 0x00000080;
         peerConnectionId_ = value;
         onChanged();
         return this;
@@ -15687,14 +15759,14 @@ public final class Models {
 
       private java.lang.Object trackId_ = "";
       /**
-       * <code>required string trackId = 8;</code>
+       * <code>optional string trackId = 9;</code>
        * @return Whether the trackId field is set.
        */
       public boolean hasTrackId() {
-        return ((bitField0_ & 0x00000080) != 0);
+        return ((bitField0_ & 0x00000100) != 0);
       }
       /**
-       * <code>required string trackId = 8;</code>
+       * <code>optional string trackId = 9;</code>
        * @return The trackId.
        */
       public java.lang.String getTrackId() {
@@ -15712,7 +15784,7 @@ public final class Models {
         }
       }
       /**
-       * <code>required string trackId = 8;</code>
+       * <code>optional string trackId = 9;</code>
        * @return The bytes for trackId.
        */
       public com.google.protobuf.ByteString
@@ -15729,7 +15801,7 @@ public final class Models {
         }
       }
       /**
-       * <code>required string trackId = 8;</code>
+       * <code>optional string trackId = 9;</code>
        * @param value The trackId to set.
        * @return This builder for chaining.
        */
@@ -15738,23 +15810,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000080;
+  bitField0_ |= 0x00000100;
         trackId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string trackId = 8;</code>
+       * <code>optional string trackId = 9;</code>
        * @return This builder for chaining.
        */
       public Builder clearTrackId() {
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000100);
         trackId_ = getDefaultInstance().getTrackId();
         onChanged();
         return this;
       }
       /**
-       * <code>required string trackId = 8;</code>
+       * <code>optional string trackId = 9;</code>
        * @param value The bytes for trackId to set.
        * @return This builder for chaining.
        */
@@ -15763,7 +15835,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000080;
+  bitField0_ |= 0x00000100;
         trackId_ = value;
         onChanged();
         return this;
@@ -15771,14 +15843,14 @@ public final class Models {
 
       private java.lang.Object userId_ = "";
       /**
-       * <code>optional string userId = 9;</code>
+       * <code>optional string userId = 10;</code>
        * @return Whether the userId field is set.
        */
       public boolean hasUserId() {
-        return ((bitField0_ & 0x00000100) != 0);
+        return ((bitField0_ & 0x00000200) != 0);
       }
       /**
-       * <code>optional string userId = 9;</code>
+       * <code>optional string userId = 10;</code>
        * @return The userId.
        */
       public java.lang.String getUserId() {
@@ -15796,7 +15868,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string userId = 9;</code>
+       * <code>optional string userId = 10;</code>
        * @return The bytes for userId.
        */
       public com.google.protobuf.ByteString
@@ -15813,7 +15885,7 @@ public final class Models {
         }
       }
       /**
-       * <code>optional string userId = 9;</code>
+       * <code>optional string userId = 10;</code>
        * @param value The userId to set.
        * @return This builder for chaining.
        */
@@ -15822,23 +15894,23 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000100;
+  bitField0_ |= 0x00000200;
         userId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string userId = 9;</code>
+       * <code>optional string userId = 10;</code>
        * @return This builder for chaining.
        */
       public Builder clearUserId() {
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000200);
         userId_ = getDefaultInstance().getUserId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string userId = 9;</code>
+       * <code>optional string userId = 10;</code>
        * @param value The bytes for userId to set.
        * @return This builder for chaining.
        */
@@ -15847,7 +15919,7 @@ public final class Models {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000100;
+  bitField0_ |= 0x00000200;
         userId_ = value;
         onChanged();
         return this;
@@ -15855,13 +15927,13 @@ public final class Models {
 
       private com.google.protobuf.LazyStringList outboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       private void ensureOutboundSfuRtpPadIdsIsMutable() {
-        if (!((bitField0_ & 0x00000200) != 0)) {
+        if (!((bitField0_ & 0x00000400) != 0)) {
           outboundSfuRtpPadIds_ = new com.google.protobuf.LazyStringArrayList(outboundSfuRtpPadIds_);
-          bitField0_ |= 0x00000200;
+          bitField0_ |= 0x00000400;
          }
       }
       /**
-       * <code>repeated string outboundSfuRtpPadIds = 10;</code>
+       * <code>repeated string outboundSfuRtpPadIds = 11;</code>
        * @return A list containing the outboundSfuRtpPadIds.
        */
       public com.google.protobuf.ProtocolStringList
@@ -15869,14 +15941,14 @@ public final class Models {
         return outboundSfuRtpPadIds_.getUnmodifiableView();
       }
       /**
-       * <code>repeated string outboundSfuRtpPadIds = 10;</code>
+       * <code>repeated string outboundSfuRtpPadIds = 11;</code>
        * @return The count of outboundSfuRtpPadIds.
        */
       public int getOutboundSfuRtpPadIdsCount() {
         return outboundSfuRtpPadIds_.size();
       }
       /**
-       * <code>repeated string outboundSfuRtpPadIds = 10;</code>
+       * <code>repeated string outboundSfuRtpPadIds = 11;</code>
        * @param index The index of the element to return.
        * @return The outboundSfuRtpPadIds at the given index.
        */
@@ -15884,7 +15956,7 @@ public final class Models {
         return outboundSfuRtpPadIds_.get(index);
       }
       /**
-       * <code>repeated string outboundSfuRtpPadIds = 10;</code>
+       * <code>repeated string outboundSfuRtpPadIds = 11;</code>
        * @param index The index of the value to return.
        * @return The bytes of the outboundSfuRtpPadIds at the given index.
        */
@@ -15893,7 +15965,7 @@ public final class Models {
         return outboundSfuRtpPadIds_.getByteString(index);
       }
       /**
-       * <code>repeated string outboundSfuRtpPadIds = 10;</code>
+       * <code>repeated string outboundSfuRtpPadIds = 11;</code>
        * @param index The index to set the value at.
        * @param value The outboundSfuRtpPadIds to set.
        * @return This builder for chaining.
@@ -15909,7 +15981,7 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated string outboundSfuRtpPadIds = 10;</code>
+       * <code>repeated string outboundSfuRtpPadIds = 11;</code>
        * @param value The outboundSfuRtpPadIds to add.
        * @return This builder for chaining.
        */
@@ -15924,7 +15996,7 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated string outboundSfuRtpPadIds = 10;</code>
+       * <code>repeated string outboundSfuRtpPadIds = 11;</code>
        * @param values The outboundSfuRtpPadIds to add.
        * @return This builder for chaining.
        */
@@ -15937,17 +16009,17 @@ public final class Models {
         return this;
       }
       /**
-       * <code>repeated string outboundSfuRtpPadIds = 10;</code>
+       * <code>repeated string outboundSfuRtpPadIds = 11;</code>
        * @return This builder for chaining.
        */
       public Builder clearOutboundSfuRtpPadIds() {
         outboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000200);
+        bitField0_ = (bitField0_ & ~0x00000400);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string outboundSfuRtpPadIds = 10;</code>
+       * <code>repeated string outboundSfuRtpPadIds = 11;</code>
        * @param value The bytes of the outboundSfuRtpPadIds to add.
        * @return This builder for chaining.
        */
@@ -29006,44 +29078,45 @@ public final class Models {
       "\n\005added\030\007 \002(\004\022\014\n\004kind\030\010 \002(\t\022\017\n\007touched\030\t" +
       " \001(\004\022\023\n\013mediaUnitId\030\n \001(\t\022\016\n\006userId\030\013 \001(" +
       "\t\022\016\n\006marker\030\014 \001(\t\022\023\n\013sfuStreamId\030\r \001(\t\022\014" +
-      "\n\004ssrc\030\016 \003(\003\"\322\001\n\014SfuMediaSink\022\021\n\tservice" +
+      "\n\004ssrc\030\016 \003(\003\"\344\001\n\014SfuMediaSink\022\021\n\tservice" +
       "Id\030\001 \002(\t\022\023\n\013sfuStreamId\030\002 \002(\t\022\021\n\tsfuSink" +
-      "Id\030\003 \002(\t\022\014\n\004kind\030\004 \002(\t\022\016\n\006callId\030\005 \002(\t\022\020" +
-      "\n\010clientId\030\006 \002(\t\022\030\n\020peerConnectionId\030\007 \002" +
-      "(\t\022\017\n\007trackId\030\010 \002(\t\022\016\n\006userId\030\t \001(\t\022\034\n\024o" +
-      "utboundSfuRtpPadIds\030\n \003(\t\"\334\001\n\016SfuMediaSt" +
-      "ream\022\021\n\tserviceId\030\001 \002(\t\022\023\n\013sfuStreamId\030\002" +
-      " \002(\t\022\014\n\004kind\030\003 \002(\t\022\016\n\006callId\030\004 \002(\t\022\020\n\010cl" +
-      "ientId\030\005 \002(\t\022\030\n\020peerConnectionId\030\006 \002(\t\022\017" +
-      "\n\007trackId\030\007 \002(\t\022\016\n\006userId\030\010 \001(\t\022\036\n\026sfuIn" +
-      "boundSfuRtpPadIds\030\t \003(\t\022\027\n\017sfuMediaSinkI" +
-      "ds\030\n \003(\t\"\232\001\n\003Sfu\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005s" +
-      "fuId\030\002 \002(\t\022\016\n\006joined\030\003 \002(\004\022\017\n\007touched\030\004 " +
-      "\001(\004\022\023\n\013mediaUnitId\030\005 \001(\t\022\022\n\ntimeZoneId\030\006" +
-      " \001(\t\022\016\n\006marker\030\007 \001(\t\022\027\n\017sfuTransportIds\030" +
-      "\010 \003(\t\"\361\001\n\014SfuTransport\022\021\n\tserviceId\030\001 \002(" +
-      "\t\022\r\n\005sfuId\030\002 \002(\t\022\023\n\013transportId\030\003 \002(\t\022\027\n" +
-      "\010internal\030\004 \002(\010:\005false\022\016\n\006opened\030\005 \002(\004\022\017" +
-      "\n\007touched\030\006 \001(\004\022\023\n\013mediaUnitId\030\007 \001(\t\022\016\n\006" +
-      "marker\030\010 \001(\t\022\030\n\020inboundRtpPadIds\030\t \003(\t\022\031" +
-      "\n\021outboundRtpPadIds\030\n \003(\t\022\026\n\016sctpChannel" +
-      "Ids\030\013 \003(\t\"\337\001\n\020SfuInboundRtpPad\022\021\n\tservic" +
-      "eId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\026\n\016sfuTransport" +
-      "Id\030\003 \002(\t\022\023\n\013sfuStreamId\030\004 \002(\t\022\020\n\010rtpPadI" +
-      "d\030\005 \002(\t\022\014\n\004ssrc\030\006 \002(\003\022\027\n\010internal\030\007 \002(\010:" +
-      "\005false\022\r\n\005added\030\010 \002(\004\022\017\n\007touched\030\t \001(\004\022\023" +
-      "\n\013mediaUnitId\030\n \001(\t\022\016\n\006marker\030\013 \001(\t\"\363\001\n\021" +
-      "SfuOutboundRtpPad\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005" +
-      "sfuId\030\002 \002(\t\022\026\n\016sfuTransportId\030\003 \002(\t\022\023\n\013s" +
-      "fuStreamId\030\004 \002(\t\022\021\n\tsfuSinkId\030\005 \002(\t\022\020\n\010r" +
-      "tpPadId\030\006 \002(\t\022\014\n\004ssrc\030\007 \002(\003\022\027\n\010internal\030" +
-      "\010 \002(\010:\005false\022\r\n\005added\030\t \002(\004\022\017\n\007touched\030\n" +
-      " \001(\004\022\023\n\013mediaUnitId\030\013 \001(\t\022\016\n\006marker\030\014 \001(" +
-      "\t\"\303\001\n\016SfuSctpChannel\022\021\n\tserviceId\030\001 \002(\t\022" +
-      "\r\n\005sfuId\030\002 \002(\t\022\026\n\016sfuTransportId\030\003 \002(\t\022\027" +
-      "\n\017sfuSctpStreamId\030\004 \002(\t\022\030\n\020sfuSctpChanne" +
-      "lId\030\005 \002(\t\022\016\n\006opened\030\006 \002(\004\022\017\n\007touched\030\007 \001" +
-      "(\004\022\023\n\013mediaUnitId\030\010 \001(\t\022\016\n\006marker\030\t \001(\t"
+      "Id\030\003 \002(\t\022\020\n\010internal\030\004 \002(\010\022\014\n\004kind\030\005 \001(\t" +
+      "\022\016\n\006callId\030\006 \001(\t\022\020\n\010clientId\030\007 \001(\t\022\030\n\020pe" +
+      "erConnectionId\030\010 \001(\t\022\017\n\007trackId\030\t \001(\t\022\016\n" +
+      "\006userId\030\n \001(\t\022\034\n\024outboundSfuRtpPadIds\030\013 " +
+      "\003(\t\"\334\001\n\016SfuMediaStream\022\021\n\tserviceId\030\001 \002(" +
+      "\t\022\023\n\013sfuStreamId\030\002 \002(\t\022\014\n\004kind\030\003 \002(\t\022\016\n\006" +
+      "callId\030\004 \002(\t\022\020\n\010clientId\030\005 \002(\t\022\030\n\020peerCo" +
+      "nnectionId\030\006 \002(\t\022\017\n\007trackId\030\007 \002(\t\022\016\n\006use" +
+      "rId\030\010 \001(\t\022\036\n\026sfuInboundSfuRtpPadIds\030\t \003(" +
+      "\t\022\027\n\017sfuMediaSinkIds\030\n \003(\t\"\232\001\n\003Sfu\022\021\n\tse" +
+      "rviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\016\n\006joined\030\003" +
+      " \002(\004\022\017\n\007touched\030\004 \001(\004\022\023\n\013mediaUnitId\030\005 \001" +
+      "(\t\022\022\n\ntimeZoneId\030\006 \001(\t\022\016\n\006marker\030\007 \001(\t\022\027" +
+      "\n\017sfuTransportIds\030\010 \003(\t\"\361\001\n\014SfuTransport" +
+      "\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\023\n\013tr" +
+      "ansportId\030\003 \002(\t\022\027\n\010internal\030\004 \002(\010:\005false" +
+      "\022\016\n\006opened\030\005 \002(\004\022\017\n\007touched\030\006 \001(\004\022\023\n\013med" +
+      "iaUnitId\030\007 \001(\t\022\016\n\006marker\030\010 \001(\t\022\030\n\020inboun" +
+      "dRtpPadIds\030\t \003(\t\022\031\n\021outboundRtpPadIds\030\n " +
+      "\003(\t\022\026\n\016sctpChannelIds\030\013 \003(\t\"\337\001\n\020SfuInbou" +
+      "ndRtpPad\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002" +
+      "(\t\022\026\n\016sfuTransportId\030\003 \002(\t\022\023\n\013sfuStreamI" +
+      "d\030\004 \002(\t\022\020\n\010rtpPadId\030\005 \002(\t\022\014\n\004ssrc\030\006 \002(\003\022" +
+      "\027\n\010internal\030\007 \002(\010:\005false\022\r\n\005added\030\010 \002(\004\022" +
+      "\017\n\007touched\030\t \001(\004\022\023\n\013mediaUnitId\030\n \001(\t\022\016\n" +
+      "\006marker\030\013 \001(\t\"\363\001\n\021SfuOutboundRtpPad\022\021\n\ts" +
+      "erviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\026\n\016sfuTran" +
+      "sportId\030\003 \002(\t\022\023\n\013sfuStreamId\030\004 \002(\t\022\021\n\tsf" +
+      "uSinkId\030\005 \002(\t\022\020\n\010rtpPadId\030\006 \002(\t\022\014\n\004ssrc\030" +
+      "\007 \002(\003\022\027\n\010internal\030\010 \002(\010:\005false\022\r\n\005added\030" +
+      "\t \002(\004\022\017\n\007touched\030\n \001(\004\022\023\n\013mediaUnitId\030\013 " +
+      "\001(\t\022\016\n\006marker\030\014 \001(\t\"\303\001\n\016SfuSctpChannel\022\021" +
+      "\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\026\n\016sfuT" +
+      "ransportId\030\003 \002(\t\022\027\n\017sfuSctpStreamId\030\004 \002(" +
+      "\t\022\030\n\020sfuSctpChannelId\030\005 \002(\t\022\016\n\006opened\030\006 " +
+      "\002(\004\022\017\n\007touched\030\007 \001(\004\022\023\n\013mediaUnitId\030\010 \001(" +
+      "\t\022\016\n\006marker\030\t \001(\t"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -29090,7 +29163,7 @@ public final class Models {
     internal_static_org_observertc_schemas_dtos_SfuMediaSink_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_SfuMediaSink_descriptor,
-        new java.lang.String[] { "ServiceId", "SfuStreamId", "SfuSinkId", "Kind", "CallId", "ClientId", "PeerConnectionId", "TrackId", "UserId", "OutboundSfuRtpPadIds", });
+        new java.lang.String[] { "ServiceId", "SfuStreamId", "SfuSinkId", "Internal", "Kind", "CallId", "ClientId", "PeerConnectionId", "TrackId", "UserId", "OutboundSfuRtpPadIds", });
     internal_static_org_observertc_schemas_dtos_SfuMediaStream_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_org_observertc_schemas_dtos_SfuMediaStream_fieldAccessorTable = new
