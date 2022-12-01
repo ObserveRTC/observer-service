@@ -1,5 +1,7 @@
 package org.observertc.observer.hamokdiscovery.kubernetes;
 
+import io.github.balazskreith.hamok.Storage;
+import io.github.balazskreith.hamok.memorystorages.MemoryStorage;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1Pod;
@@ -19,7 +21,6 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.time.Instant;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,7 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
 
     private Subject<RemotePeerDiscoveryEvent> subject = PublishSubject.create();
 
-    private Map<String, InetAddress> inetAddresses = new ConcurrentHashMap<>();
+    private Storage<String, DiscoveredRemotePeer> remotePeers;
     private final String namespace;
     private final String namePrefix;
     private final CoreV1Api api;
@@ -58,6 +59,47 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
         });
         this.subject.subscribe(event -> {
             logger.info("Pod with hostname {}:{} is {}", event.remotePeer().host(), event.remotePeer().port(), event.eventType());
+        });
+        var remoteAddressesStorage = MemoryStorage.<String, DiscoveredRemotePeer>builder()
+                .setId("remote-addresses")
+                .setExpiration(60 * 60 * 1000) // 1h
+                .setConcurrency(true)
+                .build();
+        this.remotePeers = remoteAddressesStorage;
+        remoteAddressesStorage.events().expiredEntry().subscribe(expiredEntry -> {
+            var remotePeer = expiredEntry.getOldValue();
+            if (remotePeer == null) return;
+            logger.info("Discovered Remote Peer is expired, hence removed from the storage. Id: {} State: {}, PodName: {}, HostName: {}, Address: {}",
+                    remotePeer.id,
+                    remotePeer.state,
+                    remotePeer.podName,
+                    remotePeer.inetAddress.getHostName(),
+                    remotePeer.inetAddress.getHostAddress()
+            );
+        });
+        remoteAddressesStorage.events().createdEntry().subscribe(expiredEntry -> {
+            var remotePeer = expiredEntry.getNewValue();
+            if (remotePeer == null) return;
+            logger.info("Discovered Remote Peer is added. Id: {} State: {}, PodName: {}, HostName: {}, Address: {}",
+                    remotePeer.id,
+                    remotePeer.state,
+                    remotePeer.podName,
+                    remotePeer.inetAddress.getHostName(),
+                    remotePeer.inetAddress.getHostAddress()
+            );
+        });
+        remoteAddressesStorage.events().updatedEntry().subscribe(expiredEntry -> {
+            var oldRemotePeer = expiredEntry.getOldValue();
+            var newRemotePeer = expiredEntry.getNewValue();
+            if (oldRemotePeer == null || newRemotePeer == null) return;
+            logger.info("Discovered Remote Peer is updated. Id: {} PrevState: {} State: {}, PodName: {}, HostName: {}, Address: {}",
+                    oldRemotePeer.id,
+                    oldRemotePeer.state,
+                    newRemotePeer.state,
+                    newRemotePeer.podName,
+                    newRemotePeer.inetAddress.getHostName(),
+                    newRemotePeer.inetAddress.getHostAddress()
+            );
         });
     }
 
@@ -171,6 +213,21 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
                 break;
             }
             for (var pod : v1PodList.getItems()) {
+                boolean running = true;
+                boolean terminated = false;
+                boolean waiting = false;
+                for (var containerStatus : pod.getStatus().getContainerStatuses()) {
+                    var state = containerStatus.getState();
+                    if (state == null) continue;
+                    running = running && state.getRunning() != null;
+                    terminated = terminated || state.getTerminated() != null;
+                    if (state.getWaiting() != null) {
+                        waiting = true;
+                    }
+                }
+                if (waiting) {
+                    continue;
+                }
                 var metadata = pod.getMetadata();
                 var podName = metadata.getName();
                 if (!podName.startsWith(this.namePrefix)) {
@@ -180,56 +237,75 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
                 if (id == null) continue;
                 var ipAddress = getPodIp(pod);
                 if (ipAddress == null) {
-                    var removedAddress = this.inetAddresses.remove(id);
-                    if (removedAddress != null) {
-                        var remotePeer = new RemotePeer(removedAddress.getHostName(), this.remotePort);
+                    var savedRemotePeer = this.remotePeers.get(id);
+                    if (savedRemotePeer != null) {
+                        var remotePeer = new RemotePeer(savedRemotePeer.inetAddress.getHostName(), this.remotePort);
                         var event = RemotePeerDiscoveryEvent.createRemovedRemotePeerDiscoveryEvent(remotePeer);
                         this.subject.onNext(event);
+                        this.remotePeers.set(id, new DiscoveredRemotePeer(
+                                id,
+                                podName,
+                                RemotePeerState.INACTIVE,
+                                null
+                        ));
                         result = true;
                     }
                     continue;
-                } else if (ipAddress.isLoopbackAddress() || ipAddress.isLinkLocalAddress()) {
+                }
+                if (ipAddress.isLoopbackAddress() || ipAddress.isLinkLocalAddress()) {
                     logger.debug("{} is local address, will not be used as remote", ipAddress);
                     continue;
-                } else {
-                    var match = this.localAddresses.stream().anyMatch(addr -> Arrays.equals(addr.getAddress(), ipAddress.getAddress()));
-                    if (match) {
-                        logger.debug("{} is detected local address, will not be used as remote", ipAddress);
-                        continue;
-                    }
+                }
+                var match = this.localAddresses.stream().anyMatch(addr -> Arrays.equals(addr.getAddress(), ipAddress.getAddress()));
+                if (match) {
+                    logger.debug("{} is detected local address, will not be used as remote", ipAddress);
+                    continue;
                 }
                 visitedIds.add(id);
-                var savedAddress = this.inetAddresses.put(id, ipAddress);
-                if (savedAddress == null) {
+                var savedRemotePeer = this.remotePeers.get(id);
+                if (savedRemotePeer == null) {
+                    if (terminated || !running) {
+                        // not interested in undiscovered but already terminated or not running pods
+                        continue;
+                    }
+                    savedRemotePeer = new DiscoveredRemotePeer(
+                            id,
+                            podName,
+                            RemotePeerState.ACTIVE,
+                            ipAddress
+                    );
+                    this.remotePeers.set(savedRemotePeer.id, savedRemotePeer);
+
                     var remotePeer = new RemotePeer(ipAddress.getHostName(), this.remotePort);
                     var event = RemotePeerDiscoveryEvent.createAddedRemotePeerDiscoveryEvent(remotePeer);
                     this.subject.onNext(event);
                     result = true;
-                } else if (!Arrays.equals(savedAddress.getAddress(), ipAddress.getAddress())) {
-                    var removedRemoteAddress = new RemotePeer(savedAddress.getHostName(), this.remotePort);
-                    var removedEvent = RemotePeerDiscoveryEvent.createRemovedRemotePeerDiscoveryEvent(removedRemoteAddress);
-                    this.subject.onNext(removedEvent);
 
-                    var addedRemoteAddress = new RemotePeer(ipAddress.getHostName(), this.remotePort);
-                    var addedEvent = RemotePeerDiscoveryEvent.createAddedRemotePeerDiscoveryEvent(addedRemoteAddress);
-                    this.subject.onNext(addedEvent);
+                } else if (RemotePeerState.ACTIVE.equals(savedRemotePeer.state)) {
+                    if (!terminated) {
+                        // if it is active, then nothing to be done
+                        continue;
+                    }
+                    var updatedRemotePeer = new DiscoveredRemotePeer(
+                            savedRemotePeer.id,
+                            podName,
+                            RemotePeerState.INACTIVE,
+                            ipAddress
+                    );
+                    this.remotePeers.set(updatedRemotePeer.id, updatedRemotePeer);
+
+                    var remotePeer = new RemotePeer(ipAddress.getHostName(), this.remotePort);
+                    var event = RemotePeerDiscoveryEvent.createRemovedRemotePeerDiscoveryEvent(remotePeer);
+                    this.subject.onNext(event);
+
                     result = true;
+                } else { // inactive
+
                 }
             }
             if (_continue == null) {
                 break;
             }
-        }
-        var idsToRemove = this.inetAddresses.keySet().stream()
-                .filter(savedId -> !visitedIds.contains(savedId))
-                .collect(Collectors.toList());
-
-        for (var id : idsToRemove) {
-            var removedAddress = this.inetAddresses.remove(id);
-            var removedRemoteAddress = new RemotePeer(removedAddress.getHostName(), this.remotePort);
-            var removedEvent = RemotePeerDiscoveryEvent.createRemovedRemotePeerDiscoveryEvent(removedRemoteAddress);
-            this.subject.onNext(removedEvent);
-            result = true;
         }
         return result;
     }
@@ -244,5 +320,19 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
             logger.error("Error occurred while parsing podIp {}", podIp, e);
             return null;
         }
+    }
+
+    private enum RemotePeerState {
+        ACTIVE,
+        INACTIVE
+    }
+
+    private record DiscoveredRemotePeer(
+            String id,
+            String podName,
+            RemotePeerState state,
+            InetAddress inetAddress
+    ) {
+
     }
 }
