@@ -19,6 +19,7 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class WebsocketConnection {
@@ -156,6 +157,7 @@ public class WebsocketConnection {
     }
 
     private WebSocketClient createClient() {
+        var backoffTimeInMs = new AtomicInteger(5000);
         return new WebSocketClient(URI.create(this.serverUri)) {
             @Override
             public void onOpen(ServerHandshake handshakedata) {
@@ -167,6 +169,7 @@ public class WebsocketConnection {
                             EndpointState.JOINED,
                             remoteIdentifiers.endpointId
                     ));
+                    backoffTimeInMs.set(5000);
                 }
             }
 
@@ -217,10 +220,13 @@ public class WebsocketConnection {
                 if (!opened) {
                     return;
                 }
+                var newBackoffTimeInMs = Math.min(15 * 3600 * 1000, backoffTimeInMs.get() * 2);
+                backoffTimeInMs.set(newBackoffTimeInMs);
+                logger.info("Retrying to connect to {} backoff time in ms {}", uri, backoffTimeInMs.get());
                 var process = scheduler.scheduleDirect(() -> {
                     connecting.set(null);
                     tryConnect(newClient);
-                }, 5000, TimeUnit.MILLISECONDS);
+                }, backoffTimeInMs.get(), TimeUnit.MILLISECONDS);
                 if (!connecting.compareAndSet(null, process)) {
                     process.dispose();
                 }
