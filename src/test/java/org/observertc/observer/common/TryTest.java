@@ -1,5 +1,6 @@
 package org.observertc.observer.common;
 
+import io.github.balazskreith.hamok.FailedOperationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +15,16 @@ class TryTest {
         Try.createForSupplier(() -> {
             invoked.incrementAndGet();
             throw new RuntimeException();
+        }).withMaxRetry(3).execute();
+        Assertions.assertEquals(3, invoked.get());
+    }
+
+    @Test
+    void tryRunThreeTimes_2() {
+        var invoked = new AtomicInteger(0);
+        Try.createForSupplier(() -> {
+            invoked.incrementAndGet();
+            throw new FailedOperationException("");
         }).withMaxRetry(3).execute();
         Assertions.assertEquals(3, invoked.get());
     }

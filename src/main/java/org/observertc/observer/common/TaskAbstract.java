@@ -130,7 +130,7 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 	protected abstract T perform() throws Throwable;
 
 	protected void rollback(Throwable t) {
-		this.onLogger.info("No Rollback has been implemented to this task ({})", this.getClass().getSimpleName());
+		this.onLogger.info("No Rollback has been implemented to this task ({})", Utils.firstNotNull(this.name, this.getClass().getSimpleName()));
 		// no rollback
 	}
 

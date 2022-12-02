@@ -27,7 +27,7 @@ public class Try<T> extends TaskAbstract<T> {
         var trying = new Try<T>(() -> {
             var value = supplier.get();
             result.set(value);
-        }, null);
+        }, null).withRethrowingExceptions(false);
         if (trying.execute().succeeded()) {
             return result.get();
         } else {

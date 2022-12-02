@@ -48,7 +48,7 @@ public class ServiceShutdownListener implements ApplicationEventListener<Service
 
 	@Override
 	public void onApplicationEvent(ServiceStoppedEvent event) {
-		logger.info("Shutdown started");
+		logger.info("Shutdown started: {}", event);
 		if (this.backgroundTasksExecutor.isStarted()) {
 			this.backgroundTasksExecutor.stop();
 		}
