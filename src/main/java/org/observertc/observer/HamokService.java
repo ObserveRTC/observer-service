@@ -36,8 +36,8 @@ public class HamokService  implements InfoSource {
     @Inject
     HamokEndpointBuilderService hamokEndpointBuilderService;
 
-//    @Inject
-//    Sandbox sandbox;
+    @Inject
+    Sandbox sandbox;
 
     private volatile boolean running = false;
     private HamokEndpoint endpoint;
@@ -108,7 +108,7 @@ public class HamokService  implements InfoSource {
         }
 
         logger.info("Hamok is started");
-//        sandbox.start();this.storageGrid.addRemoteEndpointId(UUID.randomUUID());
+        sandbox.start();this.storageGrid.addRemoteEndpointId(UUID.randomUUID());
     }
 
     boolean isRunning() {

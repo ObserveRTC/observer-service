@@ -110,8 +110,8 @@ observer:
     storageGrid:
       raftMaxLogEntriesRetentionTimeInMinutes: 5
       heartbeatInMs: 150
-      followerMaxIdleInMs: 30000
-      peerMaxIdleInMs: 50000
+      followerMaxIdleInMs: 10000
+      peerMaxIdleInMs: 10000
       sendingHelloTimeoutInMs: 1500
       applicationCommitIndexSyncTimeoutInMs: 60_000
       requestTimeoutInMs: 10000
