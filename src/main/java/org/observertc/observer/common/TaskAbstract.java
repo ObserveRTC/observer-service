@@ -75,11 +75,11 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 			}
 			if (Objects.nonNull(thrown)) {
 				String exceptionMessage = this.getErrorMessage();
-				this.onLogger.error(exceptionMessage, thrown);
+				this.onLogger.warn(exceptionMessage, thrown);
 				try {
 					this.rollback(thrown);
 				} catch (Throwable t) {
-					this.onLogger.error("Unexpected exception occurred during rollback", t);
+					this.onLogger.warn("Unexpected exception occurred during rollback", t);
 				}
 				if (this.rethrowException) {
 					throw new RuntimeException(thrown);
@@ -95,7 +95,7 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 					this.statsConsumer.accept(stats);
 				}
 			} catch (Exception ex) {
-				this.onLogger.error("Error while forwarding task stats", ex);
+				this.onLogger.warn("Error while forwarding task stats", ex);
 			}
 			try {
 				finalAction.run();
@@ -242,7 +242,7 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 		try {
 			return this.errorMessageSupplier.get();
 		} catch (Throwable ex) {
-			this.onLogger.error("Can you check your error message supplier? It just caused another error", ex);
+			this.onLogger.warn("Can you check your error message supplier? It just caused another error", ex);
 			return "Unexpected error occurred in " + this.getClass().getSimpleName();
 		}
 
