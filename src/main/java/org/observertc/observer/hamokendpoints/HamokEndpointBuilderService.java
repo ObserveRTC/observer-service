@@ -1,7 +1,11 @@
 package org.observertc.observer.hamokendpoints;
 
+import io.micronaut.context.BeanProvider;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.BackgroundTasksExecutor;
+import org.observertc.observer.HamokService;
+import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.configbuilders.Builder;
 import org.observertc.observer.configbuilders.ConfigConverter;
@@ -23,10 +27,30 @@ public class HamokEndpointBuilderService extends AbstractBuilder {
     @Inject
     DiscoveryBuilderService discoveryBuilderService;
 
+    @Inject
+    BackgroundTasksExecutor backgroundTasksExecutor;
+
+    @Inject
+    BeanProvider<HamokService> hamokServiceBeanProvider;
+
+
     @PostConstruct
     void setup() {
         this.essentials = new EndpointsBuildersEssentials(
-                this.discoveryBuilderService
+                this.discoveryBuilderService,
+                this::refreshRemoteEndpointIds
+        );
+    }
+
+    private void refreshRemoteEndpointIds() {
+        this.backgroundTasksExecutor.addTask(ChainedTask.<Void>builder()
+                .withName("Refresh Remote endpoint ids ")
+                .withLogger(logger)
+                .addActionStage("Invoke HamokServer refreshEndpoint method ", () -> {
+                    var hamokService = hamokServiceBeanProvider.get();
+                    hamokService.refreshRemoteEndpointId();
+                })
+                .build()
         );
     }
 

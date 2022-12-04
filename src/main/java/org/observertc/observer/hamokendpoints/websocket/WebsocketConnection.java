@@ -42,13 +42,14 @@ public class WebsocketConnection {
 
     private final AtomicReference<Disposable> connecting = new AtomicReference<>(null);
     private final AtomicReference<WebSocketClient> client = new AtomicReference<>(null);
-    private final Subject<RemoteIdentifiers> remoteEndpointIdsSubject = PublishSubject.create();
     private final Subject<EndpointStateChange> endpointStateChangedSubject = PublishSubject.create();
+
     private volatile boolean disposed = false;
     private volatile boolean opened = false;
-    private volatile boolean joined = false;
+//    private volatile boolean joined = false;
 
-    private RemoteIdentifiers remoteIdentifiers = null;
+//    private AtomicReference<EndpointState> stateHolder = new AtomicReference<>(EndpointState.DETACHED);
+    private AtomicReference<RemoteIdentifiers> remoteIdentifiersHolder = new AtomicReference<>(null);
 
     private final ConnectionBuffer buffer;
     private final String serverUri;
@@ -72,6 +73,22 @@ public class WebsocketConnection {
 
     public String getServerUri() {
         return this.serverUri;
+    }
+
+    public boolean isOpened() {
+        return this.opened;
+    }
+
+    public boolean isJoined() {
+        return this.disposed == false && this.opened == true && this.remoteIdentifiersHolder.get() != null;
+    }
+
+    public UUID getRemoteEndpointId() {
+        var remoteIdentifiers = this.remoteIdentifiersHolder.get();
+        if (remoteIdentifiers == null) {
+            return null;
+        }
+        return remoteIdentifiers.endpointId;
     }
 
     public void open() {
@@ -98,9 +115,9 @@ public class WebsocketConnection {
         }
     }
 
-    public RemoteIdentifiers getRemoteIdentifiers() {
-        return remoteIdentifiers;
-    }
+//    public RemoteIdentifiers getRemoteIdentifiers() {
+//        return remoteIdentifiers;
+//    }
 
     public void close() {
         if (this.disposed) {
@@ -148,9 +165,9 @@ public class WebsocketConnection {
         }
     }
 
-    public Observable<RemoteIdentifiers> remoteIdentifiers() {
-        return this.remoteEndpointIdsSubject;
-    }
+//    public Observable<RemoteIdentifiers> remoteIdentifiers() {
+//        return this.remoteEndpointIdsSubject;
+//    }
 
     public Observable<EndpointStateChange> endpointStateChanged() {
         return this.endpointStateChangedSubject;
@@ -162,37 +179,40 @@ public class WebsocketConnection {
             @Override
             public void onOpen(ServerHandshake handshakedata) {
                 logger.info("Connected to {}, address is {}", this.uri, this.getRemoteSocketAddress());
-                if (!joined && remoteIdentifiers != null) {
-                    // join!
-                    joined = true;
-                    endpointStateChangedSubject.onNext(new EndpointStateChange(
-                            EndpointState.JOINED,
-                            remoteIdentifiers.endpointId
-                    ));
-                    backoffTimeInMs.set(5000);
-                }
             }
 
             @Override
             public void onMessage(String data) {
+                if (remoteIdentifiersHolder.get() != null) {
+                    var currentRemoteEndpointId = remoteIdentifiersHolder.get();
+                    logger.warn("Received unexpected data on server {}. Current remote endpoint id {}, remote server uri: {}, received data: {}",
+                            serverUri,
+                            currentRemoteEndpointId.endpointId,
+                            currentRemoteEndpointId.serverUri,
+                            data
+                    );
+                    return;
+                }
                 try {
-                    var remoteIdentifierWasNull = remoteIdentifiers == null;
-                    var remoteIdentifiersHolder = mapper.readValue(data, RemoteIdentifiers.class);
-                    if (remoteIdentifiersHolder.endpointId != null && remoteIdentifiersHolder.serverUri != null) {
-                        remoteIdentifiers = remoteIdentifiersHolder;
-                        remoteEndpointIdsSubject.onNext(remoteIdentifiersHolder);
-                        if (!joined && remoteIdentifierWasNull) {
-                            // join!
-                            joined = true;
-                            endpointStateChangedSubject.onNext(new EndpointStateChange(
-                                    EndpointState.JOINED,
-                                    remoteIdentifiers.endpointId
-                            ));
-                        }
+                    var remoteIdentifiers = mapper.readValue(data, RemoteIdentifiers.class);
+                    if (!remoteIdentifiersHolder.compareAndSet(null, remoteIdentifiers)) {
+                        logger.warn("Already set remote identifier on server {}. Current remote endpoint id {}, received remote endpoint id: {}",
+                                serverUri,
+                                remoteIdentifiersHolder.get(),
+                                remoteIdentifiers
+                        );
+                        return;
                     }
-
+                    logger.info("Remote identifiers received, endpoint is joined. {}", remoteIdentifiersHolder.get());
+                    endpointStateChangedSubject.onNext(new EndpointStateChange(
+                            EndpointState.JOINED,
+                            remoteIdentifiersHolder.get().endpointId
+                    ));
                 } catch (JsonProcessingException e) {
-                    logger.warn("Error in received message", e);
+                    logger.warn("Error in received message {}", data, e);
+                    return;
+                } catch (Exception ex) {
+                    logger.warn("Error occurred while executing operations for received message {}", data, ex);
                     return;
                 }
             }
@@ -200,12 +220,11 @@ public class WebsocketConnection {
             @Override
             public void onClose(int code, String reason, boolean remote) {
                 logger.info("Connection to {} is closed with code: {}, reason: {}, byremote: {}", uri, code, reason, remote);
-                if (joined && remoteIdentifiers != null) {
-                    // detach
-                    joined = false;
+                var removedRemoteIdentifiers = remoteIdentifiersHolder.getAndSet(null);
+                if (removedRemoteIdentifiers != null) {
                     endpointStateChangedSubject.onNext(new EndpointStateChange(
                             EndpointState.DETACHED,
-                            remoteIdentifiers.endpointId
+                            removedRemoteIdentifiers.endpointId
                     ));
                 }
                 if (disposed || code == CLOSE_WITHOUT_RECONNECT_CODE) {

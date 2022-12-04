@@ -7,6 +7,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -22,12 +23,14 @@ import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 
 public class WebsocketEndpoint implements HamokEndpoint {
@@ -36,9 +39,7 @@ public class WebsocketEndpoint implements HamokEndpoint {
 
     private final PublishSubject<Message> inboundChannel = PublishSubject.create();
     private final PublishSubject<Message> outboundChannel = PublishSubject.create();
-    private final PublishSubject<UUID> remoteEndpointJoinedSubject = PublishSubject.create();
-    private final PublishSubject<UUID> remoteEndpointDetachedSubject = PublishSubject.create();
-
+    private final Subject<UUID> stateChangedEvent = PublishSubject.create();
 
     private final AtomicReference<WebSocketServer> server = new AtomicReference<>(null);
     private final Map<UUID, String> addresses = new ConcurrentHashMap<>();
@@ -105,18 +106,8 @@ public class WebsocketEndpoint implements HamokEndpoint {
                             event.remotePeer().host(),
                             event.remotePeer().port()
                     );
-                    connection.remoteIdentifiers().subscribe(remoteIdentifier -> {
-                        this.addresses.put(remoteIdentifier.endpointId, connection.getServerUri());
-                        logger.info("Remote endpoint id {} is bound to {}",
-                                remoteIdentifier.endpointId,
-                                connection.getServerUri()
-                        );
-                    });
-                    connection.endpointStateChanged().subscribe(endpointStateChange -> {
-                        switch (endpointStateChange.state()) {
-                            case JOINED -> remoteEndpointJoinedSubject.onNext(endpointStateChange.endpointId());
-                            case DETACHED -> remoteEndpointDetachedSubject.onNext(endpointStateChange.endpointId());
-                        }
+                    connection.endpointStateChanged().subscribe(stateChangeEvent -> {
+                        this.stateChangedEvent.onNext(UUID.randomUUID());
                     });
                     this.connections.put(connection.getServerUri(), connection);
                     connection.open();
@@ -129,15 +120,20 @@ public class WebsocketEndpoint implements HamokEndpoint {
                                 event.remotePeer().host(),
                                 event.remotePeer().port()
                         );
-                        var remoteIdentifier = connection.getRemoteIdentifiers();
-                        if (remoteIdentifier != null && remoteIdentifier.endpointId != null) {
-                            this.addresses.remove(remoteIdentifier.endpointId);
-                        }
                         connection.close();
                     }
+                    this.stateChangedEvent.onNext(UUID.randomUUID());
                 }
             }
         });
+    }
+
+    @Override
+    public Set<UUID> getActiveRemoteEndpointIds() {
+        return this.connections.values().stream()
+                .filter(connection -> connection.isJoined() && connection.getRemoteEndpointId() != null)
+                .map(connection -> connection.getRemoteEndpointId())
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -145,20 +141,10 @@ public class WebsocketEndpoint implements HamokEndpoint {
         return true;
     }
 
-    @Override
-    public int elapsedSecSinceReady() {
-        return (int) (Instant.now().getEpochSecond() - createdTimestampInSec);
+    public Observable<UUID> stateChangedEvent() {
+        return this.stateChangedEvent;
     }
 
-    @Override
-    public Observable<UUID> remoteEndpointJoined() {
-        return this.remoteEndpointJoinedSubject;
-    }
-
-    @Override
-    public Observable<UUID> remoteEndpointDetached() {
-        return this.remoteEndpointDetachedSubject;
-    }
 
     @Override
     public Observable<Message> inboundChannel() {

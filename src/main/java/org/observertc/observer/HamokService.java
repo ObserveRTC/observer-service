@@ -9,6 +9,7 @@ import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.management.endpoint.info.InfoSource;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.hamokendpoints.HamokEndpoint;
 import org.observertc.observer.hamokendpoints.HamokEndpointBuilderService;
@@ -72,9 +73,37 @@ public class HamokService  implements InfoSource {
                     logger.info("Endpoint {} detached from StorageGrid", endpointId);
                     remotePeers.remove(endpointId);
                 });
+
         this.storageGrid.errors().subscribe(err -> {
             logger.warn("Error occurred in storageGrid. Code: {}", err.getCode(), err.getException());
         });
+    }
+
+    public void refreshRemoteEndpointId() {
+        var endpoint = this.endpointHolder.get();
+        var storageGrid = this.storageGrid;
+        if (storageGrid == null || endpoint == null) {
+            logger.warn("To refresh a remote endpoint storageGrid end endpoint must exists");
+            return;
+        }
+        var currentRemoteEndpointIds = storageGrid.endpoints().getRemoteEndpointIds();
+        var activeRemoteEndpointIds = endpoint.getActiveRemoteEndpointIds();
+        logger.info("Updating remote endpoint ids. Current remote endpointIds: {}, active remote endpoint ids: {}",
+                JsonUtils.objectToString(currentRemoteEndpointIds),
+                JsonUtils.objectToString(activeRemoteEndpointIds)
+        );
+        for (var activeRemoteEndpointId : activeRemoteEndpointIds) {
+            if (currentRemoteEndpointIds.contains(activeRemoteEndpointId)) {
+                continue;
+            }
+            storageGrid.addRemoteEndpointId(activeRemoteEndpointId);
+        }
+        for (var currentRemoteEndpointId : currentRemoteEndpointIds) {
+            if (activeRemoteEndpointIds.contains(currentRemoteEndpointId)) {
+                continue;
+            }
+            storageGrid.removeRemoteEndpointId(currentRemoteEndpointId);
+        }
     }
 
     @PreDestroy
@@ -95,12 +124,6 @@ public class HamokService  implements InfoSource {
             if (endpoint != null) {
                 endpoint.inboundChannel().subscribe(this.storageGrid.transport().getReceiver());
                 this.storageGrid.transport().getSender().subscribe(endpoint.outboundChannel());
-                endpoint.remoteEndpointJoined().subscribe(remoteEndpointId -> {
-                    this.storageGrid.addRemoteEndpointId(remoteEndpointId);
-                });
-                endpoint.remoteEndpointDetached().subscribe(remoteEndpointId -> {
-                    this.storageGrid.removeRemoteEndpointId(remoteEndpointId);
-                });
                 if (this.endpointHolder.compareAndSet(null, endpoint)) {
                     endpoint.start();
                 } else {
