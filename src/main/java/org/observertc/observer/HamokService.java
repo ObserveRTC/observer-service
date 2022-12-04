@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Singleton
 public class HamokService  implements InfoSource {
@@ -36,11 +37,11 @@ public class HamokService  implements InfoSource {
     @Inject
     HamokEndpointBuilderService hamokEndpointBuilderService;
 
-    @Inject
-    Sandbox sandbox;
+//    @Inject
+//    Sandbox sandbox;
 
     private volatile boolean running = false;
-    private HamokEndpoint endpoint;
+    private final AtomicReference<HamokEndpoint> endpointHolder = new AtomicReference<>();
     private StorageGrid storageGrid;
     private Set<UUID> remotePeers = Collections.synchronizedSet(new HashSet<>());
 
@@ -87,28 +88,35 @@ public class HamokService  implements InfoSource {
             return;
         }
         this.running = true;
-        if (this.endpoint == null) {
-            this.endpoint = this.hamokEndpointBuilderService.build(this.config.endpoint);
+        var endpoint = this.endpointHolder.get();
+        if (this.endpointHolder.get() == null) {
+            endpoint = this.hamokEndpointBuilderService.build(this.config.endpoint);
 
-            if (this.endpoint != null) {
-                this.endpoint.inboundChannel().subscribe(this.storageGrid.transport().getReceiver());
-                this.storageGrid.transport().getSender().subscribe(this.endpoint.outboundChannel());
-                this.endpoint.remoteEndpointJoined().subscribe(remoteEndpointId -> {
+            if (endpoint != null) {
+                endpoint.inboundChannel().subscribe(this.storageGrid.transport().getReceiver());
+                this.storageGrid.transport().getSender().subscribe(endpoint.outboundChannel());
+                endpoint.remoteEndpointJoined().subscribe(remoteEndpointId -> {
                     this.storageGrid.addRemoteEndpointId(remoteEndpointId);
                 });
-                this.endpoint.remoteEndpointDetached().subscribe(remoteEndpointId -> {
+                endpoint.remoteEndpointDetached().subscribe(remoteEndpointId -> {
                     this.storageGrid.removeRemoteEndpointId(remoteEndpointId);
                 });
-                this.endpoint.start();
+                if (this.endpointHolder.compareAndSet(null, endpoint)) {
+                    endpoint.start();
+                } else {
+                    endpoint.stop();
+                }
             } else {
                 logger.warn("Endpoint for hamok has not been built, the server cannot share its internal data with other instances in the grid");
             }
-        } else {
-            this.endpoint.start();
+        } else if (!endpoint.isRunning()){
+            endpoint.start();
         }
 
         logger.info("Hamok is started");
-        sandbox.start();this.storageGrid.addRemoteEndpointId(UUID.randomUUID());
+
+//        logger.warn("DEBUG PURPUSE ADD ONE EXTRA NOT EXISTING ENDPOINT");
+//        this.storageGrid.addRemoteEndpointId(UUID.randomUUID());
     }
 
     boolean isRunning() {
@@ -120,9 +128,11 @@ public class HamokService  implements InfoSource {
             return;
         }
         this.running = false;
-        if (this.endpoint.isRunning()) {
-            this.endpoint.stop();
+        var endpoint = this.endpointHolder.get();
+        if (endpoint != null && endpoint.isRunning()) {
+            endpoint.stop();
         }
+        this.endpointHolder.set(null);
     }
 
     public StorageGrid getStorageGrid() {
@@ -139,7 +149,11 @@ public class HamokService  implements InfoSource {
 
     private int alreadyLoggedFlags = 0;
     public boolean isReady() {
-        if (!this.endpoint.isReady()) {
+        var endpoint = this.endpointHolder.get();
+        if (endpoint == null) {
+            return true;
+        }
+        if (!endpoint.isReady()) {
             if ((this.alreadyLoggedFlags & 1) == 0) {
                 logger.info("Waiting for endpoint to be ready");
                 this.alreadyLoggedFlags = 1;

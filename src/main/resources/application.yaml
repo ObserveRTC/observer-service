@@ -114,7 +114,7 @@ observer:
       peerMaxIdleInMs: 10000
       sendingHelloTimeoutInMs: 1500
       applicationCommitIndexSyncTimeoutInMs: 60_000
-      requestTimeoutInMs: 10000
+      requestTimeoutInMs: 1000
     memberNamesPool:
       - "Lisa"
       - "Bart"
