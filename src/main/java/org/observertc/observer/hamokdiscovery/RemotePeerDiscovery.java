@@ -6,7 +6,8 @@ import java.net.InetAddress;
 import java.util.List;
 
 public interface RemotePeerDiscovery {
-    Observable<RemotePeerDiscoveryEvent> events();
+    Observable<HamokConnectionStateChangedEvent> connectionStateChanged();
+//    Observable<RemotePeerDiscoveryEvent> events();
     boolean isReady();
     void start();
     void stop();

@@ -9,9 +9,10 @@ import io.kubernetes.client.openapi.models.V1PodList;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import org.observertc.observer.hamokdiscovery.RemotePeer;
+import org.observertc.observer.hamokdiscovery.HamokConnection;
+import org.observertc.observer.hamokdiscovery.HamokConnectionState;
+import org.observertc.observer.hamokdiscovery.HamokConnectionStateChangedEvent;
 import org.observertc.observer.hamokdiscovery.RemotePeerDiscovery;
-import org.observertc.observer.hamokdiscovery.RemotePeerDiscoveryEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +20,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,9 +30,9 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
 
     private static final Logger logger = LoggerFactory.getLogger(K8sPodsDiscovery.class);
 
-    private Subject<RemotePeerDiscoveryEvent> subject = PublishSubject.create();
+    private Subject<HamokConnectionStateChangedEvent> stateChanged = PublishSubject.create();
 
-    private Storage<String, DiscoveredRemotePeer> remotePeers;
+    private Storage<String, DiscoveredRemotePeer> discoveredRemotePeers;
     private final String namespace;
     private final String namePrefix;
     private final CoreV1Api api;
@@ -57,20 +59,17 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
         this.localAddresses.forEach(addr -> {
             logger.info("Found local address: {}", addr);
         });
-        this.subject.subscribe(event -> {
-            logger.info("Pod with hostname {}:{} is {}", event.remotePeer().host(), event.remotePeer().port(), event.eventType());
-        });
         var remoteAddressesStorage = MemoryStorage.<String, DiscoveredRemotePeer>builder()
                 .setId("remote-addresses")
                 .setExpiration(60 * 60 * 1000) // 1h
                 .setConcurrency(true)
                 .build();
-        this.remotePeers = remoteAddressesStorage;
+        this.discoveredRemotePeers = remoteAddressesStorage;
         remoteAddressesStorage.events().expiredEntry().subscribe(expiredEntry -> {
             var remotePeer = expiredEntry.getOldValue();
             if (remotePeer == null) return;
-            logger.info("Discovered Remote Peer is expired, hence removed from the storage. Id: {} State: {}, PodName: {}, HostName: {}, Address: {}",
-                    remotePeer.id,
+            logger.info("Discovered Remote Peer is expired, hence removed from the storage. podId: {} State: {}, PodName: {}, HostName: {}, Address: {}",
+                    remotePeer.podId,
                     remotePeer.state,
                     remotePeer.podName,
                     remotePeer.inetAddress.getHostName(),
@@ -80,8 +79,8 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
         remoteAddressesStorage.events().createdEntry().subscribe(expiredEntry -> {
             var remotePeer = expiredEntry.getNewValue();
             if (remotePeer == null) return;
-            logger.info("Discovered Remote Peer is added. Id: {} State: {}, PodName: {}, HostName: {}, Address: {}",
-                    remotePeer.id,
+            logger.info("Discovered Remote Peer is added. podId: {} State: {}, PodName: {}, HostName: {}, Address: {}",
+                    remotePeer.podId,
                     remotePeer.state,
                     remotePeer.podName,
                     remotePeer.inetAddress.getHostName(),
@@ -92,8 +91,8 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
             var oldRemotePeer = expiredEntry.getOldValue();
             var newRemotePeer = expiredEntry.getNewValue();
             if (oldRemotePeer == null || newRemotePeer == null) return;
-            logger.info("Discovered Remote Peer is updated. Id: {} PrevState: {} State: {}, PodName: {}, HostName: {}, Address: {}",
-                    oldRemotePeer.id,
+            logger.info("Discovered Remote Peer is updated. podId: {} PrevState: {} State: {}, PodName: {}, HostName: {}, Address: {}",
+                    oldRemotePeer.podId,
                     oldRemotePeer.state,
                     newRemotePeer.state,
                     newRemotePeer.podName,
@@ -101,11 +100,16 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
                     newRemotePeer.inetAddress.getHostAddress()
             );
         });
+        this.stateChanged.subscribe(hamokConnectionStateChangedEvent -> {
+            logger.info("Hamok Connection state is changed. {}",
+                hamokConnectionStateChangedEvent
+            );
+        });
     }
 
     @Override
-    public Observable<RemotePeerDiscoveryEvent> events() {
-        return this.subject;
+    public Observable<HamokConnectionStateChangedEvent> connectionStateChanged() {
+        return this.stateChanged;
     }
 
     public boolean isReady() {
@@ -187,9 +191,81 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
         }
     }
 
+    private void setInactive(String podId) {
+        if (podId == null) {
+            logger.warn("Attempted to set a non-existing podId {} inactive", podId);
+            return;
+        }
+        var savedRemotePeer = this.discoveredRemotePeers.get(podId);
+        if (savedRemotePeer == null) {
+            logger.warn("Attempted to set a non-existing podId {} inactive", podId);
+            return;
+        }
+        if (HamokConnectionState.INACTIVE.equals(savedRemotePeer.state)) {
+            logger.warn("Attempted to discoveredRemotePeer inactive twice. {} ", savedRemotePeer);
+            return;
+        }
+        var updatedRemotePeer = new DiscoveredRemotePeer(
+                savedRemotePeer.podId,
+                savedRemotePeer.podName,
+                HamokConnectionState.ACTIVE,
+                savedRemotePeer.inetAddress
+        );
+        this.discoveredRemotePeers.set(updatedRemotePeer.podId, updatedRemotePeer);
+        var connectionId = UUID.nameUUIDFromBytes(updatedRemotePeer.podId.getBytes(StandardCharsets.UTF_8));
+        var hamokConnection = new HamokConnection(
+                connectionId,
+                savedRemotePeer.inetAddress.getHostName(),
+                this.remotePort
+        );
+        this.stateChanged.onNext(new HamokConnectionStateChangedEvent(
+                hamokConnection,
+                updatedRemotePeer.state
+        ));
+    }
+
+    private void createOrSetActive(String podId, String podName, InetAddress inetAddress) {
+        if (podId == null) {
+            logger.warn("Attempted to set a non-existing podId {} active", podId);
+            return;
+        }
+        var discoveredRemotePeer = this.discoveredRemotePeers.get(podId);
+        if (discoveredRemotePeer == null) {
+            discoveredRemotePeer = new DiscoveredRemotePeer(
+                    podId,
+                    podName,
+                    HamokConnectionState.ACTIVE,
+                    inetAddress
+            );
+            logger.warn("Attempted to set a non-existing podId {} active", podId);
+        } else if (HamokConnectionState.ACTIVE.equals(discoveredRemotePeer.state)) {
+            logger.warn("Attempted to discoveredRemotePeer active twice. {} ", discoveredRemotePeer);
+            return;
+        } else {
+            discoveredRemotePeer = new DiscoveredRemotePeer(
+                    discoveredRemotePeer.podId,
+                    discoveredRemotePeer.podName,
+                    HamokConnectionState.ACTIVE,
+                    discoveredRemotePeer.inetAddress
+            );
+        }
+        this.discoveredRemotePeers.set(podId, discoveredRemotePeer);
+
+        var connectionId = UUID.nameUUIDFromBytes(discoveredRemotePeer.podId.getBytes(StandardCharsets.UTF_8));
+        var hamokConnection = new HamokConnection(
+                connectionId,
+                discoveredRemotePeer.inetAddress.getHostName(),
+                this.remotePort
+        );
+        this.stateChanged.onNext(new HamokConnectionStateChangedEvent(
+                hamokConnection,
+                discoveredRemotePeer.state
+        ));
+    }
+
     private boolean update() {
         boolean result = false;
-        Set<String> visitedIds = new HashSet<>();
+        Set<String> visitedPodIds = new HashSet<>();
         String _continue = null;
         while(true) {
             V1PodList v1PodList;
@@ -233,21 +309,17 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
                 if (!podName.startsWith(this.namePrefix)) {
                     continue;
                 }
-                var id = metadata.getUid();
-                if (id == null) continue;
+                var podId = metadata.getUid();
+                var connectionId = UUID.nameUUIDFromBytes(podId.getBytes());
+                if (podId == null) continue;
+
+                visitedPodIds.add(podId);
+
                 var ipAddress = getPodIp(pod);
                 if (ipAddress == null) {
-                    var savedRemotePeer = this.remotePeers.get(id);
+                    var savedRemotePeer = this.discoveredRemotePeers.get(podId);
                     if (savedRemotePeer != null) {
-                        var remotePeer = new RemotePeer(savedRemotePeer.inetAddress.getHostName(), this.remotePort);
-                        var event = RemotePeerDiscoveryEvent.createRemovedRemotePeerDiscoveryEvent(remotePeer);
-                        this.subject.onNext(event);
-                        this.remotePeers.set(id, new DiscoveredRemotePeer(
-                                id,
-                                podName,
-                                RemotePeerState.INACTIVE,
-                                null
-                        ));
+                        this.setInactive(podId);
                         result = true;
                     }
                     continue;
@@ -261,53 +333,49 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
                     logger.debug("{} is detected local address, will not be used as remote", ipAddress);
                     continue;
                 }
-                visitedIds.add(id);
-                var savedRemotePeer = this.remotePeers.get(id);
+
+                var savedRemotePeer = this.discoveredRemotePeers.get(podId);
                 if (savedRemotePeer == null) {
                     if (terminated || !running) {
                         // not interested in undiscovered but already terminated or not running pods
                         continue;
                     }
-                    savedRemotePeer = new DiscoveredRemotePeer(
-                            id,
+                    this.createOrSetActive(
+                            podId,
                             podName,
-                            RemotePeerState.ACTIVE,
                             ipAddress
                     );
-                    this.remotePeers.set(savedRemotePeer.id, savedRemotePeer);
-
-                    var remotePeer = new RemotePeer(ipAddress.getHostName(), this.remotePort);
-                    var event = RemotePeerDiscoveryEvent.createAddedRemotePeerDiscoveryEvent(remotePeer);
-                    this.subject.onNext(event);
                     result = true;
-
-                } else if (RemotePeerState.ACTIVE.equals(savedRemotePeer.state)) {
+                } else if (HamokConnectionState.ACTIVE.equals(savedRemotePeer.state)) {
+                    // a connection reported as active
                     if (!terminated) {
-                        // if it is active, then nothing to be done
+                        // if it iss not terminated then its ok.
                         continue;
                     }
-                    var updatedRemotePeer = new DiscoveredRemotePeer(
-                            savedRemotePeer.id,
-                            podName,
-                            RemotePeerState.INACTIVE,
-                            ipAddress
-                    );
-                    this.remotePeers.set(updatedRemotePeer.id, updatedRemotePeer);
-
-                    var remotePeer = new RemotePeer(ipAddress.getHostName(), this.remotePort);
-                    var event = RemotePeerDiscoveryEvent.createRemovedRemotePeerDiscoveryEvent(remotePeer);
-                    this.subject.onNext(event);
-
+                    // if it is terminated we set it to inactive
+                    this.setInactive(podId);
                     result = true;
-                } else { // inactive
-
+                } else if (HamokConnectionState.INACTIVE.equals(savedRemotePeer.state)) {
+                    // the connection set to inactive
+                    if (running && !terminated) {
+                        // it is expected to be in terminated state or not running, so if its not the case maybe we should surface this
+                        logger.warn("Discovered, but Inactivated pod is running: {}, terminated: {}", podId, running, terminated);
+                    }
+                    // currently we are not activate it again.
+                    continue;
                 }
             }
             if (_continue == null) {
                 break;
             }
-
-
+        }
+        for (var it = discoveredRemotePeers.iterator(); it.hasNext(); ) {
+            var entry = it.next();
+            var podId = entry.getKey();
+            if (visitedPodIds.contains(podId)) {
+                continue;
+            }
+            this.setInactive(podId);
         }
         return result;
     }
@@ -324,15 +392,11 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
         }
     }
 
-    private enum RemotePeerState {
-        ACTIVE,
-        INACTIVE
-    }
 
     private record DiscoveredRemotePeer(
-            String id,
+            String podId,
             String podName,
-            RemotePeerState state,
+            HamokConnectionState state,
             InetAddress inetAddress
     ) {
 

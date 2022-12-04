@@ -2,20 +2,20 @@ package org.observertc.observer.hamokdiscovery;
 
 public record RemotePeerDiscoveryEvent(
         RemotePeerDiscoveryEventTypes eventType,
-        RemotePeer remotePeer
+        HamokConnection hamokConnection
 ) {
 
-    public static RemotePeerDiscoveryEvent createRemovedRemotePeerDiscoveryEvent(RemotePeer remotePeer) {
+    public static RemotePeerDiscoveryEvent createRemovedRemotePeerDiscoveryEvent(HamokConnection hamokConnection) {
         return new RemotePeerDiscoveryEvent(
                 RemotePeerDiscoveryEventTypes.REMOVED,
-                remotePeer
+                hamokConnection
         );
     }
 
-    public static RemotePeerDiscoveryEvent createAddedRemotePeerDiscoveryEvent(RemotePeer remotePeer) {
+    public static RemotePeerDiscoveryEvent createAddedRemotePeerDiscoveryEvent(HamokConnection hamokConnection) {
         return new RemotePeerDiscoveryEvent(
                 RemotePeerDiscoveryEventTypes.ADDED,
-                remotePeer
+                hamokConnection
         );
     }
 

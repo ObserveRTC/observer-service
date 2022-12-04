@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -42,13 +41,12 @@ public class WebsocketEndpoint implements HamokEndpoint {
     private final Subject<UUID> stateChangedEvent = PublishSubject.create();
 
     private final AtomicReference<WebSocketServer> server = new AtomicReference<>(null);
-    private final Map<UUID, String> addresses = new ConcurrentHashMap<>();
-    private final Map<String, WebsocketConnection> connections = new ConcurrentHashMap<>();
+    private final Map<UUID, UUID> endpointConnectionMappings = new ConcurrentHashMap<>();
+    private final Map<UUID, WebsocketConnection> connections = new ConcurrentHashMap<>();
     private final RemotePeerDiscovery discovery;
     private final ObjectMapper mapper = new ObjectMapper();
     private final int serverPort;
     private final String serverHost;
-    private final long createdTimestampInSec = Instant.now().getEpochSecond();
     private final ExecutorService connectingExecutor = Executors.newSingleThreadExecutor();
 
     WebsocketEndpoint(RemotePeerDiscovery discovery, String serverHost, int serverPort, int maxMessageSize) {
@@ -68,9 +66,9 @@ public class WebsocketEndpoint implements HamokEndpoint {
             if (message.destinationId == null) {
                 connections = this.connections.values();
             } else {
-                var serverUri = this.addresses.get(message.destinationId);
-                if (serverUri != null) {
-                    var connection = this.connections.get(serverUri);
+                var connectionId = this.endpointConnectionMappings.get(message.destinationId);
+                if (connectionId != null) {
+                    var connection = this.connections.get(connectionId);
                     if (connection != null) {
                         connections = List.of(connection);
                     } else {
@@ -89,11 +87,12 @@ public class WebsocketEndpoint implements HamokEndpoint {
             }
         });
 
-        this.discovery.events().subscribe(event -> {
-            var remotePeer = event.remotePeer();
-            var serverUri = this.createUri(remotePeer.host(), remotePeer.port());
-            switch (event.eventType()) {
-                case ADDED -> {
+        this.discovery.connectionStateChanged().subscribe(connectionStateChangedEvent -> {
+            var hamokConnection = connectionStateChangedEvent.hamokConnection();
+            var serverUri = this.createUri(hamokConnection.remoteHost(), hamokConnection.remotePort());
+            var connectionId = hamokConnection.connectionId();
+            switch (connectionStateChangedEvent.state()) {
+                case ACTIVE -> {
                     var connection = new WebsocketConnection(
                             ConnectionBuffer.discardingBuffer(),
                             serverUri,
@@ -103,26 +102,30 @@ public class WebsocketEndpoint implements HamokEndpoint {
                     );
                     logger.info("Add connection to {}. RemoteHost: {}, remotePort: {}",
                             connection.getServerUri(),
-                            event.remotePeer().host(),
-                            event.remotePeer().port()
+                            hamokConnection.remoteHost(),
+                            hamokConnection.remotePort()
                     );
                     connection.endpointStateChanged().subscribe(stateChangeEvent -> {
-                        this.stateChangedEvent.onNext(UUID.randomUUID());
+                        var endpointId = stateChangeEvent.endpointId();
+                        if (endpointId != null) {
+                            endpointConnectionMappings.put(endpointId, connectionId);
+                        }
+                        this.stateChangedEvent.onNext(connectionId);
                     });
-                    this.connections.put(connection.getServerUri(), connection);
+                    this.connections.put(connectionId, connection);
                     connection.open();
                 }
-                case REMOVED -> {
-                    var connection = this.connections.remove(serverUri);
+                case INACTIVE -> {
+                    var connection = this.connections.remove(connectionId);
                     if (connection != null) {
                         logger.info("Remove connection for {}. RemoteHost: {}, remotePort: {}",
                                 connection.getServerUri(),
-                                event.remotePeer().host(),
-                                event.remotePeer().port()
+                                hamokConnection.remoteHost(),
+                                hamokConnection.remotePort()
                         );
                         connection.close();
                     }
-                    this.stateChangedEvent.onNext(UUID.randomUUID());
+                    this.stateChangedEvent.onNext(connectionId);
                 }
             }
         });
