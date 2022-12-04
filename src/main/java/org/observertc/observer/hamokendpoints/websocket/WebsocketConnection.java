@@ -219,13 +219,15 @@ public class WebsocketConnection {
 
             @Override
             public void onClose(int code, String reason, boolean remote) {
-                logger.info("Connection to {} is closed with code: {}, reason: {}, byremote: {}", uri, code, reason, remote);
                 var removedRemoteIdentifiers = remoteIdentifiersHolder.getAndSet(null);
                 if (removedRemoteIdentifiers != null) {
+                    logger.info("Connection to {} is closed with code: {}, reason: {}, byremote: {}. Remote endpoint id: {}", uri, code, reason, remote, removedRemoteIdentifiers.endpointId);
                     endpointStateChangedSubject.onNext(new EndpointStateChange(
                             EndpointState.DETACHED,
                             removedRemoteIdentifiers.endpointId
                     ));
+                } else {
+                    logger.info("Connection to {} is closed with code: {}, reason: {}, byremote: {}. No remote endpoint id is registered", uri, code, reason, remote);
                 }
                 if (disposed || code == CLOSE_WITHOUT_RECONNECT_CODE) {
                     // goodbye
