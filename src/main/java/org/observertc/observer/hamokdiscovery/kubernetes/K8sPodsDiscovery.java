@@ -208,7 +208,7 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
         var updatedRemotePeer = new DiscoveredRemotePeer(
                 savedRemotePeer.podId,
                 savedRemotePeer.podName,
-                HamokConnectionState.ACTIVE,
+                HamokConnectionState.INACTIVE,
                 savedRemotePeer.inetAddress
         );
         this.discoveredRemotePeers.set(updatedRemotePeer.podId, updatedRemotePeer);
@@ -237,7 +237,6 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
                     HamokConnectionState.ACTIVE,
                     inetAddress
             );
-            logger.warn("Attempted to set a non-existing podId {} active", podId);
         } else if (HamokConnectionState.ACTIVE.equals(discoveredRemotePeer.state)) {
             logger.warn("Attempted to discoveredRemotePeer active twice. {} ", discoveredRemotePeer);
             return;
