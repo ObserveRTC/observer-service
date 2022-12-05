@@ -2,10 +2,11 @@ package org.observertc.observer.hamokdiscovery;
 
 public record HamokConnectionStateChangedEvent(
         HamokConnection hamokConnection,
-        HamokConnectionState state
+        HamokConnectionState prevState,
+        HamokConnectionState actualState
 ) {
     @Override
     public String toString() {
-        return String.format("hamokConnection: %s, state: %s", hamokConnection, state);
+        return String.format("hamokConnection: %s, prevState: %s, actualState: {}", hamokConnection, prevState, actualState);
     }
 }

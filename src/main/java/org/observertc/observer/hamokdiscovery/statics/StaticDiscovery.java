@@ -36,6 +36,7 @@ public class StaticDiscovery implements RemotePeerDiscovery {
         }
         this.stateChanged.onNext(new HamokConnectionStateChangedEvent(
                 hamokConnection,
+                null,
                 HamokConnectionState.ACTIVE
         ));
     }
@@ -50,6 +51,7 @@ public class StaticDiscovery implements RemotePeerDiscovery {
         }
         this.stateChanged.onNext(new HamokConnectionStateChangedEvent(
                 removed,
+                HamokConnectionState.ACTIVE,
                 HamokConnectionState.INACTIVE
         ));
         return true;
@@ -74,6 +76,7 @@ public class StaticDiscovery implements RemotePeerDiscovery {
         for (var hamokConnection : this.hamokConnections.values()) {
             this.stateChanged.onNext(new HamokConnectionStateChangedEvent(
                     hamokConnection,
+                    null,
                     HamokConnectionState.ACTIVE
             ));
         }
@@ -88,6 +91,7 @@ public class StaticDiscovery implements RemotePeerDiscovery {
         for (var hamokConnection : this.hamokConnections.values()) {
             this.stateChanged.onNext(new HamokConnectionStateChangedEvent(
                     hamokConnection,
+                    HamokConnectionState.ACTIVE,
                     HamokConnectionState.INACTIVE
             ));
         }
