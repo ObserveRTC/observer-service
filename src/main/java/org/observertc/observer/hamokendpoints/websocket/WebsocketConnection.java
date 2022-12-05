@@ -36,7 +36,8 @@ public class WebsocketConnection {
 
     public record EndpointStateChange(
             EndpointState state,
-            UUID endpointId
+            UUID endpointId,
+            UUID connectionId
     ){
 
     }
@@ -214,7 +215,8 @@ public class WebsocketConnection {
                     logger.info("Remote identifiers received, endpoint is joined. {}", remoteIdentifiersHolder.get());
                     endpointStateChangedSubject.onNext(new EndpointStateChange(
                             EndpointState.JOINED,
-                            remoteIdentifiers.endpointId
+                            remoteIdentifiers.endpointId,
+                            connectionId
                     ));
                     backoffTimeInMs.set(5000);
                 } catch (JsonProcessingException e) {
@@ -233,7 +235,8 @@ public class WebsocketConnection {
                     logger.info("Connection to {} is closed with code: {}, reason: {}, byremote: {}. Remote endpoint id: {}", uri, code, reason, remote, removedRemoteIdentifiers.endpointId);
                     endpointStateChangedSubject.onNext(new EndpointStateChange(
                             EndpointState.DETACHED,
-                            removedRemoteIdentifiers.endpointId
+                            removedRemoteIdentifiers.endpointId,
+                            connectionId
                     ));
                 } else {
                     logger.info("Connection to {} is closed with code: {}, reason: {}, byremote: {}. No remote endpoint id is registered", uri, code, reason, remote);

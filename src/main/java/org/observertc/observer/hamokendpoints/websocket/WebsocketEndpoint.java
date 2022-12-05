@@ -37,8 +37,8 @@ public class WebsocketEndpoint implements HamokEndpoint {
     private static final String INTERNAL_CLOSED_MESSAGE = "INTERNAL_CLOSED_MESSAGE";
     private static final Logger logger = LoggerFactory.getLogger(WebsocketEndpoint.class);
 
-    private final PublishSubject<Message> inboundChannel = PublishSubject.create();
-    private final PublishSubject<Message> outboundChannel = PublishSubject.create();
+    private final Subject<Message> inboundChannel = PublishSubject.create();
+    private final Subject<Message> outboundChannel = PublishSubject.create();
     private final Subject<UUID> stateChangedEvent = PublishSubject.create();
 
     private final AtomicReference<WebSocketServer> server = new AtomicReference<>(null);
@@ -88,10 +88,14 @@ public class WebsocketEndpoint implements HamokEndpoint {
             }
         });
 
+
         this.discovery.connectionStateChanged().subscribe(connectionStateChangedEvent -> {
             var hamokConnection = connectionStateChangedEvent.hamokConnection();
             var serverUri = this.createUri(hamokConnection.remoteHost(), hamokConnection.remotePort());
             var connectionId = hamokConnection.connectionId();
+
+            logger.info("Connection state changed: {}", connectionStateChangedEvent);
+
             switch (connectionStateChangedEvent.actualState()) {
                 case ACTIVE -> {
                     var connection = new WebsocketConnection(
@@ -108,6 +112,7 @@ public class WebsocketEndpoint implements HamokEndpoint {
                             hamokConnection.remotePort()
                     );
                     connection.endpointStateChanged().subscribe(stateChangeEvent -> {
+                        logger.info("Connection endpoint state changed: {}", stateChangeEvent);
                         var remoteEndpointId = stateChangeEvent.endpointId();
                         if (remoteEndpointId == null) {
                             logger.warn("Connection State Changed, but there was no remote endpoint id for the connection {}", stateChangeEvent);
@@ -124,8 +129,9 @@ public class WebsocketEndpoint implements HamokEndpoint {
                             }
                         }
                         this.stateChangedEvent.onNext(connectionId);
+//                        this.stateChangedEvent.onNext(connectionId);
                     });
-
+                    logger.info("Open connection to {}. serverUri: {}", connectionId, serverUri);
                     connection.open();
                 }
                 case INACTIVE -> {
