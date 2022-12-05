@@ -382,6 +382,10 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
             if (visitedPodIds.contains(podId)) {
                 continue;
             }
+            var discoveredRemotePeer = entry.getValue();
+            if (HamokConnectionState.INACTIVE.equals(discoveredRemotePeer.state)) {
+                continue;
+            }
             this.setInactive(podId);
         }
         return result;
