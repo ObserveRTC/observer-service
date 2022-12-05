@@ -2,6 +2,7 @@ package org.observertc.observer.hamokendpoints.websocket;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.balazskreith.hamok.common.UuidTools;
 import io.github.balazskreith.hamok.storagegrid.messages.Message;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
@@ -106,13 +107,24 @@ public class WebsocketEndpoint implements HamokEndpoint {
                             hamokConnection.remotePort()
                     );
                     connection.endpointStateChanged().subscribe(stateChangeEvent -> {
-                        var endpointId = stateChangeEvent.endpointId();
-                        if (endpointId != null) {
-                            endpointConnectionMappings.put(endpointId, connectionId);
+                        var remoteEndpointId = stateChangeEvent.endpointId();
+                        if (remoteEndpointId == null) {
+                            logger.warn("Connection State Changed, but there was no remote endpoint id for the connection {}", stateChangeEvent);
+                            return;
+                        }
+                        switch (stateChangeEvent.state()) {
+                            case JOINED -> {
+                                this.connections.put(connectionId, connection);
+                                this.endpointConnectionMappings.put(remoteEndpointId, connectionId);
+                            }
+                            case DETACHED -> {
+                                this.connections.remove(connectionId);
+                                this.endpointConnectionMappings.remove(remoteEndpointId, connectionId);
+                            }
                         }
                         this.stateChangedEvent.onNext(connectionId);
                     });
-                    this.connections.put(connectionId, connection);
+
                     connection.open();
                 }
                 case INACTIVE -> {
@@ -124,6 +136,12 @@ public class WebsocketEndpoint implements HamokEndpoint {
                                 hamokConnection.remotePort()
                         );
                         connection.close();
+                        this.endpointConnectionMappings.entrySet()
+                                .stream()
+                                .filter(entry -> UuidTools.equals(entry.getValue(), connectionId))
+                                .map(Map.Entry::getKey)
+                                .findFirst()
+                                .ifPresent(endpointId -> this.endpointConnectionMappings.remove(endpointId));
                     }
                     this.stateChangedEvent.onNext(connectionId);
                 }

@@ -1,6 +1,5 @@
 package org.observertc.observer.hamokendpoints;
 
-import io.github.balazskreith.hamok.common.UuidTools;
 import io.micronaut.context.BeanProvider;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -53,9 +52,8 @@ public class HamokEndpointBuilderService extends AbstractBuilder {
                 .withName("Refresh Remote endpoint ids ")
                 .withLogger(logger)
                 .addActionStage("Invoke HamokServer refreshEndpoint method ", () -> {
-                    var pivotTaskId = this.refreshRemoteEndpointIdsTaskPivot.get();
-                    if (pivotTaskId != null && UuidTools.notEquals(pivotTaskId, taskId)) {
-                        logger.info("refreshRemoteEndpointIdsTaskPivot id is {}, and current taskId is {}, hence we don't execute this task", pivotTaskId, taskId);
+                    if (!this.refreshRemoteEndpointIdsTaskPivot.compareAndSet(taskId, null)) {
+                        logger.debug("refreshRemoteEndpointIdsTaskPivot id is {}, and current taskId is {}, hence we don't execute this task", this.refreshRemoteEndpointIdsTaskPivot.get(), taskId);
                         return;
                     }
                     var hamokService = hamokServiceBeanProvider.get();
