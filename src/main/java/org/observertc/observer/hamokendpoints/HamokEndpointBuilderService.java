@@ -1,5 +1,6 @@
 package org.observertc.observer.hamokendpoints;
 
+import io.github.balazskreith.hamok.common.UuidTools;
 import io.micronaut.context.BeanProvider;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -42,11 +44,20 @@ public class HamokEndpointBuilderService extends AbstractBuilder {
         );
     }
 
+    private AtomicReference<UUID> refreshRemoteEndpointIdsTaskPivot = new AtomicReference<>(null);
     private void refreshRemoteEndpointIds() {
+        var taskId = UUID.randomUUID();
+        var prevTaskId = this.refreshRemoteEndpointIdsTaskPivot.getAndSet(taskId);
+        logger.debug("Set the refreshRemoteEndpointIdsTaskPivot task Id to {}, previously it was: {}", taskId, prevTaskId);
         this.backgroundTasksExecutor.addTask(ChainedTask.<Void>builder()
                 .withName("Refresh Remote endpoint ids ")
                 .withLogger(logger)
                 .addActionStage("Invoke HamokServer refreshEndpoint method ", () -> {
+                    var pivotTaskId = this.refreshRemoteEndpointIdsTaskPivot.get();
+                    if (pivotTaskId != null && UuidTools.notEquals(pivotTaskId, taskId)) {
+                        logger.info("refreshRemoteEndpointIdsTaskPivot id is {}, and current taskId is {}, hence we don't execute this task", pivotTaskId, taskId);
+                        return;
+                    }
                     var hamokService = hamokServiceBeanProvider.get();
                     hamokService.refreshRemoteEndpointId();
                 })

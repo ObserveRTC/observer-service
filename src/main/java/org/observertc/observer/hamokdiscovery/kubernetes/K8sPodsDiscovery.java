@@ -23,6 +23,7 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -31,9 +32,10 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
     private static final Logger logger = LoggerFactory.getLogger(K8sPodsDiscovery.class);
 
     private Subject<HamokConnectionStateChangedEvent> stateChanged = PublishSubject.create();
+    private Queue<String> activatedRemotePeerIds = new LinkedBlockingQueue<>();
+    private final String namespace;
 
     private Storage<String, DiscoveredRemotePeer> discoveredRemotePeers;
-    private final String namespace;
     private final String namePrefix;
     private final CoreV1Api api;
 
@@ -231,7 +233,6 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
             logger.warn("Attempted to set a non-existing podId {} active", podId);
             return;
         }
-        HamokConnectionState prevState = null;
         var discoveredRemotePeer = this.discoveredRemotePeers.get(podId);
         if (discoveredRemotePeer == null) {
             discoveredRemotePeer = new DiscoveredRemotePeer(
@@ -244,7 +245,6 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
             logger.warn("Attempted to discoveredRemotePeer active twice. {} ", discoveredRemotePeer);
             return;
         } else {
-            prevState = discoveredRemotePeer.state;
             discoveredRemotePeer = new DiscoveredRemotePeer(
                     discoveredRemotePeer.podId,
                     discoveredRemotePeer.podName,
@@ -253,18 +253,7 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
             );
         }
         this.discoveredRemotePeers.set(podId, discoveredRemotePeer);
-
-        var connectionId = UUID.nameUUIDFromBytes(discoveredRemotePeer.podId.getBytes(StandardCharsets.UTF_8));
-        var hamokConnection = new HamokConnection(
-                connectionId,
-                discoveredRemotePeer.inetAddress.getHostName(),
-                this.remotePort
-        );
-        this.stateChanged.onNext(new HamokConnectionStateChangedEvent(
-                hamokConnection,
-                prevState,
-                discoveredRemotePeer.state
-        ));
+        this.activatedRemotePeerIds.add(podId);
     }
 
     private boolean update() {
@@ -388,7 +377,34 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
             }
             this.setInactive(podId);
         }
+        if (result == false) {
+            // if there were activated remote peer ids we emit them in batches
+            this.emitActivatedRemotePeerIdsBuffer();
+        }
         return result;
+    }
+
+    private void emitActivatedRemotePeerIdsBuffer() {
+        if (this.activatedRemotePeerIds.isEmpty()) {
+            return;
+        }
+        while (this.activatedRemotePeerIds.isEmpty() == false) {
+            var discoveredRemotePeerId = this.activatedRemotePeerIds.poll();
+            if (discoveredRemotePeerId == null) continue;
+            var discoveredRemotePeer = this.discoveredRemotePeers.get(discoveredRemotePeerId);
+
+            var connectionId = UUID.nameUUIDFromBytes(discoveredRemotePeer.podId.getBytes(StandardCharsets.UTF_8));
+            var hamokConnection = new HamokConnection(
+                    connectionId,
+                    discoveredRemotePeer.inetAddress.getHostName(),
+                    this.remotePort
+            );
+            this.stateChanged.onNext(new HamokConnectionStateChangedEvent(
+                    hamokConnection,
+                    null,
+                    discoveredRemotePeer.state
+            ));
+        }
     }
 
     private static InetAddress getPodIp(V1Pod pod) {
