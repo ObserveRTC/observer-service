@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -52,18 +53,21 @@ public class WebsocketConnection {
     private AtomicReference<RemoteIdentifiers> remoteIdentifiersHolder = new AtomicReference<>(null);
 
     private final ConnectionBuffer buffer;
+    private final UUID connectionId;
     private final String serverUri;
     private final ObjectMapper mapper;
     private final Scheduler scheduler;
     private final int maxMessageSize;
 
     public WebsocketConnection(
+            UUID connectionId,
             ConnectionBuffer buffer,
             String serverUri,
             ObjectMapper mapper,
             Scheduler scheduler,
             int maxMessageSize
     ) {
+        this.connectionId = connectionId;
         this.buffer = buffer;
         this.serverUri = serverUri;
         this.mapper = mapper;
@@ -81,6 +85,10 @@ public class WebsocketConnection {
 
     public boolean isJoined() {
         return this.disposed == false && this.opened == true && this.remoteIdentifiersHolder.get() != null;
+    }
+
+    public UUID getConnectionId() {
+        return this.connectionId;
     }
 
     public UUID getRemoteEndpointId() {
@@ -242,7 +250,7 @@ public class WebsocketConnection {
                 if (!opened) {
                     return;
                 }
-                var newBackoffTimeInMs = Math.min(15 * 3600 * 1000, backoffTimeInMs.get() * 2);
+                var newBackoffTimeInMs = Math.min(15 * 3600 * 1000, backoffTimeInMs.get() * 2 + new Random().nextInt(100, 2000));
                 backoffTimeInMs.set(newBackoffTimeInMs);
                 logger.info("Retrying to connect to {} backoff time in ms {}", uri, backoffTimeInMs.get());
                 var process = scheduler.scheduleDirect(() -> {

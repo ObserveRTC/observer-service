@@ -95,6 +95,7 @@ public class WebsocketEndpoint implements HamokEndpoint {
             switch (connectionStateChangedEvent.actualState()) {
                 case ACTIVE -> {
                     var connection = new WebsocketConnection(
+                            connectionId,
                             ConnectionBuffer.discardingBuffer(),
                             serverUri,
                             this.mapper,
