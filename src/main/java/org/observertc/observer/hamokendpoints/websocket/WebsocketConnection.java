@@ -206,8 +206,9 @@ public class WebsocketConnection {
                     logger.info("Remote identifiers received, endpoint is joined. {}", remoteIdentifiersHolder.get());
                     endpointStateChangedSubject.onNext(new EndpointStateChange(
                             EndpointState.JOINED,
-                            remoteIdentifiersHolder.get().endpointId
+                            remoteIdentifiers.endpointId
                     ));
+                    backoffTimeInMs.set(5000);
                 } catch (JsonProcessingException e) {
                     logger.warn("Error in received message {}", data, e);
                     return;
