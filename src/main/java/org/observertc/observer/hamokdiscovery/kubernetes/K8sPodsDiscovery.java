@@ -191,13 +191,8 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
                 }
                 consecutiveFailure = 0;
             } catch (InterruptedException e) {
-                logger.warn("Exception occurred while discovery is running.", e);
-                sleep = 30000;
-                if (2 < ++consecutiveFailure) {
-                    logger.error("Stopping process after 3 consecutive failure");
-                    break;
-                }
-
+                logger.warn("Exception occurred while discovery is running. Consecutive failure counter: {}", ++consecutiveFailure, e);
+                sleep = 5000;
             }
         }
     }
