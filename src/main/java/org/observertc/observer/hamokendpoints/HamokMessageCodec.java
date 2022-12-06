@@ -6,6 +6,7 @@ import org.observertc.observer.mappings.Codec;
 import org.observertc.observer.mappings.Mapper;
 import org.observertc.schemas.dtos.Hamokmessage;
 
+import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -45,12 +46,17 @@ public class HamokMessageCodec implements Codec<Message, Hamokmessage.HamokMessa
             message.keys = data.getKeysList().stream()
                     .map(ByteString::toByteArray)
                     .collect(Collectors.toList());
+        } else {
+            message.keys = Collections.emptyList();
         }
         if (0 < data.getValuesCount()) {
             message.values = data.getValuesList().stream()
                     .map(ByteString::toByteArray)
                     .collect(Collectors.toList());
+        } else {
+            message.values = Collections.emptyList();
         }
+
         if (0 < data.getActiveEndpointIdsCount()) {
             message.activeEndpointIds = data.getActiveEndpointIdsList().stream()
                     .map(UUID::fromString)
