@@ -46,6 +46,8 @@ public class WebsocketEndpoint implements HamokEndpoint {
 //    private final Map<UUID, UUID> endpointConnectionMappings = new ConcurrentHashMap<>();
 //    private final Map<UUID, WebsocketConnection> connections = new ConcurrentHashMap<>();
     private final Map<UUID, WebsocketConnection> remoteEndpoints = new ConcurrentHashMap<>();
+    private final Map<UUID, WebsocketConnection> pendingConnections = new ConcurrentHashMap<>();
+
     private final RemotePeerDiscovery discovery;
     private final ObjectMapper mapper = new ObjectMapper();
     private final int serverPort;
@@ -115,6 +117,7 @@ public class WebsocketEndpoint implements HamokEndpoint {
                             hamokConnection.remoteHost(),
                             hamokConnection.remotePort()
                     );
+                    this.pendingConnections.put(connectionId, connection);
                     connection.endpointStateChanged().subscribe(stateChangeEvent -> {
                         logger.info("Connection endpoint state changed: {}", stateChangeEvent);
                         var remoteEndpointId = stateChangeEvent.endpointId();
@@ -124,6 +127,7 @@ public class WebsocketEndpoint implements HamokEndpoint {
                         }
                         switch (stateChangeEvent.state()) {
                             case JOINED -> {
+                                this.pendingConnections.remove(connectionId);
                                 this.remoteEndpoints.put(remoteEndpointId, connection);
                                 logger.info("Connection {} for remote endpoint {} is joined", connectionId, remoteEndpointId);
                             }
@@ -139,15 +143,30 @@ public class WebsocketEndpoint implements HamokEndpoint {
                     connection.open();
                 }
                 case INACTIVE -> {
+                    WebsocketConnection connection = this.pendingConnections.get(connectionId);
+                    if (connection != null) {
+                        logger.info("Remove pending connection for {}. RemoteHost: {}, remotePort: {}",
+                                connection.getServerUri(),
+                                hamokConnection.remoteHost(),
+                                hamokConnection.remotePort()
+                        );
+                        connection.close();
+                        return;
+                    }
+
                     var remoteEndpointIdHolder = this.remoteEndpoints.entrySet()
                             .stream()
                             .filter(entry -> UuidTools.equals(entry.getValue().getConnectionId(), connectionId))
                             .map(Map.Entry::getKey)
                             .findFirst();
+
                     if (remoteEndpointIdHolder.isEmpty()) {
                         return;
                     }
-                    var connection = this.remoteEndpoints.remove(remoteEndpointIdHolder.get());
+                    connection = this.remoteEndpoints.remove(remoteEndpointIdHolder.get());
+                    if (connection == null) {
+                        return;
+                    }
                     connection.close();
                     logger.info("Remove connection for {}. RemoteHost: {}, remotePort: {}",
                             connection.getServerUri(),

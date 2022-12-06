@@ -254,7 +254,9 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
                 var ipAddress = getPodIp(pod);
                 var connectionId = UUID.nameUUIDFromBytes(podId.getBytes());
 
-                logger.info("Checking Pod prefixed with {} Id: {}, Name: {}, hashed connectionId: {}, ipAddress: {}, running: {}, terminated: {}, waiting: {}",
+                logger.info("Checking Pod in namespace {} prefixed with {}. Pod Id: {}, Name: {}, hashed connectionId: {}, ipAddress: {}, running: {}, terminated: {}, waiting: {}",
+                    this.namespace,
+                    this.namePrefix,
                     podId,
                     podName,
                     connectionId,

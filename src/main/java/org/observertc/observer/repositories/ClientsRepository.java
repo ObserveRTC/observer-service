@@ -79,7 +79,7 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
                 .setMaxCollectedStorageTimeInMs(buffersConfig.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
                 .setMaxMessageValues(MAX_VALUES)
-                .setThrowingExceptionOnRequestTimeout(this.hamokConfig.usePartialResponses)
+                .setThrowingExceptionOnRequestTimeout(!this.hamokConfig.usePartialResponses)
         ;
 
         if (this.observerConfig.repository.useBackups) {

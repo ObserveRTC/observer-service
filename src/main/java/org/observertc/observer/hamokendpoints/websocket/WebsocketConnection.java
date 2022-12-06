@@ -47,6 +47,7 @@ public class WebsocketConnection {
     private final AtomicReference<WebSocketClient> client = new AtomicReference<>(null);
     private final Subject<EndpointStateChange> endpointStateChangedSubject = PublishSubject.create();
     private final Subject<byte[]> messages = PublishSubject.create();
+    private AtomicInteger backoffTimeInMs = new AtomicInteger(5000);
 
     private volatile boolean disposed = false;
     private volatile boolean opened = false;
@@ -188,8 +189,8 @@ public class WebsocketConnection {
         return this.endpointStateChangedSubject;
     }
 
+
     private WebSocketClient createClient() {
-        var backoffTimeInMs = new AtomicInteger(5000);
         return new WebSocketClient(URI.create(this.serverUri)) {
             @Override
             public void onOpen(ServerHandshake handshakedata) {
