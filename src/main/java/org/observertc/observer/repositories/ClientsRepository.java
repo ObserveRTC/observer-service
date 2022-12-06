@@ -42,6 +42,9 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
     ObserverConfig.InternalBuffersConfig.DebouncersCollectorConfig buffersConfig;
 
     @Inject
+    private ObserverConfig.HamokConfig hamokConfig;
+
+    @Inject
     BeanProvider<CallsRepository> callsProvider;
 
     @Inject
@@ -76,6 +79,7 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
                 .setMaxCollectedStorageTimeInMs(buffersConfig.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
                 .setMaxMessageValues(MAX_VALUES)
+                .setThrowingExceptionOnRequestTimeout(this.hamokConfig.usePartialResponses)
         ;
 
         if (this.observerConfig.repository.useBackups) {

@@ -46,7 +46,7 @@ dependencies {
     implementation 'org.mongodb:mongodb-driver-sync:4.2.2'
 
     // --------- Hamok --------
-    implementation group: 'io.github.balazskreith.hamok', name: 'hamok-java-core', version: '1.0.12-SNAPSHOT'
+    implementation group: 'io.github.balazskreith.hamok', name: 'hamok-java-core', version: '1.0.14-SNAPSHOT'
 //    implementation group: 'io.github.balazskreith.hamok', name: 'hamok-java-core', version: '0.9.2-beta'
 
 

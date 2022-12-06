@@ -42,6 +42,9 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
     BeanProvider<PeerConnectionsRepository> peerConnectionsRepositoryBeanProvider;
 
     @Inject
+    private ObserverConfig.HamokConfig hamokConfig;
+
+    @Inject
     private SfuMediaStreamsRepository sfuMediaStreamsRepository;
 
     @Inject
@@ -76,6 +79,7 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
                 .setMaxCollectedStorageTimeInMs(bufferConfig.debouncers.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
                 .setMaxMessageValues(MAX_VALUES)
+                .setThrowingExceptionOnRequestTimeout(!this.hamokConfig.usePartialResponses)
                 ;
 
         if (this.observerConfig.repository.useBackups) {

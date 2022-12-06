@@ -53,6 +53,9 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
     @Inject
     SfuSctpChannelsRepository sfuSctpChannelsRepository;
 
+    @Inject
+    private ObserverConfig.HamokConfig hamokConfig;
+
     private Map<String, Models.SfuTransport> updated;
     private Set<String> deleted;
     private CachedFetches<String, SfuTransport> fetched;
@@ -73,6 +76,7 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
                 .setMaxCollectedStorageTimeInMs(this.observerConfig.buffers.debouncers.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
                 .setMaxMessageValues(MAX_VALUES)
+                .setThrowingExceptionOnRequestTimeout(!this.hamokConfig.usePartialResponses)
                 ;
 
         if (this.observerConfig.repository.useBackups) {

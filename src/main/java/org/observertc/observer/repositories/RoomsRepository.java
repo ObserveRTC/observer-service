@@ -77,6 +77,9 @@ public class RoomsRepository implements RepositoryStorageMetrics {
     @Inject
     private ObserverConfig.InternalBuffersConfig bufferConfig;
 
+    @Inject
+    private ObserverConfig.HamokConfig hamokConfig;
+
     @PostConstruct
     void setup() {
         var baseStorage = new MemoryStorageBuilder<ServiceRoomId, Models.Room>()
@@ -93,6 +96,7 @@ public class RoomsRepository implements RepositoryStorageMetrics {
                 .setMaxCollectedStorageTimeInMs(bufferConfig.debouncers.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
                 .setMaxMessageValues(MAX_VALUES)
+                .setThrowingExceptionOnRequestTimeout(!this.hamokConfig.usePartialResponses)
                 .build();
 
 

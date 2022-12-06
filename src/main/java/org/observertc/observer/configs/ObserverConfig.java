@@ -238,7 +238,7 @@ public class ObserverConfig {
 	public static class HamokConfig {
 		public List<String> memberNamesPool = new LinkedList<>();
 		public Map<String, Object> endpoint;
-
+		public boolean usePartialResponses = true;
 		public StorageGridConfig storageGrid = new StorageGridConfig();
 
 		@ConfigurationProperties(("storageGrid"))

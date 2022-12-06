@@ -40,6 +40,9 @@ public class CallsRepository implements RepositoryStorageMetrics {
     private CachedFetches<String, Call> fetched;
 
     @Inject
+    private ObserverConfig.HamokConfig hamokConfig;
+
+    @Inject
     private ObserverConfig observerConfig;
 
     @Inject
@@ -101,7 +104,9 @@ public class CallsRepository implements RepositoryStorageMetrics {
                 .setMaxCollectedStorageEvents(this.observerConfig.buffers.debouncers.maxItems)
                 .setMaxCollectedStorageTimeInMs(this.observerConfig.buffers.debouncers.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
-                .setMaxMessageValues(MAX_VALUES);
+                .setMaxMessageValues(MAX_VALUES)
+                .setThrowingExceptionOnRequestTimeout(!this.hamokConfig.usePartialResponses)
+                ;
 
         if (this.observerConfig.repository.useBackups) {
             storageBuilder.setDistributedBackups(this.backups);

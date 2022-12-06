@@ -47,6 +47,9 @@ public class SfuMediaSinksRepository implements RepositoryStorageMetrics {
     @Inject
     private BeanProvider<SfuOutboundRtpPadsRepository> sfuOutboundRtpPadsRepositoryBeanProvider;
 
+    @Inject
+    private ObserverConfig.HamokConfig hamokConfig;
+
     private Map<String, Models.SfuMediaSink> updated;
     private Set<String> deleted;
     private CachedFetches<String, SfuMediaSink> fetched;
@@ -67,6 +70,7 @@ public class SfuMediaSinksRepository implements RepositoryStorageMetrics {
                 .setMaxCollectedStorageTimeInMs(this.observerConfig.buffers.debouncers.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
                 .setMaxMessageValues(MAX_VALUES)
+                .setThrowingExceptionOnRequestTimeout(!this.hamokConfig.usePartialResponses)
                 ;
 
         if (this.observerConfig.repository.useBackups) {

@@ -242,7 +242,7 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
                 var ipAddress = getPodIp(pod);
                 var connectionId = UUID.nameUUIDFromBytes(podId.getBytes());
 
-                logger.info("Iterated Pod Id: {}, Name: {}, hashed connectionId: {}, ipAddress: {}, running: {}, terminated: {}, waiting: {}",
+                logger.debug("Iterated Pod Id: {}, Name: {}, hashed connectionId: {}, ipAddress: {}, running: {}, terminated: {}, waiting: {}",
                     podId,
                     podName,
                     connectionId,
