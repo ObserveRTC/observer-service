@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -169,5 +170,21 @@ public final class Utils {
             }
         }
         return buffer.toString();
+    }
+
+    public static<T> Iterator<T> wrapWithIterator(T value) {
+        return new Iterator<T>() {
+            private volatile boolean hasNext = true;
+            @Override
+            public boolean hasNext() {
+                return hasNext;
+            }
+
+            @Override
+            public T next() {
+                hasNext = false;
+                return value;
+            }
+        };
     }
 }

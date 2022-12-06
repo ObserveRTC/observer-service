@@ -1,0 +1,36 @@
+syntax = "proto2";
+
+package org.observertc.schemas.dtos;
+
+message HamokMessage {
+
+  optional string sourceId = 1;
+  optional string destinationId = 2;
+  optional string storageId = 3;
+  optional string protocol = 4;
+  optional string requestId = 5;
+  optional int32 storageSize = 6;
+  optional uint64 timestamp = 7;
+  optional string type = 8;
+
+  repeated bytes keys = 9;
+  repeated bytes values = 10;
+  repeated string activeEndpointIds = 11;
+  repeated HamokMessage embeddedMessages = 12;
+
+  optional bool success = 13;
+  optional bool executeSync = 14;
+  optional string raftLeaderId = 15;
+  optional int32 raftNumberOfLogs = 16;
+  optional int32 raftLastAppliedIndex = 17;
+  optional int32 raftCommitIndex = 18;
+  optional int32 raftLeaderNextIndex = 19;
+  optional int32 raftPrevLogTerm = 20;
+  optional int32 raftPrevLogIndex = 21;
+  optional int32 raftTerm = 22;
+  optional int32 raftPeerNextIndex = 23;
+  optional string raftCandidateId = 24;
+
+  optional int32 sequence = 25;
+  optional bool lastMessage = 26;
+}
