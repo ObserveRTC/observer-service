@@ -27,6 +27,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+
 public class K8sPodsDiscovery implements RemotePeerDiscovery {
 
     private static final Logger logger = LoggerFactory.getLogger(K8sPodsDiscovery.class);
@@ -174,6 +175,7 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
 
     private void process() {
         int sleep = 10;
+        int consecutiveFailure = 0;
         while (this.run) {
             try {
                 Thread.sleep(sleep);
@@ -187,8 +189,13 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
                         this.ready = true;
                     }
                 }
+                consecutiveFailure = 0;
             } catch (InterruptedException e) {
-                break;
+                logger.warn("Exception occurred while discovery is running.", e);
+                if (2 < ++consecutiveFailure) {
+                    logger.error("Stopping process after 3 consecutive failure");
+                    break;
+                }
             }
         }
     }
@@ -225,10 +232,18 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
                 if (podId == null || !podName.startsWith(this.namePrefix)) {
                     continue;
                 }
-
+                if (pod.getStatus() == null) {
+                    logger.warn("Pod Status is null for podId: {}, podName: {} ", podId, podName);
+                    continue;
+                }
+                if (pod.getStatus().getContainerStatuses() == null) {
+                    logger.warn("Pod Container Status is null for podId: {}, podName: {}. Maybe Pending", podId, podName);
+                    continue;
+                }
                 boolean running = true;
                 boolean terminated = false;
                 boolean waiting = false;
+
                 for (var containerStatus : pod.getStatus().getContainerStatuses()) {
                     var state = containerStatus.getState();
                     if (state == null) continue;
@@ -242,7 +257,7 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
                 var ipAddress = getPodIp(pod);
                 var connectionId = UUID.nameUUIDFromBytes(podId.getBytes());
 
-                logger.info("Iterated Pod Id: {}, Name: {}, hashed connectionId: {}, ipAddress: {}, running: {}, terminated: {}, waiting: {}",
+                logger.info("Checking Pod prefixed with {} Id: {}, Name: {}, hashed connectionId: {}, ipAddress: {}, running: {}, terminated: {}, waiting: {}",
                     podId,
                     podName,
                     connectionId,
