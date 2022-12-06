@@ -28,7 +28,7 @@ public class HamokMessageCodec implements Codec<Message, Hamokmessage.HamokMessa
             message.protocol = data.getProtocol();
         }
         if (data.hasRequestId()) {
-            message.sourceId = UUID.fromString(data.getRequestId());
+            message.requestId = UUID.fromString(data.getRequestId());
         }
 
         if (data.hasStorageSize()) {

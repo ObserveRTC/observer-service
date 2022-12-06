@@ -77,6 +77,8 @@ public class HamokService  implements InfoSource {
         this.storageGrid.errors().subscribe(err -> {
             logger.warn("Error occurred in storageGrid. Code: {}", err.getCode(), err.getException());
         });
+
+
     }
 
     public void refreshRemoteEndpointId() {

@@ -4,6 +4,7 @@ import io.github.balazskreith.hamok.ModifiedStorageEntry;
 import io.github.balazskreith.hamok.memorystorages.MemoryStorageBuilder;
 import io.github.balazskreith.hamok.storagegrid.SeparatedStorage;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.BackgroundTasksExecutor;
@@ -21,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
@@ -128,6 +130,11 @@ public class CallsRepository implements RepositoryStorageMetrics {
                 .onFetchAll(this::fetchAll)
                 .build();
         this.updated = new HashMap<>();
+
+        Schedulers.newThread().schedulePeriodicallyDirect(() -> {
+            logger.warn("THERE IS A SCHEDULER IN THE CODE FOR DEBUGGING PURPOSES");
+            Try.wrap(() -> this.storage.getAll(Set.of("key")), null);
+        }, 5000, 5000, TimeUnit.MILLISECONDS);
     }
 
 
