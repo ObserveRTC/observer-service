@@ -48,6 +48,7 @@ public class CleanSfuEntities extends ChainedTask<Void> {
 
     public Task<Void> createTask() {
         var result = ChainedTask.<Void>builder()
+                .withName(this.getClass().getSimpleName())
                 .addActionStage("Clean Sfus", this::cleanSfus)
                 .addActionStage("Clean Sfu Transports", this::cleanSfuTransports)
                 .addActionStage("Clean Sfu Inbound Rtp Pads", this::cleanSfuInboundRtpPads)
@@ -66,8 +67,8 @@ public class CleanSfuEntities extends ChainedTask<Void> {
 
 
     private void cleanSfus() {
-        var serverTimestamp = this.serverTimestamps.instant().getEpochSecond();
-        var sfuMaxIdleTimeInMs = this.observerConfig.repository.sfuMaxIdleTimeInS;
+        var serverTimestamp = this.serverTimestamps.instant().toEpochMilli();
+        var sfuMaxIdleTimeInMs = this.observerConfig.repository.sfuMaxIdleTimeInS * 1000;
         var thresholdInMs = serverTimestamp - sfuMaxIdleTimeInMs;
         if (this.lastSfusClean != null && thresholdInMs <  this.lastSfusClean) {
             return;
@@ -97,8 +98,8 @@ public class CleanSfuEntities extends ChainedTask<Void> {
 
 
     private void cleanSfuTransports() {
-        var serverTimestamp = this.serverTimestamps.instant().getEpochSecond();
-        var transportsMaxIdleInMs = this.observerConfig.repository.sfuTransportMaxIdleTimeInS;
+        var serverTimestamp = this.serverTimestamps.instant().toEpochMilli();
+        var transportsMaxIdleInMs = this.observerConfig.repository.sfuTransportMaxIdleTimeInS * 1000;
         var thresholdInMs = serverTimestamp - transportsMaxIdleInMs;
         if (this.lastSfuTransportsCleaned != null && thresholdInMs <  this.lastSfuTransportsCleaned) {
             return;
@@ -127,8 +128,8 @@ public class CleanSfuEntities extends ChainedTask<Void> {
     }
 
     private void cleanSfuInboundRtpPads() {
-        var serverTimestamp = this.serverTimestamps.instant().getEpochSecond();
-        var sfuInboundRtpPadMaxIdleTimeInS = this.observerConfig.repository.sfuInboundRtpPadMaxIdleTimeInS;
+        var serverTimestamp = this.serverTimestamps.instant().toEpochMilli();
+        var sfuInboundRtpPadMaxIdleTimeInS = this.observerConfig.repository.sfuInboundRtpPadMaxIdleTimeInS * 1000;
         var thresholdInMs = serverTimestamp - sfuInboundRtpPadMaxIdleTimeInS;
         if (this.lastSfuInboundRtpPadsClean != null && thresholdInMs <  this.lastSfuInboundRtpPadsClean) {
             return;
@@ -158,8 +159,8 @@ public class CleanSfuEntities extends ChainedTask<Void> {
 
 
     private void cleanSfuOutboundRtpPads() {
-        var serverTimestamp = this.serverTimestamps.instant().getEpochSecond();
-        var sfuOutboundRtpPadMaxIdleTimeInS = this.observerConfig.repository.sfuOutboundRtpPadMaxIdleTimeInS;
+        var serverTimestamp = this.serverTimestamps.instant().toEpochMilli();
+        var sfuOutboundRtpPadMaxIdleTimeInS = this.observerConfig.repository.sfuOutboundRtpPadMaxIdleTimeInS * 1000;
         var thresholdInMs = serverTimestamp - sfuOutboundRtpPadMaxIdleTimeInS;
         if (this.lastSfuOutboundRtpPadsClean != null && thresholdInMs <  this.lastSfuOutboundRtpPadsClean) {
             return;
@@ -189,8 +190,8 @@ public class CleanSfuEntities extends ChainedTask<Void> {
 
 
     private void cleanSfuSctpChannels() {
-        var serverTimestamp = this.serverTimestamps.instant().getEpochSecond();
-        var sfuSctpChannelMaxIdleTimeInS = this.observerConfig.repository.sfuSctpChannelMaxIdleTimeInS;
+        var serverTimestamp = this.serverTimestamps.instant().toEpochMilli();
+        var sfuSctpChannelMaxIdleTimeInS = this.observerConfig.repository.sfuSctpChannelMaxIdleTimeInS * 1000;
         logger.debug("Clean outbound track process has been started");
         var thresholdInMs = serverTimestamp - sfuSctpChannelMaxIdleTimeInS;
         if (this.lastSfuSctpChannelsClean != null && thresholdInMs <  this.lastSfuSctpChannelsClean) {

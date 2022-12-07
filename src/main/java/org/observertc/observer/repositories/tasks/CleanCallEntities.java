@@ -50,6 +50,7 @@ public class CleanCallEntities {
 
     public Task<Void> createTask() {
         var result = ChainedTask.<Void>builder()
+                .withName(this.getClass().getSimpleName())
                 .addActionStage("Clean Calls", this::cleanCalls)
                 .addActionStage("Clean Clients", this::cleanClients)
                 .addActionStage("Clean Peer Connections", this::cleanPeerConnections)
@@ -66,8 +67,8 @@ public class CleanCallEntities {
     }
 
     private void cleanCalls() {
-        var serverTimestamp = this.serverTimestamps.instant().getEpochSecond();
-        var callMaxIdleTimeInS = this.observerConfig.repository.callMaxIdleTimeInS;
+        var serverTimestamp = this.serverTimestamps.instant().toEpochMilli();
+        var callMaxIdleTimeInS = this.observerConfig.repository.callMaxIdleTimeInS * 1000;
         var thresholdInMs = serverTimestamp - callMaxIdleTimeInS;
         if (this.lastCallCleaned != null && thresholdInMs <  this.lastCallCleaned) {
             return;
@@ -97,8 +98,8 @@ public class CleanCallEntities {
 
 
     private void cleanClients() {
-        var serverTimestamp = this.serverTimestamps.instant().getEpochSecond();
-        var clientsMaxIdleInMs = this.observerConfig.repository.clientsMaxIdle;
+        var serverTimestamp = this.serverTimestamps.instant().toEpochMilli();
+        var clientsMaxIdleInMs = this.observerConfig.repository.clientsMaxIdle * 1000;
         var thresholdInMs = serverTimestamp - clientsMaxIdleInMs;
         if (this.lastClientCleaned != null && thresholdInMs <  this.lastCallCleaned) {
             return;
@@ -127,8 +128,8 @@ public class CleanCallEntities {
     }
 
     private void cleanPeerConnections() {
-        var serverTimestamp = this.serverTimestamps.instant().getEpochSecond();
-        var peerConnectionMaxIdleInMs = this.observerConfig.repository.peerConnectionsMaxIdle;
+        var serverTimestamp = this.serverTimestamps.instant().toEpochMilli();
+        var peerConnectionMaxIdleInMs = this.observerConfig.repository.peerConnectionsMaxIdle * 1000;
         var thresholdInMs = serverTimestamp - peerConnectionMaxIdleInMs;
         if (this.lastPeerConnectionCleaned != null && thresholdInMs <  this.lastPeerConnectionCleaned) {
             return;
@@ -157,9 +158,9 @@ public class CleanCallEntities {
     }
 
     private void cleanInboundTracks() {
-        var serverTimestamp = this.serverTimestamps.instant().getEpochSecond();
-        var inboundTracksMaxIdle = this.observerConfig.repository.inboundTracksMaxIdle;
-        var thresholdInMs = serverTimestamp - inboundTracksMaxIdle;
+        var serverTimestamp = this.serverTimestamps.instant().toEpochMilli();
+        var inboundTracksMaxIdleInMs = this.observerConfig.repository.inboundTracksMaxIdle * 1000;
+        var thresholdInMs = serverTimestamp - inboundTracksMaxIdleInMs;
         if (this.lastInboundTrackCleaned != null && thresholdInMs <  this.lastInboundTrackCleaned) {
             return;
         }
@@ -187,9 +188,9 @@ public class CleanCallEntities {
     }
 
     private void cleanOutboundTracks() {
-        var serverTimestamp = this.serverTimestamps.instant().getEpochSecond();
-        var outboundTracksMaxIdle = this.observerConfig.repository.outboundTracksMaxIdle;
-        var thresholdInMs = serverTimestamp - outboundTracksMaxIdle;
+        var serverTimestamp = this.serverTimestamps.instant().toEpochMilli();
+        var outboundTracksMaxIdleInMs = this.observerConfig.repository.outboundTracksMaxIdle * 1000;
+        var thresholdInMs = serverTimestamp - outboundTracksMaxIdleInMs;
         if (this.lastOutboundTrackCleaned != null && thresholdInMs <  this.lastOutboundTrackCleaned) {
             return;
         }

@@ -235,6 +235,7 @@ public class WebsocketConnection {
                 }
             }
 
+
             @Override
             public void onClose(int code, String reason, boolean remote) {
                 var removedRemoteIdentifiers = remoteIdentifiersHolder.getAndSet(null);

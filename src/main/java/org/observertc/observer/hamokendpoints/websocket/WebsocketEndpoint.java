@@ -238,6 +238,7 @@ public class WebsocketEndpoint implements HamokEndpoint {
 
             @Override
             public void onOpen(WebSocket conn, ClientHandshake handshake) {
+
                 logger.info("Accepted connection from {}", conn.getRemoteSocketAddress());
                 var remoteIdentifiers = new RemoteIdentifiers();
                 remoteIdentifiers.endpointId = HamokService.localEndpointId;
@@ -253,6 +254,7 @@ public class WebsocketEndpoint implements HamokEndpoint {
             @Override
             public void onClose(WebSocket conn, int code, String reason, boolean remote) {
                 logger.info("Closed connection from {}", conn.getRemoteSocketAddress());
+
             }
 
             @Override
