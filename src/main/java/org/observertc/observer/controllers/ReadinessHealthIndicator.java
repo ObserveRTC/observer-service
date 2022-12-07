@@ -25,6 +25,7 @@ public class ReadinessHealthIndicator implements HealthIndicator {
     @Inject
     ObserverService observerService;
 
+
     /**
      * Implementaton of {@link HealthIndicator#getResult()} where we
      * check if the url is reachable and return result based

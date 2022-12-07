@@ -10,6 +10,7 @@ import io.micronaut.management.endpoint.info.InfoSource;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.common.JsonUtils;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.hamokendpoints.HamokEndpoint;
 import org.observertc.observer.hamokendpoints.HamokEndpointBuilderService;
@@ -172,10 +173,14 @@ public class HamokService  implements InfoSource {
         );
     }
 
+    private boolean wasReady = false;
     private int alreadyLoggedFlags = 0;
     public boolean isReady() {
         var endpoint = this.endpointHolder.get();
         if (endpoint == null) {
+            if (0 < this.config.minRemotePeers) {
+                logger.warn("The minimum number of remote peers to be ready is {}, but there is no endpoint that observer to communicate with other peers", this.config.minRemotePeers);
+            }
             return true;
         }
         if (!endpoint.isReady()) {
@@ -185,10 +190,24 @@ public class HamokService  implements InfoSource {
             }
             return false;
         }
-        if ((this.alreadyLoggedFlags & 2) == 0) {
-            logger.info("Ready");
-            this.alreadyLoggedFlags += 2;
+        if (!this.wasReady && 0 < this.config.minRemotePeers) {
+            var remotePeersNum = Utils.firstNotNull(endpoint.getActiveRemoteEndpointIds(), Collections.emptySet()).size();
+            if (remotePeersNum < this.config.minRemotePeers) {
+                logger.info("Waiting for remote peers to be ready. Minimum number of peers must be ready is {}, currently there are {} number of remote peers", this.config.minRemotePeers, remotePeersNum);
+                return false;
+            }
+//            if ((this.alreadyLoggedFlags & 2) == 0) {
+//
+//                this.alreadyLoggedFlags = 2;
+//            }
         }
+
+
+        if ((this.alreadyLoggedFlags & 4) == 0) {
+            logger.info("Ready");
+            this.alreadyLoggedFlags += 4;
+        }
+        this.wasReady = true;
         return true;
     }
 

@@ -267,6 +267,8 @@ public class ObserverConfig {
 		public boolean usePartialResponses = true;
 		public StorageGridConfig storageGrid = new StorageGridConfig();
 
+		public int minRemotePeers = -1;
+
 		@ConfigurationProperties(("storageGrid"))
 		public static class StorageGridConfig {
 			public int raftMaxLogEntriesRetentionTimeInMinutes = 30;
