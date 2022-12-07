@@ -4,8 +4,8 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import jakarta.inject.Singleton;
-import org.observertc.observer.configs.MediaKind;
 import org.observertc.observer.common.StreamDirection;
+import org.observertc.observer.configs.MediaKind;
 import org.observertc.observer.evaluators.eventreports.attachments.MediaTrackAttachment;
 import org.observertc.observer.events.CallEventType;
 import org.observertc.schemas.dtos.Models;
@@ -47,7 +47,7 @@ public class OutboundTrackRemovedReports {
 
     private CallEventReport makeReport(Models.OutboundTrack outboundTrackModel) {
         try {
-            var timestamp = outboundTrackModel.hasTouched() ? outboundTrackModel.getTouched() : Instant.now().toEpochMilli();
+            var timestamp = outboundTrackModel.hasSampleTouched() ? outboundTrackModel.getSampleTouched() : Instant.now().toEpochMilli();
             var streamDirection = StreamDirection.OUTBOUND.name();
             MediaTrackAttachment attachment = MediaTrackAttachment.builder()
                     .withSfuStreamId(outboundTrackModel.getSfuStreamId())

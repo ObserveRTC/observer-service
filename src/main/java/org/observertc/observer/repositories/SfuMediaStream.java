@@ -55,6 +55,22 @@ public class SfuMediaStream {
         return model.getClientId();
     }
 
+    public Long getServerTouch() {
+        var model = this.modelHolder.get();
+        if (!model.hasServerTouched()) {
+            return null;
+        }
+        return model.getServerTouched();
+    }
+
+    public void touchByServer(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.SfuMediaStream.newBuilder(model)
+                .setServerTouched(timestamp)
+                .build();
+        this.updateModel(newModel);
+    }
+
     public String getPeerConnectionId() {
         var model = this.modelHolder.get();
         if (!model.hasPeerConnectionId()) {

@@ -99,7 +99,7 @@ class PeerConnectionRepositoryTest {
             Assertions.assertEquals(peerConnectionModel.getOpened(), peerConnection.getOpened());
 
             // after insert touched should be equal to joined
-            Assertions.assertEquals(peerConnectionModel.getOpened(), peerConnection.getTouched());
+            Assertions.assertEquals(peerConnectionModel.getOpened(), peerConnection.getSampleTouched());
 
             Assertions.assertEquals(peerConnectionModel.getMediaUnitId(), peerConnection.getMediaUnitId());
             if (peerConnectionModel.hasMarker()) {
@@ -154,7 +154,7 @@ class PeerConnectionRepositoryTest {
 
             Assertions.assertEquals(inboundTrackModel.getTrackId(), addInboundTrack.getTrackId());
             Assertions.assertEquals(inboundTrackModel.getAdded(), addInboundTrack.getAdded());
-            Assertions.assertEquals(inboundTrackModel.getAdded(), addInboundTrack.getTouched());
+            Assertions.assertEquals(inboundTrackModel.getAdded(), addInboundTrack.getSampleTouched());
 
             Assertions.assertEquals(peerConnection.getMediaUnitId(), addInboundTrack.getMediaUnitId());
             Assertions.assertEquals(inboundTrackModel.getMarker(), addInboundTrack.getMarker());
@@ -295,7 +295,7 @@ class PeerConnectionRepositoryTest {
 
             Assertions.assertEquals(outboundTrackModel.getTrackId(), addOutboundTrack.getTrackId());
             Assertions.assertEquals(outboundTrackModel.getAdded(), addOutboundTrack.getAdded());
-            Assertions.assertEquals(outboundTrackModel.getAdded(), addOutboundTrack.getTouched());
+            Assertions.assertEquals(outboundTrackModel.getAdded(), addOutboundTrack.getSampleTouched());
 
             Assertions.assertEquals(peerConnection.getMediaUnitId(), addOutboundTrack.getMediaUnitId());
             Assertions.assertEquals(outboundTrackModel.getMarker(), addOutboundTrack.getMarker());

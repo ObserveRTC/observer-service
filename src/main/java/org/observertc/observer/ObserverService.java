@@ -2,8 +2,10 @@ package org.observertc.observer;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.evaluators.*;
 import org.observertc.observer.metrics.ReportMetrics;
+import org.observertc.observer.metrics.RepositoryMetrics;
 import org.observertc.observer.sinks.ReportSinks;
 import org.observertc.observer.sinks.ReportsCollector;
 import org.observertc.observer.sources.SampleSources;
@@ -55,6 +57,9 @@ public class ObserverService {
 
     @Inject
     ReportSinks reportSinks;
+
+    @Inject
+    RepositoryMetrics repositoryMetrics;
 
     @Inject
     BackgroundTasksExecutor backgroundTasksExecutor;
@@ -112,6 +117,11 @@ public class ObserverService {
         this.run = true;
         if (!this.backgroundTasksExecutor.isStarted()) {
             this.backgroundTasksExecutor.start();
+            this.backgroundTasksExecutor.addPeriodicTask(
+                    "Repository Metric Exposure",
+                    () -> ChainedTask.<Void>builder().addActionStage("Exposing metrics", repositoryMetrics::expose).build(),
+                    5 * 60 * 1000
+            );
         }
         logger.info("Started");
     }

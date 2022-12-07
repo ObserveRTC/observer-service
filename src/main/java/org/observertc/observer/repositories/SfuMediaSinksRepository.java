@@ -162,6 +162,14 @@ public class SfuMediaSinksRepository implements RepositoryStorageMetrics {
         return this.fetched.getAll(set);
     }
 
+    public Map<String, SfuMediaSink> getAllLocallyStored() {
+        var callIds = this.storage.localKeys();
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        return this.fetchAll(callIds);
+    }
+
     private SfuMediaSink fetchOne(String sfuMediaSinkId) {
         var model = Try.wrap(() -> this.storage.get(sfuMediaSinkId), null);
         if (model == null) {

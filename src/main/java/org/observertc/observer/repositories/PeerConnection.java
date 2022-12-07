@@ -93,20 +93,53 @@ public class PeerConnection {
         return model.getOpened();
     }
 
-    public Long getTouched() {
+    public Long getSampleTouched() {
         var model = modelHolder.get();
-        if (!model.hasTouched()) {
+        if (!model.hasSampleTouched()) {
             return null;
         }
-        return model.getTouched();
+        return model.getSampleTouched();
     }
 
-    public void touch(Long timestamp) {
+    public void touchBySample(Long timestamp) {
         var model = modelHolder.get();
         var newModel = Models.PeerConnection.newBuilder(model)
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
                 .build();
         this.updateModel(newModel);
+    }
+
+    public Long getServerTouch() {
+        var model = this.modelHolder.get();
+        if (!model.hasServerTouched()) {
+            return null;
+        }
+        return model.getServerTouched();
+    }
+
+    public void touchByServer(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.PeerConnection.newBuilder(model)
+                .setServerTouched(timestamp)
+                .build();
+        this.updateModel(newModel);
+    }
+
+    public void touch(Long sampleTimestamp, Long serverTimestamp) {
+        var model = modelHolder.get();
+        Models.PeerConnection.Builder newModel = null;
+        if (sampleTimestamp != null) {
+            newModel = Models.PeerConnection.newBuilder(model)
+                    .setSampleTouched(sampleTimestamp);
+        }
+        if (serverTimestamp != null) {
+            if (newModel == null) newModel = Models.PeerConnection.newBuilder(model);
+            newModel.setServerTouched(serverTimestamp);
+        }
+        if (newModel == null) {
+            return;
+        }
+        this.updateModel(newModel.build());
     }
 
     public String getMediaUnitId() {
@@ -156,7 +189,7 @@ public class PeerConnection {
                 .setTrackId(trackId)
                 .setKind(kind.name())
                 .setAdded(timestamp)
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
                 // marker
                 // userId
@@ -258,7 +291,7 @@ public class PeerConnection {
                 .setAdded(timestamp)
                 .setKind(kind.name())
 
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
                 // userId
                 // marker

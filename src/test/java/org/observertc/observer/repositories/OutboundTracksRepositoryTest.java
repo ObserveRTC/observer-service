@@ -109,7 +109,7 @@ class OutboundTracksRepositoryTest {
             Assertions.assertEquals(outboundTrackModel.getAdded(), outboundTrack.getAdded());
 
             // after insert touched should be equal to joined
-            Assertions.assertEquals(outboundTrackModel.getAdded(), outboundTrack.getTouched());
+            Assertions.assertEquals(outboundTrackModel.getAdded(), outboundTrack.getSampleTouched());
 
             Assertions.assertEquals(outboundTrackModel.getMediaUnitId(), outboundTrack.getMediaUnitId());
 

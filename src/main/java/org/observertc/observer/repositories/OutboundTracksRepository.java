@@ -134,6 +134,14 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
         return this.fetched.getAll(set);
     }
 
+    public Map<String, OutboundTrack> getAllLocallyStored() {
+        var callIds = this.storage.localKeys();
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        return this.fetchAll(callIds);
+    }
+
     public Map<String, OutboundTrack> fetchRecursively(Set<String> outboundTrackIds) {
         var result = this.getAll(outboundTrackIds);
         var sfuStreamIds = result.values().stream()
@@ -162,7 +170,7 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
         }
     }
 
-    synchronized void deleteAll(Set<String> trackIds) {
+    public synchronized void deleteAll(Set<String> trackIds) {
         if (trackIds == null || trackIds.size() < 1) {
             return;
         }

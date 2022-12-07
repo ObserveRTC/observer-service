@@ -45,7 +45,7 @@ public class SfuOutboundRtpPadRemovedReports {
 
     private SfuEventReport makeReport(Models.SfuOutboundRtpPad trackModel) {
         try {
-            var timestamp = trackModel.hasTouched() ? trackModel.getTouched() : Instant.now().toEpochMilli();
+            var timestamp = trackModel.hasSampleTouched() ? trackModel.getSampleTouched() : Instant.now().toEpochMilli();
             var streamDirection = StreamDirection.OUTBOUND;
             var attachment = RtpPadAttachment.builder()
                     .withStreamDirection(streamDirection)

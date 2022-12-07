@@ -67,18 +67,51 @@ public class SfuTransport {
         return model.getOpened();
     }
 
-    public Long getTouched() {
+    public void touch(Long sampleTimestamp, Long serverTimestamp) {
         var model = modelHolder.get();
-        if (!model.hasTouched()) {
-            return null;
+        Models.SfuTransport.Builder newModel = null;
+        if (sampleTimestamp != null) {
+            newModel = Models.SfuTransport.newBuilder(model)
+                    .setSampleTouched(sampleTimestamp);
         }
-        return model.getTouched();
+        if (serverTimestamp != null) {
+            if (newModel == null) newModel = Models.SfuTransport.newBuilder(model);
+            newModel.setServerTouched(serverTimestamp);
+        }
+        if (newModel == null) {
+            return;
+        }
+        this.updateModel(newModel.build());
     }
 
-    public void touch(Long timestamp) {
+    public Long getSampleTouched() {
+        var model = modelHolder.get();
+        if (!model.hasSampleTouched()) {
+            return null;
+        }
+        return model.getSampleTouched();
+    }
+
+    public void touchBySample(Long timestamp) {
         var model = modelHolder.get();
         var newModel = Models.SfuTransport.newBuilder(model)
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
+                .build();
+        this.updateModel(newModel);
+    }
+
+    public Long getServerTouch() {
+        var model = this.modelHolder.get();
+        if (!model.hasServerTouched()) {
+            return null;
+        }
+        return model.getServerTouched();
+    }
+
+    public void touchByServer(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.SfuTransport.newBuilder(model)
+                .setServerTouched(timestamp)
                 .build();
         this.updateModel(newModel);
     }
@@ -152,7 +185,7 @@ public class SfuTransport {
                 .setSsrc(ssrc)
                 .setInternal(model.getInternal())
                 .setAdded(timestamp)
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
                 ;
         if (sfuStreamId != null) {
@@ -239,7 +272,7 @@ public class SfuTransport {
                 .setSsrc(ssrc)
                 .setInternal(model.getInternal())
                 .setAdded(timestamp)
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
                 ;
 
@@ -333,7 +366,7 @@ public class SfuTransport {
                 .setSfuSctpStreamId(sctpStreamId)
                 .setSfuSctpChannelId(sctpChannelId)
                 .setOpened(timestamp)
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
                 ;
 

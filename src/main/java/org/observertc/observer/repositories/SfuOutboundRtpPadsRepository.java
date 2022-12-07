@@ -159,6 +159,14 @@ public class SfuOutboundRtpPadsRepository implements RepositoryStorageMetrics {
         return this.fetched.getAll(set);
     }
 
+    public Map<String, SfuOutboundRtpPad> getAllLocallyStored() {
+        var callIds = this.storage.localKeys();
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        return this.fetchAll(callIds);
+    }
+
     public Map<String, SfuOutboundRtpPad> fetchRecursively(Set<String> sfuOutboundRtpPadIds) {
         if (sfuOutboundRtpPadIds == null || sfuOutboundRtpPadIds.size() < 1) {
             return Collections.emptyMap();

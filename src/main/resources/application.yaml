@@ -53,7 +53,16 @@ observer:
   repository:
     useBackups: false
     callMaxIdleTimeInS: 300
+    clientsMaxIdle: 300
+    peerConnectionsMaxIdle: 300
+    inboundTracksMaxIdle: 300
+    outboundTracksMaxIdle: 300
+
+    sfuMaxIdleTimeInS: 300
     sfuTransportMaxIdleTimeInS: 300
+    sfuInboundRtpPadMaxIdleTimeInS: 300
+    sfuOutboundRtpPadMaxIdleTimeInS: 300
+    sfuSctpChannelMaxIdleTimeInS: 300
 
   buffers:
     samplesCollector:

@@ -209,6 +209,14 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
         return this.fetched.getAll(set);
     }
 
+    public Map<String, SfuTransport> getAllLocallyStored() {
+        var callIds = this.storage.localKeys();
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        return this.fetchAll(callIds);
+    }
+
     @Override
     public String storageId() {
         return this.storage.getId();

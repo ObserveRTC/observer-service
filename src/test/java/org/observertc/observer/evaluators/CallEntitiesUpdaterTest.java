@@ -136,7 +136,7 @@ class CallEntitiesUpdaterTest {
 
         Assertions.assertEquals(clients.size(), clientIds.size());
         for (var client : clients.values()) {
-            Assertions.assertEquals(updatedSamples.timestamp, client.getTouched());
+            Assertions.assertEquals(updatedSamples.timestamp, client.getSampleTouched());
         }
     }
 
@@ -154,7 +154,7 @@ class CallEntitiesUpdaterTest {
 
         Assertions.assertEquals(peerConnections.size(), peerConnectionIds.size());
         for (var peerConnection : peerConnections.values()) {
-            Assertions.assertEquals(updatedSamples.timestamp, peerConnection.getTouched());
+            Assertions.assertEquals(updatedSamples.timestamp, peerConnection.getSampleTouched());
         }
     }
 
@@ -172,7 +172,7 @@ class CallEntitiesUpdaterTest {
 
         Assertions.assertEquals(inboundTrackIds.size(), inboundTracks.size());
         for (var inboundTrack : inboundTracks.values()) {
-            Assertions.assertEquals(updatedSamples.timestamp, inboundTrack.getTouched());
+            Assertions.assertEquals(updatedSamples.timestamp, inboundTrack.getSampleTouched());
         }
     }
 
@@ -190,7 +190,7 @@ class CallEntitiesUpdaterTest {
 
         Assertions.assertEquals(outboundTrackIds.size(), outboundTracks.size());
         for (var outboundTrack : outboundTracks.values()) {
-            Assertions.assertEquals(updatedSamples.timestamp, outboundTrack.getTouched());
+            Assertions.assertEquals(updatedSamples.timestamp, outboundTrack.getSampleTouched());
         }
     }
 

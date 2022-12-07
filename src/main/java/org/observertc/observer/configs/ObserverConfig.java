@@ -134,8 +134,34 @@ public class ObserverConfig {
 		public int callMaxIdleTimeInS;
 
 		@Min(3)
+		public int clientsMaxIdle;
+
+		@Min(3)
+		public int peerConnectionsMaxIdle;
+
+		@Min(3)
+		public int inboundTracksMaxIdle;
+
+		@Min(3)
+		public int outboundTracksMaxIdle;
+
+		@Min(3)
+		public int sfuMaxIdleTimeInS;
+
+		@Min(3)
 		public int sfuTransportMaxIdleTimeInS;
-	}
+
+		@Min(3)
+		public int sfuInboundRtpPadMaxIdleTimeInS;
+
+		@Min(3)
+		public int sfuOutboundRtpPadMaxIdleTimeInS;
+
+		@Min(3)
+		public int sfuSctpChannelMaxIdleTimeInS;
+
+
+    }
 
 	// Evaluators Config
 	public EvaluatorsConfig evaluators;

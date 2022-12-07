@@ -1,8 +1,6 @@
 package org.observertc.observer.metrics;
 
 import io.micrometer.core.instrument.Tag;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.common.TaskAbstract;
@@ -17,7 +15,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 @Singleton
 public class RepositoryMetrics {
@@ -44,7 +41,6 @@ public class RepositoryMetrics {
     private String entriesMetricName;
 
     private List<RepositoryStorageMetrics> storageMetrics;
-    private Disposable timer = null;
 
     public RepositoryMetrics(
                     CallsRepository callsRepository,
@@ -77,11 +73,6 @@ public class RepositoryMetrics {
         this.taskExecutionTimeMetricName = metrics.getMetricName(REPOSITORY_METRICS_PREFIX, TASK_EXECUTION_TIME_METRIC_NAME);
         this.taskExecutionsMetricName = metrics.getMetricName(REPOSITORY_METRICS_PREFIX, TASK_EXECUTIONS_METRIC_NAME);
         this.entriesMetricName = metrics.getMetricName(REPOSITORY_METRICS_PREFIX, ENTRIES_METRIC_NAME);
-        if (this.config.enabled) {
-            var worker = Schedulers.computation().createWorker();
-            this.timer = worker.schedulePeriodically(this::expose, this.config.exposePeriodInMin, this.config.exposePeriodInMin, TimeUnit.MINUTES);
-            logger.info("Scheduler is added to expose metrics in every {} minutes", this.config.exposePeriodInMin);
-        }
     }
 
     public void processTaskStats(TaskAbstract.Stats stats) {
@@ -108,13 +99,10 @@ public class RepositoryMetrics {
 
     @PreDestroy
     void teardown() {
-        if (this.timer != null && !this.timer.isDisposed()) {
-            this.timer.dispose();
-            logger.info("Scheduler is destroyed");
-        }
+
     }
 
-    private void expose() {
+    public void expose() {
         for (var storageMetrics : this.storageMetrics) {
             var tags = List.of(Tag.of(STORAGE_ID_TAG_NAME, storageMetrics.storageId()));
             this.metrics.registry.gauge(this.entriesMetricName, tags, storageMetrics.localSize());

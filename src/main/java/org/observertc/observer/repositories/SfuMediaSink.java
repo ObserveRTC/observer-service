@@ -58,6 +58,22 @@ public class SfuMediaSink {
         return model.getSfuSinkId();
     }
 
+    public Long getServerTouch() {
+        var model = this.modelHolder.get();
+        if (!model.hasServerTouched()) {
+            return null;
+        }
+        return model.getServerTouched();
+    }
+
+    public void touchByServer(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.SfuMediaSink.newBuilder(model)
+                .setServerTouched(timestamp)
+                .build();
+        this.updateModel(newModel);
+    }
+
     public String getCallId() {
         var model = this.modelHolder.get();
         if (!model.hasCallId()) {

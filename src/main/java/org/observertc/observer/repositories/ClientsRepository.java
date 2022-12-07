@@ -184,6 +184,14 @@ public class ClientsRepository implements RepositoryStorageMetrics  {
         return this.fetched.getAll(set);
     }
 
+    public Map<String, Client> getAllLocallyStored() {
+        var callIds = this.storage.localKeys();
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        return this.fetchAll(callIds);
+    }
+
     public Map<String, Client> fetchRecursively(Collection<String> clientIds) {
         if (clientIds == null || clientIds.size() < 1) {
             return Collections.emptyMap();

@@ -245,7 +245,6 @@ public class CallsRepository implements RepositoryStorageMetrics {
             return Collections.emptyMap();
         }
         return this.fetchAll(callIds);
-
     }
 
     public Call get(String callId) {

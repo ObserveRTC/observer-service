@@ -1,12 +1,11 @@
 package org.observertc.observer.evaluators;
 
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.BackgroundTasksExecutor;
 import org.observertc.observer.ServerTimestamps;
 import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.common.Utils;
@@ -18,6 +17,7 @@ import org.observertc.observer.repositories.AlreadyCreatedException;
 import org.observertc.observer.repositories.Call;
 import org.observertc.observer.repositories.CallsRepository;
 import org.observertc.observer.repositories.Client;
+import org.observertc.observer.repositories.tasks.CleanCallEntities;
 import org.observertc.observer.samples.ObservedClientSamples;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.schemas.dtos.Models;
@@ -28,11 +28,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.time.Instant;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Singleton
 public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
@@ -78,26 +74,24 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
     @Inject
     ObserverConfig observerConfig;
 
-    private Instant lastCleaned = null;
-    private AtomicReference<Disposable> timer = new AtomicReference<>(null);
+    @Inject
+    BackgroundTasksExecutor backgroundTasksExecutor;
+
+    @Inject
+    CleanCallEntities cleanCallEntities;
 
     @PostConstruct
     void setup() {
-        var callMaxIdleTimeInS = this.observerConfig.repository.callMaxIdleTimeInS;
-        var timer = Schedulers.computation().createWorker().schedulePeriodically(() -> {
-            this.clean();
-        }, callMaxIdleTimeInS, callMaxIdleTimeInS, TimeUnit.SECONDS);
-        if (!this.timer.compareAndSet(null, timer)) {
-            timer.dispose();
-        }
+        this.backgroundTasksExecutor.addPeriodicTask(
+                this.getClass().getSimpleName(),
+                this.cleanCallEntities::createTask,
+                60 * 1000
+        );
     }
 
     @PreDestroy
     void teardown() {
-        var timer = this.timer.getAndSet(null);
-        if (timer != null) {
-            timer.dispose();
-        }
+        this.backgroundTasksExecutor.removePeriodicTask(this.getClass().getSimpleName());
     }
 
     private Subject<ObservedClientSamples> output = PublishSubject.create();
@@ -146,7 +140,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
         var newPeerConnectionModels = new LinkedList<Models.PeerConnection>();
         var newInboundTrackModels = new LinkedList<Models.InboundTrack>();
         var newOutboundTrackModels = new LinkedList<Models.OutboundTrack>();
-
+        var serverTimestamp = this.serverTimestamps.instant().toEpochMilli();
         for (var observedRoom : observedClientSamples.observedRooms()) {
             Call call = null;
             for (var observedClient : observedRoom) {
@@ -194,8 +188,9 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                     }
                     client = call.getClient(clientId);
                 }
-                call.touchBySample(observedRoom.getMaxTimestamp());
-                call.touchByServer(this.serverTimestamps.instant().toEpochMilli());
+
+                call.touch(observedRoom.getMaxTimestamp(), serverTimestamp);
+
                 if (client == null) {
                     try {
                         client = call.addClient(
@@ -220,7 +215,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                         continue;
                     }
                 }
-                client.touch(observedClient.getMaxTimestamp());
+                client.touch(observedClient.getMaxTimestamp(), serverTimestamp);
 
                 for (var observedPeerConnection : observedClient.observedPeerConnections()) {
                     var peerConnection = client.getPeerConnection(observedPeerConnection.getPeerConnectionId());
@@ -245,7 +240,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                             continue;
                         }
                     }
-                    peerConnection.touch(observedClient.getMaxTimestamp());
+                    peerConnection.touch(observedClient.getMaxTimestamp(), serverTimestamp);
 
                     for (var observedInboundAudioTrack : observedPeerConnection.observedInboundAudioTracks()) {
                         var inboundAudioTrack = peerConnection.getInboundTrack(observedInboundAudioTrack.getTrackId());
@@ -275,12 +270,16 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                                 continue;
                             }
                         } else {
-                            var lastTouch = inboundAudioTrack.getTouched();
+                            var lastTouch = inboundAudioTrack.getSampleTouched();
                             if (lastTouch == null || lastTouch < observedInboundAudioTrack.getMaxTimestamp()) {
-                                inboundAudioTrack.touch(observedInboundAudioTrack.getMaxTimestamp());
+                                inboundAudioTrack.touchBySample(observedInboundAudioTrack.getMaxTimestamp());
                             }
                             if (!inboundAudioTrack.hasSSRC(observedInboundAudioTrack.getSSRC())) {
                                 inboundAudioTrack.addSSRC(observedInboundAudioTrack.getSSRC());
+                            }
+                            var serverTouch = inboundAudioTrack.getServerTouch();
+                            if (serverTouch == null || serverTouch <  serverTimestamp) {
+                                inboundAudioTrack.touchByServer(serverTimestamp);
                             }
                         }
                     }
@@ -312,12 +311,16 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                                 continue;
                             }
                         } else {
-                            var lastTouch = inboundVideoTrack.getTouched();
+                            var lastTouch = inboundVideoTrack.getSampleTouched();
                             if (lastTouch == null || lastTouch < observedInboundVideoTrack.getMaxTimestamp()) {
-                                inboundVideoTrack.touch(observedInboundVideoTrack.getMaxTimestamp());
+                                inboundVideoTrack.touchBySample(observedInboundVideoTrack.getMaxTimestamp());
                             }
                             if (!inboundVideoTrack.hasSSRC(observedInboundVideoTrack.getSSRC())) {
                                 inboundVideoTrack.addSSRC(observedInboundVideoTrack.getSSRC());
+                            }
+                            var serverTouch = inboundVideoTrack.getServerTouch();
+                            if (serverTouch == null || serverTouch <  serverTimestamp) {
+                                inboundVideoTrack.touchByServer(serverTimestamp);
                             }
                         }
                     }
@@ -350,12 +353,16 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                                 continue;
                             }
                         } else {
-                            var lastTouch = outboundAudioTrack.getTouched();
+                            var lastTouch = outboundAudioTrack.getSampleTouched();
                             if (lastTouch == null || lastTouch < observedOutboundAudioTrack.getMaxTimestamp()) {
-                                outboundAudioTrack.touch(observedOutboundAudioTrack.getMaxTimestamp());
+                                outboundAudioTrack.touchBySample(observedOutboundAudioTrack.getMaxTimestamp());
                             }
                             if (!outboundAudioTrack.hasSSRC(observedOutboundAudioTrack.getSSRC())) {
                                 outboundAudioTrack.addSSRC(observedOutboundAudioTrack.getSSRC());
+                            }
+                            var serverTouch = outboundAudioTrack.getServerTouch();
+                            if (serverTouch == null || serverTouch <  serverTimestamp) {
+                                outboundAudioTrack.touchByServer(serverTimestamp);
                             }
                         }
                     }
@@ -386,12 +393,16 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                                 continue;
                             }
                         } else {
-                            var lastTouch = outboundVideoTrack.getTouched();
+                            var lastTouch = outboundVideoTrack.getSampleTouched();
                             if (lastTouch == null || lastTouch < observedOutboundVideoTrack.getMaxTimestamp()) {
-                                outboundVideoTrack.touch(observedOutboundVideoTrack.getMaxTimestamp());
+                                outboundVideoTrack.touchBySample(observedOutboundVideoTrack.getMaxTimestamp());
                             }
                             if (!outboundVideoTrack.hasSSRC(observedOutboundVideoTrack.getSSRC())) {
                                 outboundVideoTrack.addSSRC(observedOutboundVideoTrack.getSSRC());
+                            }
+                            var serverTouch = outboundVideoTrack.getServerTouch();
+                            if (serverTouch == null || serverTouch <  serverTimestamp) {
+                                outboundVideoTrack.touchByServer(serverTimestamp);
                             }
                         }
                     }
@@ -418,30 +429,9 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                 this.output.onNext(observedClientSamples);
             }
         }
-        this.clean();
     }
 
 
-    private synchronized void clean() {
-        var now = this.serverTimestamps.instant();
-        var callMaxIdleTimeInS = this.observerConfig.repository.callMaxIdleTimeInS;
-        if (this.lastCleaned != null && now.minusSeconds(callMaxIdleTimeInS).toEpochMilli() <  this.lastCleaned.toEpochMilli()) {
-            return;
-        }
 
-        this.lastCleaned = now;
-        var thresholdInMs = now.minusSeconds(callMaxIdleTimeInS).toEpochMilli();
-        var expiredCalls = Utils.firstNotNull(this.callsRepository.getAllLocallyStored(), Collections.<String, Call>emptyMap()).values()
-                .stream()
-                .filter(call -> call.getServerTouch() < thresholdInMs)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toMap(
-                        call -> call.getCallId(),
-                        Function.identity()
-                ));
-        if (expiredCalls.size() < 1) {
-            return;
-        }
-        this.callsRepository.removeAll(expiredCalls.keySet());
-    }
+
 }

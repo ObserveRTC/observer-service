@@ -176,6 +176,14 @@ public class SfuMediaStreamsRepository implements RepositoryStorageMetrics {
         return this.fetched.getAll(set);
     }
 
+    public Map<String, SfuMediaStream> getAllLocallyStored() {
+        var callIds = this.storage.localKeys();
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        return this.fetchAll(callIds);
+    }
+
     private SfuMediaStream fetchOne(String sfuStreamId) {
         var model = Try.wrap(() -> this.storage.get(sfuStreamId), null);
         if (model == null) {

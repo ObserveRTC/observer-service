@@ -110,7 +110,7 @@ public class Call {
                 .setCallId(model.getCallId())
                 .setClientId(clientId)
                 .setJoined(timestamp)
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
                 // timeZoneId
                 .setMediaUnitId(mediaUnitId)
                 // userId
@@ -156,6 +156,23 @@ public class Call {
 
     public ServiceRoomId getServiceRoomId() {
         return this.serviceRoomId;
+    }
+
+    public void touch(Long sampleTimestamp, Long serverTimestamp) {
+        var model = modelHolder.get();
+        Models.Call.Builder newModel = null;
+        if (sampleTimestamp != null) {
+            newModel = Models.Call.newBuilder(model)
+                    .setSampleTouched(sampleTimestamp);
+        }
+        if (serverTimestamp != null) {
+            if (newModel == null) newModel = Models.Call.newBuilder(model);
+            newModel.setServerTouched(serverTimestamp);
+        }
+        if (newModel == null) {
+            return;
+        }
+        this.updateModel(newModel.build());
     }
 
     public void touchBySample(Long timestamp) {

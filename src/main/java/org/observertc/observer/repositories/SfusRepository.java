@@ -100,7 +100,7 @@ public class SfusRepository implements RepositoryStorageMetrics {
         }
     }
 
-    synchronized void deleteAll(Set<String> sfuIds) {
+    public synchronized void deleteAll(Set<String> sfuIds) {
         if (sfuIds == null || sfuIds.size() < 1) {
             return;
         }
@@ -163,7 +163,7 @@ public class SfusRepository implements RepositoryStorageMetrics {
                 .setSfuId(sfuId)
                 .setJoined(timestamp)
 
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
                 .setMediaUnitId(mediaUnitId)
                 // marker
                 // timeZoneId
@@ -193,6 +193,14 @@ public class SfusRepository implements RepositoryStorageMetrics {
         }
         var set = Set.copyOf(sfuIds);
         return this.fetched.getAll(set);
+    }
+
+    public Map<String, Sfu> getAllLocallyStored() {
+        var callIds = this.storage.localKeys();
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        return this.fetchAll(callIds);
     }
 
     @Override

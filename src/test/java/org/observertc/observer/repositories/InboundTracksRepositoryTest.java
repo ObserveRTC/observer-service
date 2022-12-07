@@ -110,7 +110,7 @@ class InboundTracksRepositoryTest {
             Assertions.assertEquals(inboundTrackModel.getAdded(), inboundTrack.getAdded());
 
             // after insert touched should be equal to joined
-            Assertions.assertEquals(inboundTrackModel.getAdded(), inboundTrack.getTouched());
+            Assertions.assertEquals(inboundTrackModel.getAdded(), inboundTrack.getSampleTouched());
 
             Assertions.assertEquals(inboundTrackModel.getMediaUnitId(), inboundTrack.getMediaUnitId());
 

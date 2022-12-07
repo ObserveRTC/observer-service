@@ -70,18 +70,51 @@ public class SfuOutboundRtpPad {
         return model.getAdded();
     }
 
-    public Long getTouched() {
+    public void touch(Long sampleTimestamp, Long serverTimestamp) {
         var model = modelHolder.get();
-        if (!model.hasTouched()) {
-            return null;
+        Models.SfuOutboundRtpPad.Builder newModel = null;
+        if (sampleTimestamp != null) {
+            newModel = Models.SfuOutboundRtpPad.newBuilder(model)
+                    .setSampleTouched(sampleTimestamp);
         }
-        return model.getTouched();
+        if (serverTimestamp != null) {
+            if (newModel == null) newModel = Models.SfuOutboundRtpPad.newBuilder(model);
+            newModel.setServerTouched(serverTimestamp);
+        }
+        if (newModel == null) {
+            return;
+        }
+        this.updateModel(newModel.build());
     }
 
-    public void touch(Long timestamp) {
+    public Long getSampleTouched() {
+        var model = modelHolder.get();
+        if (!model.hasSampleTouched()) {
+            return null;
+        }
+        return model.getSampleTouched();
+    }
+
+    public void touchBySample(Long timestamp) {
         var model = modelHolder.get();
         var newModel = Models.SfuOutboundRtpPad.newBuilder(model)
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
+                .build();
+        this.updateModel(newModel);
+    }
+
+    public Long getServerTouch() {
+        var model = this.modelHolder.get();
+        if (!model.hasServerTouched()) {
+            return null;
+        }
+        return model.getServerTouched();
+    }
+
+    public void touchByServer(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.SfuOutboundRtpPad.newBuilder(model)
+                .setServerTouched(timestamp)
                 .build();
         this.updateModel(newModel);
     }

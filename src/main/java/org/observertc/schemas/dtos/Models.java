@@ -2785,15 +2785,15 @@ public final class Models {
     long getJoined();
 
     /**
-     * <code>optional uint64 touched = 6;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 6;</code>
+     * @return Whether the sampleTouched field is set.
      */
-    boolean hasTouched();
+    boolean hasSampleTouched();
     /**
-     * <code>optional uint64 touched = 6;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 6;</code>
+     * @return The sampleTouched.
      */
-    long getTouched();
+    long getSampleTouched();
 
     /**
      * <code>optional string timeZoneId = 7;</code>
@@ -2887,6 +2887,17 @@ public final class Models {
      */
     com.google.protobuf.ByteString
         getPeerConnectionIdsBytes(int index);
+
+    /**
+     * <code>optional uint64 serverTouched = 12;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    boolean hasServerTouched();
+    /**
+     * <code>optional uint64 serverTouched = 12;</code>
+     * @return The serverTouched.
+     */
+    long getServerTouched();
   }
   /**
    * Protobuf type {@code org.observertc.schemas.dtos.Client}
@@ -2974,7 +2985,7 @@ public final class Models {
             }
             case 48: {
               bitField0_ |= 0x00000020;
-              touched_ = input.readUInt64();
+              sampleTouched_ = input.readUInt64();
               break;
             }
             case 58: {
@@ -3008,6 +3019,11 @@ public final class Models {
                 mutable_bitField0_ |= 0x00000400;
               }
               peerConnectionIds_.add(bs);
+              break;
+            }
+            case 96: {
+              bitField0_ |= 0x00000400;
+              serverTouched_ = input.readUInt64();
               break;
             }
             default: {
@@ -3257,23 +3273,23 @@ public final class Models {
       return joined_;
     }
 
-    public static final int TOUCHED_FIELD_NUMBER = 6;
-    private long touched_;
+    public static final int SAMPLETOUCHED_FIELD_NUMBER = 6;
+    private long sampleTouched_;
     /**
-     * <code>optional uint64 touched = 6;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 6;</code>
+     * @return Whether the sampleTouched field is set.
      */
     @java.lang.Override
-    public boolean hasTouched() {
+    public boolean hasSampleTouched() {
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
-     * <code>optional uint64 touched = 6;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 6;</code>
+     * @return The sampleTouched.
      */
     @java.lang.Override
-    public long getTouched() {
-      return touched_;
+    public long getSampleTouched() {
+      return sampleTouched_;
     }
 
     public static final int TIMEZONEID_FIELD_NUMBER = 7;
@@ -3503,6 +3519,25 @@ public final class Models {
       return peerConnectionIds_.getByteString(index);
     }
 
+    public static final int SERVERTOUCHED_FIELD_NUMBER = 12;
+    private long serverTouched_;
+    /**
+     * <code>optional uint64 serverTouched = 12;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    @java.lang.Override
+    public boolean hasServerTouched() {
+      return ((bitField0_ & 0x00000400) != 0);
+    }
+    /**
+     * <code>optional uint64 serverTouched = 12;</code>
+     * @return The serverTouched.
+     */
+    @java.lang.Override
+    public long getServerTouched() {
+      return serverTouched_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -3553,7 +3588,7 @@ public final class Models {
         output.writeUInt64(5, joined_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
-        output.writeUInt64(6, touched_);
+        output.writeUInt64(6, sampleTouched_);
       }
       if (((bitField0_ & 0x00000040) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 7, timeZoneId_);
@@ -3569,6 +3604,9 @@ public final class Models {
       }
       for (int i = 0; i < peerConnectionIds_.size(); i++) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 11, peerConnectionIds_.getRaw(i));
+      }
+      if (((bitField0_ & 0x00000400) != 0)) {
+        output.writeUInt64(12, serverTouched_);
       }
       unknownFields.writeTo(output);
     }
@@ -3597,7 +3635,7 @@ public final class Models {
       }
       if (((bitField0_ & 0x00000020) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(6, touched_);
+          .computeUInt64Size(6, sampleTouched_);
       }
       if (((bitField0_ & 0x00000040) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, timeZoneId_);
@@ -3618,6 +3656,10 @@ public final class Models {
         }
         size += dataSize;
         size += 1 * getPeerConnectionIdsList().size();
+      }
+      if (((bitField0_ & 0x00000400) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(12, serverTouched_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3659,10 +3701,10 @@ public final class Models {
         if (getJoined()
             != other.getJoined()) return false;
       }
-      if (hasTouched() != other.hasTouched()) return false;
-      if (hasTouched()) {
-        if (getTouched()
-            != other.getTouched()) return false;
+      if (hasSampleTouched() != other.hasSampleTouched()) return false;
+      if (hasSampleTouched()) {
+        if (getSampleTouched()
+            != other.getSampleTouched()) return false;
       }
       if (hasTimeZoneId() != other.hasTimeZoneId()) return false;
       if (hasTimeZoneId()) {
@@ -3686,6 +3728,11 @@ public final class Models {
       }
       if (!getPeerConnectionIdsList()
           .equals(other.getPeerConnectionIdsList())) return false;
+      if (hasServerTouched() != other.hasServerTouched()) return false;
+      if (hasServerTouched()) {
+        if (getServerTouched()
+            != other.getServerTouched()) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -3718,10 +3765,10 @@ public final class Models {
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getJoined());
       }
-      if (hasTouched()) {
-        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+      if (hasSampleTouched()) {
+        hash = (37 * hash) + SAMPLETOUCHED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            getTouched());
+            getSampleTouched());
       }
       if (hasTimeZoneId()) {
         hash = (37 * hash) + TIMEZONEID_FIELD_NUMBER;
@@ -3742,6 +3789,11 @@ public final class Models {
       if (getPeerConnectionIdsCount() > 0) {
         hash = (37 * hash) + PEERCONNECTIONIDS_FIELD_NUMBER;
         hash = (53 * hash) + getPeerConnectionIdsList().hashCode();
+      }
+      if (hasServerTouched()) {
+        hash = (37 * hash) + SERVERTOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getServerTouched());
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -3886,7 +3938,7 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000008);
         joined_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000010);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000020);
         timeZoneId_ = "";
         bitField0_ = (bitField0_ & ~0x00000040);
@@ -3898,6 +3950,8 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000200);
         peerConnectionIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000400);
+        serverTouched_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000800);
         return this;
       }
 
@@ -3947,7 +4001,7 @@ public final class Models {
           to_bitField0_ |= 0x00000010;
         }
         if (((from_bitField0_ & 0x00000020) != 0)) {
-          result.touched_ = touched_;
+          result.sampleTouched_ = sampleTouched_;
           to_bitField0_ |= 0x00000020;
         }
         if (((from_bitField0_ & 0x00000040) != 0)) {
@@ -3971,6 +4025,10 @@ public final class Models {
           bitField0_ = (bitField0_ & ~0x00000400);
         }
         result.peerConnectionIds_ = peerConnectionIds_;
+        if (((from_bitField0_ & 0x00000800) != 0)) {
+          result.serverTouched_ = serverTouched_;
+          to_bitField0_ |= 0x00000400;
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -4043,8 +4101,8 @@ public final class Models {
         if (other.hasJoined()) {
           setJoined(other.getJoined());
         }
-        if (other.hasTouched()) {
-          setTouched(other.getTouched());
+        if (other.hasSampleTouched()) {
+          setSampleTouched(other.getSampleTouched());
         }
         if (other.hasTimeZoneId()) {
           bitField0_ |= 0x00000040;
@@ -4075,6 +4133,9 @@ public final class Models {
             peerConnectionIds_.addAll(other.peerConnectionIds_);
           }
           onChanged();
+        }
+        if (other.hasServerTouched()) {
+          setServerTouched(other.getServerTouched());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -4496,41 +4557,41 @@ public final class Models {
         return this;
       }
 
-      private long touched_ ;
+      private long sampleTouched_ ;
       /**
-       * <code>optional uint64 touched = 6;</code>
-       * @return Whether the touched field is set.
+       * <code>optional uint64 sampleTouched = 6;</code>
+       * @return Whether the sampleTouched field is set.
        */
       @java.lang.Override
-      public boolean hasTouched() {
+      public boolean hasSampleTouched() {
         return ((bitField0_ & 0x00000020) != 0);
       }
       /**
-       * <code>optional uint64 touched = 6;</code>
-       * @return The touched.
+       * <code>optional uint64 sampleTouched = 6;</code>
+       * @return The sampleTouched.
        */
       @java.lang.Override
-      public long getTouched() {
-        return touched_;
+      public long getSampleTouched() {
+        return sampleTouched_;
       }
       /**
-       * <code>optional uint64 touched = 6;</code>
-       * @param value The touched to set.
+       * <code>optional uint64 sampleTouched = 6;</code>
+       * @param value The sampleTouched to set.
        * @return This builder for chaining.
        */
-      public Builder setTouched(long value) {
+      public Builder setSampleTouched(long value) {
         bitField0_ |= 0x00000020;
-        touched_ = value;
+        sampleTouched_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional uint64 touched = 6;</code>
+       * <code>optional uint64 sampleTouched = 6;</code>
        * @return This builder for chaining.
        */
-      public Builder clearTouched() {
+      public Builder clearSampleTouched() {
         bitField0_ = (bitField0_ & ~0x00000020);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
         onChanged();
         return this;
       }
@@ -4979,6 +5040,45 @@ public final class Models {
         onChanged();
         return this;
       }
+
+      private long serverTouched_ ;
+      /**
+       * <code>optional uint64 serverTouched = 12;</code>
+       * @return Whether the serverTouched field is set.
+       */
+      @java.lang.Override
+      public boolean hasServerTouched() {
+        return ((bitField0_ & 0x00000800) != 0);
+      }
+      /**
+       * <code>optional uint64 serverTouched = 12;</code>
+       * @return The serverTouched.
+       */
+      @java.lang.Override
+      public long getServerTouched() {
+        return serverTouched_;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 12;</code>
+       * @param value The serverTouched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setServerTouched(long value) {
+        bitField0_ |= 0x00000800;
+        serverTouched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 12;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearServerTouched() {
+        bitField0_ = (bitField0_ & ~0x00000800);
+        serverTouched_ = 0L;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -5133,15 +5233,15 @@ public final class Models {
     long getOpened();
 
     /**
-     * <code>optional uint64 touched = 7;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 7;</code>
+     * @return Whether the sampleTouched field is set.
      */
-    boolean hasTouched();
+    boolean hasSampleTouched();
     /**
-     * <code>optional uint64 touched = 7;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 7;</code>
+     * @return The sampleTouched.
      */
-    long getTouched();
+    long getSampleTouched();
 
     /**
      * <code>optional string mediaUnitId = 8;</code>
@@ -5260,6 +5360,17 @@ public final class Models {
      */
     com.google.protobuf.ByteString
         getOutboundTrackIdsBytes(int index);
+
+    /**
+     * <code>optional uint64 serverTouched = 14;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    boolean hasServerTouched();
+    /**
+     * <code>optional uint64 serverTouched = 14;</code>
+     * @return The serverTouched.
+     */
+    long getServerTouched();
   }
   /**
    * Protobuf type {@code org.observertc.schemas.dtos.PeerConnection}
@@ -5355,7 +5466,7 @@ public final class Models {
             }
             case 56: {
               bitField0_ |= 0x00000040;
-              touched_ = input.readUInt64();
+              sampleTouched_ = input.readUInt64();
               break;
             }
             case 66: {
@@ -5398,6 +5509,11 @@ public final class Models {
                 mutable_bitField0_ |= 0x00001000;
               }
               outboundTrackIds_.add(bs);
+              break;
+            }
+            case 112: {
+              bitField0_ |= 0x00000800;
+              serverTouched_ = input.readUInt64();
               break;
             }
             default: {
@@ -5698,23 +5814,23 @@ public final class Models {
       return opened_;
     }
 
-    public static final int TOUCHED_FIELD_NUMBER = 7;
-    private long touched_;
+    public static final int SAMPLETOUCHED_FIELD_NUMBER = 7;
+    private long sampleTouched_;
     /**
-     * <code>optional uint64 touched = 7;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 7;</code>
+     * @return Whether the sampleTouched field is set.
      */
     @java.lang.Override
-    public boolean hasTouched() {
+    public boolean hasSampleTouched() {
       return ((bitField0_ & 0x00000040) != 0);
     }
     /**
-     * <code>optional uint64 touched = 7;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 7;</code>
+     * @return The sampleTouched.
      */
     @java.lang.Override
-    public long getTouched() {
-      return touched_;
+    public long getSampleTouched() {
+      return sampleTouched_;
     }
 
     public static final int MEDIAUNITID_FIELD_NUMBER = 8;
@@ -5979,6 +6095,25 @@ public final class Models {
       return outboundTrackIds_.getByteString(index);
     }
 
+    public static final int SERVERTOUCHED_FIELD_NUMBER = 14;
+    private long serverTouched_;
+    /**
+     * <code>optional uint64 serverTouched = 14;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    @java.lang.Override
+    public boolean hasServerTouched() {
+      return ((bitField0_ & 0x00000800) != 0);
+    }
+    /**
+     * <code>optional uint64 serverTouched = 14;</code>
+     * @return The serverTouched.
+     */
+    @java.lang.Override
+    public long getServerTouched() {
+      return serverTouched_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -6036,7 +6171,7 @@ public final class Models {
         output.writeUInt64(6, opened_);
       }
       if (((bitField0_ & 0x00000040) != 0)) {
-        output.writeUInt64(7, touched_);
+        output.writeUInt64(7, sampleTouched_);
       }
       if (((bitField0_ & 0x00000080) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 8, mediaUnitId_);
@@ -6055,6 +6190,9 @@ public final class Models {
       }
       for (int i = 0; i < outboundTrackIds_.size(); i++) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 13, outboundTrackIds_.getRaw(i));
+      }
+      if (((bitField0_ & 0x00000800) != 0)) {
+        output.writeUInt64(14, serverTouched_);
       }
       unknownFields.writeTo(output);
     }
@@ -6086,7 +6224,7 @@ public final class Models {
       }
       if (((bitField0_ & 0x00000040) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(7, touched_);
+          .computeUInt64Size(7, sampleTouched_);
       }
       if (((bitField0_ & 0x00000080) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, mediaUnitId_);
@@ -6115,6 +6253,10 @@ public final class Models {
         }
         size += dataSize;
         size += 1 * getOutboundTrackIdsList().size();
+      }
+      if (((bitField0_ & 0x00000800) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(14, serverTouched_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -6161,10 +6303,10 @@ public final class Models {
         if (getOpened()
             != other.getOpened()) return false;
       }
-      if (hasTouched() != other.hasTouched()) return false;
-      if (hasTouched()) {
-        if (getTouched()
-            != other.getTouched()) return false;
+      if (hasSampleTouched() != other.hasSampleTouched()) return false;
+      if (hasSampleTouched()) {
+        if (getSampleTouched()
+            != other.getSampleTouched()) return false;
       }
       if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
       if (hasMediaUnitId()) {
@@ -6190,6 +6332,11 @@ public final class Models {
           .equals(other.getInboundTrackIdsList())) return false;
       if (!getOutboundTrackIdsList()
           .equals(other.getOutboundTrackIdsList())) return false;
+      if (hasServerTouched() != other.hasServerTouched()) return false;
+      if (hasServerTouched()) {
+        if (getServerTouched()
+            != other.getServerTouched()) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -6226,10 +6373,10 @@ public final class Models {
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getOpened());
       }
-      if (hasTouched()) {
-        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+      if (hasSampleTouched()) {
+        hash = (37 * hash) + SAMPLETOUCHED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            getTouched());
+            getSampleTouched());
       }
       if (hasMediaUnitId()) {
         hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
@@ -6254,6 +6401,11 @@ public final class Models {
       if (getOutboundTrackIdsCount() > 0) {
         hash = (37 * hash) + OUTBOUNDTRACKIDS_FIELD_NUMBER;
         hash = (53 * hash) + getOutboundTrackIdsList().hashCode();
+      }
+      if (hasServerTouched()) {
+        hash = (37 * hash) + SERVERTOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getServerTouched());
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -6400,7 +6552,7 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000010);
         opened_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000020);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000040);
         mediaUnitId_ = "";
         bitField0_ = (bitField0_ & ~0x00000080);
@@ -6414,6 +6566,8 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000800);
         outboundTrackIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00001000);
+        serverTouched_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00002000);
         return this;
       }
 
@@ -6467,7 +6621,7 @@ public final class Models {
           to_bitField0_ |= 0x00000020;
         }
         if (((from_bitField0_ & 0x00000040) != 0)) {
-          result.touched_ = touched_;
+          result.sampleTouched_ = sampleTouched_;
           to_bitField0_ |= 0x00000040;
         }
         if (((from_bitField0_ & 0x00000080) != 0)) {
@@ -6496,6 +6650,10 @@ public final class Models {
           bitField0_ = (bitField0_ & ~0x00001000);
         }
         result.outboundTrackIds_ = outboundTrackIds_;
+        if (((from_bitField0_ & 0x00002000) != 0)) {
+          result.serverTouched_ = serverTouched_;
+          to_bitField0_ |= 0x00000800;
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -6573,8 +6731,8 @@ public final class Models {
         if (other.hasOpened()) {
           setOpened(other.getOpened());
         }
-        if (other.hasTouched()) {
-          setTouched(other.getTouched());
+        if (other.hasSampleTouched()) {
+          setSampleTouched(other.getSampleTouched());
         }
         if (other.hasMediaUnitId()) {
           bitField0_ |= 0x00000080;
@@ -6615,6 +6773,9 @@ public final class Models {
             outboundTrackIds_.addAll(other.outboundTrackIds_);
           }
           onChanged();
+        }
+        if (other.hasServerTouched()) {
+          setServerTouched(other.getServerTouched());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -7123,41 +7284,41 @@ public final class Models {
         return this;
       }
 
-      private long touched_ ;
+      private long sampleTouched_ ;
       /**
-       * <code>optional uint64 touched = 7;</code>
-       * @return Whether the touched field is set.
+       * <code>optional uint64 sampleTouched = 7;</code>
+       * @return Whether the sampleTouched field is set.
        */
       @java.lang.Override
-      public boolean hasTouched() {
+      public boolean hasSampleTouched() {
         return ((bitField0_ & 0x00000040) != 0);
       }
       /**
-       * <code>optional uint64 touched = 7;</code>
-       * @return The touched.
+       * <code>optional uint64 sampleTouched = 7;</code>
+       * @return The sampleTouched.
        */
       @java.lang.Override
-      public long getTouched() {
-        return touched_;
+      public long getSampleTouched() {
+        return sampleTouched_;
       }
       /**
-       * <code>optional uint64 touched = 7;</code>
-       * @param value The touched to set.
+       * <code>optional uint64 sampleTouched = 7;</code>
+       * @param value The sampleTouched to set.
        * @return This builder for chaining.
        */
-      public Builder setTouched(long value) {
+      public Builder setSampleTouched(long value) {
         bitField0_ |= 0x00000040;
-        touched_ = value;
+        sampleTouched_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional uint64 touched = 7;</code>
+       * <code>optional uint64 sampleTouched = 7;</code>
        * @return This builder for chaining.
        */
-      public Builder clearTouched() {
+      public Builder clearSampleTouched() {
         bitField0_ = (bitField0_ & ~0x00000040);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
         onChanged();
         return this;
       }
@@ -7715,6 +7876,45 @@ public final class Models {
         onChanged();
         return this;
       }
+
+      private long serverTouched_ ;
+      /**
+       * <code>optional uint64 serverTouched = 14;</code>
+       * @return Whether the serverTouched field is set.
+       */
+      @java.lang.Override
+      public boolean hasServerTouched() {
+        return ((bitField0_ & 0x00002000) != 0);
+      }
+      /**
+       * <code>optional uint64 serverTouched = 14;</code>
+       * @return The serverTouched.
+       */
+      @java.lang.Override
+      public long getServerTouched() {
+        return serverTouched_;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 14;</code>
+       * @param value The serverTouched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setServerTouched(long value) {
+        bitField0_ |= 0x00002000;
+        serverTouched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 14;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearServerTouched() {
+        bitField0_ = (bitField0_ & ~0x00002000);
+        serverTouched_ = 0L;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -7903,15 +8103,15 @@ public final class Models {
     long getAdded();
 
     /**
-     * <code>optional uint64 touched = 9;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 9;</code>
+     * @return Whether the sampleTouched field is set.
      */
-    boolean hasTouched();
+    boolean hasSampleTouched();
     /**
-     * <code>optional uint64 touched = 9;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 9;</code>
+     * @return The sampleTouched.
      */
-    long getTouched();
+    long getSampleTouched();
 
     /**
      * <code>optional string mediaUnitId = 10;</code>
@@ -8014,6 +8214,17 @@ public final class Models {
      * @return The ssrc at the given index.
      */
     long getSsrc(int index);
+
+    /**
+     * <code>optional uint64 serverTouched = 16;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    boolean hasServerTouched();
+    /**
+     * <code>optional uint64 serverTouched = 16;</code>
+     * @return The serverTouched.
+     */
+    long getServerTouched();
   }
   /**
    * Protobuf type {@code org.observertc.schemas.dtos.InboundTrack}
@@ -8123,7 +8334,7 @@ public final class Models {
             }
             case 72: {
               bitField0_ |= 0x00000100;
-              touched_ = input.readUInt64();
+              sampleTouched_ = input.readUInt64();
               break;
             }
             case 82: {
@@ -8175,6 +8386,11 @@ public final class Models {
                 ssrc_.addLong(input.readInt64());
               }
               input.popLimit(limit);
+              break;
+            }
+            case 128: {
+              bitField0_ |= 0x00004000;
+              serverTouched_ = input.readUInt64();
               break;
             }
             default: {
@@ -8568,23 +8784,23 @@ public final class Models {
       return added_;
     }
 
-    public static final int TOUCHED_FIELD_NUMBER = 9;
-    private long touched_;
+    public static final int SAMPLETOUCHED_FIELD_NUMBER = 9;
+    private long sampleTouched_;
     /**
-     * <code>optional uint64 touched = 9;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 9;</code>
+     * @return Whether the sampleTouched field is set.
      */
     @java.lang.Override
-    public boolean hasTouched() {
+    public boolean hasSampleTouched() {
       return ((bitField0_ & 0x00000100) != 0);
     }
     /**
-     * <code>optional uint64 touched = 9;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 9;</code>
+     * @return The sampleTouched.
      */
     @java.lang.Override
-    public long getTouched() {
-      return touched_;
+    public long getSampleTouched() {
+      return sampleTouched_;
     }
 
     public static final int MEDIAUNITID_FIELD_NUMBER = 10;
@@ -8854,6 +9070,25 @@ public final class Models {
       return ssrc_.getLong(index);
     }
 
+    public static final int SERVERTOUCHED_FIELD_NUMBER = 16;
+    private long serverTouched_;
+    /**
+     * <code>optional uint64 serverTouched = 16;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    @java.lang.Override
+    public boolean hasServerTouched() {
+      return ((bitField0_ & 0x00004000) != 0);
+    }
+    /**
+     * <code>optional uint64 serverTouched = 16;</code>
+     * @return The serverTouched.
+     */
+    @java.lang.Override
+    public long getServerTouched() {
+      return serverTouched_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -8925,7 +9160,7 @@ public final class Models {
         output.writeUInt64(8, added_);
       }
       if (((bitField0_ & 0x00000100) != 0)) {
-        output.writeUInt64(9, touched_);
+        output.writeUInt64(9, sampleTouched_);
       }
       if (((bitField0_ & 0x00000200) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 10, mediaUnitId_);
@@ -8944,6 +9179,9 @@ public final class Models {
       }
       for (int i = 0; i < ssrc_.size(); i++) {
         output.writeInt64(15, ssrc_.getLong(i));
+      }
+      if (((bitField0_ & 0x00004000) != 0)) {
+        output.writeUInt64(16, serverTouched_);
       }
       unknownFields.writeTo(output);
     }
@@ -8981,7 +9219,7 @@ public final class Models {
       }
       if (((bitField0_ & 0x00000100) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(9, touched_);
+          .computeUInt64Size(9, sampleTouched_);
       }
       if (((bitField0_ & 0x00000200) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, mediaUnitId_);
@@ -9006,6 +9244,10 @@ public final class Models {
         }
         size += dataSize;
         size += 1 * getSsrcList().size();
+      }
+      if (((bitField0_ & 0x00004000) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(16, serverTouched_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -9062,10 +9304,10 @@ public final class Models {
         if (getAdded()
             != other.getAdded()) return false;
       }
-      if (hasTouched() != other.hasTouched()) return false;
-      if (hasTouched()) {
-        if (getTouched()
-            != other.getTouched()) return false;
+      if (hasSampleTouched() != other.hasSampleTouched()) return false;
+      if (hasSampleTouched()) {
+        if (getSampleTouched()
+            != other.getSampleTouched()) return false;
       }
       if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
       if (hasMediaUnitId()) {
@@ -9094,6 +9336,11 @@ public final class Models {
       }
       if (!getSsrcList()
           .equals(other.getSsrcList())) return false;
+      if (hasServerTouched() != other.hasServerTouched()) return false;
+      if (hasServerTouched()) {
+        if (getServerTouched()
+            != other.getServerTouched()) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -9138,10 +9385,10 @@ public final class Models {
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getAdded());
       }
-      if (hasTouched()) {
-        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+      if (hasSampleTouched()) {
+        hash = (37 * hash) + SAMPLETOUCHED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            getTouched());
+            getSampleTouched());
       }
       if (hasMediaUnitId()) {
         hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
@@ -9166,6 +9413,11 @@ public final class Models {
       if (getSsrcCount() > 0) {
         hash = (37 * hash) + SSRC_FIELD_NUMBER;
         hash = (53 * hash) + getSsrcList().hashCode();
+      }
+      if (hasServerTouched()) {
+        hash = (37 * hash) + SERVERTOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getServerTouched());
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -9316,7 +9568,7 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000040);
         added_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000080);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000100);
         mediaUnitId_ = "";
         bitField0_ = (bitField0_ & ~0x00000200);
@@ -9330,6 +9582,8 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00002000);
         ssrc_ = emptyLongList();
         bitField0_ = (bitField0_ & ~0x00004000);
+        serverTouched_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00008000);
         return this;
       }
 
@@ -9391,7 +9645,7 @@ public final class Models {
           to_bitField0_ |= 0x00000080;
         }
         if (((from_bitField0_ & 0x00000100) != 0)) {
-          result.touched_ = touched_;
+          result.sampleTouched_ = sampleTouched_;
           to_bitField0_ |= 0x00000100;
         }
         if (((from_bitField0_ & 0x00000200) != 0)) {
@@ -9419,6 +9673,10 @@ public final class Models {
           bitField0_ = (bitField0_ & ~0x00004000);
         }
         result.ssrc_ = ssrc_;
+        if (((from_bitField0_ & 0x00008000) != 0)) {
+          result.serverTouched_ = serverTouched_;
+          to_bitField0_ |= 0x00004000;
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -9506,8 +9764,8 @@ public final class Models {
         if (other.hasAdded()) {
           setAdded(other.getAdded());
         }
-        if (other.hasTouched()) {
-          setTouched(other.getTouched());
+        if (other.hasSampleTouched()) {
+          setSampleTouched(other.getSampleTouched());
         }
         if (other.hasMediaUnitId()) {
           bitField0_ |= 0x00000200;
@@ -9543,6 +9801,9 @@ public final class Models {
             ssrc_.addAll(other.ssrc_);
           }
           onChanged();
+        }
+        if (other.hasServerTouched()) {
+          setServerTouched(other.getServerTouched());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -10225,41 +10486,41 @@ public final class Models {
         return this;
       }
 
-      private long touched_ ;
+      private long sampleTouched_ ;
       /**
-       * <code>optional uint64 touched = 9;</code>
-       * @return Whether the touched field is set.
+       * <code>optional uint64 sampleTouched = 9;</code>
+       * @return Whether the sampleTouched field is set.
        */
       @java.lang.Override
-      public boolean hasTouched() {
+      public boolean hasSampleTouched() {
         return ((bitField0_ & 0x00000100) != 0);
       }
       /**
-       * <code>optional uint64 touched = 9;</code>
-       * @return The touched.
+       * <code>optional uint64 sampleTouched = 9;</code>
+       * @return The sampleTouched.
        */
       @java.lang.Override
-      public long getTouched() {
-        return touched_;
+      public long getSampleTouched() {
+        return sampleTouched_;
       }
       /**
-       * <code>optional uint64 touched = 9;</code>
-       * @param value The touched to set.
+       * <code>optional uint64 sampleTouched = 9;</code>
+       * @param value The sampleTouched to set.
        * @return This builder for chaining.
        */
-      public Builder setTouched(long value) {
+      public Builder setSampleTouched(long value) {
         bitField0_ |= 0x00000100;
-        touched_ = value;
+        sampleTouched_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional uint64 touched = 9;</code>
+       * <code>optional uint64 sampleTouched = 9;</code>
        * @return This builder for chaining.
        */
-      public Builder clearTouched() {
+      public Builder clearSampleTouched() {
         bitField0_ = (bitField0_ & ~0x00000100);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
         onChanged();
         return this;
       }
@@ -10762,6 +11023,45 @@ public final class Models {
         onChanged();
         return this;
       }
+
+      private long serverTouched_ ;
+      /**
+       * <code>optional uint64 serverTouched = 16;</code>
+       * @return Whether the serverTouched field is set.
+       */
+      @java.lang.Override
+      public boolean hasServerTouched() {
+        return ((bitField0_ & 0x00008000) != 0);
+      }
+      /**
+       * <code>optional uint64 serverTouched = 16;</code>
+       * @return The serverTouched.
+       */
+      @java.lang.Override
+      public long getServerTouched() {
+        return serverTouched_;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 16;</code>
+       * @param value The serverTouched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setServerTouched(long value) {
+        bitField0_ |= 0x00008000;
+        serverTouched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 16;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearServerTouched() {
+        bitField0_ = (bitField0_ & ~0x00008000);
+        serverTouched_ = 0L;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -10950,15 +11250,15 @@ public final class Models {
         getKindBytes();
 
     /**
-     * <code>optional uint64 touched = 9;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 9;</code>
+     * @return Whether the sampleTouched field is set.
      */
-    boolean hasTouched();
+    boolean hasSampleTouched();
     /**
-     * <code>optional uint64 touched = 9;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 9;</code>
+     * @return The sampleTouched.
      */
-    long getTouched();
+    long getSampleTouched();
 
     /**
      * <code>optional string mediaUnitId = 10;</code>
@@ -11044,6 +11344,17 @@ public final class Models {
      * @return The ssrc at the given index.
      */
     long getSsrc(int index);
+
+    /**
+     * <code>optional uint64 serverTouched = 15;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    boolean hasServerTouched();
+    /**
+     * <code>optional uint64 serverTouched = 15;</code>
+     * @return The serverTouched.
+     */
+    long getServerTouched();
   }
   /**
    * Protobuf type {@code org.observertc.schemas.dtos.OutboundTrack}
@@ -11152,7 +11463,7 @@ public final class Models {
             }
             case 72: {
               bitField0_ |= 0x00000100;
-              touched_ = input.readUInt64();
+              sampleTouched_ = input.readUInt64();
               break;
             }
             case 82: {
@@ -11198,6 +11509,11 @@ public final class Models {
                 ssrc_.addLong(input.readInt64());
               }
               input.popLimit(limit);
+              break;
+            }
+            case 120: {
+              bitField0_ |= 0x00002000;
+              serverTouched_ = input.readUInt64();
               break;
             }
             default: {
@@ -11591,23 +11907,23 @@ public final class Models {
       }
     }
 
-    public static final int TOUCHED_FIELD_NUMBER = 9;
-    private long touched_;
+    public static final int SAMPLETOUCHED_FIELD_NUMBER = 9;
+    private long sampleTouched_;
     /**
-     * <code>optional uint64 touched = 9;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 9;</code>
+     * @return Whether the sampleTouched field is set.
      */
     @java.lang.Override
-    public boolean hasTouched() {
+    public boolean hasSampleTouched() {
       return ((bitField0_ & 0x00000100) != 0);
     }
     /**
-     * <code>optional uint64 touched = 9;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 9;</code>
+     * @return The sampleTouched.
      */
     @java.lang.Override
-    public long getTouched() {
-      return touched_;
+    public long getSampleTouched() {
+      return sampleTouched_;
     }
 
     public static final int MEDIAUNITID_FIELD_NUMBER = 10;
@@ -11829,6 +12145,25 @@ public final class Models {
       return ssrc_.getLong(index);
     }
 
+    public static final int SERVERTOUCHED_FIELD_NUMBER = 15;
+    private long serverTouched_;
+    /**
+     * <code>optional uint64 serverTouched = 15;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    @java.lang.Override
+    public boolean hasServerTouched() {
+      return ((bitField0_ & 0x00002000) != 0);
+    }
+    /**
+     * <code>optional uint64 serverTouched = 15;</code>
+     * @return The serverTouched.
+     */
+    @java.lang.Override
+    public long getServerTouched() {
+      return serverTouched_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -11900,7 +12235,7 @@ public final class Models {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 8, kind_);
       }
       if (((bitField0_ & 0x00000100) != 0)) {
-        output.writeUInt64(9, touched_);
+        output.writeUInt64(9, sampleTouched_);
       }
       if (((bitField0_ & 0x00000200) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 10, mediaUnitId_);
@@ -11916,6 +12251,9 @@ public final class Models {
       }
       for (int i = 0; i < ssrc_.size(); i++) {
         output.writeInt64(14, ssrc_.getLong(i));
+      }
+      if (((bitField0_ & 0x00002000) != 0)) {
+        output.writeUInt64(15, serverTouched_);
       }
       unknownFields.writeTo(output);
     }
@@ -11953,7 +12291,7 @@ public final class Models {
       }
       if (((bitField0_ & 0x00000100) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(9, touched_);
+          .computeUInt64Size(9, sampleTouched_);
       }
       if (((bitField0_ & 0x00000200) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, mediaUnitId_);
@@ -11975,6 +12313,10 @@ public final class Models {
         }
         size += dataSize;
         size += 1 * getSsrcList().size();
+      }
+      if (((bitField0_ & 0x00002000) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(15, serverTouched_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -12031,10 +12373,10 @@ public final class Models {
         if (!getKind()
             .equals(other.getKind())) return false;
       }
-      if (hasTouched() != other.hasTouched()) return false;
-      if (hasTouched()) {
-        if (getTouched()
-            != other.getTouched()) return false;
+      if (hasSampleTouched() != other.hasSampleTouched()) return false;
+      if (hasSampleTouched()) {
+        if (getSampleTouched()
+            != other.getSampleTouched()) return false;
       }
       if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
       if (hasMediaUnitId()) {
@@ -12058,6 +12400,11 @@ public final class Models {
       }
       if (!getSsrcList()
           .equals(other.getSsrcList())) return false;
+      if (hasServerTouched() != other.hasServerTouched()) return false;
+      if (hasServerTouched()) {
+        if (getServerTouched()
+            != other.getServerTouched()) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -12102,10 +12449,10 @@ public final class Models {
         hash = (37 * hash) + KIND_FIELD_NUMBER;
         hash = (53 * hash) + getKind().hashCode();
       }
-      if (hasTouched()) {
-        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+      if (hasSampleTouched()) {
+        hash = (37 * hash) + SAMPLETOUCHED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            getTouched());
+            getSampleTouched());
       }
       if (hasMediaUnitId()) {
         hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
@@ -12126,6 +12473,11 @@ public final class Models {
       if (getSsrcCount() > 0) {
         hash = (37 * hash) + SSRC_FIELD_NUMBER;
         hash = (53 * hash) + getSsrcList().hashCode();
+      }
+      if (hasServerTouched()) {
+        hash = (37 * hash) + SERVERTOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getServerTouched());
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -12276,7 +12628,7 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000040);
         kind_ = "";
         bitField0_ = (bitField0_ & ~0x00000080);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000100);
         mediaUnitId_ = "";
         bitField0_ = (bitField0_ & ~0x00000200);
@@ -12288,6 +12640,8 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00001000);
         ssrc_ = emptyLongList();
         bitField0_ = (bitField0_ & ~0x00002000);
+        serverTouched_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00004000);
         return this;
       }
 
@@ -12349,7 +12703,7 @@ public final class Models {
         }
         result.kind_ = kind_;
         if (((from_bitField0_ & 0x00000100) != 0)) {
-          result.touched_ = touched_;
+          result.sampleTouched_ = sampleTouched_;
           to_bitField0_ |= 0x00000100;
         }
         if (((from_bitField0_ & 0x00000200) != 0)) {
@@ -12373,6 +12727,10 @@ public final class Models {
           bitField0_ = (bitField0_ & ~0x00002000);
         }
         result.ssrc_ = ssrc_;
+        if (((from_bitField0_ & 0x00004000) != 0)) {
+          result.serverTouched_ = serverTouched_;
+          to_bitField0_ |= 0x00002000;
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -12460,8 +12818,8 @@ public final class Models {
           kind_ = other.kind_;
           onChanged();
         }
-        if (other.hasTouched()) {
-          setTouched(other.getTouched());
+        if (other.hasSampleTouched()) {
+          setSampleTouched(other.getSampleTouched());
         }
         if (other.hasMediaUnitId()) {
           bitField0_ |= 0x00000200;
@@ -12492,6 +12850,9 @@ public final class Models {
             ssrc_.addAll(other.ssrc_);
           }
           onChanged();
+        }
+        if (other.hasServerTouched()) {
+          setServerTouched(other.getServerTouched());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -13174,41 +13535,41 @@ public final class Models {
         return this;
       }
 
-      private long touched_ ;
+      private long sampleTouched_ ;
       /**
-       * <code>optional uint64 touched = 9;</code>
-       * @return Whether the touched field is set.
+       * <code>optional uint64 sampleTouched = 9;</code>
+       * @return Whether the sampleTouched field is set.
        */
       @java.lang.Override
-      public boolean hasTouched() {
+      public boolean hasSampleTouched() {
         return ((bitField0_ & 0x00000100) != 0);
       }
       /**
-       * <code>optional uint64 touched = 9;</code>
-       * @return The touched.
+       * <code>optional uint64 sampleTouched = 9;</code>
+       * @return The sampleTouched.
        */
       @java.lang.Override
-      public long getTouched() {
-        return touched_;
+      public long getSampleTouched() {
+        return sampleTouched_;
       }
       /**
-       * <code>optional uint64 touched = 9;</code>
-       * @param value The touched to set.
+       * <code>optional uint64 sampleTouched = 9;</code>
+       * @param value The sampleTouched to set.
        * @return This builder for chaining.
        */
-      public Builder setTouched(long value) {
+      public Builder setSampleTouched(long value) {
         bitField0_ |= 0x00000100;
-        touched_ = value;
+        sampleTouched_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional uint64 touched = 9;</code>
+       * <code>optional uint64 sampleTouched = 9;</code>
        * @return This builder for chaining.
        */
-      public Builder clearTouched() {
+      public Builder clearSampleTouched() {
         bitField0_ = (bitField0_ & ~0x00000100);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
         onChanged();
         return this;
       }
@@ -13627,6 +13988,45 @@ public final class Models {
         onChanged();
         return this;
       }
+
+      private long serverTouched_ ;
+      /**
+       * <code>optional uint64 serverTouched = 15;</code>
+       * @return Whether the serverTouched field is set.
+       */
+      @java.lang.Override
+      public boolean hasServerTouched() {
+        return ((bitField0_ & 0x00004000) != 0);
+      }
+      /**
+       * <code>optional uint64 serverTouched = 15;</code>
+       * @return The serverTouched.
+       */
+      @java.lang.Override
+      public long getServerTouched() {
+        return serverTouched_;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 15;</code>
+       * @param value The serverTouched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setServerTouched(long value) {
+        bitField0_ |= 0x00004000;
+        serverTouched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 15;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearServerTouched() {
+        bitField0_ = (bitField0_ & ~0x00004000);
+        serverTouched_ = 0L;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -13872,6 +14272,17 @@ public final class Models {
      */
     com.google.protobuf.ByteString
         getOutboundSfuRtpPadIdsBytes(int index);
+
+    /**
+     * <code>optional uint64 serverTouched = 12;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    boolean hasServerTouched();
+    /**
+     * <code>optional uint64 serverTouched = 12;</code>
+     * @return The serverTouched.
+     */
+    long getServerTouched();
   }
   /**
    * Protobuf type {@code org.observertc.schemas.dtos.SfuMediaSink}
@@ -13995,6 +14406,11 @@ public final class Models {
                 mutable_bitField0_ |= 0x00000400;
               }
               outboundSfuRtpPadIds_.add(bs);
+              break;
+            }
+            case 96: {
+              bitField0_ |= 0x00000400;
+              serverTouched_ = input.readUInt64();
               break;
             }
             default: {
@@ -14519,6 +14935,25 @@ public final class Models {
       return outboundSfuRtpPadIds_.getByteString(index);
     }
 
+    public static final int SERVERTOUCHED_FIELD_NUMBER = 12;
+    private long serverTouched_;
+    /**
+     * <code>optional uint64 serverTouched = 12;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    @java.lang.Override
+    public boolean hasServerTouched() {
+      return ((bitField0_ & 0x00000400) != 0);
+    }
+    /**
+     * <code>optional uint64 serverTouched = 12;</code>
+     * @return The serverTouched.
+     */
+    @java.lang.Override
+    public long getServerTouched() {
+      return serverTouched_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -14582,6 +15017,9 @@ public final class Models {
       for (int i = 0; i < outboundSfuRtpPadIds_.size(); i++) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 11, outboundSfuRtpPadIds_.getRaw(i));
       }
+      if (((bitField0_ & 0x00000400) != 0)) {
+        output.writeUInt64(12, serverTouched_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -14629,6 +15067,10 @@ public final class Models {
         }
         size += dataSize;
         size += 1 * getOutboundSfuRtpPadIdsList().size();
+      }
+      if (((bitField0_ & 0x00000400) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(12, serverTouched_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -14697,6 +15139,11 @@ public final class Models {
       }
       if (!getOutboundSfuRtpPadIdsList()
           .equals(other.getOutboundSfuRtpPadIdsList())) return false;
+      if (hasServerTouched() != other.hasServerTouched()) return false;
+      if (hasServerTouched()) {
+        if (getServerTouched()
+            != other.getServerTouched()) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -14752,6 +15199,11 @@ public final class Models {
       if (getOutboundSfuRtpPadIdsCount() > 0) {
         hash = (37 * hash) + OUTBOUNDSFURTPPADIDS_FIELD_NUMBER;
         hash = (53 * hash) + getOutboundSfuRtpPadIdsList().hashCode();
+      }
+      if (hasServerTouched()) {
+        hash = (37 * hash) + SERVERTOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getServerTouched());
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -14908,6 +15360,8 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000200);
         outboundSfuRtpPadIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000400);
+        serverTouched_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000800);
         return this;
       }
 
@@ -14981,6 +15435,10 @@ public final class Models {
           bitField0_ = (bitField0_ & ~0x00000400);
         }
         result.outboundSfuRtpPadIds_ = outboundSfuRtpPadIds_;
+        if (((from_bitField0_ & 0x00000800) != 0)) {
+          result.serverTouched_ = serverTouched_;
+          to_bitField0_ |= 0x00000400;
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -15087,6 +15545,9 @@ public final class Models {
             outboundSfuRtpPadIds_.addAll(other.outboundSfuRtpPadIds_);
           }
           onChanged();
+        }
+        if (other.hasServerTouched()) {
+          setServerTouched(other.getServerTouched());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -16033,6 +16494,45 @@ public final class Models {
         onChanged();
         return this;
       }
+
+      private long serverTouched_ ;
+      /**
+       * <code>optional uint64 serverTouched = 12;</code>
+       * @return Whether the serverTouched field is set.
+       */
+      @java.lang.Override
+      public boolean hasServerTouched() {
+        return ((bitField0_ & 0x00000800) != 0);
+      }
+      /**
+       * <code>optional uint64 serverTouched = 12;</code>
+       * @return The serverTouched.
+       */
+      @java.lang.Override
+      public long getServerTouched() {
+        return serverTouched_;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 12;</code>
+       * @param value The serverTouched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setServerTouched(long value) {
+        bitField0_ |= 0x00000800;
+        serverTouched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 12;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearServerTouched() {
+        bitField0_ = (bitField0_ & ~0x00000800);
+        serverTouched_ = 0L;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -16275,6 +16775,17 @@ public final class Models {
      */
     com.google.protobuf.ByteString
         getSfuMediaSinkIdsBytes(int index);
+
+    /**
+     * <code>optional uint64 serverTouched = 11;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    boolean hasServerTouched();
+    /**
+     * <code>optional uint64 serverTouched = 11;</code>
+     * @return The serverTouched.
+     */
+    long getServerTouched();
   }
   /**
    * Protobuf type {@code org.observertc.schemas.dtos.SfuMediaStream}
@@ -16396,6 +16907,11 @@ public final class Models {
                 mutable_bitField0_ |= 0x00000200;
               }
               sfuMediaSinkIds_.add(bs);
+              break;
+            }
+            case 88: {
+              bitField0_ |= 0x00000100;
+              serverTouched_ = input.readUInt64();
               break;
             }
             default: {
@@ -16891,6 +17407,25 @@ public final class Models {
       return sfuMediaSinkIds_.getByteString(index);
     }
 
+    public static final int SERVERTOUCHED_FIELD_NUMBER = 11;
+    private long serverTouched_;
+    /**
+     * <code>optional uint64 serverTouched = 11;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    @java.lang.Override
+    public boolean hasServerTouched() {
+      return ((bitField0_ & 0x00000100) != 0);
+    }
+    /**
+     * <code>optional uint64 serverTouched = 11;</code>
+     * @return The serverTouched.
+     */
+    @java.lang.Override
+    public long getServerTouched() {
+      return serverTouched_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -16963,6 +17498,9 @@ public final class Models {
       for (int i = 0; i < sfuMediaSinkIds_.size(); i++) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 10, sfuMediaSinkIds_.getRaw(i));
       }
+      if (((bitField0_ & 0x00000100) != 0)) {
+        output.writeUInt64(11, serverTouched_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -17011,6 +17549,10 @@ public final class Models {
         }
         size += dataSize;
         size += 1 * getSfuMediaSinkIdsList().size();
+      }
+      if (((bitField0_ & 0x00000100) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(11, serverTouched_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -17071,6 +17613,11 @@ public final class Models {
           .equals(other.getSfuInboundSfuRtpPadIdsList())) return false;
       if (!getSfuMediaSinkIdsList()
           .equals(other.getSfuMediaSinkIdsList())) return false;
+      if (hasServerTouched() != other.hasServerTouched()) return false;
+      if (hasServerTouched()) {
+        if (getServerTouched()
+            != other.getServerTouched()) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -17121,6 +17668,11 @@ public final class Models {
       if (getSfuMediaSinkIdsCount() > 0) {
         hash = (37 * hash) + SFUMEDIASINKIDS_FIELD_NUMBER;
         hash = (53 * hash) + getSfuMediaSinkIdsList().hashCode();
+      }
+      if (hasServerTouched()) {
+        hash = (37 * hash) + SERVERTOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getServerTouched());
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -17275,6 +17827,8 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000100);
         sfuMediaSinkIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000200);
+        serverTouched_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
 
@@ -17345,6 +17899,10 @@ public final class Models {
           bitField0_ = (bitField0_ & ~0x00000200);
         }
         result.sfuMediaSinkIds_ = sfuMediaSinkIds_;
+        if (((from_bitField0_ & 0x00000400) != 0)) {
+          result.serverTouched_ = serverTouched_;
+          to_bitField0_ |= 0x00000100;
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -17453,6 +18011,9 @@ public final class Models {
             sfuMediaSinkIds_.addAll(other.sfuMediaSinkIds_);
           }
           onChanged();
+        }
+        if (other.hasServerTouched()) {
+          setServerTouched(other.getServerTouched());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -18394,6 +18955,45 @@ public final class Models {
         onChanged();
         return this;
       }
+
+      private long serverTouched_ ;
+      /**
+       * <code>optional uint64 serverTouched = 11;</code>
+       * @return Whether the serverTouched field is set.
+       */
+      @java.lang.Override
+      public boolean hasServerTouched() {
+        return ((bitField0_ & 0x00000400) != 0);
+      }
+      /**
+       * <code>optional uint64 serverTouched = 11;</code>
+       * @return The serverTouched.
+       */
+      @java.lang.Override
+      public long getServerTouched() {
+        return serverTouched_;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 11;</code>
+       * @param value The serverTouched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setServerTouched(long value) {
+        bitField0_ |= 0x00000400;
+        serverTouched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 11;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearServerTouched() {
+        bitField0_ = (bitField0_ & ~0x00000400);
+        serverTouched_ = 0L;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -18497,15 +19097,15 @@ public final class Models {
     long getJoined();
 
     /**
-     * <code>optional uint64 touched = 4;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 4;</code>
+     * @return Whether the sampleTouched field is set.
      */
-    boolean hasTouched();
+    boolean hasSampleTouched();
     /**
-     * <code>optional uint64 touched = 4;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 4;</code>
+     * @return The sampleTouched.
      */
-    long getTouched();
+    long getSampleTouched();
 
     /**
      * <code>optional string mediaUnitId = 5;</code>
@@ -18582,6 +19182,17 @@ public final class Models {
      */
     com.google.protobuf.ByteString
         getSfuTransportIdsBytes(int index);
+
+    /**
+     * <code>optional uint64 serverTouched = 9;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    boolean hasServerTouched();
+    /**
+     * <code>optional uint64 serverTouched = 9;</code>
+     * @return The serverTouched.
+     */
+    long getServerTouched();
   }
   /**
    * Protobuf type {@code org.observertc.schemas.dtos.Sfu}
@@ -18654,7 +19265,7 @@ public final class Models {
             }
             case 32: {
               bitField0_ |= 0x00000008;
-              touched_ = input.readUInt64();
+              sampleTouched_ = input.readUInt64();
               break;
             }
             case 42: {
@@ -18682,6 +19293,11 @@ public final class Models {
                 mutable_bitField0_ |= 0x00000080;
               }
               sfuTransportIds_.add(bs);
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000080;
+              serverTouched_ = input.readUInt64();
               break;
             }
             default: {
@@ -18835,23 +19451,23 @@ public final class Models {
       return joined_;
     }
 
-    public static final int TOUCHED_FIELD_NUMBER = 4;
-    private long touched_;
+    public static final int SAMPLETOUCHED_FIELD_NUMBER = 4;
+    private long sampleTouched_;
     /**
-     * <code>optional uint64 touched = 4;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 4;</code>
+     * @return Whether the sampleTouched field is set.
      */
     @java.lang.Override
-    public boolean hasTouched() {
+    public boolean hasSampleTouched() {
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
-     * <code>optional uint64 touched = 4;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 4;</code>
+     * @return The sampleTouched.
      */
     @java.lang.Override
-    public long getTouched() {
-      return touched_;
+    public long getSampleTouched() {
+      return sampleTouched_;
     }
 
     public static final int MEDIAUNITID_FIELD_NUMBER = 5;
@@ -19033,6 +19649,25 @@ public final class Models {
       return sfuTransportIds_.getByteString(index);
     }
 
+    public static final int SERVERTOUCHED_FIELD_NUMBER = 9;
+    private long serverTouched_;
+    /**
+     * <code>optional uint64 serverTouched = 9;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    @java.lang.Override
+    public boolean hasServerTouched() {
+      return ((bitField0_ & 0x00000080) != 0);
+    }
+    /**
+     * <code>optional uint64 serverTouched = 9;</code>
+     * @return The serverTouched.
+     */
+    @java.lang.Override
+    public long getServerTouched() {
+      return serverTouched_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -19069,7 +19704,7 @@ public final class Models {
         output.writeUInt64(3, joined_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
-        output.writeUInt64(4, touched_);
+        output.writeUInt64(4, sampleTouched_);
       }
       if (((bitField0_ & 0x00000010) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, mediaUnitId_);
@@ -19082,6 +19717,9 @@ public final class Models {
       }
       for (int i = 0; i < sfuTransportIds_.size(); i++) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 8, sfuTransportIds_.getRaw(i));
+      }
+      if (((bitField0_ & 0x00000080) != 0)) {
+        output.writeUInt64(9, serverTouched_);
       }
       unknownFields.writeTo(output);
     }
@@ -19104,7 +19742,7 @@ public final class Models {
       }
       if (((bitField0_ & 0x00000008) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(4, touched_);
+          .computeUInt64Size(4, sampleTouched_);
       }
       if (((bitField0_ & 0x00000010) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, mediaUnitId_);
@@ -19122,6 +19760,10 @@ public final class Models {
         }
         size += dataSize;
         size += 1 * getSfuTransportIdsList().size();
+      }
+      if (((bitField0_ & 0x00000080) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(9, serverTouched_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -19153,10 +19795,10 @@ public final class Models {
         if (getJoined()
             != other.getJoined()) return false;
       }
-      if (hasTouched() != other.hasTouched()) return false;
-      if (hasTouched()) {
-        if (getTouched()
-            != other.getTouched()) return false;
+      if (hasSampleTouched() != other.hasSampleTouched()) return false;
+      if (hasSampleTouched()) {
+        if (getSampleTouched()
+            != other.getSampleTouched()) return false;
       }
       if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
       if (hasMediaUnitId()) {
@@ -19175,6 +19817,11 @@ public final class Models {
       }
       if (!getSfuTransportIdsList()
           .equals(other.getSfuTransportIdsList())) return false;
+      if (hasServerTouched() != other.hasServerTouched()) return false;
+      if (hasServerTouched()) {
+        if (getServerTouched()
+            != other.getServerTouched()) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -19199,10 +19846,10 @@ public final class Models {
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getJoined());
       }
-      if (hasTouched()) {
-        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+      if (hasSampleTouched()) {
+        hash = (37 * hash) + SAMPLETOUCHED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            getTouched());
+            getSampleTouched());
       }
       if (hasMediaUnitId()) {
         hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
@@ -19219,6 +19866,11 @@ public final class Models {
       if (getSfuTransportIdsCount() > 0) {
         hash = (37 * hash) + SFUTRANSPORTIDS_FIELD_NUMBER;
         hash = (53 * hash) + getSfuTransportIdsList().hashCode();
+      }
+      if (hasServerTouched()) {
+        hash = (37 * hash) + SERVERTOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getServerTouched());
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -19359,7 +20011,7 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000002);
         joined_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000004);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000008);
         mediaUnitId_ = "";
         bitField0_ = (bitField0_ & ~0x00000010);
@@ -19369,6 +20021,8 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000040);
         sfuTransportIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000080);
+        serverTouched_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
 
@@ -19410,7 +20064,7 @@ public final class Models {
           to_bitField0_ |= 0x00000004;
         }
         if (((from_bitField0_ & 0x00000008) != 0)) {
-          result.touched_ = touched_;
+          result.sampleTouched_ = sampleTouched_;
           to_bitField0_ |= 0x00000008;
         }
         if (((from_bitField0_ & 0x00000010) != 0)) {
@@ -19430,6 +20084,10 @@ public final class Models {
           bitField0_ = (bitField0_ & ~0x00000080);
         }
         result.sfuTransportIds_ = sfuTransportIds_;
+        if (((from_bitField0_ & 0x00000100) != 0)) {
+          result.serverTouched_ = serverTouched_;
+          to_bitField0_ |= 0x00000080;
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -19492,8 +20150,8 @@ public final class Models {
         if (other.hasJoined()) {
           setJoined(other.getJoined());
         }
-        if (other.hasTouched()) {
-          setTouched(other.getTouched());
+        if (other.hasSampleTouched()) {
+          setSampleTouched(other.getSampleTouched());
         }
         if (other.hasMediaUnitId()) {
           bitField0_ |= 0x00000010;
@@ -19519,6 +20177,9 @@ public final class Models {
             sfuTransportIds_.addAll(other.sfuTransportIds_);
           }
           onChanged();
+        }
+        if (other.hasServerTouched()) {
+          setServerTouched(other.getServerTouched());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -19766,41 +20427,41 @@ public final class Models {
         return this;
       }
 
-      private long touched_ ;
+      private long sampleTouched_ ;
       /**
-       * <code>optional uint64 touched = 4;</code>
-       * @return Whether the touched field is set.
+       * <code>optional uint64 sampleTouched = 4;</code>
+       * @return Whether the sampleTouched field is set.
        */
       @java.lang.Override
-      public boolean hasTouched() {
+      public boolean hasSampleTouched() {
         return ((bitField0_ & 0x00000008) != 0);
       }
       /**
-       * <code>optional uint64 touched = 4;</code>
-       * @return The touched.
+       * <code>optional uint64 sampleTouched = 4;</code>
+       * @return The sampleTouched.
        */
       @java.lang.Override
-      public long getTouched() {
-        return touched_;
+      public long getSampleTouched() {
+        return sampleTouched_;
       }
       /**
-       * <code>optional uint64 touched = 4;</code>
-       * @param value The touched to set.
+       * <code>optional uint64 sampleTouched = 4;</code>
+       * @param value The sampleTouched to set.
        * @return This builder for chaining.
        */
-      public Builder setTouched(long value) {
+      public Builder setSampleTouched(long value) {
         bitField0_ |= 0x00000008;
-        touched_ = value;
+        sampleTouched_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional uint64 touched = 4;</code>
+       * <code>optional uint64 sampleTouched = 4;</code>
        * @return This builder for chaining.
        */
-      public Builder clearTouched() {
+      public Builder clearSampleTouched() {
         bitField0_ = (bitField0_ & ~0x00000008);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
         onChanged();
         return this;
       }
@@ -20165,6 +20826,45 @@ public final class Models {
         onChanged();
         return this;
       }
+
+      private long serverTouched_ ;
+      /**
+       * <code>optional uint64 serverTouched = 9;</code>
+       * @return Whether the serverTouched field is set.
+       */
+      @java.lang.Override
+      public boolean hasServerTouched() {
+        return ((bitField0_ & 0x00000100) != 0);
+      }
+      /**
+       * <code>optional uint64 serverTouched = 9;</code>
+       * @return The serverTouched.
+       */
+      @java.lang.Override
+      public long getServerTouched() {
+        return serverTouched_;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 9;</code>
+       * @param value The serverTouched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setServerTouched(long value) {
+        bitField0_ |= 0x00000100;
+        serverTouched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 9;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearServerTouched() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        serverTouched_ = 0L;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -20296,15 +20996,15 @@ public final class Models {
     long getOpened();
 
     /**
-     * <code>optional uint64 touched = 6;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 6;</code>
+     * @return Whether the sampleTouched field is set.
      */
-    boolean hasTouched();
+    boolean hasSampleTouched();
     /**
-     * <code>optional uint64 touched = 6;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 6;</code>
+     * @return The sampleTouched.
      */
-    long getTouched();
+    long getSampleTouched();
 
     /**
      * <code>optional string mediaUnitId = 7;</code>
@@ -20414,6 +21114,17 @@ public final class Models {
      */
     com.google.protobuf.ByteString
         getSctpChannelIdsBytes(int index);
+
+    /**
+     * <code>optional uint64 serverTouched = 12;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    boolean hasServerTouched();
+    /**
+     * <code>optional uint64 serverTouched = 12;</code>
+     * @return The serverTouched.
+     */
+    long getServerTouched();
   }
   /**
    * Protobuf type {@code org.observertc.schemas.dtos.SfuTransport}
@@ -20499,7 +21210,7 @@ public final class Models {
             }
             case 48: {
               bitField0_ |= 0x00000020;
-              touched_ = input.readUInt64();
+              sampleTouched_ = input.readUInt64();
               break;
             }
             case 58: {
@@ -20539,6 +21250,11 @@ public final class Models {
                 mutable_bitField0_ |= 0x00000400;
               }
               sctpChannelIds_.add(bs);
+              break;
+            }
+            case 96: {
+              bitField0_ |= 0x00000100;
+              serverTouched_ = input.readUInt64();
               break;
             }
             default: {
@@ -20765,23 +21481,23 @@ public final class Models {
       return opened_;
     }
 
-    public static final int TOUCHED_FIELD_NUMBER = 6;
-    private long touched_;
+    public static final int SAMPLETOUCHED_FIELD_NUMBER = 6;
+    private long sampleTouched_;
     /**
-     * <code>optional uint64 touched = 6;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 6;</code>
+     * @return Whether the sampleTouched field is set.
      */
     @java.lang.Override
-    public boolean hasTouched() {
+    public boolean hasSampleTouched() {
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
-     * <code>optional uint64 touched = 6;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 6;</code>
+     * @return The sampleTouched.
      */
     @java.lang.Override
-    public long getTouched() {
-      return touched_;
+    public long getSampleTouched() {
+      return sampleTouched_;
     }
 
     public static final int MEDIAUNITID_FIELD_NUMBER = 7;
@@ -20985,6 +21701,25 @@ public final class Models {
       return sctpChannelIds_.getByteString(index);
     }
 
+    public static final int SERVERTOUCHED_FIELD_NUMBER = 12;
+    private long serverTouched_;
+    /**
+     * <code>optional uint64 serverTouched = 12;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    @java.lang.Override
+    public boolean hasServerTouched() {
+      return ((bitField0_ & 0x00000100) != 0);
+    }
+    /**
+     * <code>optional uint64 serverTouched = 12;</code>
+     * @return The serverTouched.
+     */
+    @java.lang.Override
+    public long getServerTouched() {
+      return serverTouched_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -21035,7 +21770,7 @@ public final class Models {
         output.writeUInt64(5, opened_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
-        output.writeUInt64(6, touched_);
+        output.writeUInt64(6, sampleTouched_);
       }
       if (((bitField0_ & 0x00000040) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 7, mediaUnitId_);
@@ -21051,6 +21786,9 @@ public final class Models {
       }
       for (int i = 0; i < sctpChannelIds_.size(); i++) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 11, sctpChannelIds_.getRaw(i));
+      }
+      if (((bitField0_ & 0x00000100) != 0)) {
+        output.writeUInt64(12, serverTouched_);
       }
       unknownFields.writeTo(output);
     }
@@ -21080,7 +21818,7 @@ public final class Models {
       }
       if (((bitField0_ & 0x00000020) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(6, touched_);
+          .computeUInt64Size(6, sampleTouched_);
       }
       if (((bitField0_ & 0x00000040) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, mediaUnitId_);
@@ -21111,6 +21849,10 @@ public final class Models {
         }
         size += dataSize;
         size += 1 * getSctpChannelIdsList().size();
+      }
+      if (((bitField0_ & 0x00000100) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(12, serverTouched_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -21152,10 +21894,10 @@ public final class Models {
         if (getOpened()
             != other.getOpened()) return false;
       }
-      if (hasTouched() != other.hasTouched()) return false;
-      if (hasTouched()) {
-        if (getTouched()
-            != other.getTouched()) return false;
+      if (hasSampleTouched() != other.hasSampleTouched()) return false;
+      if (hasSampleTouched()) {
+        if (getSampleTouched()
+            != other.getSampleTouched()) return false;
       }
       if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
       if (hasMediaUnitId()) {
@@ -21173,6 +21915,11 @@ public final class Models {
           .equals(other.getOutboundRtpPadIdsList())) return false;
       if (!getSctpChannelIdsList()
           .equals(other.getSctpChannelIdsList())) return false;
+      if (hasServerTouched() != other.hasServerTouched()) return false;
+      if (hasServerTouched()) {
+        if (getServerTouched()
+            != other.getServerTouched()) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -21206,10 +21953,10 @@ public final class Models {
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getOpened());
       }
-      if (hasTouched()) {
-        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+      if (hasSampleTouched()) {
+        hash = (37 * hash) + SAMPLETOUCHED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            getTouched());
+            getSampleTouched());
       }
       if (hasMediaUnitId()) {
         hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
@@ -21230,6 +21977,11 @@ public final class Models {
       if (getSctpChannelIdsCount() > 0) {
         hash = (37 * hash) + SCTPCHANNELIDS_FIELD_NUMBER;
         hash = (53 * hash) + getSctpChannelIdsList().hashCode();
+      }
+      if (hasServerTouched()) {
+        hash = (37 * hash) + SERVERTOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getServerTouched());
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -21374,7 +22126,7 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000008);
         opened_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000010);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000020);
         mediaUnitId_ = "";
         bitField0_ = (bitField0_ & ~0x00000040);
@@ -21386,6 +22138,8 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000200);
         sctpChannelIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000400);
+        serverTouched_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000800);
         return this;
       }
 
@@ -21435,7 +22189,7 @@ public final class Models {
           to_bitField0_ |= 0x00000010;
         }
         if (((from_bitField0_ & 0x00000020) != 0)) {
-          result.touched_ = touched_;
+          result.sampleTouched_ = sampleTouched_;
           to_bitField0_ |= 0x00000020;
         }
         if (((from_bitField0_ & 0x00000040) != 0)) {
@@ -21461,6 +22215,10 @@ public final class Models {
           bitField0_ = (bitField0_ & ~0x00000400);
         }
         result.sctpChannelIds_ = sctpChannelIds_;
+        if (((from_bitField0_ & 0x00000800) != 0)) {
+          result.serverTouched_ = serverTouched_;
+          to_bitField0_ |= 0x00000100;
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -21531,8 +22289,8 @@ public final class Models {
         if (other.hasOpened()) {
           setOpened(other.getOpened());
         }
-        if (other.hasTouched()) {
-          setTouched(other.getTouched());
+        if (other.hasSampleTouched()) {
+          setSampleTouched(other.getSampleTouched());
         }
         if (other.hasMediaUnitId()) {
           bitField0_ |= 0x00000040;
@@ -21573,6 +22331,9 @@ public final class Models {
             sctpChannelIds_.addAll(other.sctpChannelIds_);
           }
           onChanged();
+        }
+        if (other.hasServerTouched()) {
+          setServerTouched(other.getServerTouched());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -21949,41 +22710,41 @@ public final class Models {
         return this;
       }
 
-      private long touched_ ;
+      private long sampleTouched_ ;
       /**
-       * <code>optional uint64 touched = 6;</code>
-       * @return Whether the touched field is set.
+       * <code>optional uint64 sampleTouched = 6;</code>
+       * @return Whether the sampleTouched field is set.
        */
       @java.lang.Override
-      public boolean hasTouched() {
+      public boolean hasSampleTouched() {
         return ((bitField0_ & 0x00000020) != 0);
       }
       /**
-       * <code>optional uint64 touched = 6;</code>
-       * @return The touched.
+       * <code>optional uint64 sampleTouched = 6;</code>
+       * @return The sampleTouched.
        */
       @java.lang.Override
-      public long getTouched() {
-        return touched_;
+      public long getSampleTouched() {
+        return sampleTouched_;
       }
       /**
-       * <code>optional uint64 touched = 6;</code>
-       * @param value The touched to set.
+       * <code>optional uint64 sampleTouched = 6;</code>
+       * @param value The sampleTouched to set.
        * @return This builder for chaining.
        */
-      public Builder setTouched(long value) {
+      public Builder setSampleTouched(long value) {
         bitField0_ |= 0x00000020;
-        touched_ = value;
+        sampleTouched_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional uint64 touched = 6;</code>
+       * <code>optional uint64 sampleTouched = 6;</code>
        * @return This builder for chaining.
        */
-      public Builder clearTouched() {
+      public Builder clearSampleTouched() {
         bitField0_ = (bitField0_ & ~0x00000020);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
         onChanged();
         return this;
       }
@@ -22482,6 +23243,45 @@ public final class Models {
         onChanged();
         return this;
       }
+
+      private long serverTouched_ ;
+      /**
+       * <code>optional uint64 serverTouched = 12;</code>
+       * @return Whether the serverTouched field is set.
+       */
+      @java.lang.Override
+      public boolean hasServerTouched() {
+        return ((bitField0_ & 0x00000800) != 0);
+      }
+      /**
+       * <code>optional uint64 serverTouched = 12;</code>
+       * @return The serverTouched.
+       */
+      @java.lang.Override
+      public long getServerTouched() {
+        return serverTouched_;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 12;</code>
+       * @param value The serverTouched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setServerTouched(long value) {
+        bitField0_ |= 0x00000800;
+        serverTouched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 12;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearServerTouched() {
+        bitField0_ = (bitField0_ & ~0x00000800);
+        serverTouched_ = 0L;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -22658,15 +23458,15 @@ public final class Models {
     long getAdded();
 
     /**
-     * <code>optional uint64 touched = 9;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 9;</code>
+     * @return Whether the sampleTouched field is set.
      */
-    boolean hasTouched();
+    boolean hasSampleTouched();
     /**
-     * <code>optional uint64 touched = 9;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 9;</code>
+     * @return The sampleTouched.
      */
-    long getTouched();
+    long getSampleTouched();
 
     /**
      * <code>optional string mediaUnitId = 10;</code>
@@ -22701,6 +23501,17 @@ public final class Models {
      */
     com.google.protobuf.ByteString
         getMarkerBytes();
+
+    /**
+     * <code>optional uint64 serverTouched = 12;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    boolean hasServerTouched();
+    /**
+     * <code>optional uint64 serverTouched = 12;</code>
+     * @return The serverTouched.
+     */
+    long getServerTouched();
   }
   /**
    * Protobuf type {@code org.observertc.schemas.dtos.SfuInboundRtpPad}
@@ -22802,7 +23613,7 @@ public final class Models {
             }
             case 72: {
               bitField0_ |= 0x00000100;
-              touched_ = input.readUInt64();
+              sampleTouched_ = input.readUInt64();
               break;
             }
             case 82: {
@@ -22815,6 +23626,11 @@ public final class Models {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000400;
               marker_ = bs;
+              break;
+            }
+            case 96: {
+              bitField0_ |= 0x00000800;
+              serverTouched_ = input.readUInt64();
               break;
             }
             default: {
@@ -23147,23 +23963,23 @@ public final class Models {
       return added_;
     }
 
-    public static final int TOUCHED_FIELD_NUMBER = 9;
-    private long touched_;
+    public static final int SAMPLETOUCHED_FIELD_NUMBER = 9;
+    private long sampleTouched_;
     /**
-     * <code>optional uint64 touched = 9;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 9;</code>
+     * @return Whether the sampleTouched field is set.
      */
     @java.lang.Override
-    public boolean hasTouched() {
+    public boolean hasSampleTouched() {
       return ((bitField0_ & 0x00000100) != 0);
     }
     /**
-     * <code>optional uint64 touched = 9;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 9;</code>
+     * @return The sampleTouched.
      */
     @java.lang.Override
-    public long getTouched() {
-      return touched_;
+    public long getSampleTouched() {
+      return sampleTouched_;
     }
 
     public static final int MEDIAUNITID_FIELD_NUMBER = 10;
@@ -23262,6 +24078,25 @@ public final class Models {
       }
     }
 
+    public static final int SERVERTOUCHED_FIELD_NUMBER = 12;
+    private long serverTouched_;
+    /**
+     * <code>optional uint64 serverTouched = 12;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    @java.lang.Override
+    public boolean hasServerTouched() {
+      return ((bitField0_ & 0x00000800) != 0);
+    }
+    /**
+     * <code>optional uint64 serverTouched = 12;</code>
+     * @return The serverTouched.
+     */
+    @java.lang.Override
+    public long getServerTouched() {
+      return serverTouched_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -23333,13 +24168,16 @@ public final class Models {
         output.writeUInt64(8, added_);
       }
       if (((bitField0_ & 0x00000100) != 0)) {
-        output.writeUInt64(9, touched_);
+        output.writeUInt64(9, sampleTouched_);
       }
       if (((bitField0_ & 0x00000200) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 10, mediaUnitId_);
       }
       if (((bitField0_ & 0x00000400) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 11, marker_);
+      }
+      if (((bitField0_ & 0x00000800) != 0)) {
+        output.writeUInt64(12, serverTouched_);
       }
       unknownFields.writeTo(output);
     }
@@ -23379,13 +24217,17 @@ public final class Models {
       }
       if (((bitField0_ & 0x00000100) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(9, touched_);
+          .computeUInt64Size(9, sampleTouched_);
       }
       if (((bitField0_ & 0x00000200) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, mediaUnitId_);
       }
       if (((bitField0_ & 0x00000400) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, marker_);
+      }
+      if (((bitField0_ & 0x00000800) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(12, serverTouched_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -23442,10 +24284,10 @@ public final class Models {
         if (getAdded()
             != other.getAdded()) return false;
       }
-      if (hasTouched() != other.hasTouched()) return false;
-      if (hasTouched()) {
-        if (getTouched()
-            != other.getTouched()) return false;
+      if (hasSampleTouched() != other.hasSampleTouched()) return false;
+      if (hasSampleTouched()) {
+        if (getSampleTouched()
+            != other.getSampleTouched()) return false;
       }
       if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
       if (hasMediaUnitId()) {
@@ -23456,6 +24298,11 @@ public final class Models {
       if (hasMarker()) {
         if (!getMarker()
             .equals(other.getMarker())) return false;
+      }
+      if (hasServerTouched() != other.hasServerTouched()) return false;
+      if (hasServerTouched()) {
+        if (getServerTouched()
+            != other.getServerTouched()) return false;
       }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
@@ -23503,10 +24350,10 @@ public final class Models {
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getAdded());
       }
-      if (hasTouched()) {
-        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+      if (hasSampleTouched()) {
+        hash = (37 * hash) + SAMPLETOUCHED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            getTouched());
+            getSampleTouched());
       }
       if (hasMediaUnitId()) {
         hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
@@ -23515,6 +24362,11 @@ public final class Models {
       if (hasMarker()) {
         hash = (37 * hash) + MARKER_FIELD_NUMBER;
         hash = (53 * hash) + getMarker().hashCode();
+      }
+      if (hasServerTouched()) {
+        hash = (37 * hash) + SERVERTOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getServerTouched());
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -23665,12 +24517,14 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000040);
         added_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000080);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000100);
         mediaUnitId_ = "";
         bitField0_ = (bitField0_ & ~0x00000200);
         marker_ = "";
         bitField0_ = (bitField0_ & ~0x00000400);
+        serverTouched_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000800);
         return this;
       }
 
@@ -23732,7 +24586,7 @@ public final class Models {
           to_bitField0_ |= 0x00000080;
         }
         if (((from_bitField0_ & 0x00000100) != 0)) {
-          result.touched_ = touched_;
+          result.sampleTouched_ = sampleTouched_;
           to_bitField0_ |= 0x00000100;
         }
         if (((from_bitField0_ & 0x00000200) != 0)) {
@@ -23743,6 +24597,10 @@ public final class Models {
           to_bitField0_ |= 0x00000400;
         }
         result.marker_ = marker_;
+        if (((from_bitField0_ & 0x00000800) != 0)) {
+          result.serverTouched_ = serverTouched_;
+          to_bitField0_ |= 0x00000800;
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -23826,8 +24684,8 @@ public final class Models {
         if (other.hasAdded()) {
           setAdded(other.getAdded());
         }
-        if (other.hasTouched()) {
-          setTouched(other.getTouched());
+        if (other.hasSampleTouched()) {
+          setSampleTouched(other.getSampleTouched());
         }
         if (other.hasMediaUnitId()) {
           bitField0_ |= 0x00000200;
@@ -23838,6 +24696,9 @@ public final class Models {
           bitField0_ |= 0x00000400;
           marker_ = other.marker_;
           onChanged();
+        }
+        if (other.hasServerTouched()) {
+          setServerTouched(other.getServerTouched());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -24430,41 +25291,41 @@ public final class Models {
         return this;
       }
 
-      private long touched_ ;
+      private long sampleTouched_ ;
       /**
-       * <code>optional uint64 touched = 9;</code>
-       * @return Whether the touched field is set.
+       * <code>optional uint64 sampleTouched = 9;</code>
+       * @return Whether the sampleTouched field is set.
        */
       @java.lang.Override
-      public boolean hasTouched() {
+      public boolean hasSampleTouched() {
         return ((bitField0_ & 0x00000100) != 0);
       }
       /**
-       * <code>optional uint64 touched = 9;</code>
-       * @return The touched.
+       * <code>optional uint64 sampleTouched = 9;</code>
+       * @return The sampleTouched.
        */
       @java.lang.Override
-      public long getTouched() {
-        return touched_;
+      public long getSampleTouched() {
+        return sampleTouched_;
       }
       /**
-       * <code>optional uint64 touched = 9;</code>
-       * @param value The touched to set.
+       * <code>optional uint64 sampleTouched = 9;</code>
+       * @param value The sampleTouched to set.
        * @return This builder for chaining.
        */
-      public Builder setTouched(long value) {
+      public Builder setSampleTouched(long value) {
         bitField0_ |= 0x00000100;
-        touched_ = value;
+        sampleTouched_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional uint64 touched = 9;</code>
+       * <code>optional uint64 sampleTouched = 9;</code>
        * @return This builder for chaining.
        */
-      public Builder clearTouched() {
+      public Builder clearSampleTouched() {
         bitField0_ = (bitField0_ & ~0x00000100);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
         onChanged();
         return this;
       }
@@ -24633,6 +25494,45 @@ public final class Models {
   }
   bitField0_ |= 0x00000400;
         marker_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long serverTouched_ ;
+      /**
+       * <code>optional uint64 serverTouched = 12;</code>
+       * @return Whether the serverTouched field is set.
+       */
+      @java.lang.Override
+      public boolean hasServerTouched() {
+        return ((bitField0_ & 0x00000800) != 0);
+      }
+      /**
+       * <code>optional uint64 serverTouched = 12;</code>
+       * @return The serverTouched.
+       */
+      @java.lang.Override
+      public long getServerTouched() {
+        return serverTouched_;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 12;</code>
+       * @param value The serverTouched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setServerTouched(long value) {
+        bitField0_ |= 0x00000800;
+        serverTouched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 12;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearServerTouched() {
+        bitField0_ = (bitField0_ & ~0x00000800);
+        serverTouched_ = 0L;
         onChanged();
         return this;
       }
@@ -24829,15 +25729,15 @@ public final class Models {
     long getAdded();
 
     /**
-     * <code>optional uint64 touched = 10;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 10;</code>
+     * @return Whether the sampleTouched field is set.
      */
-    boolean hasTouched();
+    boolean hasSampleTouched();
     /**
-     * <code>optional uint64 touched = 10;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 10;</code>
+     * @return The sampleTouched.
      */
-    long getTouched();
+    long getSampleTouched();
 
     /**
      * <code>optional string mediaUnitId = 11;</code>
@@ -24872,6 +25772,17 @@ public final class Models {
      */
     com.google.protobuf.ByteString
         getMarkerBytes();
+
+    /**
+     * <code>optional uint64 serverTouched = 13;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    boolean hasServerTouched();
+    /**
+     * <code>optional uint64 serverTouched = 13;</code>
+     * @return The serverTouched.
+     */
+    long getServerTouched();
   }
   /**
    * Protobuf type {@code org.observertc.schemas.dtos.SfuOutboundRtpPad}
@@ -24980,7 +25891,7 @@ public final class Models {
             }
             case 80: {
               bitField0_ |= 0x00000200;
-              touched_ = input.readUInt64();
+              sampleTouched_ = input.readUInt64();
               break;
             }
             case 90: {
@@ -24993,6 +25904,11 @@ public final class Models {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000800;
               marker_ = bs;
+              break;
+            }
+            case 104: {
+              bitField0_ |= 0x00001000;
+              serverTouched_ = input.readUInt64();
               break;
             }
             default: {
@@ -25373,23 +26289,23 @@ public final class Models {
       return added_;
     }
 
-    public static final int TOUCHED_FIELD_NUMBER = 10;
-    private long touched_;
+    public static final int SAMPLETOUCHED_FIELD_NUMBER = 10;
+    private long sampleTouched_;
     /**
-     * <code>optional uint64 touched = 10;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 10;</code>
+     * @return Whether the sampleTouched field is set.
      */
     @java.lang.Override
-    public boolean hasTouched() {
+    public boolean hasSampleTouched() {
       return ((bitField0_ & 0x00000200) != 0);
     }
     /**
-     * <code>optional uint64 touched = 10;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 10;</code>
+     * @return The sampleTouched.
      */
     @java.lang.Override
-    public long getTouched() {
-      return touched_;
+    public long getSampleTouched() {
+      return sampleTouched_;
     }
 
     public static final int MEDIAUNITID_FIELD_NUMBER = 11;
@@ -25488,6 +26404,25 @@ public final class Models {
       }
     }
 
+    public static final int SERVERTOUCHED_FIELD_NUMBER = 13;
+    private long serverTouched_;
+    /**
+     * <code>optional uint64 serverTouched = 13;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    @java.lang.Override
+    public boolean hasServerTouched() {
+      return ((bitField0_ & 0x00001000) != 0);
+    }
+    /**
+     * <code>optional uint64 serverTouched = 13;</code>
+     * @return The serverTouched.
+     */
+    @java.lang.Override
+    public long getServerTouched() {
+      return serverTouched_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -25566,13 +26501,16 @@ public final class Models {
         output.writeUInt64(9, added_);
       }
       if (((bitField0_ & 0x00000200) != 0)) {
-        output.writeUInt64(10, touched_);
+        output.writeUInt64(10, sampleTouched_);
       }
       if (((bitField0_ & 0x00000400) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 11, mediaUnitId_);
       }
       if (((bitField0_ & 0x00000800) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 12, marker_);
+      }
+      if (((bitField0_ & 0x00001000) != 0)) {
+        output.writeUInt64(13, serverTouched_);
       }
       unknownFields.writeTo(output);
     }
@@ -25615,13 +26553,17 @@ public final class Models {
       }
       if (((bitField0_ & 0x00000200) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(10, touched_);
+          .computeUInt64Size(10, sampleTouched_);
       }
       if (((bitField0_ & 0x00000400) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, mediaUnitId_);
       }
       if (((bitField0_ & 0x00000800) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(12, marker_);
+      }
+      if (((bitField0_ & 0x00001000) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(13, serverTouched_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -25683,10 +26625,10 @@ public final class Models {
         if (getAdded()
             != other.getAdded()) return false;
       }
-      if (hasTouched() != other.hasTouched()) return false;
-      if (hasTouched()) {
-        if (getTouched()
-            != other.getTouched()) return false;
+      if (hasSampleTouched() != other.hasSampleTouched()) return false;
+      if (hasSampleTouched()) {
+        if (getSampleTouched()
+            != other.getSampleTouched()) return false;
       }
       if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
       if (hasMediaUnitId()) {
@@ -25697,6 +26639,11 @@ public final class Models {
       if (hasMarker()) {
         if (!getMarker()
             .equals(other.getMarker())) return false;
+      }
+      if (hasServerTouched() != other.hasServerTouched()) return false;
+      if (hasServerTouched()) {
+        if (getServerTouched()
+            != other.getServerTouched()) return false;
       }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
@@ -25748,10 +26695,10 @@ public final class Models {
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getAdded());
       }
-      if (hasTouched()) {
-        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+      if (hasSampleTouched()) {
+        hash = (37 * hash) + SAMPLETOUCHED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            getTouched());
+            getSampleTouched());
       }
       if (hasMediaUnitId()) {
         hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
@@ -25760,6 +26707,11 @@ public final class Models {
       if (hasMarker()) {
         hash = (37 * hash) + MARKER_FIELD_NUMBER;
         hash = (53 * hash) + getMarker().hashCode();
+      }
+      if (hasServerTouched()) {
+        hash = (37 * hash) + SERVERTOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getServerTouched());
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -25912,12 +26864,14 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000080);
         added_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000100);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000200);
         mediaUnitId_ = "";
         bitField0_ = (bitField0_ & ~0x00000400);
         marker_ = "";
         bitField0_ = (bitField0_ & ~0x00000800);
+        serverTouched_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00001000);
         return this;
       }
 
@@ -25983,7 +26937,7 @@ public final class Models {
           to_bitField0_ |= 0x00000100;
         }
         if (((from_bitField0_ & 0x00000200) != 0)) {
-          result.touched_ = touched_;
+          result.sampleTouched_ = sampleTouched_;
           to_bitField0_ |= 0x00000200;
         }
         if (((from_bitField0_ & 0x00000400) != 0)) {
@@ -25994,6 +26948,10 @@ public final class Models {
           to_bitField0_ |= 0x00000800;
         }
         result.marker_ = marker_;
+        if (((from_bitField0_ & 0x00001000) != 0)) {
+          result.serverTouched_ = serverTouched_;
+          to_bitField0_ |= 0x00001000;
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -26082,8 +27040,8 @@ public final class Models {
         if (other.hasAdded()) {
           setAdded(other.getAdded());
         }
-        if (other.hasTouched()) {
-          setTouched(other.getTouched());
+        if (other.hasSampleTouched()) {
+          setSampleTouched(other.getSampleTouched());
         }
         if (other.hasMediaUnitId()) {
           bitField0_ |= 0x00000400;
@@ -26094,6 +27052,9 @@ public final class Models {
           bitField0_ |= 0x00000800;
           marker_ = other.marker_;
           onChanged();
+        }
+        if (other.hasServerTouched()) {
+          setServerTouched(other.getServerTouched());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -26773,41 +27734,41 @@ public final class Models {
         return this;
       }
 
-      private long touched_ ;
+      private long sampleTouched_ ;
       /**
-       * <code>optional uint64 touched = 10;</code>
-       * @return Whether the touched field is set.
+       * <code>optional uint64 sampleTouched = 10;</code>
+       * @return Whether the sampleTouched field is set.
        */
       @java.lang.Override
-      public boolean hasTouched() {
+      public boolean hasSampleTouched() {
         return ((bitField0_ & 0x00000200) != 0);
       }
       /**
-       * <code>optional uint64 touched = 10;</code>
-       * @return The touched.
+       * <code>optional uint64 sampleTouched = 10;</code>
+       * @return The sampleTouched.
        */
       @java.lang.Override
-      public long getTouched() {
-        return touched_;
+      public long getSampleTouched() {
+        return sampleTouched_;
       }
       /**
-       * <code>optional uint64 touched = 10;</code>
-       * @param value The touched to set.
+       * <code>optional uint64 sampleTouched = 10;</code>
+       * @param value The sampleTouched to set.
        * @return This builder for chaining.
        */
-      public Builder setTouched(long value) {
+      public Builder setSampleTouched(long value) {
         bitField0_ |= 0x00000200;
-        touched_ = value;
+        sampleTouched_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional uint64 touched = 10;</code>
+       * <code>optional uint64 sampleTouched = 10;</code>
        * @return This builder for chaining.
        */
-      public Builder clearTouched() {
+      public Builder clearSampleTouched() {
         bitField0_ = (bitField0_ & ~0x00000200);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
         onChanged();
         return this;
       }
@@ -26979,6 +27940,45 @@ public final class Models {
         onChanged();
         return this;
       }
+
+      private long serverTouched_ ;
+      /**
+       * <code>optional uint64 serverTouched = 13;</code>
+       * @return Whether the serverTouched field is set.
+       */
+      @java.lang.Override
+      public boolean hasServerTouched() {
+        return ((bitField0_ & 0x00001000) != 0);
+      }
+      /**
+       * <code>optional uint64 serverTouched = 13;</code>
+       * @return The serverTouched.
+       */
+      @java.lang.Override
+      public long getServerTouched() {
+        return serverTouched_;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 13;</code>
+       * @param value The serverTouched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setServerTouched(long value) {
+        bitField0_ |= 0x00001000;
+        serverTouched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 13;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearServerTouched() {
+        bitField0_ = (bitField0_ & ~0x00001000);
+        serverTouched_ = 0L;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -27133,15 +28133,15 @@ public final class Models {
     long getOpened();
 
     /**
-     * <code>optional uint64 touched = 7;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 7;</code>
+     * @return Whether the sampleTouched field is set.
      */
-    boolean hasTouched();
+    boolean hasSampleTouched();
     /**
-     * <code>optional uint64 touched = 7;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 7;</code>
+     * @return The sampleTouched.
      */
-    long getTouched();
+    long getSampleTouched();
 
     /**
      * <code>optional string mediaUnitId = 8;</code>
@@ -27176,6 +28176,17 @@ public final class Models {
      */
     com.google.protobuf.ByteString
         getMarkerBytes();
+
+    /**
+     * <code>optional uint64 serverTouched = 10;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    boolean hasServerTouched();
+    /**
+     * <code>optional uint64 serverTouched = 10;</code>
+     * @return The serverTouched.
+     */
+    long getServerTouched();
   }
   /**
    * Protobuf type {@code org.observertc.schemas.dtos.SfuSctpChannel}
@@ -27267,7 +28278,7 @@ public final class Models {
             }
             case 56: {
               bitField0_ |= 0x00000040;
-              touched_ = input.readUInt64();
+              sampleTouched_ = input.readUInt64();
               break;
             }
             case 66: {
@@ -27280,6 +28291,11 @@ public final class Models {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
               marker_ = bs;
+              break;
+            }
+            case 80: {
+              bitField0_ |= 0x00000200;
+              serverTouched_ = input.readUInt64();
               break;
             }
             default: {
@@ -27574,23 +28590,23 @@ public final class Models {
       return opened_;
     }
 
-    public static final int TOUCHED_FIELD_NUMBER = 7;
-    private long touched_;
+    public static final int SAMPLETOUCHED_FIELD_NUMBER = 7;
+    private long sampleTouched_;
     /**
-     * <code>optional uint64 touched = 7;</code>
-     * @return Whether the touched field is set.
+     * <code>optional uint64 sampleTouched = 7;</code>
+     * @return Whether the sampleTouched field is set.
      */
     @java.lang.Override
-    public boolean hasTouched() {
+    public boolean hasSampleTouched() {
       return ((bitField0_ & 0x00000040) != 0);
     }
     /**
-     * <code>optional uint64 touched = 7;</code>
-     * @return The touched.
+     * <code>optional uint64 sampleTouched = 7;</code>
+     * @return The sampleTouched.
      */
     @java.lang.Override
-    public long getTouched() {
-      return touched_;
+    public long getSampleTouched() {
+      return sampleTouched_;
     }
 
     public static final int MEDIAUNITID_FIELD_NUMBER = 8;
@@ -27689,6 +28705,25 @@ public final class Models {
       }
     }
 
+    public static final int SERVERTOUCHED_FIELD_NUMBER = 10;
+    private long serverTouched_;
+    /**
+     * <code>optional uint64 serverTouched = 10;</code>
+     * @return Whether the serverTouched field is set.
+     */
+    @java.lang.Override
+    public boolean hasServerTouched() {
+      return ((bitField0_ & 0x00000200) != 0);
+    }
+    /**
+     * <code>optional uint64 serverTouched = 10;</code>
+     * @return The serverTouched.
+     */
+    @java.lang.Override
+    public long getServerTouched() {
+      return serverTouched_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -27746,13 +28781,16 @@ public final class Models {
         output.writeUInt64(6, opened_);
       }
       if (((bitField0_ & 0x00000040) != 0)) {
-        output.writeUInt64(7, touched_);
+        output.writeUInt64(7, sampleTouched_);
       }
       if (((bitField0_ & 0x00000080) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 8, mediaUnitId_);
       }
       if (((bitField0_ & 0x00000100) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 9, marker_);
+      }
+      if (((bitField0_ & 0x00000200) != 0)) {
+        output.writeUInt64(10, serverTouched_);
       }
       unknownFields.writeTo(output);
     }
@@ -27784,13 +28822,17 @@ public final class Models {
       }
       if (((bitField0_ & 0x00000040) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(7, touched_);
+          .computeUInt64Size(7, sampleTouched_);
       }
       if (((bitField0_ & 0x00000080) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, mediaUnitId_);
       }
       if (((bitField0_ & 0x00000100) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, marker_);
+      }
+      if (((bitField0_ & 0x00000200) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(10, serverTouched_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -27837,10 +28879,10 @@ public final class Models {
         if (getOpened()
             != other.getOpened()) return false;
       }
-      if (hasTouched() != other.hasTouched()) return false;
-      if (hasTouched()) {
-        if (getTouched()
-            != other.getTouched()) return false;
+      if (hasSampleTouched() != other.hasSampleTouched()) return false;
+      if (hasSampleTouched()) {
+        if (getSampleTouched()
+            != other.getSampleTouched()) return false;
       }
       if (hasMediaUnitId() != other.hasMediaUnitId()) return false;
       if (hasMediaUnitId()) {
@@ -27851,6 +28893,11 @@ public final class Models {
       if (hasMarker()) {
         if (!getMarker()
             .equals(other.getMarker())) return false;
+      }
+      if (hasServerTouched() != other.hasServerTouched()) return false;
+      if (hasServerTouched()) {
+        if (getServerTouched()
+            != other.getServerTouched()) return false;
       }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
@@ -27888,10 +28935,10 @@ public final class Models {
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getOpened());
       }
-      if (hasTouched()) {
-        hash = (37 * hash) + TOUCHED_FIELD_NUMBER;
+      if (hasSampleTouched()) {
+        hash = (37 * hash) + SAMPLETOUCHED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            getTouched());
+            getSampleTouched());
       }
       if (hasMediaUnitId()) {
         hash = (37 * hash) + MEDIAUNITID_FIELD_NUMBER;
@@ -27900,6 +28947,11 @@ public final class Models {
       if (hasMarker()) {
         hash = (37 * hash) + MARKER_FIELD_NUMBER;
         hash = (53 * hash) + getMarker().hashCode();
+      }
+      if (hasServerTouched()) {
+        hash = (37 * hash) + SERVERTOUCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getServerTouched());
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -28046,12 +29098,14 @@ public final class Models {
         bitField0_ = (bitField0_ & ~0x00000010);
         opened_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000020);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000040);
         mediaUnitId_ = "";
         bitField0_ = (bitField0_ & ~0x00000080);
         marker_ = "";
         bitField0_ = (bitField0_ & ~0x00000100);
+        serverTouched_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
 
@@ -28105,7 +29159,7 @@ public final class Models {
           to_bitField0_ |= 0x00000020;
         }
         if (((from_bitField0_ & 0x00000040) != 0)) {
-          result.touched_ = touched_;
+          result.sampleTouched_ = sampleTouched_;
           to_bitField0_ |= 0x00000040;
         }
         if (((from_bitField0_ & 0x00000080) != 0)) {
@@ -28116,6 +29170,10 @@ public final class Models {
           to_bitField0_ |= 0x00000100;
         }
         result.marker_ = marker_;
+        if (((from_bitField0_ & 0x00000200) != 0)) {
+          result.serverTouched_ = serverTouched_;
+          to_bitField0_ |= 0x00000200;
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -28193,8 +29251,8 @@ public final class Models {
         if (other.hasOpened()) {
           setOpened(other.getOpened());
         }
-        if (other.hasTouched()) {
-          setTouched(other.getTouched());
+        if (other.hasSampleTouched()) {
+          setSampleTouched(other.getSampleTouched());
         }
         if (other.hasMediaUnitId()) {
           bitField0_ |= 0x00000080;
@@ -28205,6 +29263,9 @@ public final class Models {
           bitField0_ |= 0x00000100;
           marker_ = other.marker_;
           onChanged();
+        }
+        if (other.hasServerTouched()) {
+          setServerTouched(other.getServerTouched());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -28713,41 +29774,41 @@ public final class Models {
         return this;
       }
 
-      private long touched_ ;
+      private long sampleTouched_ ;
       /**
-       * <code>optional uint64 touched = 7;</code>
-       * @return Whether the touched field is set.
+       * <code>optional uint64 sampleTouched = 7;</code>
+       * @return Whether the sampleTouched field is set.
        */
       @java.lang.Override
-      public boolean hasTouched() {
+      public boolean hasSampleTouched() {
         return ((bitField0_ & 0x00000040) != 0);
       }
       /**
-       * <code>optional uint64 touched = 7;</code>
-       * @return The touched.
+       * <code>optional uint64 sampleTouched = 7;</code>
+       * @return The sampleTouched.
        */
       @java.lang.Override
-      public long getTouched() {
-        return touched_;
+      public long getSampleTouched() {
+        return sampleTouched_;
       }
       /**
-       * <code>optional uint64 touched = 7;</code>
-       * @param value The touched to set.
+       * <code>optional uint64 sampleTouched = 7;</code>
+       * @param value The sampleTouched to set.
        * @return This builder for chaining.
        */
-      public Builder setTouched(long value) {
+      public Builder setSampleTouched(long value) {
         bitField0_ |= 0x00000040;
-        touched_ = value;
+        sampleTouched_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional uint64 touched = 7;</code>
+       * <code>optional uint64 sampleTouched = 7;</code>
        * @return This builder for chaining.
        */
-      public Builder clearTouched() {
+      public Builder clearSampleTouched() {
         bitField0_ = (bitField0_ & ~0x00000040);
-        touched_ = 0L;
+        sampleTouched_ = 0L;
         onChanged();
         return this;
       }
@@ -28919,6 +29980,45 @@ public final class Models {
         onChanged();
         return this;
       }
+
+      private long serverTouched_ ;
+      /**
+       * <code>optional uint64 serverTouched = 10;</code>
+       * @return Whether the serverTouched field is set.
+       */
+      @java.lang.Override
+      public boolean hasServerTouched() {
+        return ((bitField0_ & 0x00000200) != 0);
+      }
+      /**
+       * <code>optional uint64 serverTouched = 10;</code>
+       * @return The serverTouched.
+       */
+      @java.lang.Override
+      public long getServerTouched() {
+        return serverTouched_;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 10;</code>
+       * @param value The serverTouched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setServerTouched(long value) {
+        bitField0_ |= 0x00000200;
+        serverTouched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 serverTouched = 10;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearServerTouched() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        serverTouched_ = 0L;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -29052,71 +30152,79 @@ public final class Models {
       "\n\tserviceId\030\001 \002(\t\022\016\n\006roomId\030\002 \002(\t\022\016\n\006cal" +
       "lId\030\003 \002(\t\022\017\n\007started\030\004 \002(\004\022\016\n\006marker\030\005 \001" +
       "(\t\022\025\n\rsampleTouched\030\006 \001(\004\022\025\n\rserverTouch" +
-      "ed\030\007 \001(\004\022\021\n\tclientIds\030\010 \003(\t\"\322\001\n\006Client\022\021" +
+      "ed\030\007 \001(\004\022\021\n\tclientIds\030\010 \003(\t\"\357\001\n\006Client\022\021" +
       "\n\tserviceId\030\001 \002(\t\022\016\n\006roomId\030\002 \002(\t\022\016\n\006cal" +
       "lId\030\003 \002(\t\022\020\n\010clientId\030\004 \002(\t\022\016\n\006joined\030\005 " +
-      "\002(\004\022\017\n\007touched\030\006 \001(\004\022\022\n\ntimeZoneId\030\007 \001(\t" +
-      "\022\023\n\013mediaUnitId\030\010 \001(\t\022\016\n\006userId\030\t \001(\t\022\016\n" +
-      "\006marker\030\n \001(\t\022\031\n\021peerConnectionIds\030\013 \003(\t" +
-      "\"\207\002\n\016PeerConnection\022\021\n\tserviceId\030\001 \002(\t\022\016" +
-      "\n\006roomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\020\n\010client" +
-      "Id\030\004 \002(\t\022\030\n\020peerConnectionId\030\005 \002(\t\022\016\n\006op" +
-      "ened\030\006 \002(\004\022\017\n\007touched\030\007 \001(\004\022\023\n\013mediaUnit" +
-      "Id\030\010 \001(\t\022\016\n\006userId\030\t \001(\t\022\016\n\006marker\030\n \001(\t" +
-      "\022\r\n\005label\030\013 \001(\t\022\027\n\017inboundTrackIds\030\014 \003(\t" +
-      "\022\030\n\020outboundTrackIds\030\r \003(\t\"\227\002\n\014InboundTr" +
-      "ack\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006roomId\030\002 \002(\t\022\016" +
-      "\n\006callId\030\003 \002(\t\022\020\n\010clientId\030\004 \002(\t\022\030\n\020peer" +
-      "ConnectionId\030\005 \002(\t\022\017\n\007trackId\030\006 \002(\t\022\014\n\004k" +
-      "ind\030\007 \002(\t\022\r\n\005added\030\010 \002(\004\022\017\n\007touched\030\t \001(" +
-      "\004\022\023\n\013mediaUnitId\030\n \001(\t\022\016\n\006userId\030\013 \001(\t\022\016" +
-      "\n\006marker\030\014 \001(\t\022\021\n\tsfuSinkId\030\r \001(\t\022\023\n\013sfu" +
-      "StreamId\030\016 \001(\t\022\014\n\004ssrc\030\017 \003(\003\"\205\002\n\rOutboun" +
-      "dTrack\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006roomId\030\002 \002(" +
-      "\t\022\016\n\006callId\030\003 \002(\t\022\020\n\010clientId\030\004 \002(\t\022\030\n\020p" +
-      "eerConnectionId\030\005 \002(\t\022\017\n\007trackId\030\006 \002(\t\022\r" +
-      "\n\005added\030\007 \002(\004\022\014\n\004kind\030\010 \002(\t\022\017\n\007touched\030\t" +
-      " \001(\004\022\023\n\013mediaUnitId\030\n \001(\t\022\016\n\006userId\030\013 \001(" +
-      "\t\022\016\n\006marker\030\014 \001(\t\022\023\n\013sfuStreamId\030\r \001(\t\022\014" +
-      "\n\004ssrc\030\016 \003(\003\"\344\001\n\014SfuMediaSink\022\021\n\tservice" +
-      "Id\030\001 \002(\t\022\023\n\013sfuStreamId\030\002 \002(\t\022\021\n\tsfuSink" +
-      "Id\030\003 \002(\t\022\020\n\010internal\030\004 \002(\010\022\014\n\004kind\030\005 \001(\t" +
-      "\022\016\n\006callId\030\006 \001(\t\022\020\n\010clientId\030\007 \001(\t\022\030\n\020pe" +
-      "erConnectionId\030\010 \001(\t\022\017\n\007trackId\030\t \001(\t\022\016\n" +
-      "\006userId\030\n \001(\t\022\034\n\024outboundSfuRtpPadIds\030\013 " +
-      "\003(\t\"\334\001\n\016SfuMediaStream\022\021\n\tserviceId\030\001 \002(" +
-      "\t\022\023\n\013sfuStreamId\030\002 \002(\t\022\014\n\004kind\030\003 \002(\t\022\016\n\006" +
-      "callId\030\004 \002(\t\022\020\n\010clientId\030\005 \002(\t\022\030\n\020peerCo" +
-      "nnectionId\030\006 \002(\t\022\017\n\007trackId\030\007 \002(\t\022\016\n\006use" +
-      "rId\030\010 \001(\t\022\036\n\026sfuInboundSfuRtpPadIds\030\t \003(" +
-      "\t\022\027\n\017sfuMediaSinkIds\030\n \003(\t\"\232\001\n\003Sfu\022\021\n\tse" +
-      "rviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\016\n\006joined\030\003" +
-      " \002(\004\022\017\n\007touched\030\004 \001(\004\022\023\n\013mediaUnitId\030\005 \001" +
-      "(\t\022\022\n\ntimeZoneId\030\006 \001(\t\022\016\n\006marker\030\007 \001(\t\022\027" +
-      "\n\017sfuTransportIds\030\010 \003(\t\"\361\001\n\014SfuTransport" +
-      "\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\023\n\013tr" +
-      "ansportId\030\003 \002(\t\022\027\n\010internal\030\004 \002(\010:\005false" +
-      "\022\016\n\006opened\030\005 \002(\004\022\017\n\007touched\030\006 \001(\004\022\023\n\013med" +
-      "iaUnitId\030\007 \001(\t\022\016\n\006marker\030\010 \001(\t\022\030\n\020inboun" +
-      "dRtpPadIds\030\t \003(\t\022\031\n\021outboundRtpPadIds\030\n " +
-      "\003(\t\022\026\n\016sctpChannelIds\030\013 \003(\t\"\337\001\n\020SfuInbou" +
-      "ndRtpPad\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002" +
-      "(\t\022\026\n\016sfuTransportId\030\003 \002(\t\022\023\n\013sfuStreamI" +
-      "d\030\004 \002(\t\022\020\n\010rtpPadId\030\005 \002(\t\022\014\n\004ssrc\030\006 \002(\003\022" +
-      "\027\n\010internal\030\007 \002(\010:\005false\022\r\n\005added\030\010 \002(\004\022" +
-      "\017\n\007touched\030\t \001(\004\022\023\n\013mediaUnitId\030\n \001(\t\022\016\n" +
-      "\006marker\030\013 \001(\t\"\363\001\n\021SfuOutboundRtpPad\022\021\n\ts" +
-      "erviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\026\n\016sfuTran" +
-      "sportId\030\003 \002(\t\022\023\n\013sfuStreamId\030\004 \002(\t\022\021\n\tsf" +
-      "uSinkId\030\005 \002(\t\022\020\n\010rtpPadId\030\006 \002(\t\022\014\n\004ssrc\030" +
-      "\007 \002(\003\022\027\n\010internal\030\010 \002(\010:\005false\022\r\n\005added\030" +
-      "\t \002(\004\022\017\n\007touched\030\n \001(\004\022\023\n\013mediaUnitId\030\013 " +
-      "\001(\t\022\016\n\006marker\030\014 \001(\t\"\303\001\n\016SfuSctpChannel\022\021" +
-      "\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\026\n\016sfuT" +
-      "ransportId\030\003 \002(\t\022\027\n\017sfuSctpStreamId\030\004 \002(" +
-      "\t\022\030\n\020sfuSctpChannelId\030\005 \002(\t\022\016\n\006opened\030\006 " +
-      "\002(\004\022\017\n\007touched\030\007 \001(\004\022\023\n\013mediaUnitId\030\010 \001(" +
-      "\t\022\016\n\006marker\030\t \001(\t"
+      "\002(\004\022\025\n\rsampleTouched\030\006 \001(\004\022\022\n\ntimeZoneId" +
+      "\030\007 \001(\t\022\023\n\013mediaUnitId\030\010 \001(\t\022\016\n\006userId\030\t " +
+      "\001(\t\022\016\n\006marker\030\n \001(\t\022\031\n\021peerConnectionIds" +
+      "\030\013 \003(\t\022\025\n\rserverTouched\030\014 \001(\004\"\244\002\n\016PeerCo" +
+      "nnection\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006roomId\030\002 " +
+      "\002(\t\022\016\n\006callId\030\003 \002(\t\022\020\n\010clientId\030\004 \002(\t\022\030\n" +
+      "\020peerConnectionId\030\005 \002(\t\022\016\n\006opened\030\006 \002(\004\022" +
+      "\025\n\rsampleTouched\030\007 \001(\004\022\023\n\013mediaUnitId\030\010 " +
+      "\001(\t\022\016\n\006userId\030\t \001(\t\022\016\n\006marker\030\n \001(\t\022\r\n\005l" +
+      "abel\030\013 \001(\t\022\027\n\017inboundTrackIds\030\014 \003(\t\022\030\n\020o" +
+      "utboundTrackIds\030\r \003(\t\022\025\n\rserverTouched\030\016" +
+      " \001(\004\"\264\002\n\014InboundTrack\022\021\n\tserviceId\030\001 \002(\t" +
+      "\022\016\n\006roomId\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\020\n\010clie" +
+      "ntId\030\004 \002(\t\022\030\n\020peerConnectionId\030\005 \002(\t\022\017\n\007" +
+      "trackId\030\006 \002(\t\022\014\n\004kind\030\007 \002(\t\022\r\n\005added\030\010 \002" +
+      "(\004\022\025\n\rsampleTouched\030\t \001(\004\022\023\n\013mediaUnitId" +
+      "\030\n \001(\t\022\016\n\006userId\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\022\021" +
+      "\n\tsfuSinkId\030\r \001(\t\022\023\n\013sfuStreamId\030\016 \001(\t\022\014" +
+      "\n\004ssrc\030\017 \003(\003\022\025\n\rserverTouched\030\020 \001(\004\"\242\002\n\r" +
+      "OutboundTrack\022\021\n\tserviceId\030\001 \002(\t\022\016\n\006room" +
+      "Id\030\002 \002(\t\022\016\n\006callId\030\003 \002(\t\022\020\n\010clientId\030\004 \002" +
+      "(\t\022\030\n\020peerConnectionId\030\005 \002(\t\022\017\n\007trackId\030" +
+      "\006 \002(\t\022\r\n\005added\030\007 \002(\004\022\014\n\004kind\030\010 \002(\t\022\025\n\rsa" +
+      "mpleTouched\030\t \001(\004\022\023\n\013mediaUnitId\030\n \001(\t\022\016" +
+      "\n\006userId\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\022\023\n\013sfuStr" +
+      "eamId\030\r \001(\t\022\014\n\004ssrc\030\016 \003(\003\022\025\n\rserverTouch" +
+      "ed\030\017 \001(\004\"\373\001\n\014SfuMediaSink\022\021\n\tserviceId\030\001" +
+      " \002(\t\022\023\n\013sfuStreamId\030\002 \002(\t\022\021\n\tsfuSinkId\030\003" +
+      " \002(\t\022\020\n\010internal\030\004 \002(\010\022\014\n\004kind\030\005 \001(\t\022\016\n\006" +
+      "callId\030\006 \001(\t\022\020\n\010clientId\030\007 \001(\t\022\030\n\020peerCo" +
+      "nnectionId\030\010 \001(\t\022\017\n\007trackId\030\t \001(\t\022\016\n\006use" +
+      "rId\030\n \001(\t\022\034\n\024outboundSfuRtpPadIds\030\013 \003(\t\022" +
+      "\025\n\rserverTouched\030\014 \001(\004\"\363\001\n\016SfuMediaStrea" +
+      "m\022\021\n\tserviceId\030\001 \002(\t\022\023\n\013sfuStreamId\030\002 \002(" +
+      "\t\022\014\n\004kind\030\003 \002(\t\022\016\n\006callId\030\004 \002(\t\022\020\n\010clien" +
+      "tId\030\005 \002(\t\022\030\n\020peerConnectionId\030\006 \002(\t\022\017\n\007t" +
+      "rackId\030\007 \002(\t\022\016\n\006userId\030\010 \001(\t\022\036\n\026sfuInbou" +
+      "ndSfuRtpPadIds\030\t \003(\t\022\027\n\017sfuMediaSinkIds\030" +
+      "\n \003(\t\022\025\n\rserverTouched\030\013 \001(\004\"\267\001\n\003Sfu\022\021\n\t" +
+      "serviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\016\n\006joined" +
+      "\030\003 \002(\004\022\025\n\rsampleTouched\030\004 \001(\004\022\023\n\013mediaUn" +
+      "itId\030\005 \001(\t\022\022\n\ntimeZoneId\030\006 \001(\t\022\016\n\006marker" +
+      "\030\007 \001(\t\022\027\n\017sfuTransportIds\030\010 \003(\t\022\025\n\rserve" +
+      "rTouched\030\t \001(\004\"\216\002\n\014SfuTransport\022\021\n\tservi" +
+      "ceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\023\n\013transportId" +
+      "\030\003 \002(\t\022\027\n\010internal\030\004 \002(\010:\005false\022\016\n\006opene" +
+      "d\030\005 \002(\004\022\025\n\rsampleTouched\030\006 \001(\004\022\023\n\013mediaU" +
+      "nitId\030\007 \001(\t\022\016\n\006marker\030\010 \001(\t\022\030\n\020inboundRt" +
+      "pPadIds\030\t \003(\t\022\031\n\021outboundRtpPadIds\030\n \003(\t" +
+      "\022\026\n\016sctpChannelIds\030\013 \003(\t\022\025\n\rserverTouche" +
+      "d\030\014 \001(\004\"\374\001\n\020SfuInboundRtpPad\022\021\n\tserviceI" +
+      "d\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\026\n\016sfuTransportId" +
+      "\030\003 \002(\t\022\023\n\013sfuStreamId\030\004 \002(\t\022\020\n\010rtpPadId\030" +
+      "\005 \002(\t\022\014\n\004ssrc\030\006 \002(\003\022\027\n\010internal\030\007 \002(\010:\005f" +
+      "alse\022\r\n\005added\030\010 \002(\004\022\025\n\rsampleTouched\030\t \001" +
+      "(\004\022\023\n\013mediaUnitId\030\n \001(\t\022\016\n\006marker\030\013 \001(\t\022" +
+      "\025\n\rserverTouched\030\014 \001(\004\"\220\002\n\021SfuOutboundRt" +
+      "pPad\022\021\n\tserviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\026" +
+      "\n\016sfuTransportId\030\003 \002(\t\022\023\n\013sfuStreamId\030\004 " +
+      "\002(\t\022\021\n\tsfuSinkId\030\005 \002(\t\022\020\n\010rtpPadId\030\006 \002(\t" +
+      "\022\014\n\004ssrc\030\007 \002(\003\022\027\n\010internal\030\010 \002(\010:\005false\022" +
+      "\r\n\005added\030\t \002(\004\022\025\n\rsampleTouched\030\n \001(\004\022\023\n" +
+      "\013mediaUnitId\030\013 \001(\t\022\016\n\006marker\030\014 \001(\t\022\025\n\rse" +
+      "rverTouched\030\r \001(\004\"\340\001\n\016SfuSctpChannel\022\021\n\t" +
+      "serviceId\030\001 \002(\t\022\r\n\005sfuId\030\002 \002(\t\022\026\n\016sfuTra" +
+      "nsportId\030\003 \002(\t\022\027\n\017sfuSctpStreamId\030\004 \002(\t\022" +
+      "\030\n\020sfuSctpChannelId\030\005 \002(\t\022\016\n\006opened\030\006 \002(" +
+      "\004\022\025\n\rsampleTouched\030\007 \001(\004\022\023\n\013mediaUnitId\030" +
+      "\010 \001(\t\022\016\n\006marker\030\t \001(\t\022\025\n\rserverTouched\030\n" +
+      " \001(\004"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -29139,67 +30247,67 @@ public final class Models {
     internal_static_org_observertc_schemas_dtos_Client_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_Client_descriptor,
-        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "ClientId", "Joined", "Touched", "TimeZoneId", "MediaUnitId", "UserId", "Marker", "PeerConnectionIds", });
+        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "ClientId", "Joined", "SampleTouched", "TimeZoneId", "MediaUnitId", "UserId", "Marker", "PeerConnectionIds", "ServerTouched", });
     internal_static_org_observertc_schemas_dtos_PeerConnection_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_org_observertc_schemas_dtos_PeerConnection_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_PeerConnection_descriptor,
-        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "ClientId", "PeerConnectionId", "Opened", "Touched", "MediaUnitId", "UserId", "Marker", "Label", "InboundTrackIds", "OutboundTrackIds", });
+        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "ClientId", "PeerConnectionId", "Opened", "SampleTouched", "MediaUnitId", "UserId", "Marker", "Label", "InboundTrackIds", "OutboundTrackIds", "ServerTouched", });
     internal_static_org_observertc_schemas_dtos_InboundTrack_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_org_observertc_schemas_dtos_InboundTrack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_InboundTrack_descriptor,
-        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "ClientId", "PeerConnectionId", "TrackId", "Kind", "Added", "Touched", "MediaUnitId", "UserId", "Marker", "SfuSinkId", "SfuStreamId", "Ssrc", });
+        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "ClientId", "PeerConnectionId", "TrackId", "Kind", "Added", "SampleTouched", "MediaUnitId", "UserId", "Marker", "SfuSinkId", "SfuStreamId", "Ssrc", "ServerTouched", });
     internal_static_org_observertc_schemas_dtos_OutboundTrack_descriptor =
       getDescriptor().getMessageTypes().get(5);
     internal_static_org_observertc_schemas_dtos_OutboundTrack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_OutboundTrack_descriptor,
-        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "ClientId", "PeerConnectionId", "TrackId", "Added", "Kind", "Touched", "MediaUnitId", "UserId", "Marker", "SfuStreamId", "Ssrc", });
+        new java.lang.String[] { "ServiceId", "RoomId", "CallId", "ClientId", "PeerConnectionId", "TrackId", "Added", "Kind", "SampleTouched", "MediaUnitId", "UserId", "Marker", "SfuStreamId", "Ssrc", "ServerTouched", });
     internal_static_org_observertc_schemas_dtos_SfuMediaSink_descriptor =
       getDescriptor().getMessageTypes().get(6);
     internal_static_org_observertc_schemas_dtos_SfuMediaSink_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_SfuMediaSink_descriptor,
-        new java.lang.String[] { "ServiceId", "SfuStreamId", "SfuSinkId", "Internal", "Kind", "CallId", "ClientId", "PeerConnectionId", "TrackId", "UserId", "OutboundSfuRtpPadIds", });
+        new java.lang.String[] { "ServiceId", "SfuStreamId", "SfuSinkId", "Internal", "Kind", "CallId", "ClientId", "PeerConnectionId", "TrackId", "UserId", "OutboundSfuRtpPadIds", "ServerTouched", });
     internal_static_org_observertc_schemas_dtos_SfuMediaStream_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_org_observertc_schemas_dtos_SfuMediaStream_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_SfuMediaStream_descriptor,
-        new java.lang.String[] { "ServiceId", "SfuStreamId", "Kind", "CallId", "ClientId", "PeerConnectionId", "TrackId", "UserId", "SfuInboundSfuRtpPadIds", "SfuMediaSinkIds", });
+        new java.lang.String[] { "ServiceId", "SfuStreamId", "Kind", "CallId", "ClientId", "PeerConnectionId", "TrackId", "UserId", "SfuInboundSfuRtpPadIds", "SfuMediaSinkIds", "ServerTouched", });
     internal_static_org_observertc_schemas_dtos_Sfu_descriptor =
       getDescriptor().getMessageTypes().get(8);
     internal_static_org_observertc_schemas_dtos_Sfu_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_Sfu_descriptor,
-        new java.lang.String[] { "ServiceId", "SfuId", "Joined", "Touched", "MediaUnitId", "TimeZoneId", "Marker", "SfuTransportIds", });
+        new java.lang.String[] { "ServiceId", "SfuId", "Joined", "SampleTouched", "MediaUnitId", "TimeZoneId", "Marker", "SfuTransportIds", "ServerTouched", });
     internal_static_org_observertc_schemas_dtos_SfuTransport_descriptor =
       getDescriptor().getMessageTypes().get(9);
     internal_static_org_observertc_schemas_dtos_SfuTransport_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_SfuTransport_descriptor,
-        new java.lang.String[] { "ServiceId", "SfuId", "TransportId", "Internal", "Opened", "Touched", "MediaUnitId", "Marker", "InboundRtpPadIds", "OutboundRtpPadIds", "SctpChannelIds", });
+        new java.lang.String[] { "ServiceId", "SfuId", "TransportId", "Internal", "Opened", "SampleTouched", "MediaUnitId", "Marker", "InboundRtpPadIds", "OutboundRtpPadIds", "SctpChannelIds", "ServerTouched", });
     internal_static_org_observertc_schemas_dtos_SfuInboundRtpPad_descriptor =
       getDescriptor().getMessageTypes().get(10);
     internal_static_org_observertc_schemas_dtos_SfuInboundRtpPad_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_SfuInboundRtpPad_descriptor,
-        new java.lang.String[] { "ServiceId", "SfuId", "SfuTransportId", "SfuStreamId", "RtpPadId", "Ssrc", "Internal", "Added", "Touched", "MediaUnitId", "Marker", });
+        new java.lang.String[] { "ServiceId", "SfuId", "SfuTransportId", "SfuStreamId", "RtpPadId", "Ssrc", "Internal", "Added", "SampleTouched", "MediaUnitId", "Marker", "ServerTouched", });
     internal_static_org_observertc_schemas_dtos_SfuOutboundRtpPad_descriptor =
       getDescriptor().getMessageTypes().get(11);
     internal_static_org_observertc_schemas_dtos_SfuOutboundRtpPad_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_SfuOutboundRtpPad_descriptor,
-        new java.lang.String[] { "ServiceId", "SfuId", "SfuTransportId", "SfuStreamId", "SfuSinkId", "RtpPadId", "Ssrc", "Internal", "Added", "Touched", "MediaUnitId", "Marker", });
+        new java.lang.String[] { "ServiceId", "SfuId", "SfuTransportId", "SfuStreamId", "SfuSinkId", "RtpPadId", "Ssrc", "Internal", "Added", "SampleTouched", "MediaUnitId", "Marker", "ServerTouched", });
     internal_static_org_observertc_schemas_dtos_SfuSctpChannel_descriptor =
       getDescriptor().getMessageTypes().get(12);
     internal_static_org_observertc_schemas_dtos_SfuSctpChannel_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_observertc_schemas_dtos_SfuSctpChannel_descriptor,
-        new java.lang.String[] { "ServiceId", "SfuId", "SfuTransportId", "SfuSctpStreamId", "SfuSctpChannelId", "Opened", "Touched", "MediaUnitId", "Marker", });
+        new java.lang.String[] { "ServiceId", "SfuId", "SfuTransportId", "SfuSctpStreamId", "SfuSctpChannelId", "Opened", "SampleTouched", "MediaUnitId", "Marker", "ServerTouched", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

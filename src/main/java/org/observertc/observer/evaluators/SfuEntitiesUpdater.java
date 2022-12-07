@@ -5,18 +5,22 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import jakarta.inject.Inject;
+import org.observertc.observer.BackgroundTasksExecutor;
+import org.observertc.observer.ServerTimestamps;
+import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.eventreports.*;
 import org.observertc.observer.metrics.EvaluatorMetrics;
 import org.observertc.observer.repositories.*;
+import org.observertc.observer.repositories.tasks.CleanSfuEntities;
 import org.observertc.observer.samples.ObservedSfuSamples;
 import org.observertc.schemas.dtos.Models;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.time.Instant;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.function.Consumer;
 
 @Prototype
@@ -57,6 +61,32 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
     @Inject
     SfuSctpStreamAddedReports sfuSctpStreamAddedReports;
 
+    @Inject
+    ServerTimestamps serverTimestamps;
+
+    @Inject
+    ObserverConfig observerConfig;
+
+    @Inject
+    BackgroundTasksExecutor backgroundTasksExecutor;
+
+    @Inject
+    CleanSfuEntities cleanSfuEntities;
+
+    @PostConstruct
+    void setup() {
+        this.backgroundTasksExecutor.addPeriodicTask(
+                this.getClass().getSimpleName(),
+                this.cleanSfuEntities::createTask,
+                60 * 1000
+        );
+    }
+
+    @PreDestroy
+    void teardown() {
+        this.backgroundTasksExecutor.removePeriodicTask(this.getClass().getSimpleName());
+    }
+
     private Subject<ObservedSfuSamples> output = PublishSubject.create();
 
     public Observable<ObservedSfuSamples> observableClientSamples() {
@@ -89,6 +119,7 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
         var newSfuInboundRtpPadModels = new LinkedList<Models.SfuInboundRtpPad>();
         var newSfuOutboundRtpPadModels = new LinkedList<Models.SfuOutboundRtpPad>();
         var newSfuSctpChannelModels = new LinkedList<Models.SfuSctpChannel>();
+        var serverTimestamp = this.serverTimestamps.instant().getEpochSecond();
 
         for (var observedSfu : observedSfuSamples.observedSfus()) {
             var sfu = SFUs.get(observedSfu.getSfuId());
@@ -120,7 +151,7 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
                     continue;
                 }
             }
-            sfu.touch(observedSfu.getMaxTimestamp());
+            sfu.touch(observedSfu.getMaxTimestamp(), serverTimestamp);
 
             for (var observedSfuTransport : observedSfu.observedSfuTransports()) {
                 var sfuTransport = sfu.getSfuTransport(observedSfuTransport.getSfuTransportId());
@@ -152,7 +183,7 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
                         continue;
                     }
                 }
-                sfuTransport.touch(observedSfuTransport.getMaxTimestamp());
+                sfuTransport.touch(observedSfuTransport.getMaxTimestamp(), serverTimestamp);
 
                 for (var observedSfuInboundRtpPad : observedSfuTransport.observedSfuInboundRtpPads()) {
                     var sfuInboundRtpPad = sfuTransport.getInboundRtpPad(observedSfuInboundRtpPad.getPadId());
@@ -187,7 +218,7 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
                             continue;
                         }
                     }
-                    sfuInboundRtpPad.touch(observedSfuTransport.getMaxTimestamp());
+                    sfuInboundRtpPad.touch(observedSfuTransport.getMaxTimestamp(), serverTimestamp);
                     var sfuMediaStream = sfuInboundRtpPad.getSfuStream();
                     if (sfuMediaStream != null && !sfuMediaStream.hasSfuInboundRtpPadId(sfuInboundRtpPad.getRtpPadId())) {
                         sfuMediaStream.addSfuInboundRtpPadId(sfuInboundRtpPad.getRtpPadId());
@@ -228,7 +259,7 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
                             continue;
                         }
                     }
-                    sfuOutboundRtpPad.touch(observedSfuTransport.getMaxTimestamp());
+                    sfuOutboundRtpPad.touch(observedSfuTransport.getMaxTimestamp(), serverTimestamp);
                     var sfuMediaSink = sfuOutboundRtpPad.getSfuSink();
                     if (sfuMediaSink != null) {
                         if (!sfuMediaSink.hasSfuOutboundRtpPadId(sfuOutboundRtpPad.getRtpPadId())) {
@@ -291,7 +322,7 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
                             continue;
                         }
                     }
-                    sfuSctpChannel.touch(observedSfuTransport.getMaxTimestamp());
+                    sfuSctpChannel.touch(observedSfuTransport.getMaxTimestamp(), serverTimestamp);
                 }
             }
         }
@@ -317,51 +348,5 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
                 this.output.onNext(observedSfuSamples);
             }
         }
-    }
-
-    private Map<String, Sfu> fetchExistingSfus(ObservedSfuSamples samples) {
-        var result = new HashMap<String, Sfu>();
-        var existing = this.sfusRepository.getAll(samples.getSfuIds());
-        if (existing != null && 0 < existing.size()) {
-            result.putAll(existing);
-        }
-        return result;
-    }
-
-    private Map<String, SfuTransport> fetchExistingSfuTransports(ObservedSfuSamples samples) {
-        var result = new HashMap<String, SfuTransport>();
-        var existing = this.sfuTransportsRepository.getAll(samples.getTransportIds());
-        if (existing != null && 0 < existing.size()) {
-            result.putAll(existing);
-        }
-        return result;
-    }
-
-    private Map<String, SfuInboundRtpPad> fetchExistingInboundRtpPads(ObservedSfuSamples samples) {
-        var result = new HashMap<String, SfuInboundRtpPad>();
-        var existing = this.sfuInboundRtpPadsRepository.getAll(samples.getInboundRtpPadIds());
-//        logger.info("Fetching inbound rtp pads for {}", JsonUtils.objectToString(samples.getInboundRtpPadIds()));
-        if (existing != null && 0 < existing.size()) {
-            result.putAll(existing);
-        }
-        return result;
-    }
-
-    private Map<String, SfuOutboundRtpPad> fetchExistingOutboundRtpPads(ObservedSfuSamples samples) {
-        var result = new HashMap<String, SfuOutboundRtpPad>();
-        var existing = this.sfuOutboundRtpPadsRepository.getAll(samples.getOutboundRtpPadIds());
-        if (existing != null && 0 < existing.size()) {
-            result.putAll(existing);
-        }
-        return result;
-    }
-
-    private Map<String, SfuSctpChannel> fetchExistingSfuSctpStreams(ObservedSfuSamples samples) {
-        var result = new HashMap<String, SfuSctpChannel>();
-        var existing = this.sfuSctpStreamsRepository.getAll(samples.getSctpStreamIds());
-        if (existing != null && 0 < existing.size()) {
-            result.putAll(existing);
-        }
-        return result;
     }
 }

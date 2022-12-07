@@ -45,7 +45,7 @@ public class PeerConnectionClosedReports {
 
     private CallEventReport makeReport(Models.PeerConnection peerConnectionDTO) {
         try {
-            var timestamp = peerConnectionDTO.hasTouched() ? peerConnectionDTO.getTouched() : Instant.now().toEpochMilli();
+            var timestamp = peerConnectionDTO.hasSampleTouched() ? peerConnectionDTO.getSampleTouched() : Instant.now().toEpochMilli();
             String message = String.format("Peer Connection (%s) is closed", peerConnectionDTO.getPeerConnectionId());
             var report = CallEventReport.newBuilder()
                     .setName(CallEventType.PEER_CONNECTION_CLOSED.name())

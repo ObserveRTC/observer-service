@@ -140,6 +140,14 @@ public class PeerConnectionsRepository implements RepositoryStorageMetrics {
         return this.fetched.getAll(set);
     }
 
+    public Map<String, PeerConnection> getAllLocallyStored() {
+        var callIds = this.storage.localKeys();
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        return this.fetchAll(callIds);
+    }
+
     synchronized void update(Models.PeerConnection peerConnection) {
         this.updated.put(peerConnection.getPeerConnectionId(), peerConnection);
         var removed = this.deleted.remove(peerConnection.getPeerConnectionId());

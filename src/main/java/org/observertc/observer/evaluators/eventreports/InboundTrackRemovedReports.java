@@ -45,7 +45,7 @@ public class InboundTrackRemovedReports {
 
     private CallEventReport makeReport(Models.InboundTrack mediaTrackDTO) {
         try {
-            var timestamp = mediaTrackDTO.hasTouched() ? mediaTrackDTO.getTouched() : Instant.now().toEpochMilli();
+            var timestamp = mediaTrackDTO.hasSampleTouched() ? mediaTrackDTO.getSampleTouched() : Instant.now().toEpochMilli();
             var streamDirection = StreamDirection.INBOUND.name();
             MediaTrackAttachment attachment = MediaTrackAttachment.builder()
                     .withSfuStreamId(mediaTrackDTO.getSfuStreamId())

@@ -126,6 +126,14 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
         ));
     }
 
+    public Map<String, InboundTrack> getAllLocallyStored() {
+        var callIds = this.storage.localKeys();
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        return this.fetchAll(callIds);
+    }
+
     Observable<List<ModifiedStorageEntry<String, Models.InboundTrack>>> observableDeletedEntries() {
         return this.storage.collectedEvents().deletedEntries();
     }
@@ -178,7 +186,7 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
         }
     }
 
-    synchronized void deleteAll(Set<String> trackIds) {
+    public synchronized void deleteAll(Set<String> trackIds) {
         if (trackIds == null || trackIds.size() < 1) {
             return;
         }

@@ -26,6 +26,17 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
+
+	public static TaskAbstract<Void> wrapRunnable(Runnable action) {
+		return new TaskAbstract<Void>() {
+			@Override
+			protected Void perform() throws Throwable {
+				action.run();
+				return null;
+			}
+		};
+	}
+
 	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(TaskAbstract.class);
 	private volatile boolean executed = false;
 	private Supplier<String> errorMessageSupplier = () -> "";

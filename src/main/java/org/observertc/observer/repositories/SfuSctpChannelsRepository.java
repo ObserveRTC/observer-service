@@ -159,6 +159,14 @@ public class SfuSctpChannelsRepository implements RepositoryStorageMetrics {
         return this.fetched.getAll(set);
     }
 
+    public Map<String, SfuSctpChannel> getAllLocallyStored() {
+        var callIds = this.storage.localKeys();
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        return this.fetchAll(callIds);
+    }
+
     private SfuSctpChannel fetchOne(String sfuSctpStreamId) {
         var model = Try.wrap(() -> this.storage.get(sfuSctpStreamId), null);
         if (model == null) {

@@ -37,7 +37,7 @@ message Client {
   required string clientId = 4;
   required uint64 joined = 5;
 
-  optional uint64 touched = 6;
+  optional uint64 sampleTouched = 6;
   optional string timeZoneId = 7;
   optional string mediaUnitId = 8;
 
@@ -45,6 +45,8 @@ message Client {
   optional string marker = 10;
 
   repeated string peerConnectionIds = 11;
+
+  optional uint64 serverTouched = 12;
 }
 
 message PeerConnection {
@@ -56,7 +58,7 @@ message PeerConnection {
   required string peerConnectionId = 5;
   required uint64 opened = 6;
 
-  optional uint64 touched = 7;
+  optional uint64 sampleTouched = 7;
   optional string mediaUnitId = 8;
 
   optional string userId = 9;
@@ -65,6 +67,8 @@ message PeerConnection {
 
   repeated string inboundTrackIds = 12;
   repeated string outboundTrackIds = 13;
+
+  optional uint64 serverTouched = 14;
 }
 
 
@@ -78,7 +82,7 @@ message InboundTrack {
   required string kind = 7;
   required uint64 added = 8;
 
-  optional uint64 touched = 9;
+  optional uint64 sampleTouched = 9;
   optional string mediaUnitId = 10;
 
   optional string userId = 11;
@@ -88,6 +92,8 @@ message InboundTrack {
   optional string sfuStreamId = 14;
 
   repeated int64 ssrc = 15;
+
+  optional uint64 serverTouched = 16;
 }
 
 message OutboundTrack {
@@ -100,7 +106,7 @@ message OutboundTrack {
   required uint64 added = 7;
   required string kind = 8;
 
-  optional uint64 touched = 9;
+  optional uint64 sampleTouched = 9;
   optional string mediaUnitId = 10;
   optional string userId = 11;
   optional string marker = 12;
@@ -108,6 +114,8 @@ message OutboundTrack {
   optional string sfuStreamId = 13;
 
   repeated int64 ssrc = 14;
+
+  optional uint64 serverTouched = 15;
 }
 
 message SfuMediaSink {
@@ -124,6 +132,8 @@ message SfuMediaSink {
   optional string userId = 10;
 
   repeated string outboundSfuRtpPadIds = 11;
+
+  optional uint64 serverTouched = 12;
 }
 
 message SfuMediaStream {
@@ -140,6 +150,8 @@ message SfuMediaStream {
 
   repeated string sfuInboundSfuRtpPadIds = 9;
   repeated string sfuMediaSinkIds = 10;
+
+  optional uint64 serverTouched = 11;
 }
 
 message Sfu {
@@ -148,12 +160,14 @@ message Sfu {
   required string sfuId = 2;
   required uint64 joined = 3;
 
-  optional uint64 touched = 4;
+  optional uint64 sampleTouched = 4;
   optional string mediaUnitId = 5;
   optional string timeZoneId = 6;
   optional string marker = 7;
 
   repeated string sfuTransportIds = 8;
+
+  optional uint64 serverTouched = 9;
 }
 
 message SfuTransport {
@@ -164,13 +178,15 @@ message SfuTransport {
   required bool internal = 4 [default = false];
   required uint64 opened = 5;
 
-  optional uint64 touched = 6;
+  optional uint64 sampleTouched = 6;
   optional string mediaUnitId = 7;
   optional string marker = 8;
 
   repeated string inboundRtpPadIds = 9;
   repeated string outboundRtpPadIds = 10;
   repeated string sctpChannelIds = 11;
+
+  optional uint64 serverTouched = 12;
 }
 
 
@@ -186,9 +202,11 @@ message SfuInboundRtpPad {
   required bool internal = 7 [default = false];
   required uint64 added = 8;
 
-  optional uint64 touched = 9;
+  optional uint64 sampleTouched = 9;
   optional string mediaUnitId = 10;
   optional string marker = 11;
+
+  optional uint64 serverTouched = 12;
 }
 
 message SfuOutboundRtpPad {
@@ -203,9 +221,11 @@ message SfuOutboundRtpPad {
   required bool internal = 8 [default = false];
   required uint64 added = 9;
 
-  optional uint64 touched = 10;
+  optional uint64 sampleTouched = 10;
   optional string mediaUnitId = 11;
   optional string marker = 12;
+
+  optional uint64 serverTouched = 13;
 }
 
 message SfuSctpChannel {
@@ -217,9 +237,10 @@ message SfuSctpChannel {
   required string sfuSctpChannelId = 5;
   required uint64 opened = 6;
 
-  optional uint64 touched = 7;
+  optional uint64 sampleTouched = 7;
   optional string mediaUnitId = 8;
   optional string marker = 9;
 
+  optional uint64 serverTouched = 10;
 
 }
