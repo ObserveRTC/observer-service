@@ -277,10 +277,10 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                             if (!inboundAudioTrack.hasSSRC(observedInboundAudioTrack.getSSRC())) {
                                 inboundAudioTrack.addSSRC(observedInboundAudioTrack.getSSRC());
                             }
-                            var serverTouch = inboundAudioTrack.getServerTouch();
-                            if (serverTouch == null || serverTouch <  serverTimestamp) {
-                                inboundAudioTrack.touchByServer(serverTimestamp);
-                            }
+                        }
+                        var serverTouch = inboundAudioTrack.getServerTouch();
+                        if (serverTouch == null || serverTouch <  serverTimestamp) {
+                            inboundAudioTrack.touchByServer(serverTimestamp);
                         }
                     }
 
@@ -318,10 +318,10 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                             if (!inboundVideoTrack.hasSSRC(observedInboundVideoTrack.getSSRC())) {
                                 inboundVideoTrack.addSSRC(observedInboundVideoTrack.getSSRC());
                             }
-                            var serverTouch = inboundVideoTrack.getServerTouch();
-                            if (serverTouch == null || serverTouch <  serverTimestamp) {
-                                inboundVideoTrack.touchByServer(serverTimestamp);
-                            }
+                        }
+                        var serverTouch = inboundVideoTrack.getServerTouch();
+                        if (serverTouch == null || serverTouch <  serverTimestamp) {
+                            inboundVideoTrack.touchByServer(serverTimestamp);
                         }
                     }
 
@@ -360,10 +360,10 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                             if (!outboundAudioTrack.hasSSRC(observedOutboundAudioTrack.getSSRC())) {
                                 outboundAudioTrack.addSSRC(observedOutboundAudioTrack.getSSRC());
                             }
-                            var serverTouch = outboundAudioTrack.getServerTouch();
-                            if (serverTouch == null || serverTouch <  serverTimestamp) {
-                                outboundAudioTrack.touchByServer(serverTimestamp);
-                            }
+                        }
+                        var serverTouch = outboundAudioTrack.getServerTouch();
+                        if (serverTouch == null || serverTouch <  serverTimestamp) {
+                            outboundAudioTrack.touchByServer(serverTimestamp);
                         }
                     }
 
@@ -400,10 +400,10 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                             if (!outboundVideoTrack.hasSSRC(observedOutboundVideoTrack.getSSRC())) {
                                 outboundVideoTrack.addSSRC(observedOutboundVideoTrack.getSSRC());
                             }
-                            var serverTouch = outboundVideoTrack.getServerTouch();
-                            if (serverTouch == null || serverTouch <  serverTimestamp) {
-                                outboundVideoTrack.touchByServer(serverTimestamp);
-                            }
+                        }
+                        var serverTouch = outboundVideoTrack.getServerTouch();
+                        if (serverTouch == null || serverTouch <  serverTimestamp) {
+                            outboundVideoTrack.touchByServer(serverTimestamp);
                         }
                     }
                 }
