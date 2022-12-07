@@ -199,20 +199,15 @@ public class HamokService  implements InfoSource {
     public boolean isReady() {
         var endpoint = this.endpointHolder.get();
         if (endpoint == null) {
-            if (0 < this.config.minRemotePeers) {
-                logger.warn("The minimum number of remote peers to be ready is {}, but there is no endpoint that observer to communicate with other peers", this.config.minRemotePeers);
-            }
             return true;
         }
-        if (!endpoint.isReady()) {
-            if ((this.alreadyLoggedFlags & 1) == 0) {
-                logger.info("Waiting for endpoint to be ready");
-                this.alreadyLoggedFlags = 1;
-            }
-            return false;
-        }
-
-
+//        if (!endpoint.isReady()) {
+//            if ((this.alreadyLoggedFlags & 1) == 0) {
+//                logger.info("Waiting for endpoint to be ready");
+//                this.alreadyLoggedFlags = 1;
+//            }
+//            return false;
+//        }
 
         if ((this.alreadyLoggedFlags & 4) == 0) {
             logger.info("Ready");

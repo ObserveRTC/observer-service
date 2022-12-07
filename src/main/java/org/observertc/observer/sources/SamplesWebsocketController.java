@@ -91,11 +91,11 @@ public class SamplesWebsocketController {
 				session.close(customCloseReasons.getWebsocketIsDisabled());
 				return;
 			}
-			if (!this.hamokService.areRemotePeersReady()) {
-				logger.warn("Dropping Websocket connection {}, because remote peers not ready");
-				session.close(customCloseReasons.getObserverRemotePeersNotReady());
-				return;
-			}
+//			if (!this.hamokService.areRemotePeersReady()) {
+//				logger.warn("Dropping Websocket connection {}, because remote peers not ready");
+//				session.close(customCloseReasons.getObserverRemotePeersNotReady());
+//				return;
+//			}
 			
 			var requestParameters = session.getRequestParameters();
 			String providedSchemaVersion = requestParameters.get("schemaVersion");
