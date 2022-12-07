@@ -10,6 +10,7 @@ import io.micronaut.management.endpoint.info.InfoSource;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.common.JsonUtils;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.hamokendpoints.HamokEndpoint;
 import org.observertc.observer.hamokendpoints.HamokEndpointBuilderService;
@@ -172,6 +173,28 @@ public class HamokService  implements InfoSource {
         );
     }
 
+    private boolean remotePeersWereReady = false;
+    public boolean areRemotePeersReady() {
+        if (this.remotePeersWereReady) {
+            return true;
+        }
+        var endpoint = this.endpointHolder.get();
+        if (endpoint == null) {
+            this.remotePeersWereReady = true;
+            return true;
+        }
+
+        if (0 < this.config.minRemotePeers) {
+            var remotePeersNum = Utils.firstNotNull(endpoint.getActiveRemoteEndpointIds(), Collections.emptySet()).size();
+            if (remotePeersNum < this.config.minRemotePeers) {
+                logger.info("Waiting for remote peers to be ready. Minimum number of peers must be ready is {}, currently there are {} number of remote peers", this.config.minRemotePeers, remotePeersNum);
+                return false;
+            }
+        }
+        this.remotePeersWereReady = true;
+        return true;
+    }
+
     private int alreadyLoggedFlags = 0;
     public boolean isReady() {
         var endpoint = this.endpointHolder.get();
@@ -188,17 +211,7 @@ public class HamokService  implements InfoSource {
             }
             return false;
         }
-//        if (!this.wasReady && 0 < this.config.minRemotePeers) {
-//            var remotePeersNum = Utils.firstNotNull(endpoint.getActiveRemoteEndpointIds(), Collections.emptySet()).size();
-//            if (remotePeersNum < this.config.minRemotePeers) {
-//                logger.info("Waiting for remote peers to be ready. Minimum number of peers must be ready is {}, currently there are {} number of remote peers", this.config.minRemotePeers, remotePeersNum);
-//                return false;
-//            }
-////            if ((this.alreadyLoggedFlags & 2) == 0) {
-////
-////                this.alreadyLoggedFlags = 2;
-////            }
-//        }
+
 
 
         if ((this.alreadyLoggedFlags & 4) == 0) {

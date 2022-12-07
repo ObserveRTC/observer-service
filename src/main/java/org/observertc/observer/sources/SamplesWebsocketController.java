@@ -24,6 +24,7 @@ import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
 import jakarta.inject.Inject;
+import org.observertc.observer.HamokService;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.configs.TransportFormatType;
@@ -59,6 +60,9 @@ public class SamplesWebsocketController {
 	@Inject
     SamplesCollector samplesCollector;
 
+	@Inject
+	HamokService hamokService;
+
     private final ObserverConfig.SourcesConfig.WebsocketsConfig config;
 
 	public SamplesWebsocketController(
@@ -85,6 +89,11 @@ public class SamplesWebsocketController {
 		try {
 			if (!this.config.enabled) {
 				session.close(customCloseReasons.getWebsocketIsDisabled());
+				return;
+			}
+			if (!this.hamokService.areRemotePeersReady()) {
+				logger.warn("Dropping Websocket connection {}, because remote peers not ready");
+				session.close(customCloseReasons.getObserverRemotePeersNotReady());
 				return;
 			}
 			

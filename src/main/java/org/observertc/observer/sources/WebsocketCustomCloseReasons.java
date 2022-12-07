@@ -16,7 +16,10 @@ public class WebsocketCustomCloseReasons {
     private static final int TOO_MANY_WEBSOCKET_FOR_SAME_ACCESS_TOKENS = 4228;
     private static final int WEBSOCKET_IS_DISABLED = 4229;
 
+
     private static final int INVALID_INPUT = 4230;
+
+    private static final int OBSERVER_REMOTE_PEERS_ARE_NOT_READY = 4231;
 
     private final Map<Integer, CloseReason> reasons;
 
@@ -67,6 +70,11 @@ public class WebsocketCustomCloseReasons {
 
     public CloseReason getWebsocketIsDisabled() {
         var result = this.reasons.get(WEBSOCKET_IS_DISABLED);
+        return result;
+    }
+
+    public CloseReason getObserverRemotePeersNotReady() {
+        var result = this.reasons.get(OBSERVER_REMOTE_PEERS_ARE_NOT_READY);
         return result;
     }
 
