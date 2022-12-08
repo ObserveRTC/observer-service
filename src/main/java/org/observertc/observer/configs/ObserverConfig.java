@@ -191,6 +191,7 @@ public class ObserverConfig {
 
 		@ConfigurationProperties(("callUpdater"))
 		public static class CallUpdater {
+			public boolean enabled = true;
 			public enum CallIdAssignMode {
 				MASTER,
 				SLAVE

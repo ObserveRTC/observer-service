@@ -82,6 +82,9 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
 
     @PostConstruct
     void setup() {
+        if (!this.config.enabled) {
+            logger.warn("Call Entities Updater is DISABLED, hence no stream analysis can happen");
+        }
         this.backgroundTasksExecutor.addPeriodicTask(
                 this.getClass().getSimpleName(),
                 this.cleanCallEntities::createTask,
@@ -104,7 +107,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
         if (observedClientSamples == null) {
             return;
         }
-        if (observedClientSamples.isEmpty()) {
+        if (observedClientSamples.isEmpty() || !this.config.enabled) {
             this.output.onNext(observedClientSamples);
             return;
         }
