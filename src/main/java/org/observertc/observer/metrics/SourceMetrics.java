@@ -13,6 +13,8 @@ public class SourceMetrics {
     private static final String OPENED_WEBSOCKET_METRIC_NAME = "opened_websockets";
     private static final String CLOSED_WEBSOCKET_METRIC_NAME = "closed_websockets";
     private static final String RECEIVED_SAMPLES_METRIC_NAME = "received_samples";
+    private static final String OBSERVED_CLIENT_SAMPLES_METRIC_NAME = "observed_client_samples";
+    private static final String OBSERVED_SFU_SAMPLES_METRIC_NAME = "observed_sfu_samples";
 
     private static final String SOURCE_TAG_NAME = "source";
     private static final String REST_SOURCE_TAG_VALUE = "rest";
@@ -27,12 +29,16 @@ public class SourceMetrics {
     private String openedWebsocketMetricName;
     private String closedWebsocketMetricName;
     private String receivedSamplesMetricName;
+    private String observedClientSamplesMetricName;
+    private String observedSfuSamplesMetricName;
 
     @PostConstruct
     void setup() {
         this.openedWebsocketMetricName = metrics.getMetricName(SOURCE_METRICS_PREFIX, OPENED_WEBSOCKET_METRIC_NAME);
         this.closedWebsocketMetricName = metrics.getMetricName(SOURCE_METRICS_PREFIX, CLOSED_WEBSOCKET_METRIC_NAME);
         this.receivedSamplesMetricName = metrics.getMetricName(SOURCE_METRICS_PREFIX, RECEIVED_SAMPLES_METRIC_NAME);
+        this.observedClientSamplesMetricName = metrics.getMetricName(SOURCE_METRICS_PREFIX, OBSERVED_CLIENT_SAMPLES_METRIC_NAME);
+        this.observedSfuSamplesMetricName = metrics.getMetricName(SOURCE_METRICS_PREFIX, OBSERVED_SFU_SAMPLES_METRIC_NAME);
     }
 
 
@@ -71,6 +77,20 @@ public class SourceMetrics {
                 metrics.getMediaUnitIdTagName(), metrics.getTagValue(mediaUnitId),
                 SOURCE_TAG_NAME, WEBSOCKET_SOURCE_TAG_VALUE
         ).increment();
+        return this;
+    }
+
+    public SourceMetrics incrementObservedClientSamplesSamples(int value) {
+        this.metrics.registry.counter(
+                this.observedClientSamplesMetricName
+        ).increment(value);
+        return this;
+    }
+
+    public SourceMetrics incrementObservedSfuSamplesSamples(int value) {
+        this.metrics.registry.counter(
+                this.observedSfuSamplesMetricName
+        ).increment(value);
         return this;
     }
 }

@@ -8,6 +8,7 @@ import jakarta.inject.Singleton;
 import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.common.ObservableCollector;
 import org.observertc.observer.configs.ObserverConfig;
+import org.observertc.observer.metrics.SourceMetrics;
 import org.observertc.observer.samples.ObservedClientSamples;
 import org.observertc.observer.samples.ObservedSfuSamples;
 import org.observertc.observer.samples.SamplesVisitor;
@@ -54,6 +55,9 @@ public class SamplesCollector {
 
     @Inject
     ObserverConfig observerConfig;
+
+    @Inject
+    SourceMetrics sourceMetrics;
 
     private Predicate<String> serviceIdsPredicate = (obj) -> true;
 
@@ -131,6 +135,7 @@ public class SamplesCollector {
         }
         var observedClientSamples = observedClientSamplesBuilder.build();
         if (observedClientSamples != null) {
+            this.sourceMetrics.incrementObservedClientSamplesSamples(observedClientSamples.size());
             synchronized (this) {
                 this.observedClientSamplesSubject.onNext(observedClientSamples);
             }
@@ -138,6 +143,7 @@ public class SamplesCollector {
 
         var observedSfuSamples = observedSfuSamplesBuilder.build();
         if (observedSfuSamples != null) {
+            this.sourceMetrics.incrementObservedSfuSamplesSamples(observedSfuSamples.size());
             synchronized (this) {
                 this.observedSfuSamplesSubject.onNext(observedSfuSamples);
             }
