@@ -99,9 +99,8 @@ public class ObserverService {
                 .subscribe(this.reportsCollector::acceptAll);
 
         // funneled reports
-        logger.warn("For debugging purposes sinks turned off");
-//        this.reportsCollector.getObservableReports()
-//                .subscribe(this.reportSinks);
+        this.reportsCollector.getObservableReports()
+                .subscribe(this.reportSinks);
 
         if (this.reportMetrics.isEnabled()) {
             this.reportsCollector.getObservableReports()
