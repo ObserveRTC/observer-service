@@ -48,6 +48,8 @@ public class RepositoryMetrics {
                     PeerConnectionsRepository peerConnectionsRepository,
                     InboundTracksRepository inboundTracksRepository,
                     OutboundTracksRepository outboundTracksRepository,
+                    SfuMediaStreamsRepository sfuMediaStreamsRepository,
+                    SfuMediaSinksRepository sfuMediaSinksRepository,
                     SfusRepository sfusRepository,
                     SfuTransportsRepository sfuTransportsRepository,
                     SfuInboundRtpPadsRepository sfuInboundRtpPadsRepository,
@@ -60,6 +62,8 @@ public class RepositoryMetrics {
                 peerConnectionsRepository,
                 inboundTracksRepository,
                 outboundTracksRepository,
+                sfuMediaStreamsRepository,
+                sfuMediaSinksRepository,
                 sfusRepository,
                 sfuTransportsRepository,
                 sfuInboundRtpPadsRepository,
@@ -104,8 +108,15 @@ public class RepositoryMetrics {
 
     public void expose() {
         for (var storageMetrics : this.storageMetrics) {
-            var tags = List.of(Tag.of(STORAGE_ID_TAG_NAME, storageMetrics.storageId()));
-            this.metrics.registry.gauge(this.entriesMetricName, tags, storageMetrics.localSize());
+            var storageId = storageMetrics.storageId();
+            var value = storageMetrics.localSize();
+            var tags = List.of(Tag.of(STORAGE_ID_TAG_NAME, storageId));
+            this.metrics.registry.gauge(this.entriesMetricName, tags, value);
+            logger.info("Set repository metric {} for storage {} to {}",
+                    this.entriesMetricName,
+                    storageId,
+                    value
+            );
         }
     }
 

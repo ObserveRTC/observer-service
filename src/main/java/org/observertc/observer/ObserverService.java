@@ -119,7 +119,10 @@ public class ObserverService {
             this.backgroundTasksExecutor.start();
             this.backgroundTasksExecutor.addPeriodicTask(
                     "Repository Metric Exposure",
-                    () -> ChainedTask.<Void>builder().addActionStage("Exposing metrics", repositoryMetrics::expose).build(),
+                    () -> ChainedTask.<Void>builder()
+                            .withName("Exposing Repository Metric")
+                            .addActionStage("Exposing metrics", repositoryMetrics::expose)
+                            .build(),
                     5 * 60 * 1000
             );
         }
