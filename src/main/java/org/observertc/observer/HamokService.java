@@ -54,14 +54,12 @@ public class HamokService  implements InfoSource {
         this.storageGrid = StorageGrid.builder()
                 .withContext(memberName)
                 .withRaftMaxLogRetentionTimeInMs(storageGridConfig.raftMaxLogEntriesRetentionTimeInMinutes * 60 * 1000)
-                .withApplicationCommitIndexSyncTimeoutInMs(storageGridConfig.applicationCommitIndexSyncTimeoutInMs)
                 .withHeartbeatInMs(storageGridConfig.heartbeatInMs)
                 .withFollowerMaxIdleInMs(storageGridConfig.followerMaxIdleInMs)
                 .withPeerMaxIdleTimeInMs(storageGridConfig.peerMaxIdleInMs)
                 .withRequestTimeoutInMs(storageGridConfig.requestTimeoutInMs)
                 .withSendingHelloTimeoutInMs(storageGridConfig.sendingHelloTimeoutInMs)
                 .withLocalEndpointId(localEndpointId)
-                .withAutoDiscovery(false)
                 .build();
 
         this.storageGrid.events().joinedRemoteEndpoints()
@@ -72,6 +70,11 @@ public class HamokService  implements InfoSource {
         this.storageGrid.events().detachedRemoteEndpoints()
                 .subscribe(endpointId -> {
                     logger.info("Endpoint {} detached from StorageGrid", endpointId);
+                    remotePeers.remove(endpointId);
+                });
+        this.storageGrid.events().inactiveEndpoints()
+                .subscribe(endpointId -> {
+                    logger.info("Endpoint {} is reported to be inactive", endpointId);
                     remotePeers.remove(endpointId);
                 });
 
