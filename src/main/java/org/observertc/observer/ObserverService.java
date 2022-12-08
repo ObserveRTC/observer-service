@@ -4,6 +4,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.evaluators.*;
+import org.observertc.observer.metrics.HamokMetrics;
 import org.observertc.observer.metrics.ReportMetrics;
 import org.observertc.observer.metrics.RepositoryMetrics;
 import org.observertc.observer.sinks.ReportSinks;
@@ -60,6 +61,9 @@ public class ObserverService {
 
     @Inject
     RepositoryMetrics repositoryMetrics;
+
+    @Inject
+    HamokMetrics hamokMetrics;
 
     @Inject
     BackgroundTasksExecutor backgroundTasksExecutor;
@@ -122,7 +126,15 @@ public class ObserverService {
                     "Repository Metric Exposure",
                     () -> ChainedTask.<Void>builder()
                             .withName("Exposing Repository Metric")
-                            .addActionStage("Exposing metrics", repositoryMetrics::expose)
+                            .addActionStage("Exposing metrics", repositoryMetrics::update)
+                            .build(),
+                    30 * 1000
+            );
+            this.backgroundTasksExecutor.addPeriodicTask(
+                    "Hamok Metric Exposure",
+                    () -> ChainedTask.<Void>builder()
+                            .withName("Exposing Hamok Metric")
+                            .addActionStage("Exposing metrics", hamokMetrics::update)
                             .build(),
                     30 * 1000
             );

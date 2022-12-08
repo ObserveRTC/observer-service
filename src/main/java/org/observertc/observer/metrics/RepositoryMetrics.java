@@ -119,7 +119,7 @@ public class RepositoryMetrics {
 
     }
 
-    public void expose() {
+    public void update() {
         for (var storageMetrics : this.storageMetrics) {
             var storageId = storageMetrics.storageId();
             var value = storageMetrics.localSize();
