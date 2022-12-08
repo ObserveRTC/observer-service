@@ -127,7 +127,7 @@ public class RepositoryMetrics {
             if (valueProvider != null) {
                 valueProvider.set(value);
             }
-            logger.info("Set repository metric {} for storage {} to {}",
+            logger.debug("Set repository metric {} for storage {} to {}",
                     this.entriesMetricName,
                     storageId,
                     value

@@ -60,6 +60,8 @@ public class CleanSfuEntities extends ChainedTask<Void> {
                     this.sfuOutboundRtpPadsRepository.save();
                     this.sfuTransportsRepository.save();
                     this.sfusRepository.save();
+                    logger.warn("Calling gc for debugging purposes");
+                    System.gc();
                 });
         return result.build();
     }
