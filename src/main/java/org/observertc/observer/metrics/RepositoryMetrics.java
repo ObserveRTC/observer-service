@@ -14,7 +14,10 @@ import javax.annotation.PreDestroy;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Singleton
 public class RepositoryMetrics {
@@ -41,6 +44,8 @@ public class RepositoryMetrics {
     private String entriesMetricName;
 
     private List<RepositoryStorageMetrics> storageMetrics;
+
+    private final Map<String, AtomicInteger> localStorageSizes = new ConcurrentHashMap<>();
 
     public RepositoryMetrics(
                     CallsRepository callsRepository,
@@ -77,6 +82,14 @@ public class RepositoryMetrics {
         this.taskExecutionTimeMetricName = metrics.getMetricName(REPOSITORY_METRICS_PREFIX, TASK_EXECUTION_TIME_METRIC_NAME);
         this.taskExecutionsMetricName = metrics.getMetricName(REPOSITORY_METRICS_PREFIX, TASK_EXECUTIONS_METRIC_NAME);
         this.entriesMetricName = metrics.getMetricName(REPOSITORY_METRICS_PREFIX, ENTRIES_METRIC_NAME);
+
+        for (var storageMetrics : this.storageMetrics) {
+            var storageId = storageMetrics.storageId();
+            var tags = List.of(Tag.of(STORAGE_ID_TAG_NAME, storageId));
+            var valueProvider = new AtomicInteger(0);
+            this.localStorageSizes.put(storageId, valueProvider);
+            this.metrics.registry.gauge(this.entriesMetricName, tags, valueProvider);
+        }
     }
 
     public void processTaskStats(TaskAbstract.Stats stats) {
@@ -110,8 +123,10 @@ public class RepositoryMetrics {
         for (var storageMetrics : this.storageMetrics) {
             var storageId = storageMetrics.storageId();
             var value = storageMetrics.localSize();
-            var tags = List.of(Tag.of(STORAGE_ID_TAG_NAME, storageId));
-            this.metrics.registry.gauge(this.entriesMetricName, tags, value);
+            var valueProvider = this.localStorageSizes.get(storageId);
+            if (valueProvider != null) {
+                valueProvider.set(value);
+            }
             logger.info("Set repository metric {} for storage {} to {}",
                     this.entriesMetricName,
                     storageId,
