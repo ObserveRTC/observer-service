@@ -123,7 +123,7 @@ public class ObserverService {
                             .withName("Exposing Repository Metric")
                             .addActionStage("Exposing metrics", repositoryMetrics::expose)
                             .build(),
-                    5 * 60 * 1000
+                    30 * 1000
             );
         }
         logger.info("Started");
