@@ -66,8 +66,8 @@ observer:
 
   buffers:
     samplesCollector:
-      maxItems: 1000
-      maxTimeInMs: 10000
+      maxItems: 100
+      maxTimeInMs: 1000
     debouncers:
       maxItems: 10000
       maxTimeInMs: 1000
