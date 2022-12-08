@@ -106,7 +106,7 @@ observer:
       dropUnmatchedInboundReports: False
       dropUnmatchedOutboundReports: False
     callUpdater:
-      enabled: true
+      enabled: false
       callIdAssignMode: master
     obfuscator:
       enabled: false
