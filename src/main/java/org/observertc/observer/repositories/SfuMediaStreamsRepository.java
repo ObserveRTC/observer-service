@@ -61,7 +61,7 @@ public class SfuMediaStreamsRepository implements RepositoryStorageMetrics {
         var baseStorage = new MemoryStorageBuilder<String, Models.SfuMediaStream>()
                 .setConcurrency(true)
                 .setId(STORAGE_ID)
-                .setExpiration(5 * 60 * 1000)
+//                .setExpiration(5 * 60 * 1000)
                 .build();
         var storageBuilder = this.service.getStorageGrid().separatedStorage(baseStorage)
                 .setKeyCodec(SerDeUtils.createStrToByteFunc(), SerDeUtils.createBytesToStr())

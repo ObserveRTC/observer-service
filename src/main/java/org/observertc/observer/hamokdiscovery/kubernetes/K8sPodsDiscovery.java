@@ -64,7 +64,7 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
         });
         var remoteAddressesStorage = MemoryStorage.<String, DiscoveredRemotePeer>builder()
                 .setId("remote-addresses")
-                .setExpiration(60 * 60 * 1000) // 1h
+//                .setExpiration(60 * 60 * 1000) // 1h
                 .setConcurrency(true)
                 .build();
         this.discoveredRemotePeers = remoteAddressesStorage;
