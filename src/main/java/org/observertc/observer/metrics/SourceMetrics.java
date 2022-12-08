@@ -5,6 +5,7 @@ import jakarta.inject.Singleton;
 import org.observertc.observer.configs.ObserverConfig;
 
 import javax.annotation.PostConstruct;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Singleton
 public class SourceMetrics {
@@ -15,6 +16,7 @@ public class SourceMetrics {
     private static final String RECEIVED_SAMPLES_METRIC_NAME = "received_samples";
     private static final String OBSERVED_CLIENT_SAMPLES_METRIC_NAME = "observed_client_samples";
     private static final String OBSERVED_SFU_SAMPLES_METRIC_NAME = "observed_sfu_samples";
+    private static final String BUFFERED_SAMPLES_METRIC_NAME = "buffered_samples";
 
     private static final String SOURCE_TAG_NAME = "source";
     private static final String REST_SOURCE_TAG_VALUE = "rest";
@@ -31,6 +33,7 @@ public class SourceMetrics {
     private String receivedSamplesMetricName;
     private String observedClientSamplesMetricName;
     private String observedSfuSamplesMetricName;
+    private final AtomicInteger bufferedSamples = new AtomicInteger(0);
 
     @PostConstruct
     void setup() {
@@ -39,6 +42,7 @@ public class SourceMetrics {
         this.receivedSamplesMetricName = metrics.getMetricName(SOURCE_METRICS_PREFIX, RECEIVED_SAMPLES_METRIC_NAME);
         this.observedClientSamplesMetricName = metrics.getMetricName(SOURCE_METRICS_PREFIX, OBSERVED_CLIENT_SAMPLES_METRIC_NAME);
         this.observedSfuSamplesMetricName = metrics.getMetricName(SOURCE_METRICS_PREFIX, OBSERVED_SFU_SAMPLES_METRIC_NAME);
+        metrics.registry.gauge(this.metrics.getMetricName(SOURCE_METRICS_PREFIX, BUFFERED_SAMPLES_METRIC_NAME), this.bufferedSamples);
     }
 
 
@@ -91,6 +95,11 @@ public class SourceMetrics {
         this.metrics.registry.counter(
                 this.observedSfuSamplesMetricName
         ).increment(value);
+        return this;
+    }
+
+    public SourceMetrics setBufferedSamples(int value) {
+        this.bufferedSamples.set(value);
         return this;
     }
 }

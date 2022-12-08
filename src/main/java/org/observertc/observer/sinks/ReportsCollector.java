@@ -21,6 +21,7 @@ public class ReportsCollector {
 
     @Inject
     ObserverConfig observerConfig;
+
     private ObservableCollector<Report> reportsCollector;
 
     @PostConstruct
@@ -31,6 +32,7 @@ public class ReportsCollector {
                 .withMaxItems(maxItems)
                 .withMaxTimeInMs(maxTimeInMs)
                 .build();
+
     }
 
     @PreDestroy

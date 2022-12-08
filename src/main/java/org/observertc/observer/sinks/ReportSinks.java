@@ -49,6 +49,9 @@ public class ReportSinks implements Consumer<List<Report>> {
     }
 
     public void accept(List<Report> reports) throws Throwable {
+
+        this.sinkMetrics.setBufferedReports(reports.size());
+
         synchronized (this) {
             Iterator<Map.Entry<String, Sink>> it = this.sinks.entrySet().iterator();
             while(it.hasNext()) {

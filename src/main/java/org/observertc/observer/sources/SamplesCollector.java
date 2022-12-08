@@ -93,6 +93,9 @@ public class SamplesCollector {
     }
 
     private void forward(List<ReceivedSamples> receivedSamples) {
+
+        this.sourceMetrics.setBufferedSamples(receivedSamples.size());
+
         if (receivedSamples.size() < 1) {
             synchronized (this) {
                 this.observedClientSamplesSubject.onNext(ObservedClientSamples.EMPTY_SAMPLES);
