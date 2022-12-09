@@ -7,7 +7,6 @@ import io.micronaut.context.env.MapPropertySource;
 import io.micronaut.context.env.PropertySource;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.management.endpoint.info.InfoSource;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.common.JsonUtils;
@@ -23,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Singleton
@@ -90,10 +88,6 @@ public class HamokService  implements InfoSource {
 //                        this.storageGrid.removeRemoteEndpointId(endpointId);
 //                    }
                 });
-        Schedulers.io().schedulePeriodicallyDirect(() -> {
-            logger.warn("Debugging staff");
-            this.callsRepository.get().getAll(Set.of("asdasda"));
-        }, 10000, 10000, TimeUnit.MILLISECONDS);
         this.storageGrid.errors().subscribe(err -> {
             logger.warn("Error occurred in storageGrid. Code: {}", err.getCode(), err.getException());
         });
