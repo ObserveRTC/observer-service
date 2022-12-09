@@ -54,9 +54,12 @@ public abstract class CommitAbstract {
                 this.lock.tryLock(this.tryLockTimeoutInMs, TimeUnit.MILLISECONDS);
 
                 try {
+                    logger.info("Committing started, context: {}", this.context);
                     this.process();
                 } catch (Throwable t) {
                     logger.warn("Error occurred while executing process. Context: {}", this.context);
+                } finally {
+                    logger.info("Committing ended, context: {}", this.context);
                 }
                 // commit here
 
