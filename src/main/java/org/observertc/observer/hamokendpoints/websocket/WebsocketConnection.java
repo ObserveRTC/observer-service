@@ -20,6 +20,7 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -48,6 +49,7 @@ public class WebsocketConnection {
     private final Subject<EndpointStateChange> endpointStateChangedSubject = PublishSubject.create();
     private final Subject<byte[]> messages = PublishSubject.create();
     private AtomicInteger backoffTimeInMs = new AtomicInteger(5000);
+    private AtomicReference<CompletableFuture<Void>> pendingOnOpen = new AtomicReference<>(null);
 
     private volatile boolean disposed = false;
     private volatile boolean opened = false;
@@ -168,13 +170,43 @@ public class WebsocketConnection {
     public void close() {
         if (this.disposed) {
             logger.warn("Attempted to close a connection to {} twice", this.serverUri);
+            return;
         }
         this.disposed = true;
         var client = this.client.getAndSet(null);
         if (client == null) {
             return;
         }
+        client.close(CLOSE_WITHOUT_RECONNECT_CODE);
+    }
+
+    public boolean reconnect() {
+        if (this.disposed) {
+            logger.warn("Attempted to reconnect an already disposed connection");
+            return false;
+        }
+        var client = this.client.get();
+        if (client == null) {
+            return false;
+        }
+        var pendingOnOpen = new CompletableFuture<Void>();
+        if (!this.pendingOnOpen.compareAndSet(null, pendingOnOpen)) {
+            pendingOnOpen = this.pendingOnOpen.get();
+        }
         client.close();
+        try {
+            pendingOnOpen.get(30000, TimeUnit.MILLISECONDS);
+            return true;
+        } catch (Throwable t) {
+            logger.warn("Reconnect failed to {}, connectionId: {}", this.serverUri, this.connectionId, t);
+            client = this.client.get();
+            if (client != null) {
+                client.close(CLOSE_WITHOUT_RECONNECT_CODE);
+            }
+            return false;
+        } finally {
+            this.pendingOnOpen.set(null);
+        }
     }
 
     public void send(byte[] message) {
@@ -195,6 +227,10 @@ public class WebsocketConnection {
             @Override
             public void onOpen(ServerHandshake handshakedata) {
                 logger.info("Connected to {}, address is {}", this.uri, this.getRemoteSocketAddress());
+                var pending = pendingOnOpen.get();
+                if (pending != null) {
+                    pending.complete(null);
+                }
             }
 
             @Override

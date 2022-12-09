@@ -11,6 +11,8 @@ public interface HamokEndpoint extends Endpoint {
 
     Set<UUID> getActiveRemoteEndpointIds();
 
+    boolean reconnectToEndpoint(UUID endpointId);
+
 //    Observable<UUID> remoteEndpointJoined();
 
 //    Observable<UUID> remoteEndpointDetached();

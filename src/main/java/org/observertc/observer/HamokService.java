@@ -75,7 +75,14 @@ public class HamokService  implements InfoSource {
         this.storageGrid.events().inactiveEndpoints()
                 .subscribe(endpointId -> {
                     logger.info("Endpoint {} is reported to be inactive", endpointId);
-                    remotePeers.remove(endpointId);
+                    var endpoint = this.endpointHolder.get();
+                    if (endpoint == null) {
+                        return;
+                    }
+                    if (!endpoint.reconnectToEndpoint(endpointId)) {
+                        logger.warn("Was not able to reconnect to endpoint {}", endpointId);
+                        this.storageGrid.removeRemoteEndpointId(endpointId);
+                    }
                 });
 
         this.storageGrid.errors().subscribe(err -> {

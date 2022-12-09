@@ -185,6 +185,16 @@ public class WebsocketEndpoint implements HamokEndpoint {
     }
 
     @Override
+    public boolean reconnectToEndpoint(UUID endpointId) {
+        var connection = this.remoteEndpoints.get(endpointId);
+        if (connection == null) {
+            // maybe in pending? maybe. if it is pending then it will be checked by connecting to it
+            return false;
+        }
+        return connection.reconnect();
+    }
+
+    @Override
     public boolean isReady() {
         return true;
     }
