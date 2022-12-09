@@ -34,7 +34,6 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
     @Inject
     CallStartedReports callStartedReports;
 
-
     public CallsFetcherResult fetchFor(ObservedClientSamples observedClientSamples) {
         if (observedClientSamples == null || observedClientSamples.isEmpty()) {
             return EMPTY_RESULT;

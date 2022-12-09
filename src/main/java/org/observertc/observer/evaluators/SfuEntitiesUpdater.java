@@ -12,6 +12,7 @@ import org.observertc.observer.evaluators.eventreports.*;
 import org.observertc.observer.metrics.EvaluatorMetrics;
 import org.observertc.observer.repositories.*;
 import org.observertc.observer.repositories.tasks.CleanSfuEntities;
+import org.observertc.observer.repositories.tasks.CommitSfuEntities;
 import org.observertc.observer.samples.ObservedSfuSamples;
 import org.observertc.schemas.dtos.Models;
 import org.slf4j.Logger;
@@ -73,6 +74,9 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
     @Inject
     CleanSfuEntities cleanSfuEntities;
 
+    @Inject
+    CommitSfuEntities commitSfuEntities;
+
     @PostConstruct
     void setup() {
         this.backgroundTasksExecutor.addPeriodicTask(
@@ -103,9 +107,14 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
         }
         Instant started = Instant.now();
         try {
+            this.commitSfuEntities.lock();
             this.process(observedSfuSamples);
         } finally {
             this.exposedMetrics.addTaskExecutionTime(METRIC_COMPONENT_NAME, started, Instant.now());
+            this.commitSfuEntities.unlock();
+            if (!this.commitSfuEntities.executeSync()) {
+                logger.warn("Committing SFU entities was unsuccesful");;
+            }
         }
     }
 
@@ -326,7 +335,6 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
                 }
             }
         }
-        this.sfusRepository.save();
 
         if (0 < newSfuModels.size()) {
             this.sfuJoinedReports.accept(newSfuModels);

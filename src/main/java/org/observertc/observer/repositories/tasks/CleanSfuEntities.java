@@ -39,6 +39,9 @@ public class CleanSfuEntities extends ChainedTask<Void> {
     @Inject
     SfuSctpChannelsRepository sfuSctpChannelsRepository;
 
+    @Inject
+    CommitSfuEntities commitSfuEntities;
+
     private Long lastSfusClean = null;
     private Long lastSfuTransportsCleaned = null;
     private Long lastSfuInboundRtpPadsClean = null;
@@ -55,11 +58,9 @@ public class CleanSfuEntities extends ChainedTask<Void> {
                 .addActionStage("Clean Sfu Outbound Rtp Pads", this::cleanSfuOutboundRtpPads)
                 .addActionStage("Clean Sfu Sctp Channels", this::cleanSfuSctpChannels)
                 .addActionStage("Commit Sfu Entity changes", () -> {
-                    this.sfuSctpChannelsRepository.save();
-                    this.sfuInboundRtpPadsRepository.save();
-                    this.sfuOutboundRtpPadsRepository.save();
-                    this.sfuTransportsRepository.save();
-                    this.sfusRepository.save();
+                    this.commitSfuEntities.execute().thenRun(() -> {
+                       logger.info("Completed Clean Sfu Entities");
+                    });
                 });
         return result.build();
     }

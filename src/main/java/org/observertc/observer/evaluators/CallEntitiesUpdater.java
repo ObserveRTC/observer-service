@@ -18,6 +18,7 @@ import org.observertc.observer.repositories.Call;
 import org.observertc.observer.repositories.CallsRepository;
 import org.observertc.observer.repositories.Client;
 import org.observertc.observer.repositories.tasks.CleanCallEntities;
+import org.observertc.observer.repositories.tasks.CommitCallEntities;
 import org.observertc.observer.samples.ObservedClientSamples;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.schemas.dtos.Models;
@@ -80,6 +81,9 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
     @Inject
     CleanCallEntities cleanCallEntities;
 
+    @Inject
+    CommitCallEntities commitCallEntities;
+
     @PostConstruct
     void setup() {
         if (!this.config.enabled) {
@@ -113,10 +117,15 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
         }
         Instant started = Instant.now();
         try {
+            this.commitCallEntities.lock();
             this.process(observedClientSamples);
         } catch(Exception ex) {
             logger.warn("Exception occurred while processing clientsamples", ex);
         } finally {
+            this.commitCallEntities.unlock();
+            if (!this.commitCallEntities.executeSync()) {
+                logger.warn("Committing failed");
+            }
             this.exposedMetrics.addTaskExecutionTime(METRIC_COMPONENT_NAME, started, Instant.now());
         }
     }
@@ -411,8 +420,6 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                 }
             }
         }
-        // let's save what we have
-        this.callsRepository.save();
 
         if (0 < newClientModels.size()) {
             this.clientJoinedReports.accept(newClientModels);

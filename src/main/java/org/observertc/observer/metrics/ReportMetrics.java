@@ -8,6 +8,7 @@ import org.observertc.observer.reports.Report;
 import org.observertc.observer.reports.ReportTypeVisitor;
 import org.observertc.schemas.reports.CallEventReport;
 import org.observertc.schemas.reports.CallMetaReport;
+import org.observertc.schemas.reports.ClientExtensionReport;
 import org.observertc.schemas.reports.SfuEventReport;
 
 import javax.annotation.PostConstruct;
@@ -50,6 +51,7 @@ public class ReportMetrics {
     }
 
     private ReportTypeVisitor<Object, Void> createProcessor() {
+        var USER_MEDIA_ERROR = CallMetaType.USER_MEDIA_ERROR.toString();
         return new ReportTypeVisitor<Object, Void>() {
             @Override
             public Void visitObserverEventReport(Object payload) {
@@ -78,7 +80,7 @@ public class ReportMetrics {
             public Void visitCallMetaDataReport(Object payload) {
                 var reportPayload = ((CallMetaReport) payload);
                 var metaType = reportPayload.type;
-                if (!CallMetaType.USER_MEDIA_ERROR.equals(metaType)) {
+                if (!USER_MEDIA_ERROR.equals(metaType)) {
                     return null;
                 }
                 var metricName = getMetricName(metaType.toLowerCase(Locale.ROOT));
@@ -95,7 +97,15 @@ public class ReportMetrics {
 
             @Override
             public Void visitClientExtensionDataReport(Object payload) {
-//        var reportPayload = ((ClientExtensionReport) payload);
+                var reportPayload = ((ClientExtensionReport) payload);
+                var metricName = getMetricName(reportPayload.extensionType.toLowerCase(Locale.ROOT));
+                var serviceIdTagValue = metrics.getTagValue(reportPayload.serviceId);
+                var mediaUnitTagValue = metrics.getTagValue(reportPayload.mediaUnitId);
+                metrics.registry.counter(
+                        metricName,
+                        metrics.getServiceIdTagName(), serviceIdTagValue,
+                        metrics.getMediaUnitIdTagName(), mediaUnitTagValue
+                ).increment();
                 return null;
 
             }

@@ -1,53 +1,49 @@
 package org.observertc.observer.repositories.tasks;
 
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.observertc.observer.metrics.EvaluatorMetrics;
+import org.observertc.observer.repositories.*;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.ReentrantLock;
+import java.time.Instant;
 
 @Singleton
-public class CommitCallEntities {
+public class CommitCallEntities extends CommitAbstract{
 
-    private static final Logger logger = LoggerFactory.getLogger(CommitCallEntities.class);
+    @Inject
+    CallsRepository callsRepository;
 
-    private ReentrantLock lock = new ReentrantLock();
-    private final AtomicReference<CompletableFuture<Void>> process = new AtomicReference<>(null);
+    @Inject
+    ClientsRepository clientsRepository;
 
-    public CompletableFuture<Void> execute() {
-        var process = new CompletableFuture<Void>();
-        if (!this.process.compareAndSet(null, process)) {
-            return this.process.get();
-        }
-        Schedulers.io().scheduleDirect(() -> {
-            try {
-                this.lock.tryLock(30000, TimeUnit.MILLISECONDS);
-            } catch (InterruptedException e) {
-                logger.warn("Exception occurred while trying to acquire lock for committing");
-            } finally {
-                try {
-                    this.lock.unlock();
-                } catch (Exception ex) {
+    @Inject
+    PeerConnectionsRepository peerConnectionsRepository;
 
-                }
-            }
-        });
-        return process;
+    @Inject
+    InboundTracksRepository inboundTracksRepository;
+
+    @Inject
+    OutboundTracksRepository outboundTracksRepository;
+
+    @Inject
+    EvaluatorMetrics evaluatorMetrics;
+
+    public CommitCallEntities() {
+        super(
+                "Committing CallEntities",
+                60000
+        );
     }
 
-    public boolean isLocked() {
-        return this.lock.isLocked();
-    }
-
-    public void lock() {
-        this.lock.lock();
-    }
-
-    public void unlock() {
-
+    @Override
+    protected void process() throws Throwable {
+        Instant started = Instant.now();
+        this.inboundTracksRepository.save();
+        this.outboundTracksRepository.save();
+        this.peerConnectionsRepository.save();
+        this.clientsRepository.save();
+        this.callsRepository.save();
+        Instant ended = Instant.now();
+        this.evaluatorMetrics.addCommitCallEntitiesExecutionTime(started, ended);
     }
 }

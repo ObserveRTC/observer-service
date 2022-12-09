@@ -27,6 +27,9 @@ public class CleanCallEntities {
     ServerTimestamps serverTimestamps;
 
     @Inject
+    CommitCallEntities commitCallEntities;
+
+    @Inject
     CallsRepository callsRepository;
 
     @Inject
@@ -57,11 +60,9 @@ public class CleanCallEntities {
                 .addActionStage("Clean Inbound Tracks", this::cleanInboundTracks)
                 .addActionStage("Clean Outbound Tracks", this::cleanOutboundTracks)
                 .addActionStage("Commit Call Entity changes", () -> {
-                    this.inboundTracksRepository.save();
-                    this.outboundTracksRepository.save();
-                    this.peerConnectionsRepository.save();
-                    this.clientsRepository.save();
-                    this.callsRepository.save();
+                    this.commitCallEntities.execute().thenRun(() -> {
+                        logger.info("Completed Clean Call Entities");
+                    });
                 });
         return result.build();
     }
