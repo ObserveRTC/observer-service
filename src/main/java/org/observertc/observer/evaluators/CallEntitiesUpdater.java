@@ -244,7 +244,6 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
                         }
                     }
                     peerConnection.touch(observedClient.getMaxTimestamp(), serverTimestamp);
-
                     for (var observedInboundAudioTrack : observedPeerConnection.observedInboundAudioTracks()) {
                         var inboundAudioTrack = peerConnection.getInboundTrack(observedInboundAudioTrack.getTrackId());
                         if (inboundAudioTrack == null) {
