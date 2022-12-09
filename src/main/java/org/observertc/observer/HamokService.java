@@ -7,7 +7,6 @@ import io.micronaut.context.env.MapPropertySource;
 import io.micronaut.context.env.PropertySource;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.management.endpoint.info.InfoSource;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.common.JsonUtils;
@@ -142,14 +141,6 @@ public class HamokService  implements InfoSource {
         } else if (!endpoint.isRunning()){
             endpoint.start();
         }
-        Schedulers.io().scheduleDirect(() -> {
-            logger.warn("For debugging purposes we execute a random error close method for the storagegrid");
-            if (new Random().nextInt(100) < 70) {
-                return;
-            }
-            logger.warn("And this storagrid will die!");
-            this.storageGrid.close();
-        });
 
         logger.info("Hamok is started");
 

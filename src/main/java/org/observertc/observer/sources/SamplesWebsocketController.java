@@ -137,6 +137,9 @@ public class SamplesWebsocketController {
 			String serviceId,
 			String mediaUnitId,
 			WebSocketSession session) {
+		if (!this.hamokService.areRemotePeersReady()) {
+			return;
+		}
 		try {
 			this.exposedMetrics.incrementClosedWebsockets(serviceId, mediaUnitId);
 			this.inputs.remove(session.getId());
