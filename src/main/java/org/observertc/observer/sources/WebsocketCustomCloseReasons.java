@@ -34,6 +34,7 @@ public class WebsocketCustomCloseReasons {
                 .set(INVALID_ACCESS_TOKEN_CODE, "The provided access token is invalid")
                 .set(TOO_MANY_WEBSOCKET_FOR_SAME_ACCESS_TOKENS, "There are too many websocket registered for the same access token")
                 .set(WEBSOCKET_IS_DISABLED, "The websocket is disabled")
+                .set(OBSERVER_REMOTE_PEERS_ARE_NOT_READY, "The service is not ready")
         ;
     }
 
