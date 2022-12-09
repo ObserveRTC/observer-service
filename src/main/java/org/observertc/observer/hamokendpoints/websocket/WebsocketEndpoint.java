@@ -274,7 +274,7 @@ public class WebsocketEndpoint implements HamokEndpoint {
                     var hamokMessage = Hamokmessage.HamokMessage.parseFrom(data.getBytes(StandardCharsets.UTF_8));
                     message = codec.decode(hamokMessage);
 //                    message = mapper.readValue(data, Message.class);
-//                    logger.info("Got message from {}, {}", createUri(serverHost, serverPort), message.type);
+                    logger.info("Got message from {}, {}", createUri(serverHost, serverPort), message.type);
                     inboundChannel.onNext(message);
                 } catch (JsonProcessingException e) {
                     logger.warn("Error occurred while deserializing message", e);

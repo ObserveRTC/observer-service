@@ -7,6 +7,7 @@ import io.micronaut.context.env.MapPropertySource;
 import io.micronaut.context.env.PropertySource;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.management.endpoint.info.InfoSource;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.common.JsonUtils;
@@ -14,6 +15,7 @@ import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.hamokendpoints.HamokEndpoint;
 import org.observertc.observer.hamokendpoints.HamokEndpointBuilderService;
+import org.observertc.observer.repositories.CallsRepository;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Singleton
@@ -38,6 +41,9 @@ public class HamokService  implements InfoSource {
 
     @Inject
     HamokEndpointBuilderService hamokEndpointBuilderService;
+
+    @Inject
+    BeanProvider<CallsRepository> callsRepository;
 
 //    @Inject
 //    Sandbox sandbox;
@@ -74,17 +80,20 @@ public class HamokService  implements InfoSource {
                 });
         this.storageGrid.events().inactiveEndpoints()
                 .subscribe(endpointId -> {
-                    logger.info("Endpoint {} is reported to be inactive", endpointId);
-                    var endpoint = this.endpointHolder.get();
-                    if (endpoint == null) {
-                        return;
-                    }
-                    if (!endpoint.reconnectToEndpoint(endpointId)) {
-                        logger.warn("Was not able to reconnect to endpoint {}", endpointId);
-                        this.storageGrid.removeRemoteEndpointId(endpointId);
-                    }
+//                    logger.info("Endpoint {} is reported to be inactive", endpointId);
+//                    var endpoint = this.endpointHolder.get();
+//                    if (endpoint == null) {
+//                        return;
+//                    }
+//                    if (!endpoint.reconnectToEndpoint(endpointId)) {
+//                        logger.warn("Was not able to reconnect to endpoint {}", endpointId);
+//                        this.storageGrid.removeRemoteEndpointId(endpointId);
+//                    }
                 });
-
+        Schedulers.io().schedulePeriodicallyDirect(() -> {
+            logger.warn("Debugging staff");
+            this.callsRepository.get().getAll(Set.of("asdasda"));
+        }, 10000, 10000, TimeUnit.MILLISECONDS);
         this.storageGrid.errors().subscribe(err -> {
             logger.warn("Error occurred in storageGrid. Code: {}", err.getCode(), err.getException());
         });
