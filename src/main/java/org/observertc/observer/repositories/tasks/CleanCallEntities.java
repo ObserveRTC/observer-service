@@ -62,8 +62,6 @@ public class CleanCallEntities {
                     this.peerConnectionsRepository.save();
                     this.clientsRepository.save();
                     this.callsRepository.save();
-                    logger.warn("Calling gc for debugging purposes");
-                    System.gc();
                 });
         return result.build();
     }

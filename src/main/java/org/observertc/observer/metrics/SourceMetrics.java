@@ -17,6 +17,7 @@ public class SourceMetrics {
     private static final String OBSERVED_CLIENT_SAMPLES_METRIC_NAME = "observed_client_samples";
     private static final String OBSERVED_SFU_SAMPLES_METRIC_NAME = "observed_sfu_samples";
     private static final String BUFFERED_SAMPLES_METRIC_NAME = "buffered_samples";
+    private static final String OVERLOADED_SAMPLES_COLLECTOR_METRIC_NAME = "overloaded_samples_collector";
 
     private static final String SOURCE_TAG_NAME = "source";
     private static final String REST_SOURCE_TAG_VALUE = "rest";
@@ -33,6 +34,8 @@ public class SourceMetrics {
     private String receivedSamplesMetricName;
     private String observedClientSamplesMetricName;
     private String observedSfuSamplesMetricName;
+    private String overloadedSamplesCollectorMetricName;
+
     private final AtomicInteger bufferedSamples = new AtomicInteger(0);
 
     @PostConstruct
@@ -42,6 +45,7 @@ public class SourceMetrics {
         this.receivedSamplesMetricName = metrics.getMetricName(SOURCE_METRICS_PREFIX, RECEIVED_SAMPLES_METRIC_NAME);
         this.observedClientSamplesMetricName = metrics.getMetricName(SOURCE_METRICS_PREFIX, OBSERVED_CLIENT_SAMPLES_METRIC_NAME);
         this.observedSfuSamplesMetricName = metrics.getMetricName(SOURCE_METRICS_PREFIX, OBSERVED_SFU_SAMPLES_METRIC_NAME);
+        this.overloadedSamplesCollectorMetricName = metrics.getMetricName(SOURCE_METRICS_PREFIX, OVERLOADED_SAMPLES_COLLECTOR_METRIC_NAME);
         metrics.registry.gauge(this.metrics.getMetricName(SOURCE_METRICS_PREFIX, BUFFERED_SAMPLES_METRIC_NAME), this.bufferedSamples);
     }
 
@@ -88,6 +92,13 @@ public class SourceMetrics {
         this.metrics.registry.counter(
                 this.observedClientSamplesMetricName
         ).increment(value);
+        return this;
+    }
+
+    public SourceMetrics incrementOverloadedSamplesCollector() {
+        this.metrics.registry.counter(
+                this.overloadedSamplesCollectorMetricName
+        ).increment();
         return this;
     }
 

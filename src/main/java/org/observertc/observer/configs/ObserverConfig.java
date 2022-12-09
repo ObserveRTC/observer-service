@@ -234,14 +234,16 @@ public class ObserverConfig {
 
 		@ConfigurationProperties("samplesCollector")
 		public static class SamplesBufferCollectorConfig extends CollectorConfig {
-
+			public int overloadThreshold = -1;
+			public int maxConsecutiveOverloaded = 3;
 		}
 
 		public ReportsCollectorConfig reportsCollector = new ReportsCollectorConfig();
 
 		@ConfigurationProperties("reportsCollector")
 		public static class ReportsCollectorConfig extends CollectorConfig {
-
+			public int overloadThreshold = -1;
+			public int maxConsecutiveOverloaded = 3;
 		}
 	}
 
