@@ -11,15 +11,14 @@ import java.util.Map;
 public class WebsocketCustomCloseReasons {
     private static final int ACCESS_TOKEN_EXPIRED_CODE = 4224;
     private static final int NO_ACCESS_TOKEN_PROVIDED_CODE = 4225;
-    private static final int INVALID_ACCESS_TOKEN_CODE = 4226;
     private static final int INTERNAL_SERVER_ERROR_CODE = 4227;
     private static final int TOO_MANY_WEBSOCKET_FOR_SAME_ACCESS_TOKENS = 4228;
     private static final int WEBSOCKET_IS_DISABLED = 4229;
 
+    private static final int OBSERVER_REMOTE_PEERS_ARE_NOT_READY = 4226;
 
     private static final int INVALID_INPUT = 4230;
-
-    private static final int OBSERVER_REMOTE_PEERS_ARE_NOT_READY = 4231;
+    private static final int INVALID_ACCESS_TOKEN_CODE = 4231;
 
     private final Map<Integer, CloseReason> reasons;
 

@@ -177,7 +177,7 @@ public class HamokService  implements InfoSource {
     }
 
     private boolean remotePeersWereReady = false;
-    private boolean areRemotePeersReady() {
+    public boolean areRemotePeersReady() {
         if (this.remotePeersWereReady) {
             return true;
         }
@@ -208,12 +208,6 @@ public class HamokService  implements InfoSource {
             if ((this.alreadyLoggedFlags & 1) == 0) {
                 logger.info("Waiting for endpoint to be ready");
                 this.alreadyLoggedFlags = 1;
-            }
-            return false;
-        } else if (!this.areRemotePeersReady()) {
-            if ((this.alreadyLoggedFlags & 2) == 0) {
-                logger.info("Waiting for remote peers to be ready");
-                this.alreadyLoggedFlags = 2;
             }
             return false;
         }
