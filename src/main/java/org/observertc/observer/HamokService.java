@@ -78,7 +78,8 @@ public class HamokService  implements InfoSource {
                 });
         this.storageGrid.events().inactiveEndpoints()
                 .subscribe(endpointId -> {
-//                    logger.info("Endpoint {} is reported to be inactive", endpointId);
+                    logger.info("Endpoint {} is reported to be inactive", endpointId);
+                    // TODO: There is a wierd error here, for some reason the reconnect kills the connection, and every other connection
 //                    var endpoint = this.endpointHolder.get();
 //                    if (endpoint == null) {
 //                        return;

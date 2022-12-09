@@ -27,7 +27,7 @@ public abstract class CommitAbstract {
 
     public boolean executeSync() {
         try {
-            this.execute().get(30000, TimeUnit.MILLISECONDS);
+            this.execute().get(60000, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             logger.warn("InterruptedException occurred while executing commits in sync", e);
             return false;

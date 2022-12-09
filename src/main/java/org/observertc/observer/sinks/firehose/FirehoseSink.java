@@ -74,6 +74,9 @@ public class FirehoseSink extends Sink {
                     }
                 }
                 break;
+            } catch (ServiceUnavailableException serviceUnavailableException) {
+                logger.warn("Service is unavailable error occurred. Records attempted to send will be dropped, but the sink keeps open", serviceUnavailableException);
+                break;
             } catch (FirehoseException firehoseException) {
                 logger.warn("Firehose error occurred while sending records to firehose {}", firehoseException.getLocalizedMessage(), firehoseException);
                 this.client = null;
