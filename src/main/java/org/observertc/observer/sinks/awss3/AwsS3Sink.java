@@ -126,6 +126,10 @@ public class AwsS3Sink extends Sink {
                                     "media-tracks/" + callEventReport.mediaTrackId,
                                     JsonUtils.objectToString(callEventReport)
                             );
+                            this.uploadIndex(
+                                    "client-tracks/" + callEventReport.clientId + "/" + callEventReport.mediaTrackId,
+                                    JsonUtils.objectToString(callEventReport)
+                            );
                         }
                         case "PEER_CONNECTION_OPENED" -> {
                             this.uploadIndex(
