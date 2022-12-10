@@ -105,6 +105,12 @@ public class AwsS3Sink extends Sink {
                 case CALL_EVENT -> {
                     var callEventReport = (CallEventReport) report.payload;
                     switch (callEventReport.name) {
+                        case "CALL_STARTED" -> {
+                            this.uploadIndex(
+                                    "service-rooms/" + callEventReport.serviceId + "/" + callEventReport.roomId + "/" + callEventReport.callId,
+                                    JsonUtils.objectToString(callEventReport)
+                            );
+                        }
                         case "MEDIA_TRACK_ADDED" -> {
                             this.uploadIndex(
                                     "media-tracks/" + callEventReport.mediaTrackId,
