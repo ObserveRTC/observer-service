@@ -13,6 +13,7 @@ import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.hamokendpoints.HamokEndpoint;
 import org.observertc.observer.hamokendpoints.HamokEndpointBuilderService;
+import org.observertc.observer.metrics.HamokMetrics;
 import org.observertc.observer.repositories.CallsRepository;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
@@ -41,6 +42,9 @@ public class HamokService  implements InfoSource {
 
     @Inject
     BeanProvider<CallsRepository> callsRepository;
+
+    @Inject
+    HamokMetrics hamokMetrics;
 
 //    @Inject
 //    Sandbox sandbox;
@@ -88,6 +92,11 @@ public class HamokService  implements InfoSource {
 //                        this.storageGrid.removeRemoteEndpointId(endpointId);
 //                    }
                 });
+        this.storageGrid.events().notRespondingEndpointIds().subscribe(notRespondingRemoteEndpointIds -> {
+            logger.info("Reported endpoint ids are not responding", JsonUtils.objectToString(notRespondingRemoteEndpointIds));
+            this.hamokMetrics.incrementNotRespondingRemotePeerIds();
+
+        });
         this.storageGrid.errors().subscribe(err -> {
             logger.warn("Error occurred in storageGrid. Code: {}", err.getCode(), err.getException());
         });

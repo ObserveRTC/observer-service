@@ -27,6 +27,7 @@ public class HamokMetrics {
     private static final String BYTES_RECEIVED_METRIC_NAME = "bytes_received";
     private static final String PENDING_REQUESTS_METRIC_NAME = "pending_requests";
     private static final String PENDING_RESPONSES_METRIC_NAME = "pending_responses";
+    private static final String NOT_RESPONDING_REMOTE_IDS_METRIC_NAME = "not_responding_remote_peers";
 
 
     @Inject
@@ -66,6 +67,10 @@ public class HamokMetrics {
     @PreDestroy
     void teardown() {
 
+    }
+
+    public void incrementNotRespondingRemotePeerIds() {
+        this.metrics.registry.counter(metrics.getMetricName(HAMOK_METRICS_PREFIX, NOT_RESPONDING_REMOTE_IDS_METRIC_NAME)).increment();
     }
 
     public void update() {
