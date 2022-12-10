@@ -118,7 +118,7 @@ public class ObserverConfig {
 
 		@ConfigurationProperties("websocket")
 		public static class WebsocketsConfig extends SourceConfig {
-
+			public int minRemotePeers = -1;
 		}
 	}
 
@@ -269,8 +269,6 @@ public class ObserverConfig {
 		public Map<String, Object> endpoint;
 		public boolean usePartialResponses = true;
 		public StorageGridConfig storageGrid = new StorageGridConfig();
-
-		public int minRemotePeers = -1;
 
 		@ConfigurationProperties(("storageGrid"))
 		public static class StorageGridConfig {

@@ -94,10 +94,13 @@ public class SamplesWebsocketController {
 				return;
 			}
 			if (!this.opened) {
-				if (!this.hamokService.areRemotePeersReady()) {
-					logger.warn("Refused to accept incoming websocket session, because remote peers are not ready");
-					session.close(customCloseReasons.getObserverRemotePeersNotReady());
-					return;
+				if (0 < this.config.minRemotePeers) {
+					var remoteEndpointIds = this.hamokService.getRemoteEndpointIds();
+					if (remoteEndpointIds == null || remoteEndpointIds.size() < this.config.minRemotePeers) {
+						logger.warn("Refused to accept incoming websocket sessio due to not enough remote peers are ready. activeRemotePeers: {}, minRemotePeers: {}", remoteEndpointIds.size(), this.config.minRemotePeers);
+						session.close(customCloseReasons.getObserverRemotePeersNotReady());
+						return;
+					}
 				}
 				this.opened = true;
 			}

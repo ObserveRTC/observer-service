@@ -47,7 +47,9 @@ observer:
     useServerTimestamp: false
     rest:
       enabled: true
+
     websocket:
+      minRemotePeers: 0
       enabled: true
 
   repository:
@@ -117,7 +119,6 @@ observer:
   # setting this to {} by default gives you hard time to debug why your custom sinks from other config files not working :(
   #  sinks: {}
   hamok:
-    minRemotePeers: 0
     storageGrid:
       raftMaxLogEntriesRetentionTimeInMinutes: 5
       heartbeatInMs: 150

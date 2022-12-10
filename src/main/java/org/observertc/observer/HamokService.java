@@ -10,7 +10,6 @@ import io.micronaut.management.endpoint.info.InfoSource;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.common.JsonUtils;
-import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.hamokendpoints.HamokEndpoint;
 import org.observertc.observer.hamokendpoints.HamokEndpointBuilderService;
@@ -187,26 +186,16 @@ public class HamokService  implements InfoSource {
         );
     }
 
-    private boolean remotePeersWereReady = false;
-    public boolean areRemotePeersReady() {
-        if (this.remotePeersWereReady) {
-            return true;
-        }
+    public Set<UUID> getRemoteEndpointIds() {
         var endpoint = this.endpointHolder.get();
         if (endpoint == null) {
-            this.remotePeersWereReady = true;
-            return true;
+            return Collections.emptySet();
         }
-
-        if (0 < this.config.minRemotePeers) {
-            var remotePeersNum = Utils.firstNotNull(endpoint.getActiveRemoteEndpointIds(), Collections.emptySet()).size();
-            if (remotePeersNum < this.config.minRemotePeers) {
-                logger.info("Waiting for remote peers to be ready. Minimum number of peers must be ready is {}, currently there are {} number of remote peers", this.config.minRemotePeers, remotePeersNum);
-                return false;
-            }
+        var activeRemoteEndpointIds = endpoint.getActiveRemoteEndpointIds();
+        if (activeRemoteEndpointIds == null) {
+            return Collections.emptySet();
         }
-        this.remotePeersWereReady = true;
-        return true;
+        return activeRemoteEndpointIds;
     }
 
     private int alreadyLoggedFlags = 0;
