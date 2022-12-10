@@ -150,7 +150,7 @@ public class AwsS3Sink extends Sink {
                         case "SFU_TRANSPORT_OPENED" -> {
                             var payload = JsonUtils.objectToString(sfuEventReport);
                             this.uploadIndex(
-                                    "sfu-transports/" + sfuEventReport.rtpPadId,
+                                    "sfu-transports/" + sfuEventReport.transportId,
                                     payload
                             );
                         }
