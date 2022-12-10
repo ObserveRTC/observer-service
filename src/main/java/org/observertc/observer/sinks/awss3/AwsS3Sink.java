@@ -110,8 +110,9 @@ public class AwsS3Sink extends Sink {
                                     "calls/" + callEventReport.callId,
                                     JsonUtils.objectToString(callEventReport)
                             );
+                            var serviceRoomKey = "service-rooms/" + callEventReport.serviceId + "/" + callEventReport.roomId + "/" + callEventReport.callId;
                             this.uploadIndex(
-                                    "service-rooms/" + callEventReport.serviceId + "/" + callEventReport.roomId + "/" + callEventReport.callId,
+                                    serviceRoomKey.replace("//", "/"),
                                     JsonUtils.objectToString(callEventReport)
                             );
                         }
