@@ -48,54 +48,59 @@ public class AwsS3Sink extends Sink {
         if (records == null || records.size() < 1) {
             return;
         }
-
+        logger.info("start processing {} reports", reports.size());
         Instant now = Instant.now();
-        String nowInString = dateFormatter.format(now);
-        int retried = 0;
-        for (; retried < 3; ++retried) {
-            if (this.client == null) {
-                this.client = clientSupplier.get();
-            }
-            try {
-                for (var it = records.entrySet().iterator(); it.hasNext(); ) {
-                    var entry = it.next();
-                    var prefix = entry.getKey();
-                    var objects = entry.getValue();
-                    if (objects == null || objects.size() < 1) {
-                        logger.warn("No encoded objects for prefix {}", prefix);
-                        continue;
-                    }
-
-                    int counter = 0;
-                    for (var object : objects) {
-                        var objectKey = String.format("%s/%s-%d", prefix, nowInString, ++counter);
-                        var putObBuilder = PutObjectRequest.builder()
-                                .bucket(this.bucketName)
-                                .key(objectKey)
-                                .metadata(this.metadata)
-                                ;
-                        var putOb = putObBuilder.build();
-                        try {
-                            var response = this.client.putObject(putOb, RequestBody.fromBytes(object));
-                        } catch (Exception ex) {
-                            logger.warn("Exception while uploading to {}", prefix, ex);
-                        }
-                    }
+        try {
+            String nowInString = dateFormatter.format(now);
+            int retried = 0;
+            for (; retried < 3; ++retried) {
+                if (this.client == null) {
+                    this.client = clientSupplier.get();
                 }
-                break;
-            } catch (S3Exception s3Exception) {
-                logger.warn("S3 error occurred while sending records to S3 {}", s3Exception.getLocalizedMessage(), s3Exception);
-                this.client = null;
-            } catch (Exception ex) {
-                logger.warn("Error occurred while sending records to S3, sink will be closed. {}", ex.getLocalizedMessage(), ex);
-                this.close();
+                try {
+                    for (var it = records.entrySet().iterator(); it.hasNext(); ) {
+                        var entry = it.next();
+                        var prefix = entry.getKey();
+                        var objects = entry.getValue();
+                        if (objects == null || objects.size() < 1) {
+                            logger.warn("No encoded objects for prefix {}", prefix);
+                            continue;
+                        }
+
+                        int counter = 0;
+                        for (var object : objects) {
+                            var objectKey = String.format("%s/%s-%d", prefix, nowInString, ++counter);
+                            var putObBuilder = PutObjectRequest.builder()
+                                    .bucket(this.bucketName)
+                                    .key(objectKey)
+                                    .metadata(this.metadata)
+                                    ;
+                            var putOb = putObBuilder.build();
+                            try {
+                                var response = this.client.putObject(putOb, RequestBody.fromBytes(object));
+                            } catch (Exception ex) {
+                                logger.warn("Exception while uploading to {}", prefix, ex);
+                            }
+                        }
+                        logger.info("Uploaded {} objects to a bucket prefixed with {}", counter, prefix);
+                    }
+                    break;
+                } catch (S3Exception s3Exception) {
+                    logger.warn("S3 error occurred while sending records to S3 {}", s3Exception.getLocalizedMessage(), s3Exception);
+                    this.client = null;
+                } catch (Exception ex) {
+                    logger.warn("Error occurred while sending records to S3, sink will be closed. {}", ex.getLocalizedMessage(), ex);
+                    this.close();
+                }
             }
-        }
-        if (2 < retried) {
-            logger.warn("Maximum retries for Firehose client has been reached, sink will be closed");
-            this.close();
-        } else if (createIndexes) {
-            this.makeIndexes(reports);
+            if (2 < retried) {
+                logger.warn("Maximum retries for Firehose client has been reached, sink will be closed");
+                this.close();
+            } else if (createIndexes) {
+                this.makeIndexes(reports);
+            }
+        } finally {
+            logger.info("end processing {} reports. Elapsed time in ms: {}", reports.size(), Instant.now().toEpochMilli() - now.toEpochMilli());
         }
     }
 
