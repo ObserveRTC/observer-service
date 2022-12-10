@@ -44,7 +44,7 @@ public class HamokService  implements InfoSource {
     BeanProvider<CallsRepository> callsRepository;
 
     @Inject
-    HamokMetrics hamokMetrics;
+    BeanProvider<HamokMetrics> hamokMetricsBeanProvider;
 
 //    @Inject
 //    Sandbox sandbox;
@@ -94,7 +94,7 @@ public class HamokService  implements InfoSource {
                 });
         this.storageGrid.events().notRespondingEndpointIds().subscribe(notRespondingRemoteEndpointIds -> {
             logger.info("Reported endpoint ids are not responding", JsonUtils.objectToString(notRespondingRemoteEndpointIds));
-            this.hamokMetrics.incrementNotRespondingRemotePeerIds();
+            this.hamokMetricsBeanProvider.get().incrementNotRespondingRemotePeerIds();
 
         });
         this.storageGrid.errors().subscribe(err -> {
