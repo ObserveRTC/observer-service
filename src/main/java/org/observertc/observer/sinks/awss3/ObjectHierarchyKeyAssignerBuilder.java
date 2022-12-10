@@ -17,28 +17,20 @@ class ObjectHierarchyKeyAssignerBuilder {
     private static final String SFU_REPORTS = "sfu-reports";
 
 
-    public Function<Report, String> create(Function<ReportType, String> typePrefixProvider,
-                                           boolean addServiceIdPrefix,
-                                           boolean addReportCategoryPrefix,
-                                           boolean addSfuOrCallIdPrefix
-                                           )
+    public Function<Report, String> create(Function<ReportType, String> typePrefixProvider)
     {
-        var wrongCallReportsBuf = new StringBuffer();
-        var wrongSfuReportsBuf = new StringBuffer();
-        if (addServiceIdPrefix) {
-            wrongCallReportsBuf.append(UNKNOWN_SERVICE).append(DELIMITER);
-            wrongSfuReportsBuf.append(UNKNOWN_SERVICE).append(DELIMITER);
-        }
-        if (addReportCategoryPrefix) {
-            wrongCallReportsBuf.append(CALL_REPORTS).append(DELIMITER);
-            wrongSfuReportsBuf.append(SFU_REPORTS).append(DELIMITER);
-        }
-        if (addSfuOrCallIdPrefix) {
-            wrongCallReportsBuf.append(UNKNOWN_CALL_ID).append(DELIMITER);
-            wrongSfuReportsBuf.append(UNKNOWN_SFU_ID).append(DELIMITER);
-        }
-        var wrongCallReports = wrongCallReportsBuf.toString();
-        var wrongSfuReports = wrongSfuReportsBuf.toString();
+        var wrongCallReports = new StringBuffer()
+                .append(UNKNOWN_SERVICE).append(DELIMITER)
+                .append(CALL_REPORTS).append(DELIMITER)
+                .append(UNKNOWN_CALL_ID).append(DELIMITER)
+                .toString();
+        var wrongSfuReports = new StringBuffer()
+                .append(UNKNOWN_SERVICE).append(DELIMITER)
+                .append(SFU_REPORTS).append(DELIMITER)
+                .append(UNKNOWN_SFU_ID).append(DELIMITER)
+                .toString();
+
+
         var OBSERVER_EVENT = typePrefixProvider.apply(ReportType.OBSERVER_EVENT);
         var CALL_EVENT = typePrefixProvider.apply(ReportType.CALL_EVENT);
         var CALL_META_DATA = typePrefixProvider.apply(ReportType.CALL_META_DATA);
@@ -58,30 +50,18 @@ class ObjectHierarchyKeyAssignerBuilder {
         var SFU_OUTBOUND_RTP_PAD = typePrefixProvider.apply(ReportType.SFU_OUTBOUND_RTP_PAD);
         var SFU_SCTP_STREAM = typePrefixProvider.apply(ReportType.SFU_SCTP_STREAM);
         BiFunction<String, String, StringBuffer> createStringBufferForCallReports = (serviceId, callId) -> {
-            var strbuf = new StringBuffer();
-            if (addServiceIdPrefix) {
-                strbuf.append(serviceId != null ? serviceId : UNKNOWN_SERVICE).append(DELIMITER);
-            }
-            if (addReportCategoryPrefix) {
-                strbuf.append(CALL_REPORTS).append(DELIMITER);
-            }
-            if (addSfuOrCallIdPrefix) {
-                strbuf.append(callId != null ? callId : UNKNOWN_CALL_ID).append(DELIMITER);
-            }
-            return strbuf;
+            return new StringBuffer()
+                    .append(serviceId != null ? serviceId : UNKNOWN_SERVICE).append(DELIMITER)
+                    .append(CALL_REPORTS).append(DELIMITER)
+                    .append(callId != null ? callId : UNKNOWN_CALL_ID).append(DELIMITER)
+                    ;
         };
         BiFunction<String, String, StringBuffer> createStringBufferForSfuReports = (serviceId, sfuId) -> {
-            var strbuf = new StringBuffer();
-            if (addServiceIdPrefix) {
-                strbuf.append(serviceId != null ? serviceId : UNKNOWN_SERVICE).append(DELIMITER);
-            }
-            if (addReportCategoryPrefix) {
-                strbuf.append(SFU_REPORTS).append(DELIMITER);
-            }
-            if (addSfuOrCallIdPrefix) {
-                strbuf.append(sfuId != null ? sfuId : UNKNOWN_SFU_ID).append(DELIMITER);
-            }
-            return strbuf;
+            return new StringBuffer()
+                    .append(serviceId != null ? serviceId : UNKNOWN_SERVICE).append(DELIMITER)
+                    .append(SFU_REPORTS).append(DELIMITER)
+                    .append(sfuId != null ? sfuId : UNKNOWN_SFU_ID).append(DELIMITER)
+                    ;
         };
         ReportTypeVisitor<Report, String> visitor = new ReportTypeVisitor<Report, String>() {
             @Override

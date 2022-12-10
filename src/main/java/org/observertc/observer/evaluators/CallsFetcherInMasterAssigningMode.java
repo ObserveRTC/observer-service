@@ -131,9 +131,8 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
                             observedRoom.getServiceRoomId().serviceId,
                             observedRoom.getServiceRoomId().roomId
                     );
-                    clientSample.callId = callId;
                 }
-
+                clientSample.callId = callId;
             }
         }
 //        this.callsRepository.dump();

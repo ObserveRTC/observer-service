@@ -63,6 +63,8 @@ public class SamplesWebsocketController {
 	@Inject
 	HamokService hamokService;
 
+	private volatile boolean opened = false;
+
     private final ObserverConfig.SourcesConfig.WebsocketsConfig config;
 
 	public SamplesWebsocketController(
@@ -91,10 +93,13 @@ public class SamplesWebsocketController {
 				session.close(customCloseReasons.getWebsocketIsDisabled());
 				return;
 			}
-			if (!this.hamokService.areRemotePeersReady()) {
-				logger.warn("Refused to accept incoming websocket session, because remote peers are not ready");
-				session.close(customCloseReasons.getObserverRemotePeersNotReady());
-				return;
+			if (!this.opened) {
+				if (!this.hamokService.areRemotePeersReady()) {
+					logger.warn("Refused to accept incoming websocket session, because remote peers are not ready");
+					session.close(customCloseReasons.getObserverRemotePeersNotReady());
+					return;
+				}
+				this.opened = true;
 			}
 
 			var requestParameters = session.getRequestParameters();
@@ -137,7 +142,7 @@ public class SamplesWebsocketController {
 			String serviceId,
 			String mediaUnitId,
 			WebSocketSession session) {
-		if (!this.hamokService.areRemotePeersReady()) {
+		if (!this.opened) {
 			return;
 		}
 		try {

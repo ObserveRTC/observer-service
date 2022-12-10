@@ -80,13 +80,10 @@ public class AwsS3SinkBuilder extends AbstractBuilder implements Builder<Sink> {
         }
 
         Function<Report, String> s3prefix;
-        if (config.addServiceIdPrefix || config.addReportCategoryPrefix || config.addSfuOrCallIdPrefix) {
+        if (config.structured) {
             var objKeyAssigner = new ObjectHierarchyKeyAssignerBuilder();
             s3prefix = objKeyAssigner.create(
-                    reportTypePrefix,
-                    config.addServiceIdPrefix,
-                    config.addReportCategoryPrefix,
-                    config.addSfuOrCallIdPrefix
+                    reportTypePrefix
             );
         } else {
             s3prefix = report -> reportTypePrefix.apply(report.type);
@@ -103,6 +100,7 @@ public class AwsS3SinkBuilder extends AbstractBuilder implements Builder<Sink> {
                 result.metadata = Map.of("Content-Type", "text/json");
             }
         }
+        result.createIndexes = config.createIndexes;
         return result;
     }
 
@@ -140,15 +138,15 @@ public class AwsS3SinkBuilder extends AbstractBuilder implements Builder<Sink> {
 
         public String defaultPrefix;
 
-        public boolean addServiceIdPrefix = false;
-        public boolean addReportCategoryPrefix = false;
-        public boolean addSfuOrCallIdPrefix = false;
+        public boolean structured = false;
 
         public Map<String, String> prefixes = null;
 
         public EncodingType encodingType = EncodingType.CSV;
 
         public Map<String, Object> credentials = null;
+
+        public boolean createIndexes = false;
 
         public CSVFormat csvFormat = CSVFormat.DEFAULT;
 
