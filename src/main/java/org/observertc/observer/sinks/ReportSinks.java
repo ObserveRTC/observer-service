@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.time.Instant;
 import java.util.*;
 
 @Singleton
@@ -49,34 +50,40 @@ public class ReportSinks implements Consumer<List<Report>> {
     }
 
     public void accept(List<Report> reports) throws Throwable {
-
         this.sinkMetrics.setBufferedReports(reports.size());
-        if (true) {
-            logger.warn("For debugging purposes sinks turned off");
-            return;
-        }
-        synchronized (this) {
-            Iterator<Map.Entry<String, Sink>> it = this.sinks.entrySet().iterator();
-            while(it.hasNext()) {
-                var entry = it.next();
-                var sinkId = entry.getKey();
-                var sink = entry.getValue();
-                try {
-                    int processedReports = sink.apply(reports);
-                    if (this.sinkMetrics.isEnabled()) {
-                        this.sinkMetrics.incrementReportsNum(processedReports, sinkId);
-                    }
-                } catch (Throwable ex) {
-                    logger.error("Unexpected error occurred on sink {}. Sink will be closed", sinkId, ex);
+        Instant started = Instant.now();
+        try {
+//            if (true) {
+//                logger.warn("For debugging purposes sinks turned off");
+//                return;
+//            }
+            synchronized (this) {
+                Iterator<Map.Entry<String, Sink>> it = this.sinks.entrySet().iterator();
+                while(it.hasNext()) {
+                    var entry = it.next();
+                    var sinkId = entry.getKey();
+                    var sink = entry.getValue();
                     try {
-                        sink.close();
-                    } catch (Exception ex2) {
-                        logger.error("Error occurred while shutting down sink {}", sinkId, ex2);
+                        int processedReports = sink.apply(reports);
+                        if (this.sinkMetrics.isEnabled()) {
+                            this.sinkMetrics.incrementReportsNum(processedReports, sinkId);
+                        }
+                    } catch (Throwable ex) {
+                        logger.error("Unexpected error occurred on sink {}. Sink will be closed", sinkId, ex);
+                        try {
+                            sink.close();
+                        } catch (Exception ex2) {
+                            logger.error("Error occurred while shutting down sink {}", sinkId, ex2);
+                        }
+                        it.remove();
                     }
-                    it.remove();
                 }
             }
+        } finally {
+            sinkMetrics.addSendingExecutionTime(started, Instant.now());
         }
+
+
     }
 
     private void fetchSinksConfig() {

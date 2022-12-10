@@ -5,6 +5,8 @@ import jakarta.inject.Singleton;
 import org.observertc.observer.configs.ObserverConfig;
 
 import javax.annotation.PostConstruct;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Singleton
@@ -15,6 +17,7 @@ public class SinkMetrics {
     private static final String REPORTS_METRIC_NAME = "reports";
     private static final String SINK_ID_TAG_NAME = "sink";
     private static final String OVERLOADED_REPORTS_COLLECTOR_METRIC_NAME = "overloaded_reports_collector";
+    private static final String SENDING_TIME_METRIC_NAME = "sending_time";
 
     @Inject
     Metrics metrics;
@@ -48,6 +51,18 @@ public class SinkMetrics {
                 this.reportsNumMetricsName,
                 SINK_ID_TAG_NAME, sinkId
         ).increment(value);
+        return this;
+    }
+
+    public SinkMetrics addSendingExecutionTime(Instant started, Instant ended) {
+        if (!this.config.enabled) {
+            return this;
+        }
+        this.metrics.registry
+                .timer(
+                        metrics.getMetricName(SINK_PREFIX, SENDING_TIME_METRIC_NAME)
+                )
+                .record(Duration.between(started, ended));
         return this;
     }
 

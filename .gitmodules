@@ -1,0 +1,3 @@
+[submodule "etc/hamok"]
+	path = etc/hamok
+	url = https://github.com/balazskreith/hamok
