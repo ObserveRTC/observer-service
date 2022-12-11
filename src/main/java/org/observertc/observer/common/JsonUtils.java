@@ -94,11 +94,14 @@ public class JsonUtils {
 			} else {
 				return OBJECT_WRITER.writeValueAsString(subject);
 			}
+
 		} catch (JsonProcessingException e) {
 			logger.warn("Exception occurred while executing method base64ToObject", e);
 			return defaultValue;
 		}
 	}
+
+
 
 	public static<T> T base64ToObject(String input, Class<T> klass) {
 		return base64ToObjectOrDefault(input, klass, null);

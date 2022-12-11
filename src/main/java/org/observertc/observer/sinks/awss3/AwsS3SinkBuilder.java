@@ -53,7 +53,7 @@ public class AwsS3SinkBuilder extends AbstractBuilder implements Builder<Sink> {
                     .region(region)
                     .build();
         };
-        var result = new AwsS3Sink(config.bucketName);
+        var result = new AwsS3Sink(config.bucketName, config.parallelism);
 
         if (config.defaultPrefix == null && config.prefixes == null) {
             throw new InvalidConfigurationException("Either the default delivery stream id or delivery stream ids must be provided to configure the sink");
@@ -149,6 +149,8 @@ public class AwsS3SinkBuilder extends AbstractBuilder implements Builder<Sink> {
         public boolean createIndexes = false;
 
         public CSVFormat csvFormat = CSVFormat.DEFAULT;
+
+        public int parallelism = 10;
 
     }
 }

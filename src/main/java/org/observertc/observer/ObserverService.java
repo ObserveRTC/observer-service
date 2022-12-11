@@ -1,5 +1,6 @@
 package org.observertc.observer;
 
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.common.ChainedTask;
@@ -100,6 +101,7 @@ public class ObserverService {
 
         // funneled reports
         this.reportsCollector.getObservableReports()
+                .observeOn(Schedulers.io())
                 .subscribe(this.reportSinks);
 
         if (this.reportMetrics.isEnabled()) {
