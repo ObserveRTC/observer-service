@@ -1,7 +1,6 @@
 package org.observertc.observer.sinks;
 
 import org.observertc.observer.configbuilders.AbstractBuilder;
-import org.observertc.observer.configbuilders.Builder;
 import org.observertc.observer.configs.ReportsConfig;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.reports.ReportTypeVisitors;
@@ -19,6 +18,7 @@ import java.util.stream.Collectors;
 public class SinkBuilder extends AbstractBuilder {
     private static final Logger logger = LoggerFactory.getLogger(SinkBuilder.class);
     private final List<String> packages;
+    private ISinkBuilder.Essentials essentials = null;
 
     public SinkBuilder() {
         Package thisPackage = this.getClass().getPackage();
@@ -32,14 +32,14 @@ public class SinkBuilder extends AbstractBuilder {
     public Sink build() {
         Config config = this.convertAndValidate(Config.class);
         String builderClassName = AbstractBuilder.getBuilderClassName(config.type);
-        Optional<Builder> builderHolder = this.tryInvoke(builderClassName);
+        Optional<ISinkBuilder> builderHolder = this.tryInvoke(builderClassName);
         if (!builderHolder.isPresent()) {
             logger.error("Cannot find sink builder for {} in packages: {}", config.type, String.join(",", this.packages ));
             return null;
         }
-        Builder<Sink> sinkBuilder = (Builder<Sink>) builderHolder.get();
+        ISinkBuilder sinkBuilder = (ISinkBuilder) builderHolder.get();
         sinkBuilder.withConfiguration(config.config);
-
+        sinkBuilder.setEssential(essentials);
 
         var result = sinkBuilder.build();
         result.setEnabled(config.enabled);
@@ -50,6 +50,10 @@ public class SinkBuilder extends AbstractBuilder {
         }
 
         return result;
+    }
+
+    public void setEssentials(ISinkBuilder.Essentials essentials) {
+        this.essentials = essentials;
     }
 
     public static class Config {

@@ -7,16 +7,12 @@ import org.observertc.observer.common.AwsUtils;
 import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.configbuilders.AbstractBuilder;
-import org.observertc.observer.configbuilders.Builder;
 import org.observertc.observer.configs.InvalidConfigurationException;
 import org.observertc.observer.mappings.JsonMapper;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.reports.ReportType;
 import org.observertc.observer.security.credentialbuilders.AwsCredentialsProviderBuilder;
-import org.observertc.observer.sinks.CsvFormatEncoder;
-import org.observertc.observer.sinks.FormatEncoder;
-import org.observertc.observer.sinks.JsonFormatEncoder;
-import org.observertc.observer.sinks.Sink;
+import org.observertc.observer.sinks.*;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.core.SdkBytes;
@@ -31,7 +27,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Prototype
-public class FirehoseSinkBuilder extends AbstractBuilder implements Builder<Sink> {
+public class FirehoseSinkBuilder extends AbstractBuilder implements ISinkBuilder {
 
     private static AwsCredentialsProvider getCredentialProvider(Map<String, Object> config) {
         if (config == null) {

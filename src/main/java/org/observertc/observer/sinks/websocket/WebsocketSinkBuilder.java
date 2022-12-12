@@ -2,14 +2,14 @@ package org.observertc.observer.sinks.websocket;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.observer.configbuilders.AbstractBuilder;
-import org.observertc.observer.configbuilders.Builder;
+import org.observertc.observer.sinks.ISinkBuilder;
 import org.observertc.observer.sinks.Sink;
 
 import javax.validation.constraints.NotNull;
 import java.net.URI;
 
 @Prototype
-public class WebsocketSinkBuilder extends AbstractBuilder implements Builder<Sink> {
+public class WebsocketSinkBuilder extends AbstractBuilder implements ISinkBuilder {
 
     public Sink build() {
         Config config = this.convertAndValidate(Config.class);

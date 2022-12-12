@@ -7,11 +7,11 @@ import com.mongodb.client.MongoClients;
 import io.micronaut.context.annotation.Prototype;
 import org.bson.Document;
 import org.observertc.observer.configbuilders.AbstractBuilder;
-import org.observertc.observer.configbuilders.Builder;
 import org.observertc.observer.configs.InvalidConfigurationException;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.reports.ReportType;
 import org.observertc.observer.reports.ReportTypeVisitors;
+import org.observertc.observer.sinks.ISinkBuilder;
 import org.observertc.observer.sinks.Sink;
 import org.observertc.schemas.reports.*;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ import java.util.function.Supplier;
 import static java.util.stream.Collectors.groupingBy;
 
 @Prototype
-public class MongoSinkBuilder extends AbstractBuilder implements Builder<Sink> {
+public class MongoSinkBuilder extends AbstractBuilder implements ISinkBuilder {
     private final static Logger logger = LoggerFactory.getLogger(MongoSinkBuilder.class);
 
     private static Map<ReportType, String> getDefaultCollectionNames() {

@@ -36,9 +36,14 @@ public class AwsS3Sink extends Sink {
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss").withZone(ZoneId.systemDefault());
     boolean createIndexes = false;
 
-    AwsS3Sink(String bucketName, int parallelism) {
+    AwsS3Sink(
+            int parallelism,
+            ExecutorService executorService,
+            String bucketName
+    ) {
+
         this.bucketName = bucketName;
-        this.sender = new Sender(parallelism);
+        this.sender = new Sender(parallelism, executorService);
     }
 
 
@@ -185,13 +190,15 @@ public class AwsS3Sink extends Sink {
     }
 
     private class Sender {
+        private LinkedBlockingQueue<Callable<Boolean>> queue = new LinkedBlockingQueue<>();
         private final int executorsNum;
         private final ExecutorService executor;
         private final Map<String, Future<Boolean>> promises = new ConcurrentHashMap<>();
+        private volatile int ongoing = 0;
 
-        Sender(int executorsNum) {
+        Sender(int executorsNum, ExecutorService executorService) {
             this.executorsNum = executorsNum;
-            this.executor = Executors.newFixedThreadPool(executorsNum);
+            this.executor = executorService;
         }
 
         public void submit(String objectKey, RequestBody payload) {
