@@ -100,7 +100,7 @@ public class StaticDiscovery implements HamokDiscovery {
     }
 
     @Override
-    public void onDisconnect(UUID connectionId) {
+    public void onDisconnect(UUID connectionId, String remoteHost, int remotePort) {
         var hamokConnectionConfig = this.hamokConnections.get(connectionId);
         if (hamokConnectionConfig == null) {
             return;

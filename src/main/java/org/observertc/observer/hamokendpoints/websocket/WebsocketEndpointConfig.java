@@ -15,4 +15,6 @@ public class WebsocketEndpointConfig {
 
     public int maxMessageSize = 5000;
 
+    public boolean addConnection = false;
+
 }

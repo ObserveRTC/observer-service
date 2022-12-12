@@ -129,7 +129,7 @@ public class K8sPodsDiscovery implements HamokDiscovery {
     }
 
     @Override
-    public void onDisconnect(UUID connectionId) {
+    public void onDisconnect(UUID connectionId, String remoteHost, int remotePort) {
         if (this.disconnects.containsKey(connectionId)) {
             return;
         }
@@ -138,6 +138,10 @@ public class K8sPodsDiscovery implements HamokDiscovery {
             var entry = it.next();
             var discoveredActivePod = entry.getValue();
             if (UuidTools.equals(discoveredActivePod.connectionId, connectionId)) {
+                podId = entry.getKey();
+                break;
+            }
+            if (discoveredActivePod.inetAddress.getHostAddress() == remoteHost && this.remotePort == remotePort) {
                 podId = entry.getKey();
                 break;
             }

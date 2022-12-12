@@ -11,7 +11,7 @@ public interface HamokDiscovery {
     void start();
     void stop();
     List<InetAddress> getLocalAddresses();
-    void onDisconnect(UUID connectionId);
+    void onDisconnect(UUID connectionId, String remoteHost, int remotePort);
 
     List<HamokConnectionConfig> getActiveConnections();
 }

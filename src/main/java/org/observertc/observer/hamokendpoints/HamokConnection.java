@@ -10,6 +10,12 @@ public interface HamokConnection {
     UUID getConnectionId();
     HamokConnectionState getState();
     Observable<ObservableState.StateChangeEvent<HamokConnectionState>> stateChange();
+
+    String getLocalHost();
+    int getLocalPort();
+    String getRemoteHost();
+    int getRemotePort();
+
     void open();
     void close();
 

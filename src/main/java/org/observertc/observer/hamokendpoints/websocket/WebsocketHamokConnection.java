@@ -11,6 +11,7 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.enums.Opcode;
 import org.java_websocket.enums.ReadyState;
 import org.java_websocket.handshake.ServerHandshake;
+import org.observertc.observer.HamokService;
 import org.observertc.observer.common.ObservableState;
 import org.observertc.observer.hamokendpoints.EndpointInternalMessage;
 import org.observertc.observer.hamokendpoints.HamokConnection;
@@ -28,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class WebsocketHamokConnection implements HamokConnection {
+public abstract class WebsocketHamokConnection implements HamokConnection {
 
     private static final int INTERNAL_CLOSE_REASON = 4224;
     private static final Logger logger = LoggerFactory.getLogger(WebsocketHamokConnection.class);
@@ -39,7 +40,7 @@ public class WebsocketHamokConnection implements HamokConnection {
 
     private static boolean tryConnect(WebSocketClient client) {
         try {
-            logger.info("Trying to connect to {}", client.getRemoteSocketAddress());
+            logger.info("Trying to connect to {}", client);
             return client.connectBlocking(5000, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             logger.error("Interrupted while connecting to {}", client.getRemoteSocketAddress(), e);
@@ -110,6 +111,16 @@ public class WebsocketHamokConnection implements HamokConnection {
     @Override
     public UUID getConnectionId() {
         return this.config.connectionId();
+    }
+
+    @Override
+    public int getRemotePort() {
+        return this.config.remotePort();
+    }
+
+    @Override
+    public String getRemoteHost() {
+        return this.config.remoteHost();
     }
 
     @Override
@@ -213,6 +224,15 @@ public class WebsocketHamokConnection implements HamokConnection {
                                 return;
                             }
                             pendingRequest.complete(internalMessage);
+                        }
+                        case STATE_REQUEST -> {
+                            var response = internalMessage.createStateResponse(
+                                    HamokService.localEndpointId,
+                                    getConnectionId(),
+                                    getLocalHost(),
+                                    getLocalPort()
+                            );
+                            this.send(mapper.writeValueAsString(response));
                         }
                     }
                 } catch (JsonProcessingException e) {

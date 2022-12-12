@@ -18,6 +18,9 @@ public class EndpointInternalMessage {
     public UUID requestId = null;
     public MessageType type = null;
     public UUID remoteEndpointId;
+    public UUID connectionId = null;
+    public String remoteHost = null;
+    public Integer remotePort = null;
 
 
     public record StateRequest(
@@ -28,7 +31,10 @@ public class EndpointInternalMessage {
 
     public record StateResponse(
             UUID requestId,
-            UUID remoteEndpointId
+            UUID remoteEndpointId,
+            UUID connectionId,
+            String remoteHost,
+            int remotePort
     ) {
 
     }
@@ -39,7 +45,7 @@ public class EndpointInternalMessage {
 
     }
 
-    public EndpointInternalMessage createStateResponse() {
+    public EndpointInternalMessage createStateResponse(UUID localEndpointId, UUID connectionId, String host, int port) {
         if (!MessageType.STATE_REQUEST.equals(this.type)) {
             logger.warn("Cannot make a {} from {}", MessageType.STATE_RESPONSE, MessageType.STATE_REQUEST);
             return null;
@@ -47,6 +53,10 @@ public class EndpointInternalMessage {
         var result = new EndpointInternalMessage();
         result.type = MessageType.STATE_RESPONSE;
         result.requestId = this.requestId;
+        result.remoteEndpointId = localEndpointId;
+        result.connectionId = connectionId;
+        result.remoteHost = host;
+        result.remotePort = port;
         return result;
     }
 
@@ -67,7 +77,10 @@ public class EndpointInternalMessage {
         }
         return new StateResponse(
                 this.requestId,
-                this.remoteEndpointId
+                this.remoteEndpointId,
+                this.connectionId,
+                this.remoteHost,
+                this.remotePort
         );
     }
 
