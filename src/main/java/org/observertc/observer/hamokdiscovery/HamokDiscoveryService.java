@@ -55,6 +55,10 @@ public class HamokDiscoveryService extends AbstractBuilder implements Supplier<H
     }
 
     private HamokDiscovery build(Map<String, Object> configMap) {
+        if (configMap == null) {
+            logger.warn("No config provided for discovery");
+            return null;
+        }
         var config = ConfigConverter.convert(DiscoveryBuilderConfig.class, configMap);
         String builderClassName = AbstractBuilder.getBuilderClassName("", config.type, "Builder");
         Optional<Builder> builderHolder = this.tryInvoke(builderClassName);
