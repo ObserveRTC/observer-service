@@ -10,9 +10,9 @@ public class EndpointInternalMessage {
     private static final Logger logger = LoggerFactory.getLogger(EndpointInternalMessage.class);
 
     public enum MessageType {
-        OPEN_NOTIFICATION,
-        STATE_REQUEST,
-        STATE_RESPONSE
+        CLIENT_HELLO,
+        SERVER_HELLO,
+
     }
 
     public UUID requestId = null;
@@ -23,8 +23,19 @@ public class EndpointInternalMessage {
     public Integer remotePort = null;
 
 
-    public record StateRequest(
-            UUID requestId
+    public record ClientHello(
+            UUID connectionId,
+            String remoteHost,
+            int remotePort,
+            UUID remoteEndpointId
+    ) {
+
+    }
+
+    public record ServerHello(
+            String remoteHost,
+            int remotePort,
+            UUID remoteEndpointId
     ) {
 
     }
@@ -45,66 +56,49 @@ public class EndpointInternalMessage {
 
     }
 
-    public EndpointInternalMessage createStateResponse(UUID localEndpointId, UUID connectionId, String host, int port) {
-        if (!MessageType.STATE_REQUEST.equals(this.type)) {
-            logger.warn("Cannot make a {} from {}", MessageType.STATE_RESPONSE, MessageType.STATE_REQUEST);
-            return null;
-        }
-        var result = new EndpointInternalMessage();
-        result.type = MessageType.STATE_RESPONSE;
-        result.requestId = this.requestId;
-        result.remoteEndpointId = localEndpointId;
-        result.connectionId = connectionId;
-        result.remoteHost = host;
-        result.remotePort = port;
-        return result;
-    }
 
-    public StateRequest asStateRequest() {
-        if (!MessageType.STATE_REQUEST.equals(this.type)) {
-            logger.warn("Cannot make a {} from {}", MessageType.STATE_REQUEST, this.type);
+    public ClientHello asClientHello() {
+        if (!MessageType.CLIENT_HELLO.equals(this.type)) {
+            logger.warn("Cannot make a {} from {}", MessageType.CLIENT_HELLO, this.type);
             return null;
         }
-        return new StateRequest(
-                this.requestId
-        );
-    }
-
-    public StateResponse asStateResponse() {
-        if (!MessageType.STATE_RESPONSE.equals(this.type)) {
-            logger.warn("Cannot make a {} from {}", MessageType.STATE_RESPONSE, this.type);
-            return null;
-        }
-        return new StateResponse(
-                this.requestId,
-                this.remoteEndpointId,
+        return new ClientHello(
                 this.connectionId,
                 this.remoteHost,
-                this.remotePort
-        );
-    }
-
-    public OpenNotification asOpenNotification() {
-        if (!MessageType.OPEN_NOTIFICATION.equals(this.type)) {
-            logger.warn("Cannot make a {} from {}", MessageType.OPEN_NOTIFICATION, this.type);
-            return null;
-        }
-        return new OpenNotification(
+                this.remotePort,
                 this.remoteEndpointId
         );
     }
 
-    public static EndpointInternalMessage createStateRequest(UUID requestId) {
+    public ServerHello asServerHello() {
+        if (!MessageType.SERVER_HELLO.equals(this.type)) {
+            logger.warn("Cannot make a {} from {}", MessageType.SERVER_HELLO, this.type);
+            return null;
+        }
+        return new ServerHello(
+                this.remoteHost,
+                this.remotePort,
+                this.remoteEndpointId
+        );
+    }
+
+
+    public static EndpointInternalMessage createClientHello(UUID connectionId, UUID endpointId, String host, int port) {
         var result = new EndpointInternalMessage();
-        result.requestId = requestId;
-        result.type = MessageType.STATE_REQUEST;
+        result.type = MessageType.CLIENT_HELLO;
+        result.connectionId = connectionId;
+        result.remoteHost = host;
+        result.remoteEndpointId = endpointId;
+        result.remotePort = port;
         return result;
     }
 
-    public static EndpointInternalMessage createOpenNotification(UUID remoteEndpointId) {
+    public static EndpointInternalMessage createServerHello(UUID endpointId, String host, int port) {
         var result = new EndpointInternalMessage();
-        result.type = MessageType.OPEN_NOTIFICATION;
-        result.remoteEndpointId = remoteEndpointId;
+        result.type = MessageType.SERVER_HELLO;
+        result.remoteHost = host;
+        result.remoteEndpointId = endpointId;
+        result.remotePort = port;
         return result;
     }
 }

@@ -178,17 +178,6 @@ public abstract class WebsocketHamokConnection implements HamokConnection {
         return this.remoteEndpointId.get();
     }
 
-    public EndpointInternalMessage.StateResponse requestState() {
-        var request = EndpointInternalMessage.createStateRequest(
-                UUID.randomUUID()
-        );
-        var response = this.request(request);
-        if (response == null) {
-            return null;
-        }
-        return response.asStateResponse();
-    }
-
     private WebSocketClient createClient() {
         return new WebSocketClient(URI.create(this.serverUri)) {
             @Override
@@ -203,36 +192,25 @@ public abstract class WebsocketHamokConnection implements HamokConnection {
                 try {
                     var internalMessage = mapper.readValue(data, EndpointInternalMessage.class);
                     switch (internalMessage.type) {
-                        case OPEN_NOTIFICATION -> {
-                            var openNotification = internalMessage.asOpenNotification();
-                            if (openNotification.remoteEndpointId() == null) {
+                        case SERVER_HELLO -> {
+                            var serverHello = internalMessage.asServerHello();
+                            if (serverHello.remoteEndpointId() == null) {
                                 logger.warn("No remote endpoint was reported in open notification");
                                 return;
                             }
-                            remoteEndpointId.set(openNotification.remoteEndpointId());
+                            remoteEndpointId.set(serverHello.remoteEndpointId());
                             if (state.compareAndSetState(HamokConnectionState.CONNECTING, HamokConnectionState.OPEN)) {
                                 logger.info("Connection is opened {}", config);
                             } else {
                                 logger.warn("Expected to be in a {} state, but found {}", HamokConnectionState.CONNECTING, getState());
                             }
-
-                        }
-                        case STATE_RESPONSE -> {
-                            var pendingRequest = pendingRequests.get(internalMessage.requestId);
-                            if (pendingRequest == null) {
-                                logger.warn("Cannot resolve a non-existing request for response {}", internalMessage);
-                                return;
-                            }
-                            pendingRequest.complete(internalMessage);
-                        }
-                        case STATE_REQUEST -> {
-                            var response = internalMessage.createStateResponse(
-                                    HamokService.localEndpointId,
+                            var clientHelloMessage = EndpointInternalMessage.createClientHello(
                                     getConnectionId(),
+                                    HamokService.localEndpointId,
                                     getLocalHost(),
                                     getLocalPort()
                             );
-                            this.send(mapper.writeValueAsString(response));
+                            this.send(mapper.writeValueAsString(clientHelloMessage));
                         }
                     }
                 } catch (JsonProcessingException e) {

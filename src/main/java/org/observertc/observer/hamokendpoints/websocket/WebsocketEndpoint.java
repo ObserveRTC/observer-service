@@ -2,6 +2,7 @@ package org.observertc.observer.hamokendpoints.websocket;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.balazskreith.hamok.common.UuidTools;
 import io.github.balazskreith.hamok.storagegrid.messages.Message;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
@@ -23,21 +24,17 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
-
-import static org.observertc.observer.hamokendpoints.EndpointInternalMessage.MessageType.STATE_RESPONSE;
 
 
 public class WebsocketEndpoint implements HamokEndpoint {
     private static final String INTERNAL_CLOSED_MESSAGE = "INTERNAL_CLOSED_MESSAGE";
     private static final Logger logger = LoggerFactory.getLogger(WebsocketEndpoint.class);
-
+    private static final int CLIENT_HELLO_RECEIVED_FLAG = 1;
+    private static final int OPEN_CONNECTION_FLAG = 2;
 
     private static String createUri(String hostname, int port) {
         return String.format("ws://%s:%d", hostname, port);
@@ -60,6 +57,7 @@ public class WebsocketEndpoint implements HamokEndpoint {
     private final int maxMessageSize;
     private final HamokMessageCodec codec = new HamokMessageCodec();
     private final Runnable refreshHamokEndpoints;
+    private Map<UUID, Integer> pendingEndpointStates = new HashMap<>();
 
     WebsocketEndpoint(
             Supplier<HamokDiscovery> discoverySupplier,
@@ -172,6 +170,40 @@ public class WebsocketEndpoint implements HamokEndpoint {
         }
     }
 
+    private void setPendingEndpointFlag(UUID endpointId, int flag) {
+        // mutex because of the restrictive access not because of the resource
+        synchronized (this) {
+            String flagStr = null;
+            switch (flag) {
+                case OPEN_CONNECTION_FLAG -> flagStr = "OPEN_CONNECTION_FLAG";
+                case CLIENT_HELLO_RECEIVED_FLAG -> flagStr = "CLIENT_HELLO_RECEIVED_FLAG";
+                default -> flagStr = "Unknown (" + flag + ")";
+            }
+            logger.info("Set state flag {} for endpoint {}", flagStr, endpointId);
+            var state = this.pendingEndpointStates.remove(endpointId);
+            if (state == null) {
+                this.pendingEndpointStates.put(endpointId, flag);
+                return;
+            }
+            state = state | flag;
+            if ((state & CLIENT_HELLO_RECEIVED_FLAG) == 0 || (state & OPEN_CONNECTION_FLAG) == 0) {
+                this.pendingEndpointStates.put(endpointId, state);
+                return;
+            }
+        }
+        // if we are here then the connection is established
+        logger.info("Established connection to endpoint {}", endpointId);
+        var foundConnection = this.connections.values().stream()
+                .filter(connection -> UuidTools.equals(connection.getRemoteEndpointId(), endpointId))
+                .findFirst();
+        if (foundConnection.isEmpty()) {
+            logger.warn("No Connection was found for endpoint {}, though the state indicate it is established", endpointId);
+            return;
+        }
+        this.remoteEndpoints.put(endpointId, foundConnection.get());
+        this.refreshHamokEndpoints.run();
+    }
+
     private WebSocketServer createServer() {
         logger.info("Local binding address {}:{}", this.serverHost, this.serverPort);
         var address = new InetSocketAddress(this.serverHost, this.serverPort);
@@ -181,7 +213,11 @@ public class WebsocketEndpoint implements HamokEndpoint {
             @Override
             public void onOpen(WebSocket conn, ClientHandshake handshake) {
                 logger.info("Accepted connection from {}", conn.getRemoteSocketAddress());
-                var message = EndpointInternalMessage.createOpenNotification(HamokService.localEndpointId);
+                var message = EndpointInternalMessage.createServerHello(
+                        HamokService.localEndpointId,
+                        serverHost,
+                        serverPort
+                );
                 try {
                     var data = mapper.writeValueAsString(message);
                     conn.send(data);
@@ -189,32 +225,6 @@ public class WebsocketEndpoint implements HamokEndpoint {
                     logger.warn("Failed to send message {} to connection {}", message, conn.getRemoteSocketAddress(), e);
                     return;
                 }
-
-                Schedulers.io().scheduleDirect(() -> {
-                    var stateRequestId = UUID.randomUUID();
-                    var request = EndpointInternalMessage.createStateRequest(stateRequestId);
-                    try {
-                        var promise = new CompletableFuture<EndpointInternalMessage>();
-                        pendingStateRequests.put(stateRequestId, promise);
-                        var data = mapper.writeValueAsString(request);
-                        conn.send(data);
-                        var response = promise.get(10000, TimeUnit.MILLISECONDS).asStateResponse();
-                        if (response.remoteEndpointId() != null) {
-                            var hamokConnection = new HamokConnectionConfig(
-                                    response.connectionId(),
-                                    response.remoteHost(),
-                                    response.remotePort()
-                            );
-                            logger.info("Discovered connection {} is going to be added", hamokConnection);
-                            WebsocketEndpoint.this.addConnection(hamokConnection);
-                        }
-                    } catch (Exception e) {
-                        logger.warn("Failed to send message with requestId {} to connection {}", request.requestId, conn.getRemoteSocketAddress(), e);
-                        return;
-                    } finally {
-                        pendingStateRequests.remove(stateRequestId);
-                    }
-                });
             }
 
             @Override
@@ -231,15 +241,14 @@ public class WebsocketEndpoint implements HamokEndpoint {
                 try {
                     message = mapper.readValue(data, EndpointInternalMessage.class);
                     switch (message.type) {
-                        case STATE_RESPONSE -> {
-                            if (message.requestId == null) {
-                                logger.warn("Received {} without requestId", STATE_RESPONSE);
+                        case CLIENT_HELLO -> {
+                            var clientHello = message.asClientHello();
+                            if (clientHello.remoteEndpointId() == null) {
+                                logger.warn("Client Hello message received without remote endpoint id");
                                 return;
                             }
-                            var pendingStateRequest = pendingStateRequests.get(message.requestId);
-                            if (pendingStateRequest != null) {
-                                pendingStateRequest.complete(message);
-                            }
+                            // does the server has a connection to this endpoint?
+                            setPendingEndpointFlag(clientHello.remoteEndpointId(), CLIENT_HELLO_RECEIVED_FLAG);
                         }
                         default -> {
                             logger.warn("Cannot parse message {}", data);
@@ -374,13 +383,7 @@ public class WebsocketEndpoint implements HamokEndpoint {
                         logger.warn("No remote endpoint is available for remote connection {}", connection.getConnectionId());
                         return;
                     }
-                    if (this.remoteEndpoints.containsKey(remoteEndpointId)) {
-                        logger.warn("Attempted to add a connection {} to a remote endpointId {} already has one", connection.getConnectionId(), remoteEndpointId);
-                        connection.close();
-                        return;
-                    }
-                    this.remoteEndpoints.put(remoteEndpointId, connection);
-                    this.refreshHamokEndpoints.run();
+                    setPendingEndpointFlag(remoteEndpointId, OPEN_CONNECTION_FLAG);
                 }
                 case CLOSED -> {
                     var remoteEndpointId = connection.getRemoteEndpointId();
