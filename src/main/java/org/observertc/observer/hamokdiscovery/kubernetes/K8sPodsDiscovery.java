@@ -326,8 +326,9 @@ public class K8sPodsDiscovery implements HamokDiscovery {
                 continue;
             }
             var elapsedTimeInMs = now - disconnected.toEpochMilli();
-            if (60000 < elapsedTimeInMs) {
-                logger.info("Connection {} was removed more than 60s ago, we remove it from disconnected connections");
+            it.remove();
+            if (1000 < elapsedTimeInMs) {
+                logger.info("Connection {} was removed more than 5s ago, we remove it from disconnected connections");
                 it.remove();
             }
         }

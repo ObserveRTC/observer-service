@@ -97,7 +97,7 @@ public class HamokService  implements InfoSource {
 //                    }
                 });
         this.storageGrid.events().notRespondingEndpointIds().subscribe(notRespondingRemoteEndpointIds -> {
-            logger.info("Reported endpoint ids are not responding", JsonUtils.objectToString(notRespondingRemoteEndpointIds));
+            logger.info("Reported endpoint ids are not responding: {}", JsonUtils.objectToString(notRespondingRemoteEndpointIds));
             this.hamokMetricsBeanProvider.get().incrementNotRespondingRemotePeerIds();
             var hamokEndpoint = this.hamokEndpointService.get();
             if (hamokEndpoint == null) {
@@ -111,7 +111,7 @@ public class HamokService  implements InfoSource {
                     continue;
                 }
                 var elapsedInMs = now - inactivityStarted;
-                if (elapsedInMs < 10000) {
+                if (elapsedInMs < 3000) {
                     // debouncing purpose
                     continue;
                 }
