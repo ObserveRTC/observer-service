@@ -56,10 +56,8 @@ public class AwsS3SinkBuilder extends AbstractBuilder implements ISinkBuilder {
                     .region(region)
                     .build();
         };
-        var executorService = this.essentials.ioExecutors();
         var result = new AwsS3Sink(
                 config.parallelism,
-                executorService,
                 config.bucketName
         );
 

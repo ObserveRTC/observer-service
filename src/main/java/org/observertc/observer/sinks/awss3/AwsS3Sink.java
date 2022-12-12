@@ -38,12 +38,11 @@ public class AwsS3Sink extends Sink {
 
     AwsS3Sink(
             int parallelism,
-            ExecutorService executorService,
             String bucketName
     ) {
 
         this.bucketName = bucketName;
-        this.sender = new Sender(parallelism, executorService);
+        this.sender = new Sender(parallelism);
     }
 
 
@@ -190,15 +189,14 @@ public class AwsS3Sink extends Sink {
     }
 
     private class Sender {
-        private LinkedBlockingQueue<Callable<Boolean>> queue = new LinkedBlockingQueue<>();
         private final int executorsNum;
         private final ExecutorService executor;
         private final Map<String, Future<Boolean>> promises = new ConcurrentHashMap<>();
         private volatile int ongoing = 0;
 
-        Sender(int executorsNum, ExecutorService executorService) {
+        Sender(int executorsNum) {
             this.executorsNum = executorsNum;
-            this.executor = executorService;
+            this.executor = Executors.newFixedThreadPool(executorsNum);
         }
 
         public void submit(String objectKey, RequestBody payload) {
