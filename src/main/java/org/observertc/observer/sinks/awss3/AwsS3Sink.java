@@ -53,6 +53,7 @@ public class AwsS3Sink extends Sink {
         }
         logger.info("start processing {} reports", reports.size());
 
+
         Instant now = Instant.now();
         try {
 
