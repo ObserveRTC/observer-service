@@ -137,7 +137,10 @@ public class WebsocketEndpoint implements HamokEndpoint {
         this.startServer();
         var hamokDiscovery = this.discoverySupplier.get();
         if (hamokDiscovery != null) {
-            hamokDiscovery.getActiveConnections().stream().forEach(this::addConnection);
+            hamokDiscovery.getActiveConnections()
+                    .stream()
+                    .filter(config -> !this.connections.containsKey(config.connectionId()))
+                    .forEach(this::addConnection);
         } else {
             logger.warn("No Discovery service is available for endpoint");
         }
