@@ -23,7 +23,10 @@ public class WebsocketEndpointBuilder extends AbstractBuilder implements Endpoin
         var config = this.convertAndValidate(WebsocketEndpointConfig.class);
         String serverHost;
         try {
-            serverHost = Utils.firstNotNull(config.serverHost, InetAddress.getLocalHost().getHostName());
+            serverHost = Utils.firstNotNull(config.serverHost,
+                    InetAddress.getLocalHost().getCanonicalHostName(),
+                    InetAddress.getLocalHost().getHostName()
+            );
         } catch (UnknownHostException e) {
             logger.warn("Error occurred while retrieving localhost name. the default will be used, which is localhost", e);
             serverHost = "localhost";
