@@ -102,11 +102,11 @@ observer:
 
   evaluators:
     clientSamplesAnalyser:
-      dropUnmatchedReports: False
+      dropUnmatchedReports: false
     sfuSamplesAnalyser:
-      dropUnmatchedInternalInboundReports: False
-      dropUnmatchedInboundReports: False
-      dropUnmatchedOutboundReports: False
+      dropUnmatchedInternalInboundReports: false
+      dropUnmatchedInboundReports: false
+      dropUnmatchedOutboundReports: false
     callUpdater:
       enabled: true
       callIdAssignMode: master
@@ -119,6 +119,9 @@ observer:
   # setting this to {} by default gives you hard time to debug why your custom sinks from other config files not working :(
   #  sinks: {}
   hamok:
+#    discovery: {}
+#    endpoint: {}
+
     storageGrid:
       raftMaxLogEntriesRetentionTimeInMinutes: 5
       heartbeatInMs: 150

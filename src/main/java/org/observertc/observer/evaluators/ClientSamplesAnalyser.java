@@ -73,16 +73,21 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
         if (observedClientSamples.isEmpty()) {
             return;
         }
-
-        var task = this.matchTracks.get()
-                .whereOutboundTrackIds(observedClientSamples.getOutboundTrackIds())
-                .whereInboundTrackIds(observedClientSamples.getInboundTrackIds())
-                ;
-        if (!task.execute().succeeded()) {
-            logger.warn("Interrupted execution of component due to unsuccessful task execution");
-            return;
+        MatchTracks.Report matches;
+        if (this.config.matchTracks) {
+            var task = this.matchTracks.get()
+                    .whereOutboundTrackIds(observedClientSamples.getOutboundTrackIds())
+                    .whereInboundTrackIds(observedClientSamples.getInboundTrackIds())
+                    ;
+            if (!task.execute().succeeded()) {
+                logger.warn("Interrupted execution of component due to unsuccessful task execution");
+                return;
+            }
+            matches = task.getResult();
+        } else {
+            matches = MatchTracks.EMPTY_REPORT;
         }
-        var matches = task.getResult();
+
         var inboundMatches = matches.inboundMatches;
         var peerConnectionLabels = new HashMap<String, String>();
         for (var observedClientSample : observedClientSamples) {

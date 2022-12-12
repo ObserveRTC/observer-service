@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+@Deprecated
 public class WebsocketConnection {
 
     private static final Logger logger = LoggerFactory.getLogger(WebsocketConnection.class);

@@ -11,17 +11,19 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.configs.ObserverConfig;
+import org.observertc.observer.hamokdiscovery.HamokDiscoveryService;
 import org.observertc.observer.hamokendpoints.HamokEndpoint;
-import org.observertc.observer.hamokendpoints.HamokEndpointBuilderService;
+import org.observertc.observer.hamokendpoints.HamokEndpointService;
 import org.observertc.observer.metrics.HamokMetrics;
-import org.observertc.observer.repositories.CallsRepository;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Singleton
@@ -38,13 +40,13 @@ public class HamokService  implements InfoSource {
     BeanProvider<CoreV1Api> coreV1ApiProvider;
 
     @Inject
-    HamokEndpointBuilderService hamokEndpointBuilderService;
-
-    @Inject
-    BeanProvider<CallsRepository> callsRepository;
-
-    @Inject
     BeanProvider<HamokMetrics> hamokMetricsBeanProvider;
+
+    @Inject
+    HamokEndpointService hamokEndpointService;
+
+    @Inject
+    HamokDiscoveryService hamokDiscoveryService;
 
 //    @Inject
 //    Sandbox sandbox;
@@ -53,6 +55,8 @@ public class HamokService  implements InfoSource {
     private final AtomicReference<HamokEndpoint> endpointHolder = new AtomicReference<>();
     private StorageGrid storageGrid;
     private Set<UUID> remotePeers = Collections.synchronizedSet(new HashSet<>());
+    private final Map<UUID, Long> inactivity = new ConcurrentHashMap<>();
+
 
     @PostConstruct
     private void setup() {
@@ -95,13 +99,37 @@ public class HamokService  implements InfoSource {
         this.storageGrid.events().notRespondingEndpointIds().subscribe(notRespondingRemoteEndpointIds -> {
             logger.info("Reported endpoint ids are not responding", JsonUtils.objectToString(notRespondingRemoteEndpointIds));
             this.hamokMetricsBeanProvider.get().incrementNotRespondingRemotePeerIds();
-
+            var hamokEndpoint = this.hamokEndpointService.get();
+            if (hamokEndpoint == null) {
+                return;
+            }
+            var now = Instant.now().toEpochMilli();
+            for (var remoteEndpointId : notRespondingRemoteEndpointIds) {
+                var inactivityStarted = this.inactivity.get(notRespondingRemoteEndpointIds);
+                if (inactivityStarted == null) {
+                    this.inactivity.put(remoteEndpointId, now);
+                    continue;
+                }
+                var elapsedInMs = now - inactivityStarted;
+                if (elapsedInMs < 10000) {
+                    // debouncing purpose
+                    continue;
+                }
+                if (90000 < elapsedInMs) {
+                    // reset
+                    this.inactivity.put(remoteEndpointId, now);
+                    continue;
+                }
+                // okay so this is inactive and consecutively reporting for more than 10s. we need to cut ir.
+                hamokEndpoint.removeConnectionByEndpointId(remoteEndpointId);
+            }
         });
         this.storageGrid.errors().subscribe(err -> {
             logger.warn("Error occurred in storageGrid. Code: {}", err.getCode(), err.getException());
         });
 
-
+        this.hamokEndpointService.setHamokDiscoveryService(this.hamokDiscoveryService);
+        this.hamokDiscoveryService.setEndpointService(this.hamokEndpointService);
     }
 
     public void refreshRemoteEndpointId() {
@@ -142,9 +170,13 @@ public class HamokService  implements InfoSource {
             return;
         }
         this.running = true;
+        var hamokDiscovery = this.hamokDiscoveryService.get();
+        if (hamokDiscovery != null) {
+            hamokDiscovery.start();
+        }
         var endpoint = this.endpointHolder.get();
         if (this.endpointHolder.get() == null) {
-            endpoint = this.hamokEndpointBuilderService.build(this.config.endpoint);
+            endpoint = this.hamokEndpointService.get();
 
             if (endpoint != null) {
                 endpoint.inboundChannel().subscribe(this.storageGrid.transport().getReceiver());
@@ -154,6 +186,7 @@ public class HamokService  implements InfoSource {
                 } else {
                     endpoint.stop();
                 }
+                endpoint.stateChanged().subscribe();
             } else {
                 logger.warn("Endpoint for hamok has not been built, the server cannot share its internal data with other instances in the grid");
             }
@@ -181,6 +214,10 @@ public class HamokService  implements InfoSource {
             endpoint.stop();
         }
         this.endpointHolder.set(null);
+        var hamokDiscovery = this.hamokDiscoveryService.get();
+        if (hamokDiscovery != null) {
+            hamokDiscovery.stop();
+        }
     }
 
     public StorageGrid getStorageGrid() {
@@ -213,7 +250,7 @@ public class HamokService  implements InfoSource {
         if (endpoint == null) {
             return true;
         }
-        if (!endpoint.isReady()) {
+        if (!hamokEndpointService.isReady()) {
             if ((this.alreadyLoggedFlags & 1) == 0) {
                 logger.info("Waiting for endpoint to be ready");
                 this.alreadyLoggedFlags = 1;

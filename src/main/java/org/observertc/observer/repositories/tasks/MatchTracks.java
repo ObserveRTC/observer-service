@@ -19,6 +19,8 @@ public class MatchTracks extends ChainedTask<MatchTracks.Report> {
 
     private static final Logger logger = LoggerFactory.getLogger(MatchTracks.class);
 
+    public static final Report EMPTY_REPORT = new Report();
+
     @Inject
     RepositoryMetrics exposedMetrics;
 

@@ -204,12 +204,14 @@ public class ObserverConfig {
 		@ConfigurationProperties(("clientSamplesAnalyser"))
 		public static class ClientSamplesAnalyserConfig {
 			public boolean dropUnmatchedReports = false;
+			public boolean matchTracks = true;
 		}
 
 		public SfuSamplesAnalyserConfig sfuSamplesAnalyser = new SfuSamplesAnalyserConfig();
 
 		@ConfigurationProperties(("sfuSamplesAnalyser"))
 		public static class SfuSamplesAnalyserConfig {
+			public boolean matchRtpPads = true;
 			public boolean dropUnmatchedInternalInboundReports = false;
 			public boolean dropUnmatchedInboundReports = false;
 			public boolean dropUnmatchedOutboundReports = false;
@@ -266,6 +268,7 @@ public class ObserverConfig {
 	@ConfigurationProperties("hamok")
 	public static class HamokConfig {
 		public List<String> memberNamesPool = new LinkedList<>();
+		public Map<String, Object> discovery;
 		public Map<String, Object> endpoint;
 		public boolean usePartialResponses = true;
 		public StorageGridConfig storageGrid = new StorageGridConfig();

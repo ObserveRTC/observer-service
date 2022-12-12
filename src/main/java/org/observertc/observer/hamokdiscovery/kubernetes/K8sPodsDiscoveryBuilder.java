@@ -4,7 +4,7 @@ import io.micronaut.context.annotation.Prototype;
 import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.hamokdiscovery.DiscoveryBuilder;
 import org.observertc.observer.hamokdiscovery.DiscoveryBuildersEssentials;
-import org.observertc.observer.hamokdiscovery.RemotePeerDiscovery;
+import org.observertc.observer.hamokdiscovery.HamokDiscovery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,9 +15,10 @@ public class K8sPodsDiscoveryBuilder extends AbstractBuilder implements Discover
     private DiscoveryBuildersEssentials essentials;
 
     @Override
-    public RemotePeerDiscovery build() {
+    public HamokDiscovery build() {
         var config = this.convertAndValidate(K8sPodsDiscoveryConfig.class);
         return new K8sPodsDiscovery(
+                this.essentials.hamokEndpointService(),
                 config.namespace,
                 config.prefix,
                 config.port,
@@ -29,4 +30,5 @@ public class K8sPodsDiscoveryBuilder extends AbstractBuilder implements Discover
     public void setBuildingEssentials(DiscoveryBuildersEssentials essentials) {
         this.essentials = essentials;
     }
+
 }
