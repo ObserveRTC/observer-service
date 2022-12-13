@@ -82,6 +82,10 @@ public class InboundAudioReportsDepot implements Supplier<List<InboundAudioTrack
                 return;
             }
             var clientSample = observedClientSample.getClientSample();
+            if (Objects.isNull(clientSample.callId)) {
+                logger.warn("Cannot assemble {} when a callId is null for service {}, mediaUnitId: {}", this.getClass().getSimpleName(), observedClientSample.getServiceId(), observedClientSample.getMediaUnitId());
+                return;
+            }
             var report = InboundAudioTrackReport.newBuilder()
                     /* Report MetaFields */
                     .setServiceId(observedClientSample.getServiceId())

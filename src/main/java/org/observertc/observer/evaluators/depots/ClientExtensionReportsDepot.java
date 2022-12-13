@@ -59,6 +59,10 @@ public class ClientExtensionReportsDepot implements Supplier<List<ClientExtensio
             return;
         }
         var clientSample = observedClientSample.getClientSample();
+        if (Objects.isNull(clientSample.callId)) {
+            logger.warn("Cannot assemble {} when a callId is null for service {}, mediaUnitId: {}", this.getClass().getSimpleName(), observedClientSample.getServiceId(), observedClientSample.getMediaUnitId());
+            return;
+        }
         try {
             var report = ClientExtensionReport.newBuilder()
                     .setServiceId(observedClientSample.getServiceId())
