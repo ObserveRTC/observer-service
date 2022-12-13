@@ -37,15 +37,14 @@ public class ClientSamplesMetrics {
         this.browserSystemMetricName = metrics.getMetricName(BROWSER_METRIC_NAME, OPERATION_SYSTEM_METRIC_NAME);
     }
 
-    public ClientSamplesMetrics incrementOperationSystem(String name, String version) {
+    public ClientSamplesMetrics incrementOperationSystem(String name) {
         if (!this.config.enabled) {
             return this;
         }
         this.metrics.registry.counter(
                 this.operationSystemMetricName,
-                NAME_TAG_NAME, Utils.firstNotNull(name, UNKNOWN_VALUE),
-                VERSION_TAG_NAME, Utils.firstNotNull(version, UNKNOWN_VALUE)
-        );
+                NAME_TAG_NAME, Utils.firstNotNull(name, UNKNOWN_VALUE)
+        ).increment();
         return this;
     }
 
@@ -58,20 +57,19 @@ public class ClientSamplesMetrics {
                 this.operationSystemMetricName,
                 NAME_TAG_NAME, Utils.firstNotNull(name, UNKNOWN_VALUE),
                 VERSION_TAG_NAME, Utils.firstNotNull(version, UNKNOWN_VALUE)
-        );
+        ).increment();
         return this;
     }
 
-    public ClientSamplesMetrics incrementPlatform(String vendor, String type, String model) {
+    public ClientSamplesMetrics incrementPlatform(String vendor, String type) {
         if (!this.config.enabled) {
             return this;
         }
         this.metrics.registry.counter(
                 this.operationSystemMetricName,
                 VENDOR_TAG_NAME, Utils.firstNotNull(vendor, UNKNOWN_VALUE),
-                TYPE_TAG_NAME, Utils.firstNotNull(type, UNKNOWN_VALUE),
-                MODEL_TAG_NAME, Utils.firstNotNull(model, UNKNOWN_VALUE)
-        );
+                TYPE_TAG_NAME, Utils.firstNotNull(type, UNKNOWN_VALUE)
+        ).increment();
         return this;
     }
 }

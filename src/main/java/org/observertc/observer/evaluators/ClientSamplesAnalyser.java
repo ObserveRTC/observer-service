@@ -201,8 +201,7 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
                         .setPayload(payload)
                         .assemble();
                 this.clientSamplesMetrics.incrementOperationSystem(
-                        clientSample.os.name,
-                        clientSample.os.version
+                        clientSample.os.name
                 );
             }
 
@@ -226,8 +225,7 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
                         .assemble();
                 this.clientSamplesMetrics.incrementPlatform(
                         clientSample.platform.vendor,
-                        clientSample.platform.type,
-                        clientSample.platform.model
+                        clientSample.platform.type
                 );
             }
 
