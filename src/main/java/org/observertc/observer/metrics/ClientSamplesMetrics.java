@@ -14,12 +14,12 @@ public class ClientSamplesMetrics {
     private static final String CLIENT_META_METRICS_PREFIX = "client_meta";
     private static final String OPERATION_SYSTEM_METRIC_NAME = "operation_system";
     private static final String BROWSER_METRIC_NAME = "browser";
+    private static final String PLATFORM_METRIC_NAME = "platform";
 
     private static final String NAME_TAG_NAME = "name";
     private static final String VERSION_TAG_NAME = "version";
     private static final String VENDOR_TAG_NAME = "vendor";
     private static final String TYPE_TAG_NAME = "type";
-    private static final String MODEL_TAG_NAME = "model";
 
     @Inject
     Metrics metrics;
@@ -28,13 +28,14 @@ public class ClientSamplesMetrics {
     ObserverConfig.MetricsConfig.ClientSamplesMetricConfig config;
 
     private String operationSystemMetricName;
-    private String browserSystemMetricName;
+    private String browserMetricName;
+    private String platformMetricName;
 
     @PostConstruct
     void setup() {
         this.operationSystemMetricName = metrics.getMetricName(CLIENT_META_METRICS_PREFIX, OPERATION_SYSTEM_METRIC_NAME);
-        this.browserSystemMetricName = metrics.getMetricName(BROWSER_METRIC_NAME, OPERATION_SYSTEM_METRIC_NAME);
-        this.browserSystemMetricName = metrics.getMetricName(BROWSER_METRIC_NAME, OPERATION_SYSTEM_METRIC_NAME);
+        this.browserMetricName = metrics.getMetricName(BROWSER_METRIC_NAME, BROWSER_METRIC_NAME);
+        this.platformMetricName = metrics.getMetricName(BROWSER_METRIC_NAME, PLATFORM_METRIC_NAME);
     }
 
     public ClientSamplesMetrics incrementOperationSystem(String name) {
@@ -54,7 +55,7 @@ public class ClientSamplesMetrics {
             return this;
         }
         this.metrics.registry.counter(
-                this.operationSystemMetricName,
+                this.browserMetricName,
                 NAME_TAG_NAME, Utils.firstNotNull(name, UNKNOWN_VALUE),
                 VERSION_TAG_NAME, Utils.firstNotNull(version, UNKNOWN_VALUE)
         ).increment();
@@ -66,7 +67,7 @@ public class ClientSamplesMetrics {
             return this;
         }
         this.metrics.registry.counter(
-                this.operationSystemMetricName,
+                this.platformMetricName,
                 VENDOR_TAG_NAME, Utils.firstNotNull(vendor, UNKNOWN_VALUE),
                 TYPE_TAG_NAME, Utils.firstNotNull(type, UNKNOWN_VALUE)
         ).increment();
