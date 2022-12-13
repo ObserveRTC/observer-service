@@ -3,14 +3,17 @@ package org.observertc.observer.metrics;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.HamokService;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.repositories.RepositoryStorageMetrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -28,6 +31,7 @@ public class HamokMetrics {
     private static final String PENDING_REQUESTS_METRIC_NAME = "pending_requests";
     private static final String PENDING_RESPONSES_METRIC_NAME = "pending_responses";
     private static final String NOT_RESPONDING_REMOTE_IDS_METRIC_NAME = "not_responding_remote_peers";
+    private static final String ACTIVE_REMOTE_PEER = "active_remote_peers";
 
 
     @Inject
@@ -44,6 +48,7 @@ public class HamokMetrics {
     private final AtomicLong bytesReceived = new AtomicLong(0);
     private final AtomicInteger pendingRequests = new AtomicInteger(0);
     private final AtomicInteger pendingResponses = new AtomicInteger(0);
+    private final AtomicInteger activeRemotePeers = new AtomicInteger(0);
 
     private List<RepositoryStorageMetrics> storageMetrics;
 
@@ -62,6 +67,7 @@ public class HamokMetrics {
         this.metrics.registry.gauge(metrics.getMetricName(HAMOK_METRICS_PREFIX, BYTES_RECEIVED_METRIC_NAME), bytesReceived);
         this.metrics.registry.gauge(metrics.getMetricName(HAMOK_METRICS_PREFIX, PENDING_REQUESTS_METRIC_NAME), pendingRequests);
         this.metrics.registry.gauge(metrics.getMetricName(HAMOK_METRICS_PREFIX, PENDING_RESPONSES_METRIC_NAME), pendingResponses);
+        this.metrics.registry.gauge(metrics.getMetricName(HAMOK_METRICS_PREFIX, ACTIVE_REMOTE_PEER), activeRemotePeers);
     }
 
     @PreDestroy
@@ -82,6 +88,9 @@ public class HamokMetrics {
         this.bytesReceived.set(stats.receivedBytes());
         this.pendingRequests.set(stats.pendingRequests());
         this.pendingResponses.set(stats.pendingResponses());
+        this.activeRemotePeers.set(
+                Utils.firstNotNull(storageGrid.endpoints().getRemoteEndpointIds(), Collections.<UUID>emptySet()).size()
+        );
     }
 
 }

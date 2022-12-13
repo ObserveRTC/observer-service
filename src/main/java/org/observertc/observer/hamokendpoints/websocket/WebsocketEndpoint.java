@@ -59,6 +59,7 @@ public class WebsocketEndpoint implements HamokEndpoint {
     private final Runnable refreshHamokEndpoints;
     private Map<UUID, Integer> pendingEndpointStates = new HashMap<>();
 
+
     WebsocketEndpoint(
             Supplier<HamokDiscovery> discoverySupplier,
             Runnable refreshHamokEndpoints,
