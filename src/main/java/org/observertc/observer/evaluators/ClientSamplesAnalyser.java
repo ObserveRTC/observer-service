@@ -96,6 +96,14 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
         var peerConnectionLabels = new HashMap<String, String>();
         for (var observedClientSample : observedClientSamples) {
             var clientSample = observedClientSample.getClientSample();
+            if (Objects.isNull(clientSample.callId)) {
+                logger.warn("Cannot make a report from a sample callId is null. ServiceId: {}, MediaUnitId: {}, clientId: {}",
+                        observedClientSample.getServiceId(),
+                        observedClientSample.getMediaUnitId(),
+                        clientSample.clientId
+                );
+                return;
+            }
             if (Objects.isNull(clientSample)) continue;
             ClientSampleVisitor.streamPeerConnectionTransports(clientSample).forEach(peerConnectionTransport -> {
                 this.peerConnectionTransportReportsDepot
