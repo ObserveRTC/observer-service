@@ -34,8 +34,8 @@ public class ClientSamplesMetrics {
     @PostConstruct
     void setup() {
         this.operationSystemMetricName = metrics.getMetricName(CLIENT_META_METRICS_PREFIX, OPERATION_SYSTEM_METRIC_NAME);
-        this.browserMetricName = metrics.getMetricName(BROWSER_METRIC_NAME, BROWSER_METRIC_NAME);
-        this.platformMetricName = metrics.getMetricName(BROWSER_METRIC_NAME, PLATFORM_METRIC_NAME);
+        this.browserMetricName = metrics.getMetricName(CLIENT_META_METRICS_PREFIX, BROWSER_METRIC_NAME);
+        this.platformMetricName = metrics.getMetricName(CLIENT_META_METRICS_PREFIX, PLATFORM_METRIC_NAME);
     }
 
     public ClientSamplesMetrics incrementOperationSystem(String name) {
