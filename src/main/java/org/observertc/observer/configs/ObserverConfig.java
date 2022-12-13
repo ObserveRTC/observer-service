@@ -279,7 +279,7 @@ public class ObserverConfig {
 		public Map<String, Object> endpoint;
 		public boolean usePartialResponses = true;
 		public StorageGridConfig storageGrid = new StorageGridConfig();
-		public int minRemotePeers = 1;
+		public int firstMinRemotePeers = 1;
 
         @ConfigurationProperties(("storageGrid"))
 		public static class StorageGridConfig {

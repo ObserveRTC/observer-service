@@ -143,8 +143,8 @@ public class HamokService  implements InfoSource {
         }
         var activeRemoteEndpointIds = endpoint.getActiveRemoteEndpointIds();
         if (!this.firstRefresh) {
-            if (activeRemoteEndpointIds.size() < this.config.minRemotePeers) {
-                logger.info("Hamok first endpoint refresh will not be executed, because the required number of remote peer is {}, and currently there is {} available {}", this.config.minRemotePeers, activeRemoteEndpointIds.size());
+            if (activeRemoteEndpointIds.size() < this.config.firstMinRemotePeers) {
+                logger.info("Hamok first endpoint refresh will not be executed, because the required number of remote peer is {}, and currently there is {} available {}", this.config.firstMinRemotePeers, activeRemoteEndpointIds.size());
                 return;
             }
             this.firstRefresh = true;
