@@ -27,7 +27,9 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Prototype
-public class FirehoseSinkBuilder extends AbstractBuilder implements ISinkBuilder {
+public class FirehoseSinkBuilder extends AbstractBuilder implements SinkBuilder {
+
+    private Essentials essentials;
 
     private static AwsCredentialsProvider getCredentialProvider(Map<String, Object> config) {
         if (config == null) {
@@ -37,6 +39,11 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements ISinkBuilder
         var providerBuilder = new AwsCredentialsProviderBuilder();
         providerBuilder.withConfiguration(config);
         return providerBuilder.build();
+    }
+
+    @Override
+    public void setEssentials(Essentials essentials) {
+        this.essentials = essentials;
     }
 
     @Override
@@ -50,7 +57,10 @@ public class FirehoseSinkBuilder extends AbstractBuilder implements ISinkBuilder
                     .region(region)
                     .build();
         };
-        var result = new FirehoseSink();
+        var result = new FirehoseSink(
+                this.essentials != null ? this.essentials.sinkId() : "UNKNOWN_SINK",
+                this.essentials.sinkMetrics()
+        );
         if (config.defaultDeliveryStreamId == null && config.streams == null) {
             throw new InvalidConfigurationException("Either the default delivery stream id or delivery stream ids must be provided to configure the sink");
         }

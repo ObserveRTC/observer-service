@@ -142,17 +142,19 @@ public class ReportSinks implements Consumer<List<Report>> {
     }
 
     private Sink buildSink(String sinkId, Map<String, Object> config) {
-        SinkBuilder sinkBuilder = new SinkBuilder();
-        sinkBuilder.withConfiguration(config);
-        sinkBuilder.setEssentials(new ISinkBuilder.Essentials(
-                this.ioExecutor.get()
+        SinkAssembler sinkAssembler = new SinkAssembler();
+        sinkAssembler.withConfiguration(config);
+        sinkAssembler.setEssentials(new SinkBuilder.Essentials(
+                sinkId,
+                this.ioExecutor.get(),
+                this.sinkMetrics
         ));
-        Sink result = sinkBuilder.build();
+        Sink result = sinkAssembler.build();
         if (Objects.isNull(result)) {
             logger.warn("Sink for {} has not been built", sinkId, JsonUtils.objectToString(config));
             return null;
         } else if (observerConfig.security.printConfigs) {
-            logger.info("Sink {} with config {} has been initiated", result.getClass().getSimpleName(), sinkBuilder.getAppliedConfiguration());
+            logger.info("Sink {} with config {} has been initiated", result.getClass().getSimpleName(), sinkAssembler.getAppliedConfiguration());
         }
         String sinkLoggerName = String.format("Sink-%s:", sinkId);
         var logger = LoggerFactory.getLogger(sinkLoggerName);

@@ -3,6 +3,7 @@ package org.observertc.observer.sinks.awss3;
 // https://docs.aws.amazon.com/code-samples/latest/catalog/javav2-firehose-src-main-java-com-example-firehose-PutBatchRecords.java.html
 
 import org.observertc.observer.common.JsonUtils;
+import org.observertc.observer.evaluators.eventreports.attachments.MediaTrackAttachment;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.sinks.FormatEncoder;
 import org.observertc.observer.sinks.Sink;
@@ -138,10 +139,23 @@ public class AwsS3Sink extends Sink {
                                     "__indexes/media-tracks/" + callEventReport.mediaTrackId,
                                     RequestBody.fromString(JsonUtils.objectToString(callEventReport))
                             );
-                            this.sender.submit(
-                                    "__indexes/media-tracks-by-clients/" + callEventReport.clientId + "/" + callEventReport.mediaTrackId,
-                                    RequestBody.fromString(JsonUtils.objectToString(callEventReport))
-                            );
+                            if (callEventReport.attachments != null) {
+                                var mediaTrackAttachments = MediaTrackAttachment.fromBase64(callEventReport.attachments);
+                                if (mediaTrackAttachments != null) {
+                                    if (mediaTrackAttachments.sfuStreamId != null) {
+                                        this.sender.submit(
+                                                "__indexes/sfu-streams/" + mediaTrackAttachments.sfuStreamId,
+                                                RequestBody.fromString(JsonUtils.objectToString(callEventReport))
+                                        );
+                                    }
+                                    if (mediaTrackAttachments.sfuSinkId != null) {
+                                        this.sender.submit(
+                                                "__indexes/sfu-sinks/" + mediaTrackAttachments.sfuSinkId,
+                                                RequestBody.fromString(JsonUtils.objectToString(callEventReport))
+                                        );
+                                    }
+                                }
+                            }
                         }
                         case "PEER_CONNECTION_OPENED" -> {
                             this.sender.submit(

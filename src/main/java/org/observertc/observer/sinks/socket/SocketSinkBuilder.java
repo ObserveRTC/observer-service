@@ -2,13 +2,13 @@ package org.observertc.observer.sinks.socket;
 
 import io.micronaut.context.annotation.Prototype;
 import org.observertc.observer.configbuilders.AbstractBuilder;
-import org.observertc.observer.sinks.ISinkBuilder;
+import org.observertc.observer.sinks.SinkBuilder;
 import org.observertc.observer.sinks.Sink;
 
 import javax.validation.constraints.NotNull;
 
 @Prototype
-public class SocketSinkBuilder extends AbstractBuilder implements ISinkBuilder {
+public class SocketSinkBuilder extends AbstractBuilder implements SinkBuilder {
 
     public Sink build() {
         Config config = this.convertAndValidate(Config.class);

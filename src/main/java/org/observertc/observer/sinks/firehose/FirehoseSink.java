@@ -4,6 +4,7 @@ package org.observertc.observer.sinks.firehose;
 
 import org.observertc.observer.common.CollectionChunker;
 import org.observertc.observer.common.Utils;
+import org.observertc.observer.metrics.SinkMetrics;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.sinks.FormatEncoder;
 import org.observertc.observer.sinks.Sink;
@@ -23,8 +24,15 @@ public class FirehoseSink extends Sink {
     FormatEncoder<String, Record> encoder;
     Supplier<FirehoseClient> clientSupplier;
     private FirehoseClient client;
+    private final String sinkId;
+    private final SinkMetrics sinkMetrics;
 
-    FirehoseSink() {
+    FirehoseSink(
+            String sinkId,
+            SinkMetrics sinkMetrics
+    ) {
+        this.sinkId = sinkId;
+        this.sinkMetrics = sinkMetrics;
     }
 
     @Override
@@ -76,6 +84,9 @@ public class FirehoseSink extends Sink {
                 break;
             } catch (ServiceUnavailableException serviceUnavailableException) {
                 logger.warn("Service is unavailable error occurred. Records attempted to send will be dropped, but the sink keeps open", serviceUnavailableException);
+                if (this.sinkMetrics != null) {
+                    this.sinkMetrics.incrementServiceUnavailableException(this.sinkId);
+                }
                 break;
             } catch (FirehoseException firehoseException) {
                 logger.warn("Firehose error occurred while sending records to firehose {}", firehoseException.getLocalizedMessage(), firehoseException);

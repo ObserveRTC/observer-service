@@ -12,7 +12,7 @@ import org.observertc.observer.configs.TransportFormatType;
 import org.observertc.observer.mappings.Encoder;
 import org.observertc.observer.mappings.JsonMapper;
 import org.observertc.observer.reports.Report;
-import org.observertc.observer.sinks.ISinkBuilder;
+import org.observertc.observer.sinks.SinkBuilder;
 import org.observertc.observer.sinks.Sink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 @Prototype
-public class KafkaSinkBuilder extends AbstractBuilder implements ISinkBuilder {
+public class KafkaSinkBuilder extends AbstractBuilder implements SinkBuilder {
     private final static Logger logger = LoggerFactory.getLogger(KafkaSinkBuilder.class);
 
     public Sink build() {

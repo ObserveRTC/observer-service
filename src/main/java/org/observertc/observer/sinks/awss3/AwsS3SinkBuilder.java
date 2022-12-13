@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Prototype
-public class AwsS3SinkBuilder extends AbstractBuilder implements ISinkBuilder {
+public class AwsS3SinkBuilder extends AbstractBuilder implements SinkBuilder {
 
     private Essentials essentials;
 
@@ -40,7 +40,7 @@ public class AwsS3SinkBuilder extends AbstractBuilder implements ISinkBuilder {
     }
 
     @Override
-    public void setEssential(Essentials essentials) {
+    public void setEssentials(Essentials essentials) {
         this.essentials = essentials;
     }
 

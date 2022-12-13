@@ -18,6 +18,7 @@ public class SinkMetrics {
     private static final String SINK_ID_TAG_NAME = "sink";
     private static final String OVERLOADED_REPORTS_COLLECTOR_METRIC_NAME = "overloaded_reports_collector";
     private static final String SENDING_TIME_METRIC_NAME = "sending_time";
+    private static final String SERVICE_UNAVAILABLE_METRIC_NAME = "service_unavailable";
 
     @Inject
     Metrics metrics;
@@ -63,6 +64,14 @@ public class SinkMetrics {
                         metrics.getMetricName(SINK_PREFIX, SENDING_TIME_METRIC_NAME)
                 )
                 .record(Duration.between(started, ended));
+        return this;
+    }
+
+    public SinkMetrics incrementServiceUnavailableException(String sinkName) {
+        if (!this.config.enabled) {
+            return this;
+        }
+        this.metrics.registry.counter(SINK_PREFIX, SERVICE_UNAVAILABLE_METRIC_NAME).increment();
         return this;
     }
 

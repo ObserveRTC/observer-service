@@ -11,7 +11,7 @@ import org.observertc.observer.configs.InvalidConfigurationException;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.reports.ReportType;
 import org.observertc.observer.reports.ReportTypeVisitors;
-import org.observertc.observer.sinks.ISinkBuilder;
+import org.observertc.observer.sinks.SinkBuilder;
 import org.observertc.observer.sinks.Sink;
 import org.observertc.schemas.reports.*;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ import java.util.function.Supplier;
 import static java.util.stream.Collectors.groupingBy;
 
 @Prototype
-public class MongoSinkBuilder extends AbstractBuilder implements ISinkBuilder {
+public class MongoSinkBuilder extends AbstractBuilder implements SinkBuilder {
     private final static Logger logger = LoggerFactory.getLogger(MongoSinkBuilder.class);
 
     private static Map<ReportType, String> getDefaultCollectionNames() {
