@@ -73,6 +73,13 @@ public class ObserverConfig {
 		public static class FlawMetricsConfig {
 			public boolean enabled;
 		}
+
+		public ClientSamplesMetricConfig clientSamples;
+
+		@ConfigurationProperties("clientSamplesMetricConfig")
+		public static class ClientSamplesMetricConfig {
+			public boolean enabled;
+		}
 	}
 
 	// Security Configurations
@@ -272,8 +279,9 @@ public class ObserverConfig {
 		public Map<String, Object> endpoint;
 		public boolean usePartialResponses = true;
 		public StorageGridConfig storageGrid = new StorageGridConfig();
+		public int minRemotePeers = 1;
 
-		@ConfigurationProperties(("storageGrid"))
+        @ConfigurationProperties(("storageGrid"))
 		public static class StorageGridConfig {
 			public int raftMaxLogEntriesRetentionTimeInMinutes = 30;
 			public int heartbeatInMs = 50;

@@ -10,6 +10,7 @@ import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.depots.*;
 import org.observertc.observer.events.CallMetaType;
+import org.observertc.observer.metrics.ClientSamplesMetrics;
 import org.observertc.observer.metrics.EvaluatorMetrics;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.repositories.tasks.MatchTracks;
@@ -35,6 +36,9 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
 
     @Inject
     ObserverConfig.EvaluatorsConfig.ClientSamplesAnalyserConfig config;
+
+    @Inject
+    ClientSamplesMetrics clientSamplesMetrics;
 
     private Subject<List<Report>> output = PublishSubject.create();
     private final PeerConnectionTransportReportsDepot peerConnectionTransportReportsDepot = new PeerConnectionTransportReportsDepot();
@@ -188,6 +192,10 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
                         .setMetaType(CallMetaType.OPERATION_SYSTEM)
                         .setPayload(payload)
                         .assemble();
+                this.clientSamplesMetrics.incrementOperationSystem(
+                        clientSample.os.name,
+                        clientSample.os.version
+                );
             }
 
             // engine
@@ -208,6 +216,11 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
                         .setMetaType(CallMetaType.PLATFORM)
                         .setPayload(payload)
                         .assemble();
+                this.clientSamplesMetrics.incrementPlatform(
+                        clientSample.platform.vendor,
+                        clientSample.platform.type,
+                        clientSample.platform.model
+                );
             }
 
             // browser
@@ -218,6 +231,10 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
                         .setMetaType(CallMetaType.BROWSER)
                         .setPayload(payload)
                         .assemble();
+                this.clientSamplesMetrics.incrementBrowser(
+                        clientSample.browser.name,
+                        clientSample.browser.version
+                );
             }
 
             // streamCertificates

@@ -59,7 +59,6 @@ public class WebsocketEndpoint implements HamokEndpoint {
     private final Runnable refreshHamokEndpoints;
     private Map<UUID, Integer> pendingEndpointStates = new HashMap<>();
 
-
     WebsocketEndpoint(
             Supplier<HamokDiscovery> discoverySupplier,
             Runnable refreshHamokEndpoints,
@@ -193,7 +192,6 @@ public class WebsocketEndpoint implements HamokEndpoint {
             }
         }
         // if we are here then the connection is established
-        logger.info("Established connection to endpoint {}", endpointId);
         var foundConnection = this.connections.values().stream()
                 .filter(connection -> UuidTools.equals(connection.getRemoteEndpointId(), endpointId))
                 .findFirst();
@@ -202,6 +200,7 @@ public class WebsocketEndpoint implements HamokEndpoint {
             return;
         }
         this.remoteEndpoints.put(endpointId, foundConnection.get());
+        logger.info("Established connection to endpoint {}. Number of registered remote endpoints: {{}", endpointId, this.remoteEndpoints.size());
         this.refreshHamokEndpoints.run();
     }
 

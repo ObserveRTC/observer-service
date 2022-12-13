@@ -132,6 +132,8 @@ public class HamokService  implements InfoSource {
         this.hamokDiscoveryService.setEndpointService(this.hamokEndpointService);
     }
 
+    private volatile boolean firstRefresh = false;
+
     public void refreshRemoteEndpointId() {
         var endpoint = this.endpointHolder.get();
         var storageGrid = this.storageGrid;
@@ -139,8 +141,15 @@ public class HamokService  implements InfoSource {
             logger.warn("To refresh a remote endpoint storageGrid end endpoint must exists");
             return;
         }
-        var currentRemoteEndpointIds = storageGrid.endpoints().getRemoteEndpointIds();
         var activeRemoteEndpointIds = endpoint.getActiveRemoteEndpointIds();
+        if (!this.firstRefresh) {
+            if (activeRemoteEndpointIds.size() < this.config.minRemotePeers) {
+                logger.info("Hamok first endpoint refresh will not be executed, because the required number of remote peer is {}, and currently there is {} available {}", this.config.minRemotePeers, activeRemoteEndpointIds.size());
+                return;
+            }
+            this.firstRefresh = true;
+        }
+        var currentRemoteEndpointIds = storageGrid.endpoints().getRemoteEndpointIds();
         logger.info("Updating remote endpoint ids. Current remote endpointIds: {}, active remote endpoint ids: {}",
                 JsonUtils.objectToString(currentRemoteEndpointIds),
                 JsonUtils.objectToString(activeRemoteEndpointIds)

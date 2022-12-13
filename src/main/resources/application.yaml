@@ -97,7 +97,8 @@ observer:
       enabled: true
     repositoryMetrics:
       enabled: true
-      exposePeriodInMins: 5
+    clientSamplesMetricConfig:
+      enabled: true
 
 
   evaluators:
