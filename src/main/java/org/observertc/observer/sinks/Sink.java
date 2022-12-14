@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 public abstract class Sink implements Function<List<Report>, Integer> {
     private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(Sink.class);
+
     protected Logger logger = DEFAULT_LOGGER;
     private Function<List<Report>, Integer> forward;
     private boolean enabled = true;
@@ -60,5 +61,6 @@ public abstract class Sink implements Function<List<Report>, Integer> {
     public void open() {
         logger.info("Opened");
     }
+
 
 }
