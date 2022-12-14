@@ -1,5 +1,6 @@
 package org.observertc.observer.metrics;
 
+import io.micrometer.core.instrument.DistributionSummary;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.configs.ObserverConfig;
@@ -19,6 +20,8 @@ public class ReportMetrics {
     private static final String OUTBOUND_VIDEO_TRACKS_RTT_MEASUREMENT_METRIC_NAME = "outbound_video_tracks_rtt";
     private static final String OUTBOUND_AUDIO_TARGET_BITRATE_MEASUREMENT_METRIC_NAME = "outbound_audio_target_bitrate";
     private static final String OUTBOUND_VIDEO_TARGET_BITRATE_MEASUREMENT_METRIC_NAME = "outbound_video_target_bitrate";
+    private static final String CALL_NUMBER_OF_PARTICIPANTS_METRIC_NAME = "calls_participants_number";
+    private static final String CALL_DURATIONS_METRIC_NAME = "call_durations";
 
     @Inject
     Metrics metrics;
@@ -27,17 +30,57 @@ public class ReportMetrics {
     ObserverConfig.MetricsConfig.ReportMetricsConfig config;
 
     private ReportTypeVisitor<Object, Void> processor;
-    private String outboundAudioTrackRttMeasurementsMetricName;
-    private String outboundVideoTrackRttMeasurementsMetricName;
-    private String outboundAudioTargetBitrateMeasurementsMetricName;
-    private String outboundVideoTargetBitrateMeasurementsMetricName;
+
+    private DistributionSummary outboundAudioTrackRttMeasurements;
+    private DistributionSummary outboundVideoTrackRttMeasurements;
+    private DistributionSummary outboundAudioTargetBitrateMeasurements;
+    private DistributionSummary outboundVideoTargetBitrateMeasurements;
+    private DistributionSummary numberOfParticipants;
+    private DistributionSummary callDurations;
 
     @PostConstruct
     void setup() {
-        this.outboundAudioTrackRttMeasurementsMetricName = getMetricName(OUTBOUND_AUDIO_TRACKS_RTT_MEASUREMENT_METRIC_NAME);
-        this.outboundVideoTrackRttMeasurementsMetricName = getMetricName(OUTBOUND_VIDEO_TRACKS_RTT_MEASUREMENT_METRIC_NAME);
-        this.outboundAudioTargetBitrateMeasurementsMetricName = getMetricName(OUTBOUND_AUDIO_TARGET_BITRATE_MEASUREMENT_METRIC_NAME);
-        this.outboundVideoTargetBitrateMeasurementsMetricName = getMetricName(OUTBOUND_VIDEO_TARGET_BITRATE_MEASUREMENT_METRIC_NAME);
+        this.outboundAudioTrackRttMeasurements = DistributionSummary.builder(getMetricName(OUTBOUND_AUDIO_TRACKS_RTT_MEASUREMENT_METRIC_NAME))
+                .description("RoundTrip Time Measurements for Outbound Audio Tracks")
+                .publishPercentiles(0.05, 0.5, 0.95)
+                .baseUnit("seconds")
+                .publishPercentileHistogram()
+                .register(this.metrics.registry);
+
+        this.outboundVideoTrackRttMeasurements = DistributionSummary.builder(getMetricName(OUTBOUND_VIDEO_TRACKS_RTT_MEASUREMENT_METRIC_NAME))
+                .description("RoundTrip Time Measurements for Outbound Video Tracks")
+                .publishPercentiles(0.05, 0.5, 0.95)
+                .baseUnit("seconds")
+                .publishPercentileHistogram()
+                .register(this.metrics.registry);
+
+        this.outboundAudioTargetBitrateMeasurements = DistributionSummary.builder(getMetricName(OUTBOUND_AUDIO_TARGET_BITRATE_MEASUREMENT_METRIC_NAME))
+                .description("Target Bitrate Measurements for Outbound Audio Tracks")
+                .publishPercentiles(0.05, 0.5, 0.95)
+                .baseUnit("bps")
+                .publishPercentileHistogram()
+                .register(this.metrics.registry);
+
+        this.outboundVideoTargetBitrateMeasurements = DistributionSummary.builder(getMetricName(OUTBOUND_VIDEO_TARGET_BITRATE_MEASUREMENT_METRIC_NAME))
+                .description("Target Bitrate Measurements for Outbound Video Tracks")
+                .publishPercentiles(0.05, 0.5, 0.95)
+                .baseUnit("bps")
+                .publishPercentileHistogram()
+                .register(this.metrics.registry);
+
+        this.numberOfParticipants = DistributionSummary.builder(getMetricName(CALL_NUMBER_OF_PARTICIPANTS_METRIC_NAME))
+                .description("Number of participants")
+                .publishPercentiles(0.05, 0.5, 0.95)
+                .publishPercentileHistogram()
+                .register(this.metrics.registry);
+
+        this.callDurations = DistributionSummary.builder(getMetricName(CALL_DURATIONS_METRIC_NAME))
+                .description("Call Durations")
+                .baseUnit("minutes")
+                .publishPercentiles(0.05, 0.5, 0.95)
+                .publishPercentileHistogram()
+                .register(this.metrics.registry);
+
         this.processor = this.createProcessor();
     }
 
@@ -57,6 +100,16 @@ public class ReportMetrics {
     private String getMetricName(String name) {
         String metricName = String.format("%s_%s", REPORT_METRICS_PREFIX, name);
         return metrics.getMetricName(metricName);
+    }
+
+    public ReportMetrics addNumberOfParticipants(int numberOfParticipants) {
+        this.numberOfParticipants.record(numberOfParticipants);
+        return this;
+    }
+
+    public ReportMetrics addCallDurationInMinutes(long durationInMinutes) {
+        this.callDurations.record(durationInMinutes);
+        return this;
     }
 
     private ReportTypeVisitor<Object, Void> createProcessor() {
@@ -144,10 +197,10 @@ public class ReportMetrics {
             public Void visitOutboundAudioTrackReport(Object payload) {
                 var reportPayload = ((OutboundAudioTrackReport) payload);
                 if (reportPayload.roundTripTime != null) {
-                    metrics.registry.summary(outboundAudioTrackRttMeasurementsMetricName).record(reportPayload.roundTripTime);
+                    outboundAudioTrackRttMeasurements.record(reportPayload.roundTripTime);
                 }
                 if (reportPayload.targetBitrate != null) {
-                    metrics.registry.summary(outboundAudioTargetBitrateMeasurementsMetricName).record(reportPayload.targetBitrate);
+                    outboundAudioTargetBitrateMeasurements.record(reportPayload.targetBitrate);
                 }
                 return null;
             }
@@ -156,10 +209,10 @@ public class ReportMetrics {
             public Void visitOutboundVideoTrackReport(Object payload) {
                 var reportPayload = ((OutboundVideoTrackReport) payload);
                 if (reportPayload.roundTripTime != null) {
-                    metrics.registry.summary(outboundVideoTrackRttMeasurementsMetricName).record(reportPayload.roundTripTime);
+                    outboundVideoTrackRttMeasurements.record(reportPayload.roundTripTime);
                 }
                 if (reportPayload.targetBitrate != null) {
-                    metrics.registry.summary(outboundVideoTargetBitrateMeasurementsMetricName).record(reportPayload.targetBitrate);
+                    outboundVideoTargetBitrateMeasurements.record(reportPayload.targetBitrate);
                 }
                 return null;
             }
