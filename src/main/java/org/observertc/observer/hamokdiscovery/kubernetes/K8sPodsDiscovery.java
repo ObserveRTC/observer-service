@@ -1,18 +1,15 @@
 package org.observertc.observer.hamokdiscovery.kubernetes;
 
 import io.github.balazskreith.hamok.Storage;
+import io.github.balazskreith.hamok.common.UuidTools;
 import io.github.balazskreith.hamok.memorystorages.MemoryStorage;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1Pod;
 import io.kubernetes.client.openapi.models.V1PodList;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.subjects.PublishSubject;
-import io.reactivex.rxjava3.subjects.Subject;
-import org.observertc.observer.hamokdiscovery.HamokConnection;
-import org.observertc.observer.hamokdiscovery.HamokConnectionState;
-import org.observertc.observer.hamokdiscovery.HamokConnectionStateChangedEvent;
-import org.observertc.observer.hamokdiscovery.RemotePeerDiscovery;
+import org.observertc.observer.hamokdiscovery.HamokDiscovery;
+import org.observertc.observer.hamokendpoints.HamokConnectionConfig;
+import org.observertc.observer.hamokendpoints.HamokEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,23 +20,24 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 
-public class K8sPodsDiscovery implements RemotePeerDiscovery {
+public class K8sPodsDiscovery implements HamokDiscovery {
 
     private static final Logger logger = LoggerFactory.getLogger(K8sPodsDiscovery.class);
 
-    private Subject<HamokConnectionStateChangedEvent> stateChanged = PublishSubject.create();
-    private Queue<String> activatedRemotePeerIds = new LinkedBlockingQueue<>();
     private final String namespace;
 
-    private Storage<String, DiscoveredRemotePeer> discoveredRemotePeers;
+    private Storage<String, DiscoveredActivePod> discoveredActivePods;
+    private Map<UUID, Instant> disconnects = new ConcurrentHashMap<>();
     private final String namePrefix;
     private final CoreV1Api api;
 
+    private final Supplier<HamokEndpoint> hamokEndpointSupplier;
     private volatile boolean run = false;
     private volatile boolean ready = false;
     private List<InetAddress> localAddresses = Collections.emptyList();
@@ -48,11 +46,13 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
     private final int remotePort;
 
     public K8sPodsDiscovery(
+            Supplier<HamokEndpoint> hamokEndpointSupplier,
             String namespace,
             String servicePrefix,
             int remotePort,
             CoreV1Api api
     ) {
+        this.hamokEndpointSupplier = hamokEndpointSupplier;
         this.namespace = namespace;
         this.namePrefix = servicePrefix;
         this.remotePort = remotePort;
@@ -62,68 +62,23 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
         this.localAddresses.forEach(addr -> {
             logger.info("Found local address: {}", addr);
         });
-        var remoteAddressesStorage = MemoryStorage.<String, DiscoveredRemotePeer>builder()
+        var remoteAddressesStorage = MemoryStorage.<String, DiscoveredActivePod>builder()
                 .setId("remote-addresses")
-//                .setExpiration(60 * 60 * 1000) // 1h
                 .setConcurrency(true)
                 .build();
-        this.discoveredRemotePeers = remoteAddressesStorage;
-        remoteAddressesStorage.events().expiredEntry().subscribe(expiredEntry -> {
-            var remotePeer = expiredEntry.getOldValue();
-            if (remotePeer == null) return;
-            logger.info("Discovered Remote Peer is expired, hence removed from the storage. podId: {} State: {}, PodName: {}, HostName: {}, Address: {}",
-                    remotePeer.podId,
-                    remotePeer.state,
-                    remotePeer.podName,
-                    remotePeer.inetAddress.getHostName(),
-                    remotePeer.inetAddress.getHostAddress()
-            );
-        });
+        this.discoveredActivePods = remoteAddressesStorage;
         remoteAddressesStorage.events().createdEntry().subscribe(expiredEntry -> {
             var remotePeer = expiredEntry.getNewValue();
-            if (remotePeer == null) return;
-            logger.info("Discovered Remote Peer is added. podId: {} State: {}, PodName: {}, HostName: {}, Address: {}",
-                    remotePeer.podId,
-                    remotePeer.state,
-                    remotePeer.podName,
-                    remotePeer.inetAddress.getHostName(),
-                    remotePeer.inetAddress.getHostAddress()
-            );
+            logger.info("Discovered Remote Peer is added. {}", remotePeer);
         });
-        remoteAddressesStorage.events().updatedEntry().subscribe(expiredEntry -> {
+        remoteAddressesStorage.events().deletedEntry().subscribe(expiredEntry -> {
             var oldRemotePeer = expiredEntry.getOldValue();
-            var newRemotePeer = expiredEntry.getNewValue();
-            if (oldRemotePeer == null || newRemotePeer == null) return;
-            logger.info("Discovered Remote Peer is updated. podId: {} PrevState: {} State: {}, PodName: {}, HostName: {}, Address: {}",
-                    oldRemotePeer.podId,
-                    oldRemotePeer.state,
-                    newRemotePeer.state,
-                    newRemotePeer.podName,
-                    newRemotePeer.inetAddress.getHostName(),
-                    newRemotePeer.inetAddress.getHostAddress()
-            );
+            logger.info("Discovered Remote Pod is removed. {}}", oldRemotePeer);
         });
-        this.stateChanged.subscribe(hamokConnectionStateChangedEvent -> {
-            logger.info("Hamok Connection state is changed. {}",
-                hamokConnectionStateChangedEvent
-            );
-        });
-    }
-
-    @Override
-    public Observable<HamokConnectionStateChangedEvent> connectionStateChanged() {
-        return this.stateChanged;
     }
 
     public boolean isReady() {
         return this.ready;
-    }
-
-    public int elapsedSecSinceReady() {
-        if (!this.ready) {
-            return 0;
-        }
-        return (int) (Instant.now().getEpochSecond() - this.readyTimestampInSec);
     }
 
     public void start() {
@@ -171,6 +126,46 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
             logger.warn("Error while collecting local addresses", e);
             return Collections.emptyList();
         }
+    }
+
+    @Override
+    public void onDisconnect(UUID connectionId, String remoteHost, int remotePort) {
+        if (this.disconnects.containsKey(connectionId)) {
+            return;
+        }
+        String podId = null;
+        for (var it = discoveredActivePods.iterator(); it.hasNext(); ) {
+            var entry = it.next();
+            var discoveredActivePod = entry.getValue();
+            if (UuidTools.equals(discoveredActivePod.connectionId, connectionId)) {
+                podId = entry.getKey();
+                break;
+            }
+            if (discoveredActivePod.inetAddress.getHostAddress() == remoteHost && this.remotePort == remotePort) {
+                podId = entry.getKey();
+                break;
+            }
+        }
+        if (podId == null) {
+            logger.debug("Cannot find Discovered Active Pod for connection {}, therefore it cannot be removed", connectionId);
+            return;
+        }
+        this.removeDiscoveredActivePod(podId);
+    }
+
+    @Override
+    public List<HamokConnectionConfig> getActiveConnections() {
+        var result = new LinkedList<HamokConnectionConfig>();
+        for (var it = discoveredActivePods.iterator(); it.hasNext(); ) {
+            var entry = it.next();
+            var discoveredPod = entry.getValue();
+            result.add(new HamokConnectionConfig(
+                    discoveredPod.connectionId,
+                    discoveredPod.inetAddress.getHostName(),
+                    this.remotePort
+            ));
+        }
+        return result;
     }
 
     private void process() {
@@ -267,18 +262,17 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
                 );
 
                 if (ipAddress == null) {
-                    var savedRemotePeer = this.discoveredRemotePeers.get(podId);
-                    if (savedRemotePeer != null && HamokConnectionState.ACTIVE.equals(savedRemotePeer.state)) {
-                        logger.warn("Ip Address is null, but the connection state is active. podId: {}, podName: {},  running: {}, terminated: {}, waiting: {}",
-                                podId,
-                                podName,
+                    var discoveredActivePod = this.discoveredActivePods.get(podId);
+                    if (discoveredActivePod != null) {
+                        logger.warn("There is a discovered active pod which ip address become null. Container State: running: {}, terminated: {}, waiting: {}. DiscoveredActivePod: {}",
                                 running,
                                 terminated,
-                                waiting
+                                waiting,
+                                discoveredActivePod
                         );
                         // it will not be part of the visitedIds, so we make it inactive
 //                        this.setInactive(podId);
-                        result = true;
+//                        result = true;
                     }
                     continue;
                 }
@@ -295,115 +289,112 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
                     continue;
                 }
 
-                var savedRemotePeer = this.discoveredRemotePeers.get(podId);
+                var savedRemotePeer = this.discoveredActivePods.get(podId);
                 if (running && savedRemotePeer == null) {
                     // create and make active
-                    this.createOrSetActive(
+                    var added = this.addDiscoveredActivePod(
                             podId,
                             podName,
                             ipAddress
                     );
+                    result = result || added;
                 } else if (!running && savedRemotePeer != null) {
-                    if (HamokConnectionState.INACTIVE.equals(savedRemotePeer.state)) {
-                        // already inactive
-                        continue;
-                    }
                     // make inactive
-                    this.setInactive(podId);
+                    var removed = this.removeDiscoveredActivePod(podId);
+                    result = result || removed;
                 }
             }
             if (_continue == null) {
                 break;
             }
         }
-        for (var it = discoveredRemotePeers.iterator(); it.hasNext(); ) {
+        var podIdsToRemove = new HashSet<String>();
+        for (var it = discoveredActivePods.iterator(); it.hasNext(); ) {
             var entry = it.next();
             var podId = entry.getKey();
             if (visitedPodIds.contains(podId)) {
                 continue;
             }
-            var discoveredRemotePeer = entry.getValue();
-            if (HamokConnectionState.INACTIVE.equals(discoveredRemotePeer.state)) {
+            podIdsToRemove.add(podId);
+        }
+        var removed = podIdsToRemove.stream().map(this::removeDiscoveredActivePod).reduce(false, (initial, changed) -> initial || changed);
+        result = result || removed;
+
+        var now = Instant.now().toEpochMilli();
+        for (var it = this.disconnects.entrySet().iterator(); it.hasNext(); ) {
+            var entry = it.next();
+            var connectionId = entry.getKey();
+            var disconnected = entry.getValue();
+            if (connectionId == null || disconnected == null) {
+                it.remove();
                 continue;
             }
-            this.setInactive(podId);
+            var elapsedTimeInMs = now - disconnected.toEpochMilli();
+            if (1000 < elapsedTimeInMs) {
+                logger.info("Connection {} was removed more than 1s ago, we remove it from disconnected connections");
+                it.remove();
+            }
         }
         return result;
     }
 
-    private void setInactive(String podId) {
-        if (podId == null) {
-            logger.warn("Attempted to set a non-existing podId {} inactive", podId);
-            return;
-        }
-        var savedRemotePeer = this.discoveredRemotePeers.get(podId);
-        if (savedRemotePeer == null) {
-            logger.warn("Attempted to set a non-existing discoveredRemotePeer {} inactive", podId);
-            return;
-        }
-        if (HamokConnectionState.INACTIVE.equals(savedRemotePeer.state)) {
-            logger.warn("Attempted to set discoveredRemotePeer inactive twice. {} ", savedRemotePeer);
-            return;
-        }
-        var prevState = savedRemotePeer.state;
-        var updatedRemotePeer = new DiscoveredRemotePeer(
-                savedRemotePeer.podId,
-                savedRemotePeer.podName,
-                HamokConnectionState.INACTIVE,
-                savedRemotePeer.inetAddress
-        );
-        this.discoveredRemotePeers.set(updatedRemotePeer.podId, updatedRemotePeer);
-        var connectionId = UUID.nameUUIDFromBytes(updatedRemotePeer.podId.getBytes(StandardCharsets.UTF_8));
-        var hamokConnection = new HamokConnection(
-                connectionId,
-                savedRemotePeer.inetAddress.getHostName(),
-                this.remotePort
-        );
-        this.stateChanged.onNext(new HamokConnectionStateChangedEvent(
-                hamokConnection,
-                prevState,
-                updatedRemotePeer.state
-        ));
-    }
-
-    private void createOrSetActive(String podId, String podName, InetAddress inetAddress) {
+    private boolean addDiscoveredActivePod(String podId, String podName, InetAddress inetAddress) {
         if (podId == null) {
             logger.warn("Attempted to set a non-existing podId {} active", podId);
-            return;
+            return false;
         }
-        HamokConnectionState prevState = null;
-        var discoveredRemotePeer = this.discoveredRemotePeers.get(podId);
-        if (discoveredRemotePeer == null) {
-            discoveredRemotePeer = new DiscoveredRemotePeer(
-                    podId,
-                    podName,
-                    HamokConnectionState.ACTIVE,
-                    inetAddress
-            );
-        } else if (HamokConnectionState.ACTIVE.equals(discoveredRemotePeer.state)) {
-            logger.warn("Attempted to discoveredRemotePeer active twice. {} ", discoveredRemotePeer);
-            return;
-        } else {
-            prevState = discoveredRemotePeer.state;
-            discoveredRemotePeer = new DiscoveredRemotePeer(
-                    discoveredRemotePeer.podId,
-                    discoveredRemotePeer.podName,
-                    HamokConnectionState.ACTIVE,
-                    discoveredRemotePeer.inetAddress
-            );
+        var discoveredActivePod = this.discoveredActivePods.get(podId);
+        if (discoveredActivePod != null) {
+            logger.warn("Attempted to add a discoveredPod twice {}", discoveredActivePod);
+            return false;
         }
-        this.discoveredRemotePeers.set(podId, discoveredRemotePeer);
-        var connectionId = UUID.nameUUIDFromBytes(discoveredRemotePeer.podId.getBytes(StandardCharsets.UTF_8));
-        var hamokConnection = new HamokConnection(
+        var connectionId = UUID.nameUUIDFromBytes(podId.getBytes(StandardCharsets.UTF_8));
+        var disconnected = this.disconnects.get(connectionId);
+        if (disconnected != null) {
+            logger.warn("Attempted to add an already disconnected connection. ConnectionId {}", connectionId);
+            return false;
+        }
+        discoveredActivePod = new DiscoveredActivePod(
+                podId,
+                podName,
                 connectionId,
-                discoveredRemotePeer.inetAddress.getHostName(),
-                this.remotePort
+                inetAddress
         );
-        this.stateChanged.onNext(new HamokConnectionStateChangedEvent(
-                hamokConnection,
-                prevState,
-                discoveredRemotePeer.state
-        ));
+        this.discoveredActivePods.set(podId, discoveredActivePod);
+        var hamokEndpoint = hamokEndpointSupplier.get();
+        if (hamokEndpoint != null) {
+            hamokEndpoint.addConnection(new HamokConnectionConfig(
+                    connectionId,
+                    inetAddress.getHostName(),
+                    this.remotePort
+            ));
+        } else {
+            logger.info("HamokEndpoint is not available to make a connection to pod {}", discoveredActivePod);
+        }
+
+        return true;
+    }
+
+    private boolean removeDiscoveredActivePod(String podId) {
+        if (podId == null) {
+            logger.warn("Attempted to set a non-existing podId {} inactive", podId);
+            return false;
+        }
+        var discoveredActivePod = this.discoveredActivePods.get(podId);
+        if (discoveredActivePod == null) {
+            logger.debug("Attempted to remove a non-existing discovered remote pod");
+            return false;
+        }
+        this.discoveredActivePods.delete(discoveredActivePod.podId);
+        this.disconnects.put(discoveredActivePod.connectionId, Instant.now());
+        var hamokEndpoint = hamokEndpointSupplier.get();
+        if (hamokEndpoint != null) {
+            hamokEndpoint.removeConnection(discoveredActivePod.connectionId);
+        } else {
+            logger.warn("Hamok Connection cannot be removed because the endpoint is not available");
+        }
+
+        return true;
     }
 
     private static InetAddress getPodIp(V1Pod pod) {
@@ -418,11 +409,10 @@ public class K8sPodsDiscovery implements RemotePeerDiscovery {
         }
     }
 
-
-    private record DiscoveredRemotePeer(
+    private record DiscoveredActivePod (
             String podId,
             String podName,
-            HamokConnectionState state,
+            UUID connectionId,
             InetAddress inetAddress
     ) {
 

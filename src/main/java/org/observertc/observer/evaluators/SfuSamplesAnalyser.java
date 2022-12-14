@@ -147,7 +147,12 @@ public class SfuSamplesAnalyser implements Consumer<ObservedSfuSamples> {
         }
         var sfuInboundRtpPads = this.sfuInboundRtpPadsRepository.fetchRecursively(observedSfuSamples.getInboundRtpPadIds());
         var sfuOutboundRtpPads = this.sfuOutboundRtpPadsRepository.fetchRecursively(observedSfuSamples.getOutboundRtpPadIds());
-        var internalSfuInboundRtpPadToSfuOutboundRtpPad = this.getInternalSfuInboundRtpPadToSfuOutboundRtpPad(sfuInboundRtpPads);
+        Map<String, SfuOutboundRtpPad> internalSfuInboundRtpPadToSfuOutboundRtpPad;
+        if (this.config.matchRtpPads) {
+            internalSfuInboundRtpPadToSfuOutboundRtpPad = this.getInternalSfuInboundRtpPadToSfuOutboundRtpPad(sfuInboundRtpPads);
+        } else {
+           internalSfuInboundRtpPadToSfuOutboundRtpPad = Collections.emptyMap();
+        }
         for (var observedSfuSample : observedSfuSamples) {
             var sfuSample = observedSfuSample.getSfuSample();
             SfuSampleVisitor.streamTransports(sfuSample).forEach(sfuTransport -> {

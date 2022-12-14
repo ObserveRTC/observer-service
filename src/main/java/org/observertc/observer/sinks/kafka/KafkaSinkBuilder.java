@@ -7,12 +7,12 @@ import org.apache.kafka.common.serialization.BytesSerializer;
 import org.apache.kafka.common.serialization.UUIDSerializer;
 import org.apache.kafka.common.utils.Bytes;
 import org.observertc.observer.configbuilders.AbstractBuilder;
-import org.observertc.observer.configbuilders.Builder;
 import org.observertc.observer.configbuilders.ConfigConverter;
 import org.observertc.observer.configs.TransportFormatType;
 import org.observertc.observer.mappings.Encoder;
 import org.observertc.observer.mappings.JsonMapper;
 import org.observertc.observer.reports.Report;
+import org.observertc.observer.sinks.SinkBuilder;
 import org.observertc.observer.sinks.Sink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 @Prototype
-public class KafkaSinkBuilder extends AbstractBuilder implements Builder<Sink> {
+public class KafkaSinkBuilder extends AbstractBuilder implements SinkBuilder {
     private final static Logger logger = LoggerFactory.getLogger(KafkaSinkBuilder.class);
 
     public Sink build() {

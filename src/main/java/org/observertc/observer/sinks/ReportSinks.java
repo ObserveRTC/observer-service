@@ -1,5 +1,8 @@
 package org.observertc.observer.sinks;
 
+import io.micronaut.context.BeanProvider;
+import io.micronaut.core.util.SupplierUtil;
+import io.micronaut.scheduling.TaskExecutors;
 import io.reactivex.rxjava3.functions.Consumer;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -14,6 +17,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.function.Supplier;
 
 @Singleton
 public class ReportSinks implements Consumer<List<Report>> {
@@ -27,6 +32,13 @@ public class ReportSinks implements Consumer<List<Report>> {
 
     @Inject
     SinkMetrics sinkMetrics;
+
+    private final Supplier<ExecutorService> ioExecutor;
+
+    @Inject
+    public ReportSinks(@jakarta.inject.Named(TaskExecutors.IO) BeanProvider<ExecutorService> ioExecutor) {
+        this.ioExecutor = SupplierUtil.memoized(ioExecutor::get);
+    }
 
     @PostConstruct
     void setup() {
@@ -130,14 +142,19 @@ public class ReportSinks implements Consumer<List<Report>> {
     }
 
     private Sink buildSink(String sinkId, Map<String, Object> config) {
-        SinkBuilder sinkBuilder = new SinkBuilder();
-        sinkBuilder.withConfiguration(config);
-        Sink result = sinkBuilder.build();
+        SinkAssembler sinkAssembler = new SinkAssembler();
+        sinkAssembler.withConfiguration(config);
+        sinkAssembler.setEssentials(new SinkBuilder.Essentials(
+                sinkId,
+                this.ioExecutor.get(),
+                this.sinkMetrics
+        ));
+        Sink result = sinkAssembler.build();
         if (Objects.isNull(result)) {
             logger.warn("Sink for {} has not been built", sinkId, JsonUtils.objectToString(config));
             return null;
         } else if (observerConfig.security.printConfigs) {
-            logger.info("Sink {} with config {} has been initiated", result.getClass().getSimpleName(), sinkBuilder.getAppliedConfiguration());
+            logger.info("Sink {} with config {} has been initiated", result.getClass().getSimpleName(), sinkAssembler.getAppliedConfiguration());
         }
         String sinkLoggerName = String.format("Sink-%s:", sinkId);
         var logger = LoggerFactory.getLogger(sinkLoggerName);

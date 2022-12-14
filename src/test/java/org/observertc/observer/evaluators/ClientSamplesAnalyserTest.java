@@ -44,6 +44,8 @@ class ClientSamplesAnalyserTest {
         var observedClientSamples = ObservedClientSamples.builder().addObservedClientSample(observedClientSample).build();
         var reportsPromise = new CompletableFuture<List<Report>>();
         var clientSample = observedClientSample.getClientSample();
+        clientSample.callId = UUID.randomUUID().toString();
+
         int expectedNumberOfReports = getOneIfNotNull(clientSample.engine) +
                 getOneIfNotNull(clientSample.platform) +
                 getOneIfNotNull(clientSample.browser) +
@@ -133,6 +135,7 @@ class ClientSamplesAnalyserTest {
         var reportsPromise = new CompletableFuture<List<Report>>();
         var clientSample = observedClientSample.getClientSample();
 
+        clientSample.callId = UUID.randomUUID().toString();
         ClientSampleVisitor.streamInboundAudioTracks(observedClientSample.getClientSample()).forEach(track -> track.sfuSinkId = UUID.randomUUID().toString());
         ClientSampleVisitor.streamInboundVideoTracks(observedClientSample.getClientSample()).forEach(track -> track.sfuSinkId = UUID.randomUUID().toString());
         int expectedNumberOfReports = getOneIfNotNull(clientSample.engine) +

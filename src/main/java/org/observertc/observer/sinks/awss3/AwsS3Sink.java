@@ -3,6 +3,7 @@ package org.observertc.observer.sinks.awss3;
 // https://docs.aws.amazon.com/code-samples/latest/catalog/javav2-firehose-src-main-java-com-example-firehose-PutBatchRecords.java.html
 
 import org.observertc.observer.common.JsonUtils;
+import org.observertc.observer.evaluators.eventreports.attachments.MediaTrackAttachment;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.sinks.FormatEncoder;
 import org.observertc.observer.sinks.Sink;
@@ -36,7 +37,11 @@ public class AwsS3Sink extends Sink {
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss").withZone(ZoneId.systemDefault());
     boolean createIndexes = false;
 
-    AwsS3Sink(String bucketName, int parallelism) {
+    AwsS3Sink(
+            int parallelism,
+            String bucketName
+    ) {
+
         this.bucketName = bucketName;
         this.sender = new Sender(parallelism);
     }
@@ -52,6 +57,7 @@ public class AwsS3Sink extends Sink {
             return;
         }
         logger.info("start processing {} reports", reports.size());
+
 
         Instant now = Instant.now();
         try {
@@ -119,10 +125,10 @@ public class AwsS3Sink extends Sink {
                     switch (callEventReport.name) {
                         case "CALL_STARTED" -> {
                             this.sender.submit(
-                                    "calls/" + callEventReport.callId,
+                                    "__indexes/calls/" + callEventReport.callId,
                                     RequestBody.fromString(JsonUtils.objectToString(callEventReport))
                             );
-                            var serviceRoomKey = "service-rooms/" + callEventReport.serviceId.replace("/", "") + "/" + callEventReport.roomId.replace("/", "") + "/" + callEventReport.callId;
+                            var serviceRoomKey = "__indexes/service-rooms/" + callEventReport.serviceId.replace("/", "") + "/" + callEventReport.roomId.replace("/", "") + "/" + callEventReport.callId;
                             this.sender.submit(
                                     serviceRoomKey,
                                     RequestBody.fromString(JsonUtils.objectToString(callEventReport))
@@ -130,23 +136,36 @@ public class AwsS3Sink extends Sink {
                         }
                         case "MEDIA_TRACK_ADDED" -> {
                             this.sender.submit(
-                                    "media-tracks/" + callEventReport.mediaTrackId,
+                                    "__indexes/media-tracks/" + callEventReport.mediaTrackId,
                                     RequestBody.fromString(JsonUtils.objectToString(callEventReport))
                             );
-                            this.sender.submit(
-                                    "media-tracks-by-clients/" + callEventReport.clientId + "/" + callEventReport.mediaTrackId,
-                                    RequestBody.fromString(JsonUtils.objectToString(callEventReport))
-                            );
+                            if (callEventReport.attachments != null) {
+                                var mediaTrackAttachments = MediaTrackAttachment.fromBase64(callEventReport.attachments);
+                                if (mediaTrackAttachments != null) {
+                                    if (mediaTrackAttachments.sfuStreamId != null) {
+                                        this.sender.submit(
+                                                "__indexes/sfu-streams/" + mediaTrackAttachments.sfuStreamId,
+                                                RequestBody.fromString(JsonUtils.objectToString(callEventReport))
+                                        );
+                                    }
+                                    if (mediaTrackAttachments.sfuSinkId != null) {
+                                        this.sender.submit(
+                                                "__indexes/sfu-sinks/" + mediaTrackAttachments.sfuSinkId,
+                                                RequestBody.fromString(JsonUtils.objectToString(callEventReport))
+                                        );
+                                    }
+                                }
+                            }
                         }
                         case "PEER_CONNECTION_OPENED" -> {
                             this.sender.submit(
-                                    "peer-connections/" + callEventReport.peerConnectionId,
+                                    "__indexes/peer-connections/" + callEventReport.peerConnectionId,
                                     RequestBody.fromString(JsonUtils.objectToString(callEventReport))
                             );
                         }
                         case "CLIENT_JOINED" -> {
                             this.sender.submit(
-                                    "clients/" + callEventReport.clientId,
+                                    "__indexes/clients/" + callEventReport.clientId,
                                     RequestBody.fromString(JsonUtils.objectToString(callEventReport))
                             );
                         }
@@ -158,22 +177,22 @@ public class AwsS3Sink extends Sink {
                         case "SFU_RTP_PAD_ADDED" -> {
                             var payload = RequestBody.fromString(JsonUtils.objectToString(sfuEventReport));
                             this.sender.submit(
-                                    "sfu-rtp-pads/" + sfuEventReport.rtpPadId,
+                                    "__indexes/sfu-rtp-pads/" + sfuEventReport.rtpPadId,
                                     payload
                             );
                             this.sender.submit(
-                                    "sfu-media-sinks/" + sfuEventReport.mediaSinkId,
+                                    "__indexes/sfu-media-sinks/" + sfuEventReport.mediaSinkId,
                                     payload
                             );
                             this.sender.submit(
-                                    "sfu-media-streams/" + sfuEventReport.mediaStreamId,
+                                    "__indexes/sfu-media-streams/" + sfuEventReport.mediaStreamId,
                                     payload
                             );
                         }
                         case "SFU_TRANSPORT_OPENED" -> {
                             var payload = RequestBody.fromString(JsonUtils.objectToString(sfuEventReport));
                             this.sender.submit(
-                                    "sfu-transports/" + sfuEventReport.transportId,
+                                    "__indexes/sfu-transports/" + sfuEventReport.transportId,
                                     payload
                             );
                         }
@@ -187,6 +206,7 @@ public class AwsS3Sink extends Sink {
         private final int executorsNum;
         private final ExecutorService executor;
         private final Map<String, Future<Boolean>> promises = new ConcurrentHashMap<>();
+        private volatile int ongoing = 0;
 
         Sender(int executorsNum) {
             this.executorsNum = executorsNum;

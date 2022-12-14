@@ -16,6 +16,7 @@ public class EvaluatorMetrics {
     private static final String EVALUATOR_NAME_TAG_NAME = "component";
     private static final String COMMIT_CALL_ENTITIES_NAME_TAG_NAME = "commit_call_entities";
     private static final String COMMIT_SFU_ENTITIES_NAME_TAG_NAME = "commit_sfu_entities";
+    private static final String OPERATION_SYSTEM_TAG_NAME = "observed_operation_system";
 
 
     @Inject

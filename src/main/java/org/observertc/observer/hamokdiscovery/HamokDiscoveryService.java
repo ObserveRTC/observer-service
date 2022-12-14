@@ -8,6 +8,8 @@ import jakarta.inject.Singleton;
 import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.configbuilders.Builder;
 import org.observertc.observer.configbuilders.ConfigConverter;
+import org.observertc.observer.configs.ObserverConfig;
+import org.observertc.observer.hamokendpoints.HamokEndpointService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,16 +18,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Singleton
-public class DiscoveryBuilderService extends AbstractBuilder {
-    private static final Logger logger = LoggerFactory.getLogger(DiscoveryBuilderService.class);
+public class HamokDiscoveryService extends AbstractBuilder implements Supplier<HamokDiscovery> {
+    private static final Logger logger = LoggerFactory.getLogger(HamokDiscoveryService.class);
 
     private final List<String> packages;
-    private DiscoveryBuildersEssentials essentials;
+    private final AtomicReference<HamokDiscovery> hamokDiscovery = new AtomicReference<>(null);
+    private AtomicReference<HamokEndpointService> hamokEndpointService = new AtomicReference<>(null);
 
-    public DiscoveryBuilderService() {
+    public HamokDiscoveryService() {
         Package thisPackage = this.getClass().getPackage();
         Package[] packages = Package.getPackages();
         this.packages = Arrays.stream(packages)
@@ -35,16 +40,25 @@ public class DiscoveryBuilderService extends AbstractBuilder {
     }
 
     @Inject
+    ObserverConfig.HamokConfig hamokConfig;
+
+    @Inject
     BeanProvider<CoreV1Api> coreV1ApiBeanProvider;
+
+    public void setEndpointService(HamokEndpointService hamokEndpointService) {
+        this.hamokEndpointService.set(hamokEndpointService);
+    }
 
     @PostConstruct
     void setup() {
-        this.essentials = new DiscoveryBuildersEssentials(
-                this.coreV1ApiBeanProvider
-        );
+
     }
 
-    public RemotePeerDiscovery build(Map<String, Object> configMap) {
+    private HamokDiscovery build(Map<String, Object> configMap) {
+        if (configMap == null) {
+            logger.warn("No config provided for discovery");
+            return null;
+        }
         var config = ConfigConverter.convert(DiscoveryBuilderConfig.class, configMap);
         String builderClassName = AbstractBuilder.getBuilderClassName("", config.type, "Builder");
         Optional<Builder> builderHolder = this.tryInvoke(builderClassName);
@@ -53,10 +67,30 @@ public class DiscoveryBuilderService extends AbstractBuilder {
             return null;
         }
         DiscoveryBuilder discoveryBuilder = (DiscoveryBuilder) builderHolder.get();
-        discoveryBuilder.setBuildingEssentials(this.essentials);
+        discoveryBuilder.setBuildingEssentials(new DiscoveryBuildersEssentials(
+                this.coreV1ApiBeanProvider,
+                this.hamokEndpointService.get()
+        ));
         discoveryBuilder.withConfiguration(config.config);
 
         var result = discoveryBuilder.build();
+        return result;
+    }
+
+    @Override
+    public HamokDiscovery get() {
+        var result = this.hamokDiscovery.get();
+        if (result != null) {
+            return result;
+        }
+        result = this.build(this.hamokConfig.discovery);
+        if (result == null) {
+            logger.warn("No Discovery is configured");
+            return null;
+        }
+        if (!this.hamokDiscovery.compareAndSet(null, result)) {
+            return this.hamokDiscovery.get();
+        }
         return result;
     }
 }

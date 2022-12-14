@@ -73,6 +73,13 @@ public class ObserverConfig {
 		public static class FlawMetricsConfig {
 			public boolean enabled;
 		}
+
+		public ClientSamplesMetricConfig clientSamples;
+
+		@ConfigurationProperties("clientSamplesMetricConfig")
+		public static class ClientSamplesMetricConfig {
+			public boolean enabled;
+		}
 	}
 
 	// Security Configurations
@@ -204,12 +211,14 @@ public class ObserverConfig {
 		@ConfigurationProperties(("clientSamplesAnalyser"))
 		public static class ClientSamplesAnalyserConfig {
 			public boolean dropUnmatchedReports = false;
+			public boolean matchTracks = true;
 		}
 
 		public SfuSamplesAnalyserConfig sfuSamplesAnalyser = new SfuSamplesAnalyserConfig();
 
 		@ConfigurationProperties(("sfuSamplesAnalyser"))
 		public static class SfuSamplesAnalyserConfig {
+			public boolean matchRtpPads = true;
 			public boolean dropUnmatchedInternalInboundReports = false;
 			public boolean dropUnmatchedInboundReports = false;
 			public boolean dropUnmatchedOutboundReports = false;
@@ -266,11 +275,13 @@ public class ObserverConfig {
 	@ConfigurationProperties("hamok")
 	public static class HamokConfig {
 		public List<String> memberNamesPool = new LinkedList<>();
+		public Map<String, Object> discovery;
 		public Map<String, Object> endpoint;
 		public boolean usePartialResponses = true;
 		public StorageGridConfig storageGrid = new StorageGridConfig();
+		public int firstMinRemotePeers = 1;
 
-		@ConfigurationProperties(("storageGrid"))
+        @ConfigurationProperties(("storageGrid"))
 		public static class StorageGridConfig {
 			public int raftMaxLogEntriesRetentionTimeInMinutes = 30;
 			public int heartbeatInMs = 50;

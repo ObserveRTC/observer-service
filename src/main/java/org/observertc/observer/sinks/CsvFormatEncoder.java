@@ -48,7 +48,13 @@ public class CsvFormatEncoder<K, V> implements FormatEncoder<K, V> {
     private final Function<String, V> formatMapper;
     private final Logger logger;
 
-    public CsvFormatEncoder(int maxChunkSize, Function<Report, K> typeMapper, Function<String, V> formatMapper, CSVFormat format, Logger logger) {
+    public CsvFormatEncoder(
+            int maxChunkSize,
+            Function<Report, K> typeMapper,
+            Function<String, V> formatMapper,
+            CSVFormat format,
+            Logger logger
+    ) {
         this.format = format;
         this.maxChunkSize = maxChunkSize;
         this.typeMapper = typeMapper;
