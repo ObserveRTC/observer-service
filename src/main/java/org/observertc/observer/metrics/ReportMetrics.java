@@ -6,10 +6,7 @@ import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.events.CallMetaType;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.reports.ReportTypeVisitor;
-import org.observertc.schemas.reports.CallEventReport;
-import org.observertc.schemas.reports.CallMetaReport;
-import org.observertc.schemas.reports.ClientExtensionReport;
-import org.observertc.schemas.reports.SfuEventReport;
+import org.observertc.schemas.reports.*;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -18,6 +15,10 @@ import java.util.Locale;
 @Singleton
 public class ReportMetrics {
     private static final String REPORT_METRICS_PREFIX = "reports";
+    private static final String OUTBOUND_AUDIO_TRACKS_RTT_MEASUREMENT_METRIC_NAME = "outbound_audio_tracks_rtt";
+    private static final String OUTBOUND_VIDEO_TRACKS_RTT_MEASUREMENT_METRIC_NAME = "outbound_video_tracks_rtt";
+    private static final String OUTBOUND_AUDIO_TARGET_BITRATE_MEASUREMENT_METRIC_NAME = "outbound_audio_target_bitrate";
+    private static final String OUTBOUND_VIDEO_TARGET_BITRATE_MEASUREMENT_METRIC_NAME = "outbound_video_target_bitrate";
 
     @Inject
     Metrics metrics;
@@ -26,9 +27,17 @@ public class ReportMetrics {
     ObserverConfig.MetricsConfig.ReportMetricsConfig config;
 
     private ReportTypeVisitor<Object, Void> processor;
+    private String outboundAudioTrackRttMeasurementsMetricName;
+    private String outboundVideoTrackRttMeasurementsMetricName;
+    private String outboundAudioTargetBitrateMeasurementsMetricName;
+    private String outboundVideoTargetBitrateMeasurementsMetricName;
 
     @PostConstruct
     void setup() {
+        this.outboundAudioTrackRttMeasurementsMetricName = getMetricName(OUTBOUND_AUDIO_TRACKS_RTT_MEASUREMENT_METRIC_NAME);
+        this.outboundVideoTrackRttMeasurementsMetricName = getMetricName(OUTBOUND_VIDEO_TRACKS_RTT_MEASUREMENT_METRIC_NAME);
+        this.outboundAudioTargetBitrateMeasurementsMetricName = getMetricName(OUTBOUND_AUDIO_TARGET_BITRATE_MEASUREMENT_METRIC_NAME);
+        this.outboundVideoTargetBitrateMeasurementsMetricName = getMetricName(OUTBOUND_VIDEO_TARGET_BITRATE_MEASUREMENT_METRIC_NAME);
         this.processor = this.createProcessor();
     }
 
@@ -127,19 +136,31 @@ public class ReportMetrics {
 
             @Override
             public Void visitInboundVideoTrackReport(Object payload) {
-//                var reportPayload = ((InboundVideoTrackReport) payload);
+                var reportPayload = ((InboundVideoTrackReport) payload);
                 return null;
             }
 
             @Override
             public Void visitOutboundAudioTrackReport(Object payload) {
-//                var reportPayload = ((OutboundAudioTrackReport) payload);
+                var reportPayload = ((OutboundAudioTrackReport) payload);
+                if (reportPayload.roundTripTime != null) {
+                    metrics.registry.summary(outboundAudioTrackRttMeasurementsMetricName).record(reportPayload.roundTripTime);
+                }
+                if (reportPayload.targetBitrate != null) {
+                    metrics.registry.summary(outboundAudioTargetBitrateMeasurementsMetricName).record(reportPayload.targetBitrate);
+                }
                 return null;
             }
 
             @Override
             public Void visitOutboundVideoTrackReport(Object payload) {
-//                var reportPayload = ((OutboundVideoTrackReport) payload);
+                var reportPayload = ((OutboundVideoTrackReport) payload);
+                if (reportPayload.roundTripTime != null) {
+                    metrics.registry.summary(outboundVideoTrackRttMeasurementsMetricName).record(reportPayload.roundTripTime);
+                }
+                if (reportPayload.targetBitrate != null) {
+                    metrics.registry.summary(outboundVideoTargetBitrateMeasurementsMetricName).record(reportPayload.targetBitrate);
+                }
                 return null;
             }
 
