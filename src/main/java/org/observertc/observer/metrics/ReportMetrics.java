@@ -66,12 +66,8 @@ public class ReportMetrics {
             public Void visitCallEventReport(Object payload) {
                 var reportPayload = ((CallEventReport) payload);
                 var metricName = getMetricName(reportPayload.name.toLowerCase(Locale.ROOT));
-                var serviceIdTagValue = metrics.getTagValue(reportPayload.serviceId);
-                var mediaUnitTagValue = metrics.getTagValue(reportPayload.mediaUnitId);
                 metrics.registry.counter(
-                        metricName,
-                        metrics.getServiceIdTagName(), serviceIdTagValue,
-                        metrics.getMediaUnitIdTagName(), mediaUnitTagValue
+                        metricName
                 ).increment();
                 return null;
             }
@@ -84,12 +80,8 @@ public class ReportMetrics {
                     return null;
                 }
                 var metricName = getMetricName(metaType.toLowerCase(Locale.ROOT));
-                var serviceIdTagValue = metrics.getTagValue(reportPayload.serviceId);
-                var mediaUnitTagValue = metrics.getTagValue(reportPayload.mediaUnitId);
                 metrics.registry.counter(
-                        metricName,
-                        metrics.getServiceIdTagName(), serviceIdTagValue,
-                        metrics.getMediaUnitIdTagName(), mediaUnitTagValue
+                        metricName
                 ).increment();
                 return null;
 
@@ -99,12 +91,8 @@ public class ReportMetrics {
             public Void visitClientExtensionDataReport(Object payload) {
                 var reportPayload = ((ClientExtensionReport) payload);
                 var metricName = getMetricName(reportPayload.extensionType.toLowerCase(Locale.ROOT));
-                var serviceIdTagValue = metrics.getTagValue(reportPayload.serviceId);
-                var mediaUnitTagValue = metrics.getTagValue(reportPayload.mediaUnitId);
                 metrics.registry.counter(
-                        metricName,
-                        metrics.getServiceIdTagName(), serviceIdTagValue,
-                        metrics.getMediaUnitIdTagName(), mediaUnitTagValue
+                        metricName
                 ).increment();
                 return null;
 
@@ -160,12 +148,8 @@ public class ReportMetrics {
                 var reportPayload = ((SfuEventReport) payload);
                 var reportName = reportPayload.name.toLowerCase(Locale.ROOT);
                 var metricName = getMetricName(reportName);
-                var serviceIdTagValue = metrics.getTagValue(reportPayload.serviceId);
-                var mediaUnitTagValue = metrics.getTagValue(reportPayload.mediaUnitId);
                 metrics.registry.counter(
-                        metricName,
-                        metrics.getServiceIdTagName(), serviceIdTagValue,
-                        metrics.getMediaUnitIdTagName(), mediaUnitTagValue
+                        metricName
                 ).increment();
                 return null;
             }

@@ -133,7 +133,7 @@ public class SamplesWebsocketController {
 				this.inputs.remove(session.getId());
 				return;
 			}
-			this.exposedMetrics.incrementOpenedWebsockets(serviceId, mediaUnitId);
+			this.exposedMetrics.incrementOpenedWebsockets();
 			logger.info("Session {} is opened, providedSchemaVersion: {}, providedFormat: {}", session.getId(), providedSchemaVersion, providedFormat);
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
@@ -149,7 +149,7 @@ public class SamplesWebsocketController {
 			return;
 		}
 		try {
-			this.exposedMetrics.incrementClosedWebsockets(serviceId, mediaUnitId);
+			this.exposedMetrics.incrementClosedWebsockets();
 			this.inputs.remove(session.getId());
 			logger.info("Session {} is closed", session.getId());
 		} catch (Throwable t) {
@@ -164,7 +164,7 @@ public class SamplesWebsocketController {
 			byte[] messageBytes,
 			WebSocketSession session) {
 		try {
-			this.exposedMetrics.incrementWebsocketReceivedSamples(serviceId, mediaUnitId);
+			this.exposedMetrics.incrementWebsocketReceivedSamples();
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
 		}

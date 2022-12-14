@@ -224,7 +224,6 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
                         .setPayload(payload)
                         .assemble();
                 this.clientSamplesMetrics.incrementPlatform(
-                        clientSample.platform.vendor,
                         clientSample.platform.type
                 );
             }
@@ -238,8 +237,7 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
                         .setPayload(payload)
                         .assemble();
                 this.clientSamplesMetrics.incrementBrowser(
-                        clientSample.browser.name,
-                        clientSample.browser.version
+                        clientSample.browser.name
                 );
             }
 

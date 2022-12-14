@@ -75,7 +75,7 @@ public class SamplesRestApiController {
 			);
 //			logger.info("{}\n {}\n", version, Base64.encode(message));
 			acceptor.accept(message);
-			this.exposedMetrics.incrementRESTReceivedSamples(serviceId, mediaUnitId);
+			this.exposedMetrics.incrementRESTReceivedSamples();
 		} catch (Throwable ex) {
 			return HttpResponse.serverError(ex.getMessage());
 		}

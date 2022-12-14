@@ -50,40 +50,30 @@ public class SourceMetrics {
     }
 
 
-    public SourceMetrics incrementOpenedWebsockets(String serviceId, String mediaUnitId) {
+    public SourceMetrics incrementOpenedWebsockets() {
         this.metrics.registry.counter(
-                this.openedWebsocketMetricName,
-                metrics.getServiceIdTagName(), metrics.getTagValue(serviceId),
-                metrics.getMediaUnitIdTagName(), metrics.getTagValue(mediaUnitId)
+                this.openedWebsocketMetricName
         ).increment();
         return this;
     }
 
-    public SourceMetrics incrementClosedWebsockets(String serviceId, String mediaUnitId) {
+    public SourceMetrics incrementClosedWebsockets() {
         this.metrics.registry.counter(
-                this.closedWebsocketMetricName,
-                metrics.getServiceIdTagName(), metrics.getTagValue(serviceId),
-                metrics.getMediaUnitIdTagName(), metrics.getTagValue(mediaUnitId)
+                this.closedWebsocketMetricName
         ).increment();
         return this;
     }
 
-    public SourceMetrics incrementRESTReceivedSamples(String serviceId, String mediaUnitId) {
+    public SourceMetrics incrementRESTReceivedSamples() {
         this.metrics.registry.counter(
-                this.receivedSamplesMetricName,
-                metrics.getServiceIdTagName(), metrics.getTagValue(serviceId),
-                metrics.getMediaUnitIdTagName(), metrics.getTagValue(mediaUnitId),
-                SOURCE_TAG_NAME, REST_SOURCE_TAG_VALUE
+                this.receivedSamplesMetricName
         ).increment();
         return this;
     }
 
-    public SourceMetrics incrementWebsocketReceivedSamples(String serviceId, String mediaUnitId) {
+    public SourceMetrics incrementWebsocketReceivedSamples() {
         this.metrics.registry.counter(
-                this.receivedSamplesMetricName,
-                metrics.getServiceIdTagName(), metrics.getTagValue(serviceId),
-                metrics.getMediaUnitIdTagName(), metrics.getTagValue(mediaUnitId),
-                SOURCE_TAG_NAME, WEBSOCKET_SOURCE_TAG_VALUE
+                this.receivedSamplesMetricName
         ).increment();
         return this;
     }

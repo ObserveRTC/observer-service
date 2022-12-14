@@ -50,25 +50,23 @@ public class ClientSamplesMetrics {
     }
 
 
-    public ClientSamplesMetrics incrementBrowser(String name, String version) {
+    public ClientSamplesMetrics incrementBrowser(String name) {
         if (!this.config.enabled) {
             return this;
         }
         this.metrics.registry.counter(
                 this.browserMetricName,
-                NAME_TAG_NAME, Utils.firstNotNull(name, UNKNOWN_VALUE),
-                VERSION_TAG_NAME, Utils.firstNotNull(version, UNKNOWN_VALUE)
+                NAME_TAG_NAME, Utils.firstNotNull(name, UNKNOWN_VALUE)
         ).increment();
         return this;
     }
 
-    public ClientSamplesMetrics incrementPlatform(String vendor, String type) {
+    public ClientSamplesMetrics incrementPlatform(String type) {
         if (!this.config.enabled) {
             return this;
         }
         this.metrics.registry.counter(
                 this.platformMetricName,
-                VENDOR_TAG_NAME, Utils.firstNotNull(vendor, UNKNOWN_VALUE),
                 TYPE_TAG_NAME, Utils.firstNotNull(type, UNKNOWN_VALUE)
         ).increment();
         return this;
