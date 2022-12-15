@@ -46,7 +46,7 @@ public class CallEndedReports {
     private void exposeMetrics(Models.Call callModel) {
         try {
             if (callModel.hasStarted() && callModel.hasSampleTouched()) {
-                Long durationInMs = callModel.getSampleTouched() - callModel.getStarted();
+                Long durationInMs = callModel.getServerTouched() - callModel.getStarted();
                 if (0 < durationInMs) {
                     long durationInMin = durationInMs / (60 * 1000);
                     this.reportMetrics.addCallDurationInMinutes(durationInMin);
@@ -64,7 +64,7 @@ public class CallEndedReports {
     private CallEventReport makeReport(Models.Call callModel) {
         Long timestamp;
         if (callModel.hasSampleTouched()) {
-            timestamp = callModel.getSampleTouched();
+            timestamp = callModel.getServerTouched();
         } else {
             timestamp = Instant.now().toEpochMilli();
         }

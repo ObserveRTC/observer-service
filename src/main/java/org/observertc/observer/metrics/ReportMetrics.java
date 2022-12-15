@@ -4,7 +4,6 @@ import io.micrometer.core.instrument.DistributionSummary;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.configs.ObserverConfig;
-import org.observertc.observer.events.CallMetaType;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.reports.ReportTypeVisitor;
 import org.observertc.schemas.reports.*;
@@ -21,6 +20,9 @@ public class ReportMetrics {
     private static final String OUTBOUND_AUDIO_TARGET_BITRATE_MEASUREMENT_METRIC_NAME = "outbound_audio_target_bitrate";
     private static final String OUTBOUND_VIDEO_TARGET_BITRATE_MEASUREMENT_METRIC_NAME = "outbound_video_target_bitrate";
     private static final String CALL_NUMBER_OF_PARTICIPANTS_METRIC_NAME = "calls_participants_number";
+    private static final String QUALITY_LIMITATION_REASON_BANDWIDTH = "quality_limitation_reason_bandwidth";
+    private static final String QUALITY_LIMITATION_REASON_CPU = "quality_limitation_reason_cpu";
+    private static final String QUALITY_LIMITATION_REASON_OTHER = "quality_limitation_reason_other";
     private static final String CALL_DURATIONS_METRIC_NAME = "call_durations";
 
     @Inject
@@ -31,6 +33,9 @@ public class ReportMetrics {
 
     private ReportTypeVisitor<Object, Void> processor;
 
+    private String qualityLimitationReasonBandwidthMetricName;
+    private String qualityLimitationReasonCpuMetricName;
+    private String qualityLimitationReasonOtherMetricName;
     private DistributionSummary outboundAudioTrackRttMeasurements;
     private DistributionSummary outboundVideoTrackRttMeasurements;
     private DistributionSummary outboundAudioTargetBitrateMeasurements;
@@ -82,6 +87,10 @@ public class ReportMetrics {
                 .register(this.metrics.registry);
 
         this.processor = this.createProcessor();
+
+        this.qualityLimitationReasonBandwidthMetricName = getMetricName(QUALITY_LIMITATION_REASON_BANDWIDTH);
+        this.qualityLimitationReasonCpuMetricName = getMetricName(QUALITY_LIMITATION_REASON_CPU);
+        this.qualityLimitationReasonOtherMetricName = getMetricName(QUALITY_LIMITATION_REASON_OTHER);
     }
 
     public void process(List<Report> reports) {
@@ -113,7 +122,10 @@ public class ReportMetrics {
     }
 
     private ReportTypeVisitor<Object, Void> createProcessor() {
-        var USER_MEDIA_ERROR = CallMetaType.USER_MEDIA_ERROR.toString();
+//        var USER_MEDIA_ERROR = CallMetaType.USER_MEDIA_ERROR.toString();
+//        var OPERATION_SYSTEM = CallMetaType.OPERATION_SYSTEM.toString();
+//        var PLATFORM = CallMetaType.PLATFORM.toString();
+//        var BROWSER = CallMetaType.BROWSER.toString();
         return new ReportTypeVisitor<Object, Void>() {
             @Override
             public Void visitObserverEventReport(Object payload) {
@@ -136,15 +148,16 @@ public class ReportMetrics {
 
             @Override
             public Void visitCallMetaDataReport(Object payload) {
-                var reportPayload = ((CallMetaReport) payload);
-                var metaType = reportPayload.type;
-                if (!USER_MEDIA_ERROR.equals(metaType)) {
-                    return null;
-                }
-                var metricName = getMetricName(metaType.toLowerCase(Locale.ROOT));
-                metrics.registry.counter(
-                        metricName
-                ).increment();
+//                var reportPayload = ((CallMetaReport) payload);
+//                var metaType = reportPayload.type;
+//                if (!USER_MEDIA_ERROR.equals(metaType)) {
+//                    return null;
+//                }
+//
+//                var metricName = getMetricName(metaType.toLowerCase(Locale.ROOT));
+//                metrics.registry.counter(
+//                        metricName
+//                ).increment();
                 return null;
 
             }
@@ -162,7 +175,8 @@ public class ReportMetrics {
 
             @Override
             public Void visitPeerConnectionTransportReport(Object payload) {
-//        var reportPayload = ((ClientTransportReport) payload);
+                var reportPayload = ((PeerConnectionTransportReport) payload);
+//                reportPayload.
                 return null;
 
             }
@@ -176,7 +190,8 @@ public class ReportMetrics {
 
             @Override
             public Void visitClientDataChannelReport(Object payload) {
-//        var reportPayload = ((ClientDataChannelReport) payload);
+//                var reportPayload = ((ClientDataChannelReport) payload);
+//                reportPayload.
                 return null;
 
             }
@@ -213,6 +228,21 @@ public class ReportMetrics {
                 }
                 if (reportPayload.targetBitrate != null) {
                     outboundVideoTargetBitrateMeasurements.record(reportPayload.targetBitrate);
+                }
+                if (reportPayload.qualityLimitationDurationBandwidth != null) {
+                    metrics.registry.counter(
+                            qualityLimitationReasonBandwidthMetricName
+                    ).increment();
+                }
+                if (reportPayload.qualityLimitationDurationCPU != null) {
+                    metrics.registry.counter(
+                            qualityLimitationReasonCpuMetricName
+                    ).increment();
+                }
+                if (reportPayload.qualityLimitationDurationOther != null) {
+                    metrics.registry.counter(
+                            qualityLimitationReasonOtherMetricName
+                    ).increment();
                 }
                 return null;
             }
