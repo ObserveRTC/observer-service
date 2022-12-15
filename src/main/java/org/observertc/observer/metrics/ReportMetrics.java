@@ -21,8 +21,8 @@ public class ReportMetrics {
     private static final String OUTBOUND_VIDEO_TARGET_BITRATE_MEASUREMENT_METRIC_NAME = "outbound_video_target_bitrate";
     private static final String CALL_NUMBER_OF_PARTICIPANTS_METRIC_NAME = "calls_participants_number";
     private static final String QUALITY_LIMITATION_REASON_BANDWIDTH = "quality_limitation_reason_bandwidth";
-    private static final String QUALITY_LIMITATION_REASON_CPU = "quality_limitation_reason_cpu";
-    private static final String QUALITY_LIMITATION_REASON_OTHER = "quality_limitation_reason_other";
+    private static final String QUALITY_LIMITATION_REASON_METRIC_NAME = "quality_limitation_reason";
+    private static final String QUALITY_LIMITATION_REASON_NAME_TAG = "reason";
     private static final String CALL_DURATIONS_METRIC_NAME = "call_durations";
 
     @Inject
@@ -33,9 +33,7 @@ public class ReportMetrics {
 
     private ReportTypeVisitor<Object, Void> processor;
 
-    private String qualityLimitationReasonBandwidthMetricName;
-    private String qualityLimitationReasonCpuMetricName;
-    private String qualityLimitationReasonOtherMetricName;
+    private String qualityLimitationReasonMetricName;
     private DistributionSummary outboundAudioTrackRttMeasurements;
     private DistributionSummary outboundVideoTrackRttMeasurements;
     private DistributionSummary outboundAudioTargetBitrateMeasurements;
@@ -88,9 +86,7 @@ public class ReportMetrics {
 
         this.processor = this.createProcessor();
 
-        this.qualityLimitationReasonBandwidthMetricName = getMetricName(QUALITY_LIMITATION_REASON_BANDWIDTH);
-        this.qualityLimitationReasonCpuMetricName = getMetricName(QUALITY_LIMITATION_REASON_CPU);
-        this.qualityLimitationReasonOtherMetricName = getMetricName(QUALITY_LIMITATION_REASON_OTHER);
+        this.qualityLimitationReasonMetricName = getMetricName(QUALITY_LIMITATION_REASON_METRIC_NAME);
     }
 
     public void process(List<Report> reports) {
@@ -229,19 +225,10 @@ public class ReportMetrics {
                 if (reportPayload.targetBitrate != null) {
                     outboundVideoTargetBitrateMeasurements.record(reportPayload.targetBitrate);
                 }
-                if (reportPayload.qualityLimitationDurationBandwidth != null) {
+                if (reportPayload.qualityLimitationReason != null && reportPayload.qualityLimitationReason != "none") {
                     metrics.registry.counter(
-                            qualityLimitationReasonBandwidthMetricName
-                    ).increment();
-                }
-                if (reportPayload.qualityLimitationDurationCPU != null) {
-                    metrics.registry.counter(
-                            qualityLimitationReasonCpuMetricName
-                    ).increment();
-                }
-                if (reportPayload.qualityLimitationDurationOther != null) {
-                    metrics.registry.counter(
-                            qualityLimitationReasonOtherMetricName
+                            qualityLimitationReasonMetricName,
+                            QUALITY_LIMITATION_REASON_NAME_TAG, reportPayload.qualityLimitationReason
                     ).increment();
                 }
                 return null;
