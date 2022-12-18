@@ -3,11 +3,13 @@ We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 ## 1.0.0
 
-The service is rewritten almost from the ground, there is no backward compatibility.
+The service is rewritten from the ground, there is no backward compatibility.
 
  * Each Report contain information about which call it belongs to
  * Use the unified communication schema published here: https://github.com/ObserveRTC/schemas
  * New configuration structure
+ * Using in-memory distributed storage grid to share information
+ * having different sinks to forward reports
  
 ---
 ## 0.8.3 (H)
