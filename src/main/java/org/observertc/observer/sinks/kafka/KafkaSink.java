@@ -35,6 +35,7 @@ public class KafkaSink extends Sink {
     public void open() {
         Objects.requireNonNull(this.properties);
         this.producer = new KafkaProducer<UUID, Bytes>(this.properties);
+        super.open();
     }
 
 
