@@ -2,6 +2,7 @@ package org.observertc.observer.evaluators;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.ServerTimestamps;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.evaluators.eventreports.CallStartedReports;
 import org.observertc.observer.repositories.Call;
@@ -34,6 +35,9 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
     @Inject
     CallStartedReports callStartedReports;
 
+    @Inject
+    ServerTimestamps serverTimestamps;
+
     public CallsFetcherResult fetchFor(ObservedClientSamples observedClientSamples) {
         if (observedClientSamples == null || observedClientSamples.isEmpty()) {
             return EMPTY_RESULT;
@@ -55,6 +59,7 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
         if (createRoomsResult.createdRooms.size() < 1) {
             return this.createResult(callIds, observedClientSamples);
         }
+        var serverNow = this.serverTimestamps.instant().toEpochMilli();
         var callsToCreate = new LinkedList<CallsRepository.CreateCallInfo>();
         for (var observedRoom : observedClientSamples.observedRooms()) {
             var createdRoom = createRoomsResult.createdRooms.get(observedRoom.getServiceRoomId());
@@ -65,7 +70,7 @@ class CallsFetcherInMasterAssigningMode implements CallsFetcher {
                     createdRoom.getServiceRoomId(),
                     observedRoom.getMarker(),
                     createdRoom.getCallId(),
-                    observedRoom.getMinTimestamp()
+                    serverNow // it was  observedRoom.getMinTimestamp(), but browsers not always give UTC epoch.
             ));
         }
         if (callsToCreate.size() < 1) {

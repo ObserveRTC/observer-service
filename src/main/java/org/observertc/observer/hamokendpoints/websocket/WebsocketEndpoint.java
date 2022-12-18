@@ -1,9 +1,8 @@
 package org.observertc.observer.hamokendpoints.websocket;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.balazskreith.hamok.Models;
 import io.github.balazskreith.hamok.common.UuidTools;
-import io.github.balazskreith.hamok.storagegrid.messages.Message;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -17,11 +16,9 @@ import org.observertc.observer.common.ObservableState;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.hamokdiscovery.HamokDiscovery;
 import org.observertc.observer.hamokendpoints.*;
-import org.observertc.schemas.dtos.Hamokmessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.*;
@@ -40,8 +37,8 @@ public class WebsocketEndpoint implements HamokEndpoint {
         return String.format("ws://%s:%d", hostname, port);
     }
 
-    private final Subject<Message> inboundChannel = PublishSubject.create();
-    private final Subject<Message> outboundChannel = PublishSubject.create();
+    private final Subject<Models.Message> inboundChannel = PublishSubject.create();
+    private final Subject<Models.Message> outboundChannel = PublishSubject.create();
     private final Subject<UUID> stateChangedEvent = PublishSubject.create();
 
     private final ObservableState<HamokEndpointState> state = new ObservableState<>(HamokEndpointState.CREATED);
@@ -75,33 +72,27 @@ public class WebsocketEndpoint implements HamokEndpoint {
             if (message == null) {
                 return;
             }
-//            var data = this.mapper.writeValueAsBytes(message);
-            byte[] data = null;
-            try {
-                var hamokMessage = this.codec.encode(message);
-                data = hamokMessage.toByteArray();
-            } catch (Throwable t) {
-                logger.warn("Exception occurred while encoding message {} to byte array", message, t);
-                return;
-            }
-            if (data == null) {
-                logger.warn("Tried to send null data");
-                return;
-            }
             Iterator<WebsocketHamokConnection> destinations;
-            if (message.destinationId == null) {
+            if (message.hasDestinationId() == false) {
                 destinations = this.remoteEndpoints.values().iterator();
             } else {
-                var connection = this.remoteEndpoints.get(message.destinationId);
-                if (connection != null) {
-                    destinations = Utils.wrapWithIterator(connection);
-                } else {
+                try {
+                    UUID remoteEndpointId = UUID.fromString(message.getDestinationId());
+                    var connection = this.remoteEndpoints.get(remoteEndpointId);
+                    if (connection != null) {
+                        destinations = Utils.wrapWithIterator(connection);
+                    } else {
+                        destinations = this.remoteEndpoints.values().iterator();
+                    }
+                } catch (Exception ex) {
+                    logger.warn("Error occurred while setting retrieving the destination endpoint id from the message", ex);
                     destinations = this.remoteEndpoints.values().iterator();
                 }
+
             }
             for (var it = destinations; it.hasNext(); ) {
                 var connection = it.next();
-                connection.sendHamokMessage(data);
+                connection.sendHamokMessage(message.toByteArray());
             }
         });
 
@@ -112,12 +103,12 @@ public class WebsocketEndpoint implements HamokEndpoint {
     }
 
     @Override
-    public Observable<Message> inboundChannel() {
+    public Observable<Models.Message> inboundChannel() {
         return this.inboundChannel;
     }
 
     @Override
-    public Observer<Message> outboundChannel() {
+    public Observer<Models.Message> outboundChannel() {
         return this.outboundChannel;
     }
 
@@ -264,24 +255,23 @@ public class WebsocketEndpoint implements HamokEndpoint {
             @Override
             public void onMessage(WebSocket conn, ByteBuffer data) {
                 // hamok messages
-                Message message = null;
                 try {
                     var bytes = data.array();
                     if (bytes == null || bytes.length < 1) {
                         logger.info("Got empty message from {}", createUri(serverHost, serverPort));
                         return;
                     }
-                    var hamokMessage = Hamokmessage.HamokMessage.parseFrom(bytes);
-                    message = codec.decode(hamokMessage);
-                    inboundChannel.onNext(message);
-                } catch (JsonProcessingException e) {
-                    logger.warn("Error occurred while deserializing message", e);
-                    return;
-                } catch (IOException e) {
-                    logger.warn("Error occurred while deserializing message", e);
-                    return;
+                    try {
+                        var message = Models.Message.parseFrom(bytes);
+                        inboundChannel.onNext(message);
+                    } catch (Exception ex) {
+                        logger.warn("Error occurred while deserializing message", ex);
+                    }
+//                    var hamokMessage = Hamokmessage.HamokMessage.parseFrom(bytes);
+//                    message = codec.decode(hamokMessage);
+//                    inboundChannel.onNext(message);
                 } catch (Throwable e) {
-                    logger.warn("Error occurred while deserializing message", e);
+                    logger.warn("Error occurred while receiving message", e);
                 }
             }
 

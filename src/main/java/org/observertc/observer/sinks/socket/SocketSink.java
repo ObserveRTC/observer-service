@@ -35,6 +35,7 @@ public class SocketSink extends Sink {
             return;
         }
         this.connect(true);
+        super.open();
     }
 
 

@@ -70,6 +70,7 @@ public class WebsocketSink extends Sink {
             return;
         }
         this.connect(true);
+        super.open();
     }
 
     private void ping() {

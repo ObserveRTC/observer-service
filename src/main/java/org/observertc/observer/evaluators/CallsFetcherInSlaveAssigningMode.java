@@ -2,6 +2,7 @@ package org.observertc.observer.evaluators;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.ServerTimestamps;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.evaluators.eventreports.CallStartedReports;
 import org.observertc.observer.repositories.*;
@@ -35,6 +36,9 @@ class CallsFetcherInSlaveAssigningMode implements CallsFetcher {
 
     @Inject
     CallStartedReports callStartedReports;
+
+    @Inject
+    ServerTimestamps serverTimestamps;
 
     public CallsFetcherResult fetchFor(ObservedClientSamples observedClientSamples) {
         if (observedClientSamples == null || observedClientSamples.isEmpty()) {
@@ -133,7 +137,7 @@ class CallsFetcherInSlaveAssigningMode implements CallsFetcher {
 
             }
         }
-
+        var serverNow = this.serverTimestamps.instant().toEpochMilli();
         if (0 < roomsToAlter.size()) {
             var callsToCreate = new LinkedList<CallsRepository.CreateCallInfo>();
             var oldRoomToCallIds = this.roomsRepository.setCallIds(roomsToAlter);
@@ -160,7 +164,8 @@ class CallsFetcherInSlaveAssigningMode implements CallsFetcher {
                         serviceRoomId,
                         observedRoom.getMarker(),
                         newCallId,
-                        observedRoom.getMinTimestamp()
+                        serverNow // it was observedRoom.getMinTimestamp(), but browser epoch timestamp
+
                 ));
                 for (var observedClient : observedRoom) {
                     var observedClientCallId = observedClient.streamObservedClientSamples()

@@ -11,11 +11,20 @@ To see ObserveRTC integrations and examples, check out the [full stack examples 
 
 ### Table of Contents:
  * [Overview](#overview)
+ * [Scalability](#scalability)
  * [Configurations](#configurations)
    * [Micronaut configs](#micronaut-configs)
    * [Management endpoints configs](#management-endpoints-configs)
    * [Observer configs](#observer-configs)
- * [Performance](#performance)
+   * [Hamok configs](#hamok-configs)
+ * [Sinks](#sinks)
+   * [LoggerSink](#loggersink)
+   * [Apache Kafka](#apache-kafka)
+   * [Mongo Database](#mongo-database)
+   * [AWS Firehose](#aws-firehose-sink)
+   * [AWS S3 Bucket](#aws-s3-bucket-sink)
+   * [AWS Credential Settings](#aws-credential-settings)
+ * [Performance considerations](#performance-considerations)
  * [Compatibility](#compatibility)
  * [Getting Involved](#getting-involved)
  * [Changelog](#changelog)
@@ -50,10 +59,18 @@ The reports are forwarded to [Sinks](#sinks).  Currently, the following type of 
 * [MongoSink](#mongosink): Mongo Database integration
 * [FirehoseSink](#firehosesink): AWS Firehose integration
 * [AwsS3Sink](#awss3sink): AWS S3 integration
+* [WebsocketSink](#websocketsink): Websocket Sink
+
+### Scalability
+
+The service uses a distributed in-memory object storage [hamok](https://github.com/balazskreith/hamok) as its base to store information about calls while 
+clients and SFUs are sending samples. If the service need to be scaled horizontally you need to setup
+hamok in your configuration. Additionally, you can take a look at the section   
+[hamok configurations](#hamok-configs) to have more information about the built in discovery and communication endpoint features.
+
+Some useful tips you can find how to design your service in terms of traffic at the [performance consideration](#performance-considerations) section.
 
 ## Configurations
-
-![Overview](docs/images/configuration-overview.png)
 
 At startup time the application fetches the configuration and sets up the service. 
 The default configuration the observer starts with 
@@ -161,6 +178,13 @@ observer:
          exposePeriodInMins: 5
          
   sources:
+     # flag indicate if sfu sampels are accepted or not
+    acceptSfuSamples: true
+    # flag indicate if client samples are accepted or not
+    acceptClientSamples: true
+    # if it sets to true then observer overrides the samples provided timestamp to its own, to simplify the problem 
+    # of different clients reporting timestamp in different time zones.
+    useServerTimestamp: false
     # settings related to REST API accepting Samples
     rest:
       # indicate if Samples are accepted through REST or not
@@ -169,17 +193,36 @@ observer:
     websocket:
       # indicate if Samples are accepted through websockets or not
       enabled: true
+      # this defines how many remote observer peers must be connected to the grid before 
+      # the websocket starts accepting sessions
+      # this configuration is useful to avoid a huge amount of session directed to the first 
+      # available observer instance
+      minRemotePeers: 0
 
   repository:
     # indicate if the repositories storages in hamok should use distributed backup service or not.
-    # NOTE: Distributed backup service increases traffic and volume of data stored in the memory
+    # NOTE: Distributed backup service increases traffic inside the cluster and volume of data stored in the memory
     useBackups: false
     # the maximum idle time for a call object after which it is removed from the repository
     callMaxIdleTimeInS: 300
     # the maximum idle time for an SFU object after which it is removed from the repository
-    sfuMaxIdleTimeInS: 60
+    sfuMaxIdleTimeInS: 300
     # the maximum idle time for a Sfu Transport object after which it is removed from the repository
     sfuTransportMaxIdleTimeInS: 600
+    # the maximum idle time for a client object after which it is removed from the repository
+    clientsMaxIdle: 300
+    # the maximum idle time for a peer connection object after which it is removed from the repository
+    peerConnectionsMaxIdle: 300
+    # the maximum idle time for an inbound track object after which it is removed from the repository
+    inboundTracksMaxIdle: 300
+    # the maximum idle time for an outbound track object after which it is removed from the repository
+    outboundTracksMaxIdle: 300
+    # the maximum idle time for a sfu inbound rtp pad object after which it is removed from the repository
+    sfuInboundRtpPadMaxIdleTimeInS: 300
+    # the maximum idle time for a sfu outbound rtp pad object after which it is removed from the repository
+    sfuOutboundRtpPadMaxIdleTimeInS: 300
+    # the maximum idle time for a sfu sctp channel object after which it is removed from the repository
+    sfuSctpChannelMaxIdleTimeInS: 300
 
   buffers:
     # settings of the buffer collect samples from the sources
@@ -255,28 +298,50 @@ observer:
       userId: none
 
   # Setup the sinks to forward Reports.
-  # Detailed description is in the Configuration section
+  # Detailed description is in the Sinks section
   sinks: {}
 
   # settings related to hamok distributed object storage 
-   # and discovery of other observer instances to form a cluster
+  # and discovery of other observer instances to create a grid
   hamok:
     # settings related to the storage grid the observer shares objects through
     storageGrid:
        # the retention time in minutes the Raft keeps logs for
+       # this determines how long a new peer can join to the cluster without 
+       # issuing a storage sync. If a peer joins after a retention time,
+       # it issues a storage sync which requires the leader to synchronize all 
+       # storage with the new follower
        raftMaxLogEntriesRetentionTimeInMinutes: 5
        
-       # the period of the heartbeat for the leader
+       # the period of the heartbeat for the leader.
+       # this determines for example how fast the replicated storages get updates
        heartbeatInMs: 150
        
-       # the timeout for a follower when it does not get a heartbeat
-       followerMaxIdleInMs: 30000
+       # the timeout for a follower when it does not get a heartbeat message 
+       # from a leader and start an election
+       # rule of thumb to make it at least 3 or 5 times higher than the heartbeat + network delay
+       followerMaxIdleInMs: 1000
        
        # maximum time for a request between storage grids to exchange
-       requestTimeoutInMs: 90000
+       # information. note that finding a balance for this value needs consideration 
+       # of the network you put the instance in, and the resource capacity your running instance 
+       # acquires. if it is too small and response time in the network too big it can cause false 
+       # interpretation that the remote peer is not responding. However if it is too large 
+       # then becasue of the blocking nature of storage operations this can cause an observer 
+       # to throttle samples and reports
+       requestTimeoutInMs: 3000
     
-    # endpoint related settings
-    endpoint: {}
+    # For other type of discovery settings, please take a look at hamok configuration section
+    discovery:
+       type: StaticDiscovery
+       config:
+          peers:
+             my-other-peer:
+                port: 5603
+                host: "localhost"
+                
+    # For other type of endpoints for hamok to communicate please take a look at hamok cofiguration section
+    endpoint: 
        # The type of the endpoint hamok uses to communicate
        type: WebsocketEndpoint
        config:
@@ -286,18 +351,28 @@ observer:
           serverPort: 5600
           
           # Discovery strategy to discover another endpoint
-          discovery:
-             type: StaticDiscovery
-             config:
-                peers:
-                   my-other-wonderful-peer:
-                      port: 5603
-                      host: "localhost"
+          
 ```
 
-#### Hamok endpoints
+### Hamok configs
 
-##### Websocket Endpoint
+Hamok is a distributed in-memory object storage. The configuration in observer to setup the property 
+of the storageGrid, providing local-, and to discover remote endpoints. 
+```yaml
+observer:
+  hamok:
+    storageGrid: {}
+    discovery: {}
+    endpoint: {}
+```
+Currently the following endpoints can be made in observer for hamok:
+ * [WebsocketEndpoint](#websocket-endpoint-settings)
+
+Currently the following discovery settings can be made in observer for hamok:
+ * [StaticDiscovery](#static-discovery-settings)
+ * [KubernetesDiscovery](#kubernetes-discovery-settings)
+ 
+#### Websocket Endpoint Settings
 
 ```yaml
 endpoint: {}
@@ -308,15 +383,9 @@ endpoint: {}
        serverHost: "localhost"
        # the port number to offer a websocket connection
        serverPort: 5600
-       
-       # Discovery strategy to discover another endpoint
-       discovery: {}
 ```
 
-
-#### Hamok discovery strategies
-
-##### Static Discovery strategy
+#### Static Discovery Settings
 
 ```yaml
  discovery:
@@ -327,9 +396,7 @@ endpoint: {}
              port: 5603
              host: "localhost"
 ```
-
-
-##### Kubernetes Discovery Strategy
+#### Kubernetes Discovery Settings
 
 ```yaml
  discovery:
@@ -345,92 +412,12 @@ endpoint: {}
        port: 5601# 
 ```
 
-
-#### AWS Credentials
-
-AWS service requires credentials. The credential configuration is part of the sink configuration.
-For example Firehose configuration have the `credentials` 
-
-```yaml
-sinks:
-  MyFirehose:
-    type: Firehose
-    config:
-      credentials:
-        type: AwsProfile
-        config: # necessary configuration for file based credentials
-```
-
-Possible credential types and configuration structures are the following.
-
-##### Profile
-
-```yaml
-type: AwsProfile
-config:
-  profileFilePath: /my/path/to/credential/file
-  # possible values are CONFIGURATION, and CREDENTIALS. default CREDENTIALS
-  profileFileType: CREDENTIALS
-  # the name of the profile fetched for credentials
-  profileName: myprofileName
-```
-
-##### AwsEnvironmentVariable
-
-```yaml
-type: AwsEnvironmentVariable
-```
-
-##### AwsStsAssumeRoleSession
-
-```yaml
-type: AwsStsAssumeRoleSession
-config:
-   # the region id of the assumed role
-   regionId: eu-west-1
-   # the ARN of the role
-   roleArn: "THE_ARN_OF_THE_ROLE"
-   roleSessionName: "observer"
-
-   # give credentials to the STS client accessing to the assumed role
-   # this is an embedded credential
-   credentials: # optional 
-      type: Static
-      config: {}
-   serialNumber: "1234-5678" # optional
-   policy: "policy" # optional
-   externalId: "external" # optional
-```
-
-##### AwsStatic
-
-```yaml
-type: AwsStatic
-config:
-   accessKeyId: accessKey
-   secretAccessKey: secret
-```
-
-##### AwsSystemProperty
-
-```yaml
-type: AwsSystemProperty
-```
-
-##### AwsWebIdentityTokenFile
-
-```yaml
-type: AwsWebIdentityTokenFile
-config:
-  roleArn: roleArn
-  roleSessionName: roleSessionName
-```
-
-#### Sinks
+## Sinks
 
 The observer forward the generated reports through sinks.
 There are different type of sinks implemented to integrate different type of services.
 A sink has the following configuration structure:
+
 
 ```yaml
 sinks:
@@ -466,7 +453,24 @@ sinks:
     
 ```
 
-#### KafkaSink
+### LoggerSink
+
+Observer can print reports to the console or to the configured logback output by using `LoggerSink`
+
+```yaml
+sinks:
+  MyLoggerSink:
+    type: LoggerSink
+    config:
+      # the level of the logger used to print information to the console
+      logLevel: INFO
+      # prints the received reports to the console 
+      printReports: True # default is False
+      # prints the summary of the type of reports received by the sink
+      printTypeSummary: False
+```
+
+### Apache Kafka
 
 Observer can send reports to [Apache Kafka](https://kafka.apache.org/). by using `KafkaSink`
 
@@ -493,7 +497,7 @@ sinks:
             bootstrap.servers: localhost:9092
 ```
 
-#### MongoSink
+### Mongo Database
 
 Observer can send reports to  [Mongo Database](https://www.mongodb.com/). by using `MongoSink`
 
@@ -526,7 +530,7 @@ sinks:
       printSummary: True
 ```
 
-#### FirehoseSink
+### AWS Firehose Sink
 
 Observer can send reports to [Aws Firehose](https://aws.amazon.com/kinesis/data-firehose/) via DIRECT PUT method.
 
@@ -567,9 +571,13 @@ sinks:
 
          # A provided credential to access AWS resources
          # see detailed description in Credentials section
+         # To configure credentials for AWS services, 
+         # please look at the AWS Credential Settings section in the readme.
          credentials:
-            type: File
-            config: {}
+            type: AwsStatic
+            config:
+               accessKeyId: <ACCESS_KEY>
+               secretAccessKey: <SECRET>
 
          # in case CSV encoding is used, this instructs the CSV format written into the records
          # possible values are: DEFAULT, EXCEL, INFORMIX_UNLOAD, INFORMIX_UNLOAD_CSV, MONGODB_CSV, MONGODB_TSV, MYSQL, ORACLE,
@@ -581,15 +589,16 @@ sinks:
          csvChunkSize: 100
 ```
 
+To configure credentials for AWS services, please look at the [AwsCredentials Configuration](#aws-credentials-configuration) section.
 
 
-#### AwsS3Sink
+### AWS S3 Bucket Sink
 
-Observer can send reports to [Aws Firehose](https://aws.amazon.com/kinesis/data-firehose/) via DIRECT PUT method.
+Observer can send reports to [Aws S3](https://aws.amazon.com/s3/) via REST requests
 
 ```yaml
 sinks:
-  MyFireHoseSink:
+  MyAwsS3Sink:
     type: AwsS3Sink
     config:
        # The encoding format of the forwarded data. Possible values are: JSON, CSV
@@ -627,12 +636,16 @@ sinks:
           sfu-inbound-rtp-pad: observertc-sfu-inbound-rtp-pad-reports-csv
           sfu-outbound-rtp-pad: observertc-sfu-outbound-rtp-pad-reports-csv
           sfu-sctp-stream: observertc-sfu-sctp-stream-reports-csv
-          
+
        # A provided credential to access AWS resources
        # see detailed description in Credentials section
+       # To configure credentials for AWS services, 
+       # please look at the AWS Credential Settings section in the readme.
        credentials:
-          type: File
-          config: {}
+          type: AwsStatic
+          config:
+             accessKeyId: <ACCESS_KEY>
+             secretAccessKey: <SECRET>
           
        # in case CSV encoding is used, this instructs the CSV format written into the records
        # possible values are: DEFAULT, EXCEL, INFORMIX_UNLOAD, INFORMIX_UNLOAD_CSV, MONGODB_CSV, MONGODB_TSV, MYSQL, ORACLE,
@@ -641,27 +654,149 @@ sinks:
        csvFormat: DEFAULT
 ```
 
-##### LoggerSink
+To configure credentials for AWS services, please look at the [AwsCredentials Configuration](#aws-credentials-configuration) section.
 
-Observer can print reports to the console by using `LoggerSink`
+
+### AWS Credential Settings
+
+AWS services require providing credentials. The credential configuration is part of the actual sink configuration
+setting up to connect to an AWS service.
+For example Firehose or AwsS3 sink have the `credentials` property in their configurations.
+
+Possible credential types and configuration structures are the followings:
+ * [AWS Profile credential settings](#aws-profile-credential-settings) 
+ * [AWS Environment credential settings](#aws-environment-credential-settings)
+ * [AWS STS Assume Role Session Settings](#aws-sts-assume-role-session-settings)
+ * [AWS Static Credential Settings](#aws-static-credential-settings)
+ * [AWS System Credential Settings](#aws-system-credential-settings)
+ * [AWS Web Identity Token Credential Settings](#aws-web-identity-token-credential-settings)
+
+#### AWS Profile credential settings
+
+File based profile credentials
 
 ```yaml
-sinks:
-  MyLoggerSink:
-    type: LoggerSink
-    config:
-      # the level of the logger used to print information to the console
-      logLevel: INFO
-      # prints the received reports to the console 
-      printReports: True # default is False
-      # prints the summary of the type of reports received by the sink
-      printTypeSummary: False
+MyAwsS3Sink:
+   type: AwsS3Sink
+   config:
+      credentials:
+         type: AwsProfile
+         config:
+           profileFilePath: /my/path/to/credential/file
+           # possible values are CONFIGURATION, and CREDENTIALS. default CREDENTIALS
+           profileFileType: CREDENTIALS
+           # the name of the profile fetched for credentials
+           profileName: myprofileName
 ```
 
+#### AWS Environment credential settings
 
-## Performance
+Loads credentials from the AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and AWS_SESSION_TOKEN environment variables
 
-TBD
+```yaml
+MyAwsS3Sink:
+   type: AwsS3Sink
+   config:
+      credentials:
+         type: AwsEnvironmentVariable
+```
+
+#### AWS STS Assume Role Session Settings
+
+```yaml
+MyAwsS3Sink:
+   type: AwsS3Sink
+   config:
+      credentials:
+         type: AwsStsAssumeRoleSession
+         config:
+            # the region id of the assumed role
+            regionId: eu-west-1
+            # the ARN of the role
+            roleArn: "THE_ARN_OF_THE_ROLE"
+            roleSessionName: "observer"
+         
+            # give credentials to the STS client accessing to the assumed role
+            # if the client requires different credentials than the currently provided one.
+            # the settings of the credential here is the same as to any AWS credential listed here
+            credentials: # optional 
+               type: AwsStatic
+               config:
+                  accessKeyId: accessKey
+                  secretAccessKey: secret
+            serialNumber: "1234-5678" # optional
+            policy: "policy" # optional
+            externalId: "external" # optional
+```
+
+#### AWS Static Credential Settings
+
+```yaml
+MyAwsS3Sink:
+   type: AwsS3Sink
+   config:
+      credentials:
+         type: AwsStatic
+         config:
+            accessKeyId: accessKey
+            secretAccessKey: secret
+```
+
+#### AWS System Credential Settings
+
+Loads credentials from the aws.accessKeyId, aws.secretAccessKey and aws.sessionToken system properties.
+
+```yaml
+MyAwsS3Sink:
+   type: AwsS3Sink
+   config:
+      credentials:
+        type: AwsSystemProperty
+```
+
+#### AWS Web Identity token credential settings
+
+A credential provider that will read web identity token file path, 
+aws role arn and aws session name from system 
+properties or environment variables for using web 
+identity token credentials with STS. Use of this credentials 
+provider requires the 'sts' module to be on the classpath.
+
+```yaml
+MyAwsS3Sink:
+   type: AwsS3Sink
+   config:
+      type: AwsWebIdentityTokenFile
+      config:
+        roleArn: roleArn
+        roleSessionName: roleSessionName
+```
+
+## Performance considerations
+
+Observer performance is highly influenced by two factors: how many clients providing samples at the same time, 
+and how much time it takes to forward the reports to the configured sink(s). The performance can be tuned by settings the buffers.
+For example higher threshold for samples making larger batches to process and send to the sinks, giving more time to the sinks 
+to forward the previous batch, but also it can make larger spikes in memory as tens or hundreds of thousands of reports 
+are going to be throttled to the sinks waiting to forward. 
+
+Though it is very hard to give an exact number of how many clients can be connected to one observer instance and 
+how much memory and CPU should be given to one instance, to start with you can use the following may help in your calculations:
+
+![Performance Box](docs/images/performance-box.png)
+
+Assuming the majority of calls (80%) are less than 4 participants, then 1000 active session can produce around 30 Samples per sec
+(if the sampling period is around 10s for each client) then 2GB of memory should / could handle 1000 active session at the same time assuming, 
+producing 1000 reports per sec to the sinks to handle.
+
+Anothe case if you design a service for 5000 active sessions at any time, then either you scale it vertically to have bigger CPU and around 10GB memory,
+or you can scale horizontally and start running 5 instances with the same configurations.  
+
+It must be noted that this estimation is superficial and based on experiments and experience we have so far.
+
+In terms of horizontal scalability it must be noted too, that since the service uses in-memory distributed storage memory consumption is 
+crucial and an instance cannot / should not run out of memory. 
+
 
 ## Compatibility
 
@@ -670,7 +805,6 @@ Observer versions and compatible [schema](https://github.com/ObserveRTC/schemas)
 | schemas → <br/>observer ↓ | 2.0.y              |   |   |   |
 |---------------------------|--------------------|---|---|---|
 | 1.0.x                     | :white_check_mark: |   |   |   |
-
 
 
 ## Getting involved

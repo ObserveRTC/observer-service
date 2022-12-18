@@ -76,6 +76,10 @@ public class ReportSinks implements Consumer<List<Report>> {
                     var sinkId = entry.getKey();
                     var sink = entry.getValue();
                     try {
+                        if (sink.isClosed()) {
+                            it.remove();
+                            continue;
+                        }
                         int processedReports = sink.apply(reports);
                         if (this.sinkMetrics.isEnabled()) {
                             this.sinkMetrics.incrementReportsNum(processedReports, sinkId);
@@ -161,4 +165,5 @@ public class ReportSinks implements Consumer<List<Report>> {
         result.withLogger(logger);
         return result;
     }
+
 }
