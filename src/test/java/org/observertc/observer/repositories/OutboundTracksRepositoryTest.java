@@ -44,7 +44,7 @@ class OutboundTracksRepositoryTest {
         ));
         Assertions.assertEquals(0, alreadyInsertedCalls.size());
 
-        var call = this.callsRepository.get(serviceRoomId);
+        var call = this.callsRepository.get(callModel.getCallId());
         var clientModels = modelsMapGenerator.getClientModels();
         for (var clientModel : clientModels.values()) {
             call.addClient(
@@ -109,7 +109,7 @@ class OutboundTracksRepositoryTest {
             Assertions.assertEquals(outboundTrackModel.getAdded(), outboundTrack.getAdded());
 
             // after insert touched should be equal to joined
-            Assertions.assertEquals(outboundTrackModel.getAdded(), outboundTrack.getTouched());
+            Assertions.assertEquals(outboundTrackModel.getAdded(), outboundTrack.getSampleTouched());
 
             Assertions.assertEquals(outboundTrackModel.getMediaUnitId(), outboundTrack.getMediaUnitId());
 

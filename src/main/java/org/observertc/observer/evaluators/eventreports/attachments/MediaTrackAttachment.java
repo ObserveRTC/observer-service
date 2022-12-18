@@ -3,11 +3,23 @@ package org.observertc.observer.evaluators.eventreports.attachments;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.observertc.observer.common.JsonUtils;
-
-import java.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MediaTrackAttachment {
+
+    private static final Logger logger = LoggerFactory.getLogger(MediaTrackAttachment.class);
+
+    public static MediaTrackAttachment fromBase64(String input) {
+        if (input == null) return null;
+        try {
+            return JsonUtils.base64ToObject(input, MediaTrackAttachment.class);
+        } catch (Exception ex) {
+            logger.warn("Exception while parsing");
+            return null;
+        }
+    }
 
     public static Builder builder() {
         return new Builder();
@@ -29,6 +41,8 @@ public class MediaTrackAttachment {
 
     }
 
+
+
     @Override
     public String toString() {
         return JsonUtils.objectToString(this);
@@ -43,17 +57,6 @@ public class MediaTrackAttachment {
 
         private Builder() {
 
-        }
-
-        public Builder fromBase64(String input) {
-            if (Objects.isNull(input)) {
-                return this;
-            }
-            MediaTrackAttachment source = JsonUtils.base64ToObject(input, MediaTrackAttachment.class);
-            if (Objects.isNull(source)) {
-                return this;
-            }
-            return this.from(source);
         }
 
         private Builder from(MediaTrackAttachment source) {

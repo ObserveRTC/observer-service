@@ -1,180 +1,137 @@
 package org.observertc.observer.hamokendpoints.websocket;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.balazskreith.hamok.storagegrid.messages.Message;
+import io.github.balazskreith.hamok.Models;
+import io.github.balazskreith.hamok.common.UuidTools;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import org.observertc.observer.HamokService;
-import org.observertc.observer.hamokdiscovery.RemotePeerDiscovery;
-import org.observertc.observer.hamokendpoints.HamokEndpoint;
+import org.observertc.observer.common.ObservableState;
+import org.observertc.observer.common.Utils;
+import org.observertc.observer.hamokdiscovery.HamokDiscovery;
+import org.observertc.observer.hamokendpoints.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
-import java.time.Instant;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.nio.ByteBuffer;
+import java.util.*;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 
 public class WebsocketEndpoint implements HamokEndpoint {
     private static final String INTERNAL_CLOSED_MESSAGE = "INTERNAL_CLOSED_MESSAGE";
     private static final Logger logger = LoggerFactory.getLogger(WebsocketEndpoint.class);
+    private static final int CLIENT_HELLO_RECEIVED_FLAG = 1;
+    private static final int OPEN_CONNECTION_FLAG = 2;
 
-    private final PublishSubject<Message> inboundChannel = PublishSubject.create();
-    private final PublishSubject<Message> outboundChannel = PublishSubject.create();
-    private final PublishSubject<UUID> remoteEndpointJoinedSubject = PublishSubject.create();
-    private final PublishSubject<UUID> remoteEndpointDetachedSubject = PublishSubject.create();
+    private static String createUri(String hostname, int port) {
+        return String.format("ws://%s:%d", hostname, port);
+    }
 
+    private final Subject<Models.Message> inboundChannel = PublishSubject.create();
+    private final Subject<Models.Message> outboundChannel = PublishSubject.create();
+    private final Subject<UUID> stateChangedEvent = PublishSubject.create();
 
+    private final ObservableState<HamokEndpointState> state = new ObservableState<>(HamokEndpointState.CREATED);
     private final AtomicReference<WebSocketServer> server = new AtomicReference<>(null);
-    private final Map<UUID, String> addresses = new ConcurrentHashMap<>();
-    private final Map<String, WebsocketConnection> connections = new ConcurrentHashMap<>();
-    private final RemotePeerDiscovery discovery;
+    private final Map<UUID, WebsocketHamokConnection> remoteEndpoints = new ConcurrentHashMap<>();
+    private final Map<UUID, WebsocketHamokConnection> connections = new ConcurrentHashMap<>();
+
+    private final Supplier<HamokDiscovery> discoverySupplier;
     private final ObjectMapper mapper = new ObjectMapper();
     private final int serverPort;
     private final String serverHost;
-    private final long createdTimestampInSec = Instant.now().getEpochSecond();
     private final ExecutorService connectingExecutor = Executors.newSingleThreadExecutor();
+    private final int maxMessageSize;
+    private final HamokMessageCodec codec = new HamokMessageCodec();
+    private final Runnable refreshHamokEndpoints;
+    private Map<UUID, Integer> pendingEndpointStates = new HashMap<>();
 
-    WebsocketEndpoint(RemotePeerDiscovery discovery, String serverHost, int serverPort) {
-        this.discovery = discovery;
+    WebsocketEndpoint(
+            Supplier<HamokDiscovery> discoverySupplier,
+            Runnable refreshHamokEndpoints,
+            String serverHost,
+            int serverPort,
+            int maxMessageSize
+    ) {
+        this.discoverySupplier = discoverySupplier;
+        this.refreshHamokEndpoints = refreshHamokEndpoints;
         this.serverHost = serverHost;
         this.serverPort = serverPort;
+        this.maxMessageSize = maxMessageSize;
         this.outboundChannel.subscribe(message -> {
             if (message == null) {
                 return;
             }
-            var data = this.mapper.writeValueAsString(message);
-            if (data == null) {
-                logger.warn("Tried to send null data");
-                return;
-            }
-            Iterable<WebsocketConnection> connections;
-            if (message.destinationId == null) {
-                connections = this.connections.values();
+            Iterator<WebsocketHamokConnection> destinations;
+            if (message.hasDestinationId() == false) {
+                destinations = this.remoteEndpoints.values().iterator();
             } else {
-                var serverUri = this.addresses.get(message.destinationId);
-                if (serverUri != null) {
-                    var connection = this.connections.get(serverUri);
-                    if (connection != null) {
-                        connections = List.of(connection);
-                    } else {
-                        connections = this.connections.values();
-                    }
-                } else {
-                    connections = this.connections.values();
-                }
-            }
-            for (var connection : connections) {
                 try {
-                    connection.send(data);
-                } catch (Exception ex) {
-                    logger.warn("Error while sending data", ex);
-                }
-            }
-        });
-
-        this.discovery.events().subscribe(event -> {
-            var remotePeer = event.remotePeer();
-            var serverUri = this.createUri(remotePeer.host(), remotePeer.port());
-            switch (event.eventType()) {
-                case ADDED -> {
-                    var connection = new WebsocketConnection(
-                            ConnectionBuffer.discardingBuffer(),
-                            serverUri,
-                            this.mapper,
-                            Schedulers.from(connectingExecutor)
-                    );
-                    logger.info("Add connection to {}. RemoteHost: {}, remotePort: {}",
-                            connection.getServerUri(),
-                            event.remotePeer().host(),
-                            event.remotePeer().port()
-                    );
-                    connection.remoteIdentifiers().subscribe(remoteIdentifier -> {
-                        this.addresses.put(remoteIdentifier.endpointId, connection.getServerUri());
-                        logger.info("Remote endpoint id {} is bound to {}",
-                                remoteIdentifier.endpointId,
-                                connection.getServerUri()
-                        );
-                    });
-                    connection.endpointStateChanged().subscribe(endpointStateChange -> {
-                        switch (endpointStateChange.state()) {
-                            case JOINED -> remoteEndpointJoinedSubject.onNext(endpointStateChange.endpointId());
-                            case DETACHED -> remoteEndpointDetachedSubject.onNext(endpointStateChange.endpointId());
-                        }
-                    });
-                    this.connections.put(connection.getServerUri(), connection);
-                    connection.open();
-                }
-                case REMOVED -> {
-                    var connection = this.connections.remove(serverUri);
+                    UUID remoteEndpointId = UUID.fromString(message.getDestinationId());
+                    var connection = this.remoteEndpoints.get(remoteEndpointId);
                     if (connection != null) {
-                        logger.info("Remove connection for {}. RemoteHost: {}, remotePort: {}",
-                                connection.getServerUri(),
-                                event.remotePeer().host(),
-                                event.remotePeer().port()
-                        );
-                        var remoteIdentifier = connection.getRemoteIdentifiers();
-                        if (remoteIdentifier != null && remoteIdentifier.endpointId != null) {
-                            this.addresses.remove(remoteIdentifier.endpointId);
-                        }
-                        connection.close();
+                        destinations = Utils.wrapWithIterator(connection);
+                    } else {
+                        destinations = this.remoteEndpoints.values().iterator();
                     }
+                } catch (Exception ex) {
+                    logger.warn("Error occurred while setting retrieving the destination endpoint id from the message", ex);
+                    destinations = this.remoteEndpoints.values().iterator();
                 }
+
+            }
+            for (var it = destinations; it.hasNext(); ) {
+                var connection = it.next();
+                connection.sendHamokMessage(message.toByteArray());
             }
         });
+
+    }
+
+    public Observable<UUID> stateChangedEvent() {
+        return this.stateChangedEvent;
     }
 
     @Override
-    public boolean isReady() {
-        return true;
-    }
-
-    @Override
-    public int elapsedSecSinceReady() {
-        return (int) (Instant.now().getEpochSecond() - createdTimestampInSec);
-    }
-
-    @Override
-    public Observable<UUID> remoteEndpointJoined() {
-        return this.remoteEndpointJoinedSubject;
-    }
-
-    @Override
-    public Observable<UUID> remoteEndpointDetached() {
-        return this.remoteEndpointDetachedSubject;
-    }
-
-    @Override
-    public Observable<Message> inboundChannel() {
+    public Observable<Models.Message> inboundChannel() {
         return this.inboundChannel;
     }
 
     @Override
-    public Observer<Message> outboundChannel() {
+    public Observer<Models.Message> outboundChannel() {
         return this.outboundChannel;
     }
 
     @Override
     public void start() {
+        if (!this.state.compareAndSetState(HamokEndpointState.CREATED, HamokEndpointState.STARTING)) {
+            logger.warn("Attempted to start a server not in CREATED state. Actual state is: {}", this.state.get());
+            return;
+        }
         if (this.server.get() != null) {
             logger.warn("Attempted to start twice");
             return;
         }
         this.startServer();
-        this.discovery.start();
+        var hamokDiscovery = this.discoverySupplier.get();
+        if (hamokDiscovery != null) {
+            hamokDiscovery.getActiveConnections()
+                    .stream()
+                    .filter(config -> !this.connections.containsKey(config.connectionId()))
+                    .forEach(this::addConnection);
+        } else {
+            logger.warn("No Discovery service is available for endpoint");
+        }
         logger.info("Initialized");
     }
 
@@ -185,49 +142,136 @@ public class WebsocketEndpoint implements HamokEndpoint {
 
     @Override
     public void stop() {
+        if (HamokEndpointState.STOPPING.equals(this.state.get()) || HamokEndpointState.STOPPED.equals(this.state.get())) {
+            logger.warn("Attempted to stop the server twice");
+            return;
+        }
+        this.state.setState(HamokEndpointState.STOPPING);
         this.connectingExecutor.shutdownNow();
         var websocketServer = this.server.getAndSet(null);
         if (websocketServer != null) {
             this.stopServer(websocketServer);
             return;
         }
-        this.discovery.stop();
+        var hamokDiscovery = this.discoverySupplier.get();
+        if (hamokDiscovery != null) {
+            hamokDiscovery.getActiveConnections().stream().map(c -> c.connectionId()).forEach(this::removeConnection);
+        } else {
+            logger.warn("No Discovery service is available for endpoint");
+        }
     }
 
-    private WebSocketServer createServer(int attempt) {
+    private void setPendingEndpointFlag(UUID endpointId, int flag) {
+        // mutex because of the restrictive access not because of the resource
+        synchronized (this) {
+            String flagStr = null;
+            switch (flag) {
+                case OPEN_CONNECTION_FLAG -> flagStr = "OPEN_CONNECTION_FLAG";
+                case CLIENT_HELLO_RECEIVED_FLAG -> flagStr = "CLIENT_HELLO_RECEIVED_FLAG";
+                default -> flagStr = "Unknown (" + flag + ")";
+            }
+            logger.info("Set state flag {} for endpoint {}", flagStr, endpointId);
+            var state = this.pendingEndpointStates.remove(endpointId);
+            if (state == null) {
+                this.pendingEndpointStates.put(endpointId, flag);
+                return;
+            }
+            state = state | flag;
+            if ((state & CLIENT_HELLO_RECEIVED_FLAG) == 0 || (state & OPEN_CONNECTION_FLAG) == 0) {
+                this.pendingEndpointStates.put(endpointId, state);
+                return;
+            }
+        }
+        // if we are here then the connection is established
+        var foundConnection = this.connections.values().stream()
+                .filter(connection -> UuidTools.equals(connection.getRemoteEndpointId(), endpointId))
+                .findFirst();
+        if (foundConnection.isEmpty()) {
+            logger.warn("No Connection was found for endpoint {}, though the state indicate it is established", endpointId);
+            return;
+        }
+        this.remoteEndpoints.put(endpointId, foundConnection.get());
+        logger.info("Established connection to endpoint {}. Number of registered remote endpoints: {{}", endpointId, this.remoteEndpoints.size());
+        this.refreshHamokEndpoints.run();
+    }
+
+    private WebSocketServer createServer() {
         logger.info("Local binding address {}:{}", this.serverHost, this.serverPort);
         var address = new InetSocketAddress(this.serverHost, this.serverPort);
+        var pendingStateRequests = new ConcurrentHashMap<UUID, CompletableFuture<EndpointInternalMessage>>();
         return new WebSocketServer(address) {
 
             @Override
             public void onOpen(WebSocket conn, ClientHandshake handshake) {
                 logger.info("Accepted connection from {}", conn.getRemoteSocketAddress());
-                var remoteIdentifiers = new RemoteIdentifiers();
-                remoteIdentifiers.endpointId = HamokService.localEndpointId;
-                remoteIdentifiers.serverUri = createUri(serverHost, serverPort);
+                var message = EndpointInternalMessage.createServerHello(
+                        HamokService.localEndpointId,
+                        serverHost,
+                        serverPort
+                );
                 try {
-                    var message = mapper.writeValueAsString(remoteIdentifiers);
-                    conn.send(message);
-                } catch (JsonProcessingException e) {
-                    logger.warn("Failed to send address info to connected localhost", e);
+                    var data = mapper.writeValueAsString(message);
+                    conn.send(data);
+                } catch (Exception e) {
+                    logger.warn("Failed to send message {} to connection {}", message, conn.getRemoteSocketAddress(), e);
+                    return;
                 }
             }
 
             @Override
             public void onClose(WebSocket conn, int code, String reason, boolean remote) {
                 logger.info("Closed connection from {}", conn.getRemoteSocketAddress());
+
+                // should reconnect if not internal closing
             }
 
             @Override
             public void onMessage(WebSocket conn, String data) {
-                Message message = null;
+                // internal messages for state and ping requests!
+                EndpointInternalMessage message;
                 try {
-                    message = mapper.readValue(data, Message.class);
-//                    logger.info("Got message from {}, {}", createUri(serverHost, serverPort), message.type);
-                    inboundChannel.onNext(message);
-                } catch (JsonProcessingException e) {
-                    logger.warn("Error occurred while deserializing message", e);
+                    message = mapper.readValue(data, EndpointInternalMessage.class);
+                    switch (message.type) {
+                        case CLIENT_HELLO -> {
+                            var clientHello = message.asClientHello();
+                            if (clientHello.remoteEndpointId() == null) {
+                                logger.warn("Client Hello message received without remote endpoint id");
+                                return;
+                            }
+                            // does the server has a connection to this endpoint?
+                            setPendingEndpointFlag(clientHello.remoteEndpointId(), CLIENT_HELLO_RECEIVED_FLAG);
+                        }
+                        default -> {
+                            logger.warn("Cannot parse message {}", data);
+                        }
+                    }
+                } catch (Exception e) {
+                    logger.warn("Failed to parse data {} from {}", data, conn.getRemoteSocketAddress());
                     return;
+                }
+
+            }
+
+            @Override
+            public void onMessage(WebSocket conn, ByteBuffer data) {
+                // hamok messages
+                try {
+                    var bytes = data.array();
+                    if (bytes == null || bytes.length < 1) {
+                        logger.info("Got empty message from {}", createUri(serverHost, serverPort));
+                        return;
+                    }
+                    try {
+                        var message = Models.Message.parseFrom(bytes);
+                        inboundChannel.onNext(message);
+                    } catch (Exception ex) {
+                        logger.warn("Error occurred while deserializing message", ex);
+                    }
+//                    var hamokMessage = Hamokmessage.HamokMessage.parseFrom(bytes);
+//                    message = codec.decode(hamokMessage);
+//                    inboundChannel.onNext(message);
+                } catch (Throwable e) {
+                    logger.warn("Error occurred while receiving message", e);
                 }
             }
 
@@ -239,6 +283,9 @@ public class WebsocketEndpoint implements HamokEndpoint {
             @Override
             public void onStart() {
                 logger.info("Websocket server for {}:{} is started", serverHost, serverPort);
+                if (!state.compareAndSetState(HamokEndpointState.STARTING, HamokEndpointState.STARTED)) {
+                    logger.warn("Websocket was not in STARTING state when it was ready");
+                }
             }
         };
     }
@@ -260,7 +307,7 @@ public class WebsocketEndpoint implements HamokEndpoint {
         if (websocketServer != null) {
             this.stopServer(websocketServer);
         }
-        websocketServer = this.createServer(0);
+        websocketServer = this.createServer();
         if (!this.server.compareAndSet(null, websocketServer)) {
            this.stopServer(websocketServer);
            return;
@@ -274,7 +321,103 @@ public class WebsocketEndpoint implements HamokEndpoint {
         }
     }
 
-    private String createUri(String hostname, int port) {
-        return String.format("ws://%s:%d", hostname, port);
+    @Override
+    public Set<UUID> getActiveRemoteEndpointIds() {
+        return this.remoteEndpoints.keySet();
+    }
+
+    @Override
+    public Observable<ObservableState.StateChangeEvent<HamokEndpointState>> stateChanged() {
+        return this.state.stateChanges();
+    }
+
+    @Override
+    public void addConnection(HamokConnectionConfig connectionConfig) {
+        if (connectionConfig == null) {
+            logger.warn("Attempted to add a connection without a config");
+            return;
+        }
+        if (this.connections.containsKey(connectionConfig.connectionId())) {
+            logger.warn("Attempted to add a connection twice. {}", connectionConfig);
+            return;
+        }
+        var hasConnection = this.connections.values().stream()
+                .anyMatch(connection -> connection.getRemoteHost() == connectionConfig.remoteHost() && connection.getRemotePort() == connectionConfig.remotePort());
+        if (hasConnection) {
+            logger.warn("Attempted to add a connection twice. {}", connectionConfig);
+            return;
+        }
+
+        var connection = new WebsocketHamokConnection(
+                connectionConfig,
+                this.mapper,
+                this.maxMessageSize
+        ) {
+
+            @Override
+            public String getLocalHost() {
+                return serverHost;
+            }
+
+            @Override
+            public int getLocalPort() {
+                return serverPort;
+            }
+        };
+        this.connections.put(connection.getConnectionId(), connection);
+        connection.stateChange().subscribe(stateChangedEvent -> {
+            switch (stateChangedEvent.actualState()) {
+                case OPEN -> {
+                    var remoteEndpointId = connection.getRemoteEndpointId();
+                    if (remoteEndpointId == null) {
+                        logger.warn("No remote endpoint is available for remote connection {}", connection.getConnectionId());
+                        return;
+                    }
+                    setPendingEndpointFlag(remoteEndpointId, OPEN_CONNECTION_FLAG);
+                }
+                case CLOSED -> {
+                    var remoteEndpointId = connection.getRemoteEndpointId();
+                    if (remoteEndpointId != null) {
+                        this.remoteEndpoints.remove(remoteEndpointId);
+                        this.refreshHamokEndpoints.run();
+                    }
+                    if (this.connections.containsKey(connection.getConnectionId())) {
+                        this.removeConnection(connection.getConnectionId());
+                    }
+                    var discovery = this.discoverySupplier.get();
+                    if (discovery != null) {
+                        discovery.onDisconnect(connection.getConnectionId(), connection.getRemoteHost(), connection.getRemotePort());
+                    } else {
+                        logger.warn("Connection is closed but discovery service cannot be notificed, because there is not a supplied one");
+                    }
+                }
+            }
+        });
+        connection.open();
+    }
+
+    @Override
+    public void removeConnection(UUID connectionId) {
+        if (connectionId == null) {
+            logger.warn("Attempted to remove a connection without a connectionId");
+            return;
+        }
+        var connection = this.connections.remove(connectionId);
+        if (connection == null) {
+            logger.debug("Attempted to remove a non existing connection {}", connectionId);
+            return;
+        }
+        connection.close();
+    }
+
+    @Override
+    public void removeConnectionByEndpointId(UUID endpointId) {
+        if (endpointId == null) return;
+        var connection = this.remoteEndpoints.get(endpointId);
+        if (connection == null) {
+            logger.warn("Attempted to remove a not existing connection");
+            return;
+        }
+        this.removeConnection(connection.getConnectionId());
     }
 }

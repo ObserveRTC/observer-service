@@ -1,8 +1,6 @@
 package org.observertc.observer.metrics;
 
 import io.micrometer.core.instrument.Tag;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.common.TaskAbstract;
@@ -16,8 +14,10 @@ import javax.annotation.PreDestroy;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Singleton
 public class RepositoryMetrics {
@@ -44,7 +44,8 @@ public class RepositoryMetrics {
     private String entriesMetricName;
 
     private List<RepositoryStorageMetrics> storageMetrics;
-    private Disposable timer = null;
+
+    private final Map<String, AtomicInteger> localStorageSizes = new ConcurrentHashMap<>();
 
     public RepositoryMetrics(
                     CallsRepository callsRepository,
@@ -52,11 +53,13 @@ public class RepositoryMetrics {
                     PeerConnectionsRepository peerConnectionsRepository,
                     InboundTracksRepository inboundTracksRepository,
                     OutboundTracksRepository outboundTracksRepository,
+                    SfuMediaStreamsRepository sfuMediaStreamsRepository,
+                    SfuMediaSinksRepository sfuMediaSinksRepository,
                     SfusRepository sfusRepository,
                     SfuTransportsRepository sfuTransportsRepository,
                     SfuInboundRtpPadsRepository sfuInboundRtpPadsRepository,
                     SfuOutboundRtpPadsRepository sfuOutboundRtpPadsRepository,
-                    SfuSctpStreamsRepository sfuSctpStreamsRepository
+                    SfuSctpChannelsRepository sfuSctpStreamsRepository
     ) {
         this.storageMetrics = List.of(
                 callsRepository,
@@ -64,6 +67,8 @@ public class RepositoryMetrics {
                 peerConnectionsRepository,
                 inboundTracksRepository,
                 outboundTracksRepository,
+                sfuMediaStreamsRepository,
+                sfuMediaSinksRepository,
                 sfusRepository,
                 sfuTransportsRepository,
                 sfuInboundRtpPadsRepository,
@@ -77,10 +82,13 @@ public class RepositoryMetrics {
         this.taskExecutionTimeMetricName = metrics.getMetricName(REPOSITORY_METRICS_PREFIX, TASK_EXECUTION_TIME_METRIC_NAME);
         this.taskExecutionsMetricName = metrics.getMetricName(REPOSITORY_METRICS_PREFIX, TASK_EXECUTIONS_METRIC_NAME);
         this.entriesMetricName = metrics.getMetricName(REPOSITORY_METRICS_PREFIX, ENTRIES_METRIC_NAME);
-        if (this.config.enabled) {
-            var worker = Schedulers.computation().createWorker();
-            this.timer = worker.schedulePeriodically(this::expose, this.config.exposePeriodInMin, this.config.exposePeriodInMin, TimeUnit.MINUTES);
-            logger.info("Scheduler is added to expose metrics in every {} minutes", this.config.exposePeriodInMin);
+
+        for (var storageMetrics : this.storageMetrics) {
+            var storageId = storageMetrics.storageId();
+            var tags = List.of(Tag.of(STORAGE_ID_TAG_NAME, storageId));
+            var valueProvider = new AtomicInteger(0);
+            this.localStorageSizes.put(storageId, valueProvider);
+            this.metrics.registry.gauge(this.entriesMetricName, tags, valueProvider);
         }
     }
 
@@ -108,16 +116,22 @@ public class RepositoryMetrics {
 
     @PreDestroy
     void teardown() {
-        if (this.timer != null && !this.timer.isDisposed()) {
-            this.timer.dispose();
-            logger.info("Scheduler is destroyed");
-        }
+
     }
 
-    private void expose() {
+    public void update() {
         for (var storageMetrics : this.storageMetrics) {
-            var tags = List.of(Tag.of(STORAGE_ID_TAG_NAME, storageMetrics.storageId()));
-            this.metrics.registry.gauge(this.entriesMetricName, tags, storageMetrics.localSize());
+            var storageId = storageMetrics.storageId();
+            var value = storageMetrics.localSize();
+            var valueProvider = this.localStorageSizes.get(storageId);
+            if (valueProvider != null) {
+                valueProvider.set(value);
+            }
+            logger.debug("Set repository metric {} for storage {} to {}",
+                    this.entriesMetricName,
+                    storageId,
+                    value
+            );
         }
     }
 

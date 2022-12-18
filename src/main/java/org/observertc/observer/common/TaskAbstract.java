@@ -26,17 +26,31 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
+
+	public static TaskAbstract<Void> wrapRunnable(Runnable action) {
+		return new TaskAbstract<Void>() {
+			@Override
+			protected Void perform() throws Throwable {
+				action.run();
+				return null;
+			}
+		};
+	}
+
 	private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(TaskAbstract.class);
 	private volatile boolean executed = false;
 	private Supplier<String> errorMessageSupplier = () -> "";
 	private Logger onLogger = DEFAULT_LOGGER;
 	private Logger defaultLogger = DEFAULT_LOGGER;
+	private Consumer<Throwable> exceptionHandler = null;
 	private boolean rethrowException = false;
 	private boolean succeeded = false;
 	private int maxRetry = 1;
 	private T result = null;
 	private Supplier<AutoCloseable> lockProvider = () -> { return () -> {};};
 	private Consumer<Stats> statsConsumer = input -> {};
+	private Runnable finalAction = () -> {};
+	private String name = null;
 
 	public static class Stats {
 		public Instant started = Instant.now();
@@ -62,6 +76,9 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 					break;
 				} catch (Throwable ex) {
 					thrown = ex;
+					if (exceptionHandler != null) {
+						exceptionHandler.accept(ex);
+					}
 					if (run < this.maxRetry - 1) {
 						this.onLogger.warn("Unexpected error occurred Retry now.", ex);
 					}
@@ -69,11 +86,11 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 			}
 			if (Objects.nonNull(thrown)) {
 				String exceptionMessage = this.getErrorMessage();
-				this.onLogger.error(exceptionMessage, thrown);
+				this.onLogger.warn(exceptionMessage, thrown);
 				try {
 					this.rollback(thrown);
 				} catch (Throwable t) {
-					this.onLogger.error("Unexpected exception occurred during rollback", t);
+					this.onLogger.warn("Unexpected exception occurred during rollback", t);
 				}
 				if (this.rethrowException) {
 					throw new RuntimeException(thrown);
@@ -89,10 +106,22 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 					this.statsConsumer.accept(stats);
 				}
 			} catch (Exception ex) {
-				this.onLogger.error("Error while forwarding task stats");
+				this.onLogger.warn("Error while forwarding task stats", ex);
+			}
+			try {
+				finalAction.run();
+			} catch (Exception ex) {
+				this.onLogger.warn("Error while executing final action", ex);
 			}
 		}
 		return this;
+	}
+
+	public String getName() {
+		if (this.name != null) {
+			return this.name;
+		}
+		return this.getClass().getSimpleName();
 	}
 
 	protected Logger getLogger() {
@@ -112,7 +141,7 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 	protected abstract T perform() throws Throwable;
 
 	protected void rollback(Throwable t) {
-		this.onLogger.info("No Rollback has been implemented to this task ({})", this.getClass().getSimpleName());
+		this.onLogger.info("No Rollback has been implemented to this task ({})", Utils.firstNotNull(this.name, this.getClass().getSimpleName()));
 		// no rollback
 	}
 
@@ -125,6 +154,11 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 
 	TaskAbstract<T> withLockProvider(Supplier<AutoCloseable> value) {
 		this.lockProvider = value;
+		return this;
+	}
+
+	protected TaskAbstract<T> setName(String taskName) {
+		this.name = taskName;
 		return this;
 	}
 
@@ -163,6 +197,11 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 		return this;
 	}
 
+	public TaskAbstract<T> withExceptionHandler(Consumer<Throwable> exceptionHandler) {
+		this.exceptionHandler = exceptionHandler;
+		return this;
+	}
+
 	public TaskAbstract<T> withExceptionMessage(Supplier<String> messageSupplier) {
 		this.errorMessageSupplier = messageSupplier;
 		return this;
@@ -176,6 +215,11 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 
 	public TaskAbstract<T> withLogger(Logger logger) {
 		this.onLogger = logger;
+		return this;
+	}
+
+	public TaskAbstract<T> withFinalAction(Runnable action) {
+		this.finalAction = action;
 		return this;
 	}
 
@@ -209,7 +253,7 @@ public abstract class TaskAbstract<T> implements AutoCloseable, Task<T> {
 		try {
 			return this.errorMessageSupplier.get();
 		} catch (Throwable ex) {
-			this.onLogger.error("Can you check your error message supplier? It just caused another error", ex);
+			this.onLogger.warn("Can you check your error message supplier? It just caused another error", ex);
 			return "Unexpected error occurred in " + this.getClass().getSimpleName();
 		}
 

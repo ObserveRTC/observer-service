@@ -10,6 +10,6 @@
   "author": "Balazs Kreith",
   "license": "ISC",
   "dependencies": {
-    "@observertc/schemas": "^2.1.0"
+    "@observertc/schemas": "2.2.0"
   }
 }

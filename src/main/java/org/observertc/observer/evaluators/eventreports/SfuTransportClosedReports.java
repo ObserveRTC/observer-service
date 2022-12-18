@@ -45,7 +45,7 @@ public class SfuTransportClosedReports {
 
     private SfuEventReport makeReport(Models.SfuTransport sfuTransportDTO) {
         try {
-            var timestamp = sfuTransportDTO.hasTouched() ? sfuTransportDTO.getTouched() : Instant.now().toEpochMilli();
+            var timestamp = sfuTransportDTO.hasSampleTouched() ? sfuTransportDTO.getSampleTouched() : Instant.now().toEpochMilli();
             var attachment = SfuTransportAttachment.builder()
                     .withInternal(sfuTransportDTO.getInternal())
                     .build().toBase64();

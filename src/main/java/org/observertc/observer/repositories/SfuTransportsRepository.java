@@ -35,7 +35,11 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
     private HamokService service;
 
     @Inject
-    private ObserverConfig.InternalBuffersConfig bufferConfig;
+    private ObserverConfig observerConfig;
+
+    @Inject
+    private Backups backups;
+
 
     @Inject
     BeanProvider<SfusRepository> sfusRepositoryBeanProvider;
@@ -47,7 +51,10 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
     SfuOutboundRtpPadsRepository sfuOutboundRtpPadsRepository;
 
     @Inject
-    SfuSctpStreamsRepository sfuSctpStreamsRepository;
+    SfuSctpChannelsRepository sfuSctpChannelsRepository;
+
+    @Inject
+    private ObserverConfig.HamokConfig hamokConfig;
 
     private Map<String, Models.SfuTransport> updated;
     private Set<String> deleted;
@@ -59,17 +66,24 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
                 .setConcurrency(true)
                 .setId(STORAGE_ID)
                 .build();
-        this.storage = this.service.getStorageGrid().separatedStorage(baseStorage)
+        var storageBuilder = this.service.getStorageGrid().separatedStorage(baseStorage)
                 .setKeyCodec(SerDeUtils.createStrToByteFunc(), SerDeUtils.createBytesToStr())
                 .setValueCodec(
                         Mapper.create(Models.SfuTransport::toByteArray, logger)::map,
                         Mapper.<byte[], Models.SfuTransport>create(bytes -> Models.SfuTransport.parseFrom(bytes), logger)::map
                 )
-                .setMaxCollectedStorageEvents(bufferConfig.debouncers.maxItems)
-                .setMaxCollectedStorageTimeInMs(bufferConfig.debouncers.maxTimeInMs)
+                .setMaxCollectedStorageEvents(this.observerConfig.buffers.debouncers.maxItems)
+                .setMaxCollectedStorageTimeInMs(this.observerConfig.buffers.debouncers.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
                 .setMaxMessageValues(MAX_VALUES)
-                .build();
+                .setThrowingExceptionOnRequestTimeout(!this.hamokConfig.usePartialResponses)
+                ;
+
+        if (this.observerConfig.repository.useBackups) {
+            storageBuilder.setDistributedBackups(this.backups);
+        }
+
+        this.storage = storageBuilder.build();
 
         this.fetched = CachedFetches.<String, SfuTransport>builder()
                 .onFetchOne(this::fetchOne)
@@ -95,6 +109,36 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
         }
     }
 
+    public Map<String, SfuTransport> fetchRecursively(Set<String> sfuTransportIds) {
+        if (sfuTransportIds == null || sfuTransportIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        var result = this.getAll(sfuTransportIds);
+        var sfuInboundRtpPadIds = result.values().stream()
+                .map(SfuTransport::getInboundRtpPadIds)
+                .flatMap(s -> s.stream())
+                .collect(Collectors.toSet());
+        if (0 < sfuInboundRtpPadIds.size()) {
+            this.sfuInboundRtpPadsRepository.fetchRecursively(sfuInboundRtpPadIds);
+        }
+        var sfuOutboundRtpPadIds = result.values().stream()
+                .map(SfuTransport::getOutboundRtpPadIds)
+                .flatMap(s -> s.stream())
+                .collect(Collectors.toSet());
+        if (0 < sfuOutboundRtpPadIds.size()) {
+            this.sfuOutboundRtpPadsRepository.fetchRecursively(sfuOutboundRtpPadIds);
+        }
+
+        var sfuSctpChannelIds = result.values().stream()
+                .map(SfuTransport::getSctpChannelIds)
+                .flatMap(s -> s.stream())
+                .collect(Collectors.toSet());
+        if (0 < sfuSctpChannelIds.size()) {
+            this.sfuSctpChannelsRepository.getAll(sfuSctpChannelIds);
+        }
+        return result;
+    }
+
     public synchronized void deleteAll(Set<String> sfuTransportIds) {
         if (sfuTransportIds == null || sfuTransportIds.size() < 1) {
             return;
@@ -117,7 +161,7 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
             for (var sfuTransport : sfuTransports.values()) {
                 sfuInboundRtpPadIds.addAll(sfuTransport.getInboundRtpPadIds());
                 sfuOutboundRtpPadIds.addAll(sfuTransport.getOutboundRtpPadIds());
-                sfuSctpStreamIds.addAll(sfuTransport.getSctpStreamIds());
+                sfuSctpStreamIds.addAll(sfuTransport.getSctpChannelIds());
             }
             if (0 < sfuInboundRtpPadIds.size()) {
                 this.sfuInboundRtpPadsRepository.deleteAll(sfuInboundRtpPadIds);
@@ -126,7 +170,7 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
                 this.sfuOutboundRtpPadsRepository.deleteAll(sfuOutboundRtpPadIds);
             }
             if (0 < sfuSctpStreamIds.size()) {
-                this.sfuSctpStreamsRepository.deleteAll(sfuSctpStreamIds);
+                this.sfuSctpChannelsRepository.deleteAll(sfuSctpStreamIds);
             }
             Try.wrap(() -> this.storage.deleteAll(this.deleted));
             this.deleted.clear();
@@ -137,7 +181,7 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
         }
         this.sfuInboundRtpPadsRepository.save();
         this.sfuOutboundRtpPadsRepository.save();
-        this.sfuSctpStreamsRepository.save();
+        this.sfuSctpChannelsRepository.save();
         this.fetched.clear();
     }
 
@@ -163,6 +207,14 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
         }
         var set = Set.copyOf(sfuTransportIds);
         return this.fetched.getAll(set);
+    }
+
+    public Map<String, SfuTransport> getAllLocallyStored() {
+        var callIds = this.storage.localKeys();
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        return this.fetchAll(callIds);
     }
 
     @Override
@@ -209,7 +261,7 @@ public class SfuTransportsRepository implements RepositoryStorageMetrics{
                 this,
                 this.sfuInboundRtpPadsRepository,
                 this.sfuOutboundRtpPadsRepository,
-                this.sfuSctpStreamsRepository
+                this.sfuSctpChannelsRepository
         );
         this.fetched.add(result.getSfuTransportId(), result);
         return result;

@@ -14,8 +14,9 @@ public class EvaluatorMetrics {
 
     private static final String EXECUTION_DURATIONS_TAG_NAME = "execution_durations";
     private static final String EVALUATOR_NAME_TAG_NAME = "component";
+    private static final String COMMIT_CALL_ENTITIES_NAME_TAG_NAME = "commit_call_entities";
+    private static final String COMMIT_SFU_ENTITIES_NAME_TAG_NAME = "commit_sfu_entities";
 
-//    private static final String CALL_ENTITIES_UPDATER_TAG_VALUE = "component";
 
     @Inject
     Metrics metrics;
@@ -39,6 +40,30 @@ public class EvaluatorMetrics {
                         this.executionDurations,
                         EVALUATOR_NAME_TAG_NAME, evaluatorName
                 )
+                .record(Duration.between(started, ended));
+        return this;
+    }
+
+    public EvaluatorMetrics addCommitCallEntitiesExecutionTime(Instant started, Instant ended) {
+        if (!this.config.enabled) {
+            return this;
+        }
+        this.metrics.registry
+                .timer(
+                        metrics.getMetricName(EVALUATOR_METRICS_PREFIX, COMMIT_CALL_ENTITIES_NAME_TAG_NAME)
+                        )
+                .record(Duration.between(started, ended));
+        return this;
+    }
+
+    public EvaluatorMetrics addCommitSfuEntitiesExecutionTime(Instant started, Instant ended) {
+        if (!this.config.enabled) {
+            return this;
+        }
+        this.metrics.registry
+                .timer(
+                        metrics.getMetricName(EVALUATOR_METRICS_PREFIX, COMMIT_SFU_ENTITIES_NAME_TAG_NAME)
+                        )
                 .record(Duration.between(started, ended));
         return this;
     }

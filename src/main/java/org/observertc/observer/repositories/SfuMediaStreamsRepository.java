@@ -35,7 +35,10 @@ public class SfuMediaStreamsRepository implements RepositoryStorageMetrics {
     private HamokService service;
 
     @Inject
-    private ObserverConfig.InternalBuffersConfig bufferConfig;
+    private ObserverConfig observerConfig;
+
+    @Inject
+    private Backups backups;
 
     @Inject
     private BeanProvider<SfuTransportsRepository> sfuTransportsRepositoryBeanProvider;
@@ -46,6 +49,9 @@ public class SfuMediaStreamsRepository implements RepositoryStorageMetrics {
     @Inject
     private BeanProvider<SfuMediaSinksRepository> sfuMediaSinksRepositoryBeanProvider;
 
+    @Inject
+    private ObserverConfig.HamokConfig hamokConfig;
+
     private Map<String, Models.SfuMediaStream> updated;
     private Set<String> deleted;
     private CachedFetches<String, SfuMediaStream> fetched;
@@ -55,19 +61,27 @@ public class SfuMediaStreamsRepository implements RepositoryStorageMetrics {
         var baseStorage = new MemoryStorageBuilder<String, Models.SfuMediaStream>()
                 .setConcurrency(true)
                 .setId(STORAGE_ID)
-                .setExpiration(5 * 60 * 1000)
+//                .setExpiration(5 * 60 * 1000)
                 .build();
-        this.storage = this.service.getStorageGrid().separatedStorage(baseStorage)
+        var storageBuilder = this.service.getStorageGrid().separatedStorage(baseStorage)
                 .setKeyCodec(SerDeUtils.createStrToByteFunc(), SerDeUtils.createBytesToStr())
                 .setValueCodec(
                         Mapper.create(Models.SfuMediaStream::toByteArray, logger)::map,
                         Mapper.<byte[], Models.SfuMediaStream>create(bytes -> Models.SfuMediaStream.parseFrom(bytes), logger)::map
                 )
-                .setMaxCollectedStorageEvents(bufferConfig.debouncers.maxItems)
-                .setMaxCollectedStorageTimeInMs(bufferConfig.debouncers.maxTimeInMs)
+                .setMaxCollectedStorageEvents(this.observerConfig.buffers.debouncers.maxItems)
+                .setMaxCollectedStorageTimeInMs(this.observerConfig.buffers.debouncers.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
                 .setMaxMessageValues(MAX_VALUES)
-                .build();
+                .setThrowingExceptionOnRequestTimeout(!this.hamokConfig.usePartialResponses)
+                ;
+
+        if (this.observerConfig.repository.useBackups) {
+            storageBuilder.setDistributedBackups(this.backups);
+        }
+
+        this.storage = storageBuilder.build();
+
         this.fetched = CachedFetches.<String, SfuMediaStream>builder()
                 .onFetchOne(this::fetchOne)
                 .onFetchAll(this::fetchAll)
@@ -108,6 +122,15 @@ public class SfuMediaStreamsRepository implements RepositoryStorageMetrics {
 
     public synchronized void save() {
         if (0 < this.deleted.size()) {
+            var sfuMediaStreams = this.storage.getAll(this.deleted);
+            var sfuSinkIds = sfuMediaStreams.values().stream()
+                            .filter(sfuMediaStream -> 0 < sfuMediaStream.getSfuInboundSfuRtpPadIdsCount())
+                            .map(Models.SfuMediaStream::getSfuMediaSinkIdsList)
+                            .flatMap(s -> s.stream())
+                            .collect(Collectors.toSet());
+            if (0 < sfuSinkIds.size()) {
+                this.sfuMediaSinksRepositoryBeanProvider.get().deleteAll(sfuSinkIds);
+            }
             Try.wrap(() -> this.storage.deleteAll(this.deleted));
             this.deleted.clear();
         }
@@ -115,6 +138,7 @@ public class SfuMediaStreamsRepository implements RepositoryStorageMetrics {
             Try.wrap(() -> this.storage.setAll(this.updated));
             this.updated.clear();
         }
+        this.sfuMediaSinksRepositoryBeanProvider.get().save();
         this.fetched.clear();
     }
 
@@ -150,6 +174,14 @@ public class SfuMediaStreamsRepository implements RepositoryStorageMetrics {
         }
         var set = Set.copyOf(sfuMediaStreamIds);
         return this.fetched.getAll(set);
+    }
+
+    public Map<String, SfuMediaStream> getAllLocallyStored() {
+        var callIds = this.storage.localKeys();
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        return this.fetchAll(callIds);
     }
 
     private SfuMediaStream fetchOne(String sfuStreamId) {

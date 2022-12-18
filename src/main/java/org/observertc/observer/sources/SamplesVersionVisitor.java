@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, String, TOut> {
 
     String LATEST_VERSION = "latest";
+    String VERSION_220 = "2.2.0";
     String VERSION_219 = "2.1.9";
     String VERSION_218 = "2.1.8";
     String VERSION_217 = "2.1.7";
@@ -25,6 +26,7 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
     static List<String> getSupportedVersions() {
         return Arrays.asList(
                 LATEST_VERSION,
+                VERSION_220,
                 VERSION_219,
                 VERSION_218,
                 VERSION_217,
@@ -40,6 +42,7 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
 
     static <TIn, TOut> SamplesVersionVisitor<TIn, TOut> createFunctionalVisitor(
             Function<TIn, TOut> latestVisitor,
+            Function<TIn, TOut> visit210,
             Function<TIn, TOut> notRecognizedVisitor
     ) {
         return new SamplesVersionVisitor<TIn, TOut>() {
@@ -47,6 +50,12 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
             public TOut visitLatest(TIn tIn) {
                 return latestVisitor.apply(tIn);
             }
+
+            @Override
+            public TOut visit210(TIn tIn) {
+                return visit210.apply(tIn);
+            }
+
 
             @Override
             public TOut notRecognized(TIn tIn) {
@@ -57,6 +66,7 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
 
     static <TOut> SamplesVersionVisitor<Void, TOut> createSupplierVisitor(
             Supplier<TOut> latestVisitor,
+            Supplier<TOut> visit210,
             Supplier<TOut> notRecognizedVisitor
     ) {
         return new SamplesVersionVisitor<Void, TOut>() {
@@ -64,6 +74,12 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
             public TOut visitLatest(Void tIn) {
                 return latestVisitor.get();
             }
+
+            @Override
+            public TOut visit210(Void tIn) {
+                return visit210.get();
+            }
+
 
             @Override
             public TOut notRecognized(Void tIn) {
@@ -74,12 +90,19 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
 
     static <TIn> SamplesVersionVisitor<TIn, Void> visitByConsumers(
             Consumer<TIn> latestVisitor,
+            Consumer<TIn> visit210,
             Consumer<TIn> notRecognizedVisitor
     ) {
         return new SamplesVersionVisitor<TIn, Void>() {
             @Override
             public Void visitLatest(TIn tIn) {
                 latestVisitor.accept(tIn);
+                return null;
+            }
+
+            @Override
+            public Void visit210(TIn tIn) {
+                visit210.accept(tIn);
                 return null;
             }
 
@@ -94,6 +117,7 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
     static boolean isVersionValid(String version) {
         return SamplesVersionVisitor.<String, Boolean>createFunctionalVisitor(
                 input -> true,
+                input -> true,
                 input -> false
         ).apply(version, version);
     }
@@ -107,6 +131,8 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
 
         switch (version.toLowerCase(Locale.ROOT)) {
             case LATEST_VERSION:
+            case VERSION_220:
+                return visitLatest(obj);
             case VERSION_219:
             case VERSION_218:
             case VERSION_217:
@@ -117,13 +143,14 @@ public interface SamplesVersionVisitor<TObj, TOut> extends BiFunction<TObj, Stri
             case VERSION_212:
             case VERSION_211:
             case VERSION_210:
-                return visitLatest(obj);
+                return visit210(obj);
             default:
                 return notRecognized(obj);
         }
     }
 
     TOut visitLatest(TObj obj);
+    TOut visit210(TObj obj);
     TOut notRecognized(TObj obj);
 
 }

@@ -1,72 +1,58 @@
 package org.observertc.observer.hamokdiscovery.statics;
 
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.subjects.PublishSubject;
-import io.reactivex.rxjava3.subjects.Subject;
-import org.observertc.observer.hamokdiscovery.RemotePeer;
-import org.observertc.observer.hamokdiscovery.RemotePeerDiscovery;
-import org.observertc.observer.hamokdiscovery.RemotePeerDiscoveryEvent;
-import org.observertc.observer.hamokdiscovery.RemotePeerDiscoveryEventTypes;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import org.observertc.observer.hamokdiscovery.HamokDiscovery;
+import org.observertc.observer.hamokendpoints.HamokConnectionConfig;
+import org.observertc.observer.hamokendpoints.HamokEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class StaticDiscovery implements RemotePeerDiscovery {
+public class StaticDiscovery implements HamokDiscovery {
 
     private static final Logger logger = LoggerFactory.getLogger(StaticDiscovery.class);
 
-    private final Map<String, RemotePeer> remotePeers = new ConcurrentHashMap<>();
-    private final Subject<RemotePeerDiscoveryEvent> events = PublishSubject.create();
+    private final Map<UUID, HamokConnectionConfig> hamokConnections = new ConcurrentHashMap<>();
     private volatile boolean run = false;
+    private final Supplier<HamokEndpoint> hamokEndpointSupplier;
 
-    public void add(String key, RemotePeer remotePeer) {
-        var removed = this.remotePeers.put(key, remotePeer);
+    public StaticDiscovery(Supplier<HamokEndpoint> hamokEndpointSupplier) {
+        this.hamokEndpointSupplier = hamokEndpointSupplier;
+    }
+
+
+    public void add(HamokConnectionConfig hamokConnectionConfig) {
+        var removed = this.hamokConnections.put(hamokConnectionConfig.connectionId(), hamokConnectionConfig);
         if (!this.run) {
             return;
         }
-        if (removed != null) {
-            var event = new RemotePeerDiscoveryEvent(
-                    RemotePeerDiscoveryEventTypes.REMOVED,
-                    removed
-            );
-            this.events.onNext(event);
+        if (removed == null) {
+            logger.warn("Overrided hamok connection config. removed connection: {}, new connection: {}", removed, hamokConnectionConfig);
+
         }
-        var event = new RemotePeerDiscoveryEvent(
-                RemotePeerDiscoveryEventTypes.ADDED,
-                remotePeer
-        );
-        this.events.onNext(event);
+        this.hamokEndpointSupplier.get().addConnection(hamokConnectionConfig);
     }
 
-    public boolean remove(String key) {
-        var removed = this.remotePeers.remove(key);
+    public boolean remove(UUID connectionId) {
+        var removed = this.hamokConnections.remove(connectionId);
         if (removed == null) {
             return false;
         }
         if (!this.run) {
             return true;
         }
-        var event = new RemotePeerDiscoveryEvent(
-                RemotePeerDiscoveryEventTypes.REMOVED,
-                removed
-        );
-        this.events.onNext(event);
+        this.hamokEndpointSupplier.get().removeConnection(connectionId);
         return true;
     }
 
-    @Override
-    public Observable<RemotePeerDiscoveryEvent> events() {
-        return this.events;
-    }
 
     @Override
     public boolean isReady() {
@@ -79,12 +65,8 @@ public class StaticDiscovery implements RemotePeerDiscovery {
             return;
         }
         this.run = true;
-        for (var remotePeer : this.remotePeers.values()) {
-            var event = new RemotePeerDiscoveryEvent(
-                    RemotePeerDiscoveryEventTypes.ADDED,
-                    remotePeer
-            );
-            this.events.onNext(event);
+        for (var hamokConnectionConfig : this.hamokConnections.values()) {
+            this.hamokEndpointSupplier.get().addConnection(hamokConnectionConfig);
         }
     }
 
@@ -94,12 +76,8 @@ public class StaticDiscovery implements RemotePeerDiscovery {
             return;
         }
         this.run = false;
-        for (var remotePeer : this.remotePeers.values()) {
-            var event = new RemotePeerDiscoveryEvent(
-                    RemotePeerDiscoveryEventTypes.REMOVED,
-                    remotePeer
-            );
-            this.events.onNext(event);
+        for (var connectionId : this.hamokConnections.keySet()) {
+            this.hamokEndpointSupplier.get().removeConnection(connectionId);
         }
     }
 
@@ -119,5 +97,22 @@ public class StaticDiscovery implements RemotePeerDiscovery {
             logger.warn("Error while collecting local addresses", e);
             return Collections.emptyList();
         }
+    }
+
+    @Override
+    public void onDisconnect(UUID connectionId, String remoteHost, int remotePort) {
+        var hamokConnectionConfig = this.hamokConnections.get(connectionId);
+        if (hamokConnectionConfig == null) {
+            return;
+        }
+        logger.warn("Connection {} is reported to be disconnected. Static Discovery will put it back", hamokConnectionConfig);
+        Schedulers.computation().scheduleDirect(() -> {
+            this.hamokEndpointSupplier.get().addConnection(hamokConnectionConfig);
+        }, 5000, TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    public List<HamokConnectionConfig> getActiveConnections() {
+        return this.hamokConnections.values().stream().collect(Collectors.toList());
     }
 }

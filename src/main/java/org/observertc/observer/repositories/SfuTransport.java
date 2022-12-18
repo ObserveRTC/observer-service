@@ -1,6 +1,8 @@
 package org.observertc.observer.repositories;
 
 import org.observertc.schemas.dtos.Models;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -10,12 +12,14 @@ import java.util.stream.Collectors;
 
 public class SfuTransport {
 
+    private static final Logger logger = LoggerFactory.getLogger(SfuTransport.class);
+
     private final AtomicReference<Models.SfuTransport> modelHolder;
     private final SfusRepository sfusRepository;
     private final SfuTransportsRepository sfuTransportsRepository;
     private final SfuInboundRtpPadsRepository sfuInboundRtpPadsRepository;
     private final SfuOutboundRtpPadsRepository sfuOutboundRtpPadsRepository;
-    private final SfuSctpStreamsRepository sfuSctpStreamsRepository;
+    private final SfuSctpChannelsRepository sfuSctpStreamsRepository;
 
     SfuTransport(
             Models.SfuTransport model,
@@ -23,7 +27,7 @@ public class SfuTransport {
             SfuTransportsRepository sfuTransportsRepository,
             SfuInboundRtpPadsRepository sfuInboundRtpPadsRepository,
             SfuOutboundRtpPadsRepository sfuOutboundRtpPadsRepository,
-            SfuSctpStreamsRepository sfuSctpStreamsRepository
+            SfuSctpChannelsRepository sfuSctpStreamsRepository
     ) {
         this.modelHolder = new AtomicReference<>(model);
         this.sfusRepository = sfusRepository;
@@ -63,18 +67,51 @@ public class SfuTransport {
         return model.getOpened();
     }
 
-    public Long getTouched() {
+    public void touch(Long sampleTimestamp, Long serverTimestamp) {
         var model = modelHolder.get();
-        if (!model.hasTouched()) {
-            return null;
+        Models.SfuTransport.Builder newModel = null;
+        if (sampleTimestamp != null) {
+            newModel = Models.SfuTransport.newBuilder(model)
+                    .setSampleTouched(sampleTimestamp);
         }
-        return model.getTouched();
+        if (serverTimestamp != null) {
+            if (newModel == null) newModel = Models.SfuTransport.newBuilder(model);
+            newModel.setServerTouched(serverTimestamp);
+        }
+        if (newModel == null) {
+            return;
+        }
+        this.updateModel(newModel.build());
     }
 
-    public void touch(Long timestamp) {
+    public Long getSampleTouched() {
+        var model = modelHolder.get();
+        if (!model.hasSampleTouched()) {
+            return null;
+        }
+        return model.getSampleTouched();
+    }
+
+    public void touchBySample(Long timestamp) {
         var model = modelHolder.get();
         var newModel = Models.SfuTransport.newBuilder(model)
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
+                .build();
+        this.updateModel(newModel);
+    }
+
+    public Long getServerTouch() {
+        var model = this.modelHolder.get();
+        if (!model.hasServerTouched()) {
+            return null;
+        }
+        return model.getServerTouched();
+    }
+
+    public void touchByServer(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.SfuTransport.newBuilder(model)
+                .setServerTouched(timestamp)
                 .build();
         this.updateModel(newModel);
     }
@@ -88,6 +125,14 @@ public class SfuTransport {
         var model = this.modelHolder.get();
         return model.getMarker();
     }
+
+//    public Collection<String> getStreamIds() {
+//        var model = this.modelHolder.get();
+//        if (model.getInboundRtpPadIdsCount() < 1) {
+//            return Collections.emptyList();
+//        }
+//        return model.getInboundRtpPadIdsList();
+//    }
 
     public Collection<String> getInboundRtpPadIds() {
         var model = this.modelHolder.get();
@@ -140,7 +185,7 @@ public class SfuTransport {
                 .setSsrc(ssrc)
                 .setInternal(model.getInternal())
                 .setAdded(timestamp)
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
                 ;
         if (sfuStreamId != null) {
@@ -227,7 +272,7 @@ public class SfuTransport {
                 .setSsrc(ssrc)
                 .setInternal(model.getInternal())
                 .setAdded(timestamp)
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
                 ;
 
@@ -247,7 +292,14 @@ public class SfuTransport {
 
         this.updateModel(newModel);
         this.sfuOutboundRtpPadsRepository.update(sfuOutboundRtpPadModel);
-        return this.sfuOutboundRtpPadsRepository.wrapSfuOutboundRtpPad(sfuOutboundRtpPadModel);
+        var result = this.sfuOutboundRtpPadsRepository.wrapSfuOutboundRtpPad(sfuOutboundRtpPadModel);
+        if (result != null && model.getInternal() && sfuStreamId != null && sfuSinkId != null) {
+            // add MediaSink
+            if (!result.createMediaSink()) {
+                logger.warn("Cannot add internal media sink for media stream {}", sfuStreamId);
+            }
+        }
+        return result;
     }
 
     public boolean removeOutboundRtpPad(String rtpPadId) {
@@ -273,69 +325,70 @@ public class SfuTransport {
     }
 
 
-    public Collection<String> getSctpStreamIds() {
+    public Collection<String> getSctpChannelIds() {
         var model = this.modelHolder.get();
-        if (model.getSctpStreamIdsCount() < 1) {
+        if (model.getSctpChannelIdsCount() < 1) {
             return Collections.emptyList();
         }
-        return model.getSctpStreamIdsList();
+        return model.getSctpChannelIdsList();
     }
 
-    public SfuSctpStream getSctpStream(String sctpStreamId) {
+    public SfuSctpChannel getSctpChannel(String sctpStreamId) {
         var model = this.modelHolder.get();
-        if (model.getSctpStreamIdsCount() < 1) {
+        if (model.getSctpChannelIdsCount() < 1) {
             return null;
         }
         return this.sfuSctpStreamsRepository.get(sctpStreamId);
     }
 
-    public Map<String, SfuSctpStream> getSctpStreams() {
+    public Map<String, SfuSctpChannel> getSctpStreams() {
         var model = this.modelHolder.get();
-        if (model.getSctpStreamIdsCount() < 1) {
+        if (model.getSctpChannelIdsCount() < 1) {
             return Collections.emptyMap();
         }
-        var sctpStreamIds = this.getSctpStreamIds();
+        var sctpStreamIds = this.getSctpChannelIds();
         return this.sfuSctpStreamsRepository.getAll(sctpStreamIds);
     }
 
-    public SfuSctpStream addSctpStream(String sctpStreamId, Long timestamp, String marker) throws AlreadyCreatedException {
+    public SfuSctpChannel addSctpChannel(String sctpStreamId, String sctpChannelId, Long timestamp, String marker) throws AlreadyCreatedException {
         var model = modelHolder.get();
-        if (0 < model.getSctpStreamIdsCount()) {
-            var sctpStreamIds = model.getSctpStreamIdsList();
-            if (sctpStreamIds.contains(sctpStreamId)) {
-                throw AlreadyCreatedException.wrapSfuSctpStream(sctpStreamId);
+        if (0 < model.getSctpChannelIdsCount()) {
+            var sctpChannelIds = model.getSctpChannelIdsList();
+            if (sctpChannelIds.contains(sctpChannelId)) {
+                throw AlreadyCreatedException.wrapSfuSctpStream(sctpChannelId);
             }
         }
 
-        var sctpStreamModelBuilder = Models.SfuSctpStream.newBuilder()
+        var sctpChannelModelBuilder = Models.SfuSctpChannel.newBuilder()
                 .setServiceId(model.getServiceId())
                 .setSfuId(model.getSfuId())
                 .setSfuTransportId(model.getTransportId())
                 .setSfuSctpStreamId(sctpStreamId)
+                .setSfuSctpChannelId(sctpChannelId)
                 .setOpened(timestamp)
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
                 ;
 
         if (marker != null) {
-            sctpStreamModelBuilder.setMarker(marker);
+            sctpChannelModelBuilder.setMarker(marker);
         }
-        var sctpStreamModel = sctpStreamModelBuilder.build();
+        var sctpStreamModel = sctpChannelModelBuilder.build();
         var newModel = Models.SfuTransport.newBuilder(model)
-                .addSctpStreamIds(sctpStreamId)
+                .addSctpChannelIds(sctpChannelId)
                 .build();
 
         this.updateModel(newModel);
         this.sfuSctpStreamsRepository.update(sctpStreamModel);
-        return this.sfuSctpStreamsRepository.wrapSfuSctpStream(sctpStreamModel);
+        return this.sfuSctpStreamsRepository.wrap(sctpStreamModel);
     }
 
     public boolean removeSctpStream(String sctpStreamId) {
         var model = modelHolder.get();
-        if (model.getSctpStreamIdsCount() < 1) {
+        if (model.getSctpChannelIdsCount() < 1) {
             return false;
         }
-        var sctpStreamIds = model.getSctpStreamIdsList();
+        var sctpStreamIds = model.getSctpChannelIdsList();
         if (!sctpStreamIds.contains(sctpStreamId)) {
             return false;
         }
@@ -343,7 +396,7 @@ public class SfuTransport {
                 .collect(Collectors.toSet());
 
         var newModel = Models.SfuTransport.newBuilder(model)
-                .clearSctpStreamIds()
+                .clearSctpChannelIds()
                 .addAllOutboundRtpPadIds(newSctpStreamIds)
                 .build();
 

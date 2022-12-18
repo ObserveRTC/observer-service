@@ -5,20 +5,23 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import jakarta.inject.Inject;
+import org.observertc.observer.BackgroundTasksExecutor;
+import org.observertc.observer.ServerTimestamps;
+import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.eventreports.*;
 import org.observertc.observer.metrics.EvaluatorMetrics;
 import org.observertc.observer.repositories.*;
+import org.observertc.observer.repositories.tasks.CleanSfuEntities;
+import org.observertc.observer.repositories.tasks.CommitSfuEntities;
 import org.observertc.observer.samples.ObservedSfuSamples;
-import org.observertc.observer.samples.SfuSampleVisitor;
 import org.observertc.schemas.dtos.Models;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.time.Instant;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 @Prototype
@@ -42,7 +45,7 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
     SfuOutboundRtpPadsRepository sfuOutboundRtpPadsRepository;
 
     @Inject
-    SfuSctpStreamsRepository sfuSctpStreamsRepository;
+    SfuSctpChannelsRepository sfuSctpStreamsRepository;
 
     @Inject
     SfuJoinedReports sfuJoinedReports;
@@ -58,6 +61,35 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
 
     @Inject
     SfuSctpStreamAddedReports sfuSctpStreamAddedReports;
+
+    @Inject
+    ServerTimestamps serverTimestamps;
+
+    @Inject
+    ObserverConfig observerConfig;
+
+    @Inject
+    BackgroundTasksExecutor backgroundTasksExecutor;
+
+    @Inject
+    CleanSfuEntities cleanSfuEntities;
+
+    @Inject
+    CommitSfuEntities commitSfuEntities;
+
+    @PostConstruct
+    void setup() {
+        this.backgroundTasksExecutor.addPeriodicTask(
+                this.getClass().getSimpleName(),
+                this.cleanSfuEntities::createTask,
+                60 * 1000
+        );
+    }
+
+    @PreDestroy
+    void teardown() {
+        this.backgroundTasksExecutor.removePeriodicTask(this.getClass().getSimpleName());
+    }
 
     private Subject<ObservedSfuSamples> output = PublishSubject.create();
 
@@ -75,9 +107,14 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
         }
         Instant started = Instant.now();
         try {
+            this.commitSfuEntities.lock();
             this.process(observedSfuSamples);
         } finally {
             this.exposedMetrics.addTaskExecutionTime(METRIC_COMPONENT_NAME, started, Instant.now());
+            this.commitSfuEntities.unlock();
+            if (!this.commitSfuEntities.executeSync()) {
+                logger.warn("Committing SFU entities was unsuccesful");;
+            }
         }
     }
 
@@ -85,167 +122,220 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
         if (observedSfuSamples.isEmpty()) {
             return;
         }
-        var sfus = this.fetchExistingSfus(observedSfuSamples);
-        var sfuTransports = this.fetchExistingSfuTransports(observedSfuSamples);
-        var sfuInboundRtpPads = this.fetchExistingInboundRtpPads(observedSfuSamples);
-        var sfuOutboundRtpPads = this.fetchExistingOutboundRtpPads(observedSfuSamples);
-        var sfuSctpStreams = this.fetchExistingSfuSctpStreams(observedSfuSamples);
+        var SFUs = this.sfusRepository.fetchRecursively(observedSfuSamples.getSfuIds());
         var newSfuModels = new LinkedList<Models.Sfu>();
         var newSfuTransportModels = new LinkedList<Models.SfuTransport>();
         var newSfuInboundRtpPadModels = new LinkedList<Models.SfuInboundRtpPad>();
         var newSfuOutboundRtpPadModels = new LinkedList<Models.SfuOutboundRtpPad>();
-        var newSfuSctpStreamModels = new LinkedList<Models.SfuSctpStream>();
+        var newSfuSctpChannelModels = new LinkedList<Models.SfuSctpChannel>();
+        var serverTimestamp = this.serverTimestamps.instant().getEpochSecond();
 
-        for (var observedSfuSample : observedSfuSamples) {
-            var sfuSample = observedSfuSample.getSfuSample();
-            var timestamp = sfuSample.timestamp;
-            var marker = sfuSample.marker;
-            var sfu = sfus.get(sfuSample.sfuId);
+        for (var observedSfu : observedSfuSamples.observedSfus()) {
+            var sfu = SFUs.get(observedSfu.getSfuId());
             if (sfu == null) {
                 try {
                     sfu = this.sfusRepository.add(
-                            observedSfuSample.getServiceId(),
-                            observedSfuSample.getMediaUnitId(),
-                            sfuSample.sfuId,
-                            sfuSample.timestamp,
-                            observedSfuSample.getTimeZoneId(),
-                            marker
+                            observedSfu.getServiceId(),
+                            observedSfu.getMediaUnitId(),
+                            observedSfu.getSfuId(),
+                            observedSfu.getMinTimestamp(),
+                            observedSfu.getTimeZoneId(),
+                            observedSfu.getMarker()
                     );
-                    sfus.put(sfu.getSfuId(), sfu);
                     newSfuModels.add(sfu.getModel());
                 } catch (AlreadyCreatedException ex) {
-                    logger.warn("sfu for sfuId {}(service: {}, mediaUnit: {}) is already created",
-                            sfuSample.sfuId,
-                            observedSfuSample.getServiceId(),
-                            observedSfuSample.getMediaUnitId()
+                    logger.warn("SFU {} for mediaUnit {} service: {} is already created",
+                        observedSfu.getSfuId(),
+                        observedSfu.getMediaUnitId(),
+                        observedSfu.getServiceId()
                     );
+                    sfu = SFUs.get(observedSfu.getSfuId());
                 }
-
-            } else {
-                var lastTouch = sfu.getTouched();
-                if (lastTouch == null || lastTouch < timestamp) {
-                    sfu.touch(timestamp);
+                if (sfu == null) {
+                    logger.warn("SFU {} for mediaUnit {} service: {} is not found",
+                            observedSfu.getSfuId(),
+                            observedSfu.getMediaUnitId(),
+                            observedSfu.getServiceId()
+                    );
+                    continue;
                 }
             }
+            sfu.touch(observedSfu.getMaxTimestamp(), serverTimestamp);
 
-            Sfu finalSfu = sfu;
-            BiFunction<String, Boolean, SfuTransport> getOrCreateTransport = (sfuTransportId, internal) -> {
-                if (sfuTransportId == null) {
-                    return null;
-                }
-                var result = finalSfu.getSfuTransport(sfuTransportId);
-                if (result == null) {
+            for (var observedSfuTransport : observedSfu.observedSfuTransports()) {
+                var sfuTransport = sfu.getSfuTransport(observedSfuTransport.getSfuTransportId());
+                if (sfuTransport == null) {
                     try {
-                        result = finalSfu.addSfuTransport(
-                                sfuTransportId,
-                                internal,
-                                timestamp,
-                                marker
+                        sfuTransport = sfu.addSfuTransport(
+                                observedSfuTransport.getSfuTransportId(),
+                                observedSfuTransport.getInternal(),
+                                observedSfuTransport.getMinTimestamp(),
+                                observedSfuTransport.getMarker()
                         );
-                        sfuTransports.put(result.getSfuTransportId(), result);
-                        newSfuTransportModels.add(result.getModel());
+                        newSfuTransportModels.add(sfuTransport.getModel());
                     } catch (AlreadyCreatedException ex) {
-                        logger.warn("sfuTransport for sfuTransportId {}, internal {} (service: {}, mediaUnit: {}) is already created",
-                                sfuTransportId,
-                                internal,
-                                observedSfuSample.getServiceId(),
-                                observedSfuSample.getMediaUnitId()
+                        logger.warn("SfuTransport {} for SFU {} for mediaUnit {} service: {} is already created",
+                                observedSfuTransport.getSfuTransportId(),
+                                observedSfu.getSfuId(),
+                                observedSfu.getMediaUnitId(),
+                                observedSfu.getServiceId()
                         );
+                        sfuTransport = sfu.getSfuTransport(observedSfuTransport.getSfuTransportId());
                     }
+                    if (sfuTransport == null) {
+                        logger.warn("SFUTransport {} for SFU {} for mediaUnit {} service: {} is not found",
+                                observedSfuTransport.getSfuTransportId(),
+                                observedSfu.getSfuId(),
+                                observedSfu.getMediaUnitId(),
+                                observedSfu.getServiceId()
+                        );
+                        continue;
+                    }
+                }
+                sfuTransport.touch(observedSfuTransport.getMaxTimestamp(), serverTimestamp);
 
-                } else {
-                    var lastTouch = result.getTouched();
-                    if (lastTouch == null || lastTouch < timestamp) {
-                        result.touch(timestamp);
+                for (var observedSfuInboundRtpPad : observedSfuTransport.observedSfuInboundRtpPads()) {
+                    var sfuInboundRtpPad = sfuTransport.getInboundRtpPad(observedSfuInboundRtpPad.getPadId());
+                    if (sfuInboundRtpPad == null) {
+                        try {
+                            sfuInboundRtpPad = sfuTransport.addInboundRtpPad(
+                                    observedSfuInboundRtpPad.getPadId(),
+                                    observedSfuInboundRtpPad.getSsrc(),
+                                    observedSfuInboundRtpPad.getSfuStreamId(),
+                                    observedSfuInboundRtpPad.getMinTimestamp(),
+                                    observedSfuInboundRtpPad.getMarker()
+                            );
+                            newSfuInboundRtpPadModels.add(sfuInboundRtpPad.getModel());
+                        } catch (AlreadyCreatedException ex) {
+                            logger.warn("SfuInboundRtpPad {} on transport {} for SFU {} for mediaUnit {} service: {} is already created",
+                                    observedSfuInboundRtpPad.getPadId(),
+                                    observedSfuTransport.getSfuTransportId(),
+                                    observedSfu.getSfuId(),
+                                    observedSfu.getMediaUnitId(),
+                                    observedSfu.getServiceId()
+                            );
+                            sfuInboundRtpPad = sfuTransport.getInboundRtpPad(observedSfuInboundRtpPad.getPadId());
+                        }
+                        if (sfuInboundRtpPad == null) {
+                            logger.warn("SfuInboundRtpPad {} on transport {} for SFU {} for mediaUnit {} service: {} is not found",
+                                    observedSfuInboundRtpPad.getPadId(),
+                                    observedSfuTransport.getSfuTransportId(),
+                                    observedSfu.getSfuId(),
+                                    observedSfu.getMediaUnitId(),
+                                    observedSfu.getServiceId()
+                            );
+                            continue;
+                        }
+                    }
+                    sfuInboundRtpPad.touch(observedSfuTransport.getMaxTimestamp(), serverTimestamp);
+                    var sfuMediaStream = sfuInboundRtpPad.getSfuStream();
+                    if (sfuMediaStream != null && !sfuMediaStream.hasSfuInboundRtpPadId(sfuInboundRtpPad.getRtpPadId())) {
+                        sfuMediaStream.addSfuInboundRtpPadId(sfuInboundRtpPad.getRtpPadId());
                     }
                 }
-                return result;
-            };
-            SfuSampleVisitor.streamTransports(sfuSample).forEach(sfuTransport -> {
-                getOrCreateTransport.apply(sfuTransport.transportId, Boolean.TRUE.equals(sfuTransport.internal));
-            });
-            SfuSampleVisitor.streamInboundRtpPads(sfuSample).forEach(sfuInboundRtpPad -> {
-                var sfuTransport = getOrCreateTransport.apply(sfuInboundRtpPad.transportId, Boolean.TRUE.equals(sfuInboundRtpPad.internal));
-                var sfuInboundRtpPadObject = sfuInboundRtpPads.get(sfuInboundRtpPad.padId);
-                if (sfuInboundRtpPadObject == null) {
-                    try {
-                        sfuInboundRtpPadObject = sfuTransport.addInboundRtpPad(
-                                sfuInboundRtpPad.padId,
-                                sfuInboundRtpPad.ssrc,
-                                sfuInboundRtpPad.streamId,
-                                timestamp,
-                                marker
-                        );
-                        sfuInboundRtpPads.put(sfuInboundRtpPadObject.getRtpPadId(), sfuInboundRtpPadObject);
-                        newSfuInboundRtpPadModels.add(sfuInboundRtpPadObject.getModel());
-                    } catch (AlreadyCreatedException ex) {
-                        logger.warn("sfuInboundRtpPadObject for padId {}, ssrc {}, streamId: {}, (service: {}, mediaUnit: {}) is already created",
-                                sfuInboundRtpPad.padId,
-                                sfuInboundRtpPad.ssrc,
-                                sfuInboundRtpPad.streamId,
-                                observedSfuSample.getServiceId(),
-                                observedSfuSample.getMediaUnitId()
-                        );
+
+                for (var observedSfuOutboundRtpPad : observedSfuTransport.observedSfuOutboundRtpPads()) {
+                    var sfuOutboundRtpPad = sfuTransport.getOutboundRtpPad(observedSfuOutboundRtpPad.getPadId());
+                    if (sfuOutboundRtpPad == null) {
+                        try {
+                            sfuOutboundRtpPad = sfuTransport.addOutboundRtpPad(
+                                    observedSfuOutboundRtpPad.getPadId(),
+                                    observedSfuOutboundRtpPad.getSsrc(),
+                                    observedSfuOutboundRtpPad.getSfuStreamId(),
+                                    observedSfuOutboundRtpPad.getSfuSinkId(),
+                                    observedSfuOutboundRtpPad.getMinTimestamp(),
+                                    observedSfuOutboundRtpPad.getMarker()
+                            );
+                            newSfuOutboundRtpPadModels.add(sfuOutboundRtpPad.getModel());
+                        } catch (AlreadyCreatedException ex) {
+                            logger.warn("sfuOutboundRtpPad {} on transport {} for SFU {} for mediaUnit {} service: {} is already created",
+                                    observedSfuOutboundRtpPad.getPadId(),
+                                    observedSfuTransport.getSfuTransportId(),
+                                    observedSfu.getSfuId(),
+                                    observedSfu.getMediaUnitId(),
+                                    observedSfu.getServiceId()
+                            );
+                            sfuOutboundRtpPad = sfuTransport.getOutboundRtpPad(observedSfuOutboundRtpPad.getPadId());
+                        }
+                        if (sfuOutboundRtpPad == null) {
+                            logger.warn("sfuOutboundRtpPad {} on transport {} for SFU {} for mediaUnit {} service: {} is not found",
+                                    observedSfuOutboundRtpPad.getPadId(),
+                                    observedSfuTransport.getSfuTransportId(),
+                                    observedSfu.getSfuId(),
+                                    observedSfu.getMediaUnitId(),
+                                    observedSfu.getServiceId()
+                            );
+                            continue;
+                        }
                     }
-                } else {
-                    var lastTouch = sfuInboundRtpPadObject.getTouched();
-                    if (lastTouch == null || lastTouch < timestamp) {
-                        sfuInboundRtpPadObject.touch(timestamp);
-                    }
-                }
-            });
-            SfuSampleVisitor.streamOutboundRtpPads(sfuSample).forEach(sfuOutboundRtpPad -> {
-                var sfuTransport = getOrCreateTransport.apply(sfuOutboundRtpPad.transportId, Boolean.TRUE.equals(sfuOutboundRtpPad.internal));
-                var sfuOutboundRtpPadObject = sfuOutboundRtpPads.get(sfuOutboundRtpPad.padId);
-                if (sfuOutboundRtpPadObject == null) {
-                    try {
-                        sfuOutboundRtpPadObject = sfuTransport.addOutboundRtpPad(
-                                sfuOutboundRtpPad.padId,
-                                sfuOutboundRtpPad.ssrc,
-                                sfuOutboundRtpPad.streamId,
-                                sfuOutboundRtpPad.sinkId,
-                                timestamp,
-                                marker
-                        );
-                        sfuOutboundRtpPads.put(sfuOutboundRtpPadObject.getRtpPadId(), sfuOutboundRtpPadObject);
-                        newSfuOutboundRtpPadModels.add(sfuOutboundRtpPadObject.getModel());
-                    } catch (AlreadyCreatedException ex) {
-                        logger.warn("sfuOutboundRtpPadObject for padId {}, ssrc {}, streamId: {}, sinkId: {}, (service: {}, mediaUnit: {}) is already created",
-                                sfuOutboundRtpPad.padId,
-                                sfuOutboundRtpPad.ssrc,
-                                sfuOutboundRtpPad.streamId,
-                                sfuOutboundRtpPad.sinkId,
-                                observedSfuSample.getServiceId(),
-                                observedSfuSample.getMediaUnitId()
-                        );
-                    }
-                } else {
-                    var lastTouch = sfuOutboundRtpPadObject.getTouched();
-                    if (lastTouch == null || lastTouch < timestamp) {
-                        sfuOutboundRtpPadObject.touch(timestamp);
-                    }
-                }
-            });
-            SfuSampleVisitor.streamSctpStreams(sfuSample).forEach(sfuSctpStreamSample -> {
-                var sfuTransport = getOrCreateTransport.apply(sfuSctpStreamSample.transportId, Boolean.TRUE.equals(sfuSctpStreamSample.internal));
-                var sfuSctpStream = sfuTransport.getSctpStream(sfuSctpStreamSample.streamId);
-                if (sfuSctpStream == null) {
-                    sfuSctpStream = sfuTransport.addSctpStream(
-                            sfuSctpStreamSample.streamId,
-                            timestamp,
-                            marker
-                    );
-                    newSfuSctpStreamModels.add(sfuSctpStream.getModel());
-                    sfuSctpStreams.put(sfuSctpStream.getSfuSctpStreamId(), sfuSctpStream);
-                } else {
-                    var lastTouch = sfuSctpStream.getTouched();
-                    if (lastTouch == null || lastTouch < timestamp) {
-                        sfuSctpStream.touch(timestamp);
+                    sfuOutboundRtpPad.touch(observedSfuTransport.getMaxTimestamp(), serverTimestamp);
+                    var sfuMediaSink = sfuOutboundRtpPad.getSfuSink();
+                    if (sfuMediaSink != null) {
+                        if (!sfuMediaSink.hasSfuOutboundRtpPadId(sfuOutboundRtpPad.getRtpPadId())) {
+                            try {
+                                sfuMediaSink.addSfuOutboundRtpPadId(sfuOutboundRtpPad.getRtpPadId());
+                            } catch (AlreadyCreatedException ex) {
+                                logger.warn("Sfu Outbound Rtp Pad {} already added for media sink {}, sfu: {}, service {}",
+                                        sfuOutboundRtpPad.getRtpPadId(),
+                                        sfuMediaSink.getSfuSinkId(),
+                                        observedSfu.getSfuId(),
+                                        observedSfu.getServiceId()
+                                );
+                            }
+                        }
+                        var sfuMediaStream = sfuMediaSink.getMediaStream();
+                        if (sfuMediaStream != null && !sfuMediaStream.hasMediaSink(sfuMediaSink.getSfuSinkId())) {
+                            try {
+                                sfuMediaStream.addSfuMediaSink(sfuMediaSink.getSfuSinkId());
+                            } catch (AlreadyCreatedException ex) {
+                                logger.warn("Sfu Media Sink {} already added for media stream {}, sfu: {}, service {}",
+                                        sfuMediaSink.getSfuSinkId(),
+                                        sfuMediaStream.getSfuStreamId(),
+                                        observedSfu.getSfuId(),
+                                        observedSfu.getServiceId()
+                                );
+                            }
+                        }
                     }
                 }
-            });
+
+                for (var observedSfuSctpChannel : observedSfuTransport.observedSfuSctpChannels()) {
+                    var sfuSctpChannel = sfuTransport.getSctpChannel(observedSfuSctpChannel.getSfuSctpChannelId());
+                    if (sfuSctpChannel == null) {
+                        try {
+                            sfuSctpChannel = sfuTransport.addSctpChannel(
+                                    observedSfuSctpChannel.getSfuSctpStreamId(),
+                                    observedSfuSctpChannel.getSfuSctpChannelId(),
+                                    observedSfuSctpChannel.getMinTimestamp(),
+                                    observedSfuSctpChannel.getMarker()
+                            );
+                            newSfuSctpChannelModels.add(sfuSctpChannel.getModel());
+                        } catch (AlreadyCreatedException ex) {
+                            logger.warn("sfuSctpChannel {} on transport {} for SFU {} for mediaUnit {} service: {} is already created",
+                                    observedSfuSctpChannel.getSfuSctpChannelId(),
+                                    observedSfuTransport.getSfuTransportId(),
+                                    observedSfu.getSfuId(),
+                                    observedSfu.getMediaUnitId(),
+                                    observedSfu.getServiceId()
+                            );
+                            sfuSctpChannel = sfuTransport.getSctpChannel(observedSfuSctpChannel.getSfuSctpChannelId());
+                        }
+                        if (sfuSctpChannel == null) {
+                            logger.warn("sfuOutboundRtpPad {} on transport {} for SFU {} for mediaUnit {} service: {} is not found",
+                                    observedSfuSctpChannel.getSfuSctpChannelId(),
+                                    observedSfuTransport.getSfuTransportId(),
+                                    observedSfu.getSfuId(),
+                                    observedSfu.getMediaUnitId(),
+                                    observedSfu.getServiceId()
+                            );
+                            continue;
+                        }
+                    }
+                    sfuSctpChannel.touch(observedSfuTransport.getMaxTimestamp(), serverTimestamp);
+                }
+            }
         }
-        this.sfusRepository.save();
+
         if (0 < newSfuModels.size()) {
             this.sfuJoinedReports.accept(newSfuModels);
         }
@@ -258,59 +348,13 @@ public class SfuEntitiesUpdater implements Consumer<ObservedSfuSamples> {
         if (0 < newSfuOutboundRtpPadModels.size()) {
             this.sfuOutboundRtpPadAddedReports.accept(newSfuOutboundRtpPadModels);
         }
-        if (0 < newSfuSctpStreamModels.size()) {
-            this.sfuSctpStreamAddedReports.accept(newSfuSctpStreamModels);
+        if (0 < newSfuSctpChannelModels.size()) {
+            this.sfuSctpStreamAddedReports.accept(newSfuSctpChannelModels);
         }
         if (0 < observedSfuSamples.size()) {
             synchronized (this) {
                 this.output.onNext(observedSfuSamples);
             }
         }
-    }
-
-    private Map<String, Sfu> fetchExistingSfus(ObservedSfuSamples samples) {
-        var result = new HashMap<String, Sfu>();
-        var existing = this.sfusRepository.getAll(samples.getSfuIds());
-        if (existing != null && 0 < existing.size()) {
-            result.putAll(existing);
-        }
-        return result;
-    }
-
-    private Map<String, SfuTransport> fetchExistingSfuTransports(ObservedSfuSamples samples) {
-        var result = new HashMap<String, SfuTransport>();
-        var existing = this.sfuTransportsRepository.getAll(samples.getTransportIds());
-        if (existing != null && 0 < existing.size()) {
-            result.putAll(existing);
-        }
-        return result;
-    }
-
-    private Map<String, SfuInboundRtpPad> fetchExistingInboundRtpPads(ObservedSfuSamples samples) {
-        var result = new HashMap<String, SfuInboundRtpPad>();
-        var existing = this.sfuInboundRtpPadsRepository.getAll(samples.getInboundRtpPadIds());
-//        logger.info("Fetching inbound rtp pads for {}", JsonUtils.objectToString(samples.getInboundRtpPadIds()));
-        if (existing != null && 0 < existing.size()) {
-            result.putAll(existing);
-        }
-        return result;
-    }
-
-    private Map<String, SfuOutboundRtpPad> fetchExistingOutboundRtpPads(ObservedSfuSamples samples) {
-        var result = new HashMap<String, SfuOutboundRtpPad>();
-        var existing = this.sfuOutboundRtpPadsRepository.getAll(samples.getOutboundRtpPadIds());
-        if (existing != null && 0 < existing.size()) {
-            result.putAll(existing);
-        }
-        return result;
-    }
-
-    private Map<String, SfuSctpStream> fetchExistingSfuSctpStreams(ObservedSfuSamples samples) {
-        var result = new HashMap<String, SfuSctpStream>();
-        var existing = this.sfuSctpStreamsRepository.getAll(samples.getSctpStreamIds());
-        if (existing != null && 0 < existing.size()) {
-            result.putAll(existing);
-        }
-        return result;
     }
 }

@@ -3,30 +3,32 @@ package org.observertc.observer.common;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class Try {
+public class Try<T> extends TaskAbstract<T> {
 
     private static final Logger logger = LoggerFactory.getLogger(Try.class);
 
-    public static Try create(Runnable action) {
-        return new Try().onAction(action);
+    public static Try<Void> createForAction(Runnable action) {
+        return new Try<Void>(action, null);
+    }
+
+    public static<U> Try<U> createForSupplier(Supplier<U> supplier) {
+        return new Try<U>(null, supplier);
     }
 
     public static boolean wrap(Runnable action) {
-        return new Try().onAction(action).run();
+        return new Try<Void>(action, null).execute().succeeded();
     }
 
     public static<T> T wrap(Supplier<T> supplier, T defaultValue) {
         AtomicReference<T> result = new AtomicReference<>(defaultValue);
-        var trying = new Try().onAction(() -> {
+        var trying = new Try<T>(() -> {
             var value = supplier.get();
             result.set(value);
-        });
-        if (trying.run()) {
+        }, null).withRethrowingExceptions(false);
+        if (trying.execute().succeeded()) {
             return result.get();
         } else {
             return defaultValue;
@@ -34,44 +36,25 @@ public class Try {
     }
 
 
-    private final int maxRetry;
-    private Consumer<Throwable> exceptionListener;
-    private Runnable action;
+    private final Runnable action;
+    private final Supplier<T> supplier;
 
-    public Try() {
-        this(3);
-    }
-
-    public Try(int maxRetry) {
-        this.maxRetry = maxRetry;
-    }
-
-    public Try onAction(Runnable action) {
+    public Try(Runnable action, Supplier<T> supplier) {
         this.action = action;
-        return this;
+        this.supplier = supplier;
     }
 
-    public Try onException(Consumer<Throwable> exceptionListener) {
-        this.exceptionListener = exceptionListener;
-        return this;
-    }
-
-    public boolean run() {
-        Objects.requireNonNull(this.action);
-        Exception thrown = null;
-        for (int attempt = 0; this.maxRetry < 1 || attempt < this.maxRetry; ++attempt) {
-            try {
-                this.action.run();
-            } catch (Exception ex) {
-                logger.warn("Error occurred while execution. attempt: {}, maxAttempt: {}", attempt, this.maxRetry, ex);
-                thrown = ex;
-                continue;
-            }
-            return true;
+    @Override
+    protected T perform() throws Throwable {
+        if (action == null && supplier == null) {
+            throw new IllegalStateException("Cannot perform a task without action or supplier");
         }
-        if (this.exceptionListener != null) {
-            this.exceptionListener.accept(thrown);
+        if (action != null) {
+            action.run();
+            return null;
+        } else if (supplier != null) {
+            return supplier.get();
         }
-        return false;
+        return null;
     }
 }

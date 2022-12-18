@@ -10,6 +10,7 @@ import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.depots.*;
 import org.observertc.observer.events.CallMetaType;
+import org.observertc.observer.metrics.ClientSamplesMetrics;
 import org.observertc.observer.metrics.EvaluatorMetrics;
 import org.observertc.observer.reports.Report;
 import org.observertc.observer.repositories.tasks.MatchTracks;
@@ -36,6 +37,9 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
     @Inject
     ObserverConfig.EvaluatorsConfig.ClientSamplesAnalyserConfig config;
 
+    @Inject
+    ClientSamplesMetrics clientSamplesMetrics;
+
     private Subject<List<Report>> output = PublishSubject.create();
     private final PeerConnectionTransportReportsDepot peerConnectionTransportReportsDepot = new PeerConnectionTransportReportsDepot();
     private final IceCandidatePairReportsDepot iceCandidatePairReportsDepot = new IceCandidatePairReportsDepot();
@@ -46,6 +50,7 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
     private final ClientDataChannelReportsDepot clientDataChannelReportsDepot = new ClientDataChannelReportsDepot();
     private final CallMetaReportsDepot callMetaReportsDepot = new CallMetaReportsDepot();
     private final ClientExtensionReportsDepot clientExtensionReportsDepot = new ClientExtensionReportsDepot();
+    private final CustomCallEventReportsDepot customCallEventReportsDepot = new CustomCallEventReportsDepot();
 
     public Observable<List<Report>> observableReports() {
         return this.output;
@@ -67,23 +72,38 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
         }
     }
 
+
     private void process(ObservedClientSamples observedClientSamples) {
         if (observedClientSamples.isEmpty()) {
             return;
         }
-        var task = this.matchTracks.get()
-                .whereOutboundTrackIds(observedClientSamples.getOutboundTrackIds())
-                .whereInboundTrackIds(observedClientSamples.getInboundTrackIds())
-                ;
-        if (!task.execute().succeeded()) {
-            logger.warn("Interrupted execution of component due to unsuccessful task execution");
-            return;
+        MatchTracks.Report matches;
+        if (this.config.matchTracks) {
+            var task = this.matchTracks.get()
+                    .whereOutboundTrackIds(observedClientSamples.getOutboundTrackIds())
+                    .whereInboundTrackIds(observedClientSamples.getInboundTrackIds())
+                    ;
+            if (!task.execute().succeeded()) {
+                logger.warn("Interrupted execution of component due to unsuccessful task execution");
+                return;
+            }
+            matches = task.getResult();
+        } else {
+            matches = MatchTracks.EMPTY_REPORT;
         }
-        var matches = task.getResult();
+
         var inboundMatches = matches.inboundMatches;
         var peerConnectionLabels = new HashMap<String, String>();
         for (var observedClientSample : observedClientSamples) {
             var clientSample = observedClientSample.getClientSample();
+            if (Objects.isNull(clientSample.callId)) {
+                logger.warn("Cannot make a report from a sample callId is null. ServiceId: {}, MediaUnitId: {}, clientId: {}",
+                        observedClientSample.getServiceId(),
+                        observedClientSample.getMediaUnitId(),
+                        clientSample.clientId
+                );
+                return;
+            }
             if (Objects.isNull(clientSample)) continue;
             ClientSampleVisitor.streamPeerConnectionTransports(clientSample).forEach(peerConnectionTransport -> {
                 this.peerConnectionTransportReportsDepot
@@ -180,6 +200,9 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
                         .setMetaType(CallMetaType.OPERATION_SYSTEM)
                         .setPayload(payload)
                         .assemble();
+                this.clientSamplesMetrics.incrementOperationSystem(
+                        clientSample.os.name
+                );
             }
 
             // engine
@@ -200,6 +223,9 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
                         .setMetaType(CallMetaType.PLATFORM)
                         .setPayload(payload)
                         .assemble();
+                this.clientSamplesMetrics.incrementPlatform(
+                        clientSample.platform.type
+                );
             }
 
             // browser
@@ -210,6 +236,9 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
                         .setMetaType(CallMetaType.BROWSER)
                         .setPayload(payload)
                         .assemble();
+                this.clientSamplesMetrics.incrementBrowser(
+                        clientSample.browser.name
+                );
             }
 
             // streamCertificates
@@ -249,6 +278,14 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
                         .setObservedClientSample(observedClientSample)
                         .setMetaType(CallMetaType.ICE_REMOTE_CANDIDATE)
                         .setPayload(payload)
+                        .assemble();
+            });
+
+            // stream custom call events
+            ClientSampleVisitor.streamCustomCallEvents(clientSample).forEach(customCallEvent -> {
+                this.customCallEventReportsDepot
+                        .setObservedClientSample(observedClientSample)
+                        .setCustomCallEvent(customCallEvent)
                         .assemble();
             });
 
@@ -332,6 +369,7 @@ public class ClientSamplesAnalyser implements Consumer<ObservedClientSamples> {
         this.clientDataChannelReportsDepot.get().stream().map(Report::fromClientDataChannelReport).forEach(reports::add);
         this.callMetaReportsDepot.get().stream().map(Report::fromCallMetaReport).forEach(reports::add);
         this.clientExtensionReportsDepot.get().stream().map(Report::fromClientExtensionReport).forEach(reports::add);
+        this.customCallEventReportsDepot.get().stream().map(Report::fromCallEventReport).forEach(reports::add);
         if (0 < reports.size()) {
             this.output.onNext(reports);
         }

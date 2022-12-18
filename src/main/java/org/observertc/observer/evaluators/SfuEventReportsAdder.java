@@ -45,7 +45,7 @@ public class SfuEventReportsAdder {
     SfuOutboundRtpPadsRepository sfuOutboundRtpPadsRepository;
 
     @Inject
-    SfuSctpStreamsRepository sfuSctpStreamsRepository;
+    SfuSctpChannelsRepository sfuSctpStreamsRepository;
 
     @Inject
     SfuJoinedReports sfuJoinedReports;
@@ -98,7 +98,7 @@ public class SfuEventReportsAdder {
         this.repositoryEvents.deletedSfuOutboundRtpPads()
                 .subscribe(this.sfuOutboundRtpPadRemovedReports::accept);
 
-        this.repositoryEvents.deletedSfuSctpStream()
+        this.repositoryEvents.deletedSfuSctpChannel()
                 .subscribe(this.sfuSctpStreamRemovedReports::accept);
 
         this.sfuJoinedReports.getOutput()
@@ -192,8 +192,8 @@ public class SfuEventReportsAdder {
             if (0 < sfuTransportModel.getOutboundRtpPadIdsCount()) {
                 sfuOutboundRtpPadIds.addAll(sfuTransportModel.getOutboundRtpPadIdsList());
             }
-            if (0 < sfuTransportModel.getSctpStreamIdsCount()) {
-                sfuSctpStreamIds.addAll(sfuTransportModel.getSctpStreamIdsList());
+            if (0 < sfuTransportModel.getSctpChannelIdsCount()) {
+                sfuSctpStreamIds.addAll(sfuTransportModel.getSctpChannelIdsList());
             }
         }
         if (0 < sfuInboundRtpPadIds.size()) {

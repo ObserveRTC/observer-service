@@ -17,12 +17,8 @@ observer:
       callIdAssignMode: slave
       
   repository:
-    mediaTracksMaxIdleTimeInS: 5
-    peerConnectionsMaxIdleTimeInS: 5
-    clientMaxIdleTimeInS: 5
-    sfuMaxIdleTimeInS: 5
+    callMaxIdleTimeInS: 10
     sfuTransportMaxIdleTimeInS: 5
-    sfuRtpPadMaxIdleTimeInS: 5
 
 
   reports:

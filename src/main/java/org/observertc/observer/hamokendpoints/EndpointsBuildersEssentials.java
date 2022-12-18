@@ -1,8 +1,9 @@
 package org.observertc.observer.hamokendpoints;
 
-import org.observertc.observer.hamokdiscovery.DiscoveryBuilderService;
+import org.observertc.observer.hamokdiscovery.HamokDiscoveryService;
 
 public record EndpointsBuildersEssentials(
-        DiscoveryBuilderService discoveryBuilderService
+        HamokDiscoveryService hamokDiscoveryService,
+        Runnable refreshRemoteEndpointIdsCallback
 ) {
 }

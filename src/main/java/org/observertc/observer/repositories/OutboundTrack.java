@@ -14,14 +14,17 @@ public class OutboundTrack {
     private final PeerConnectionsRepository peerConnectionsRepository;
     private final AtomicReference<Models.OutboundTrack> modelHolder;
     private final OutboundTracksRepository outboundTracksRepository;
+    private final SfuMediaStreamsRepository sfuMediaStreamsRepository;
 
     OutboundTrack(PeerConnectionsRepository peerConnectionsRepository,
                   Models.OutboundTrack model,
-                  OutboundTracksRepository outboundTracksRepository
+                  OutboundTracksRepository outboundTracksRepository,
+                  SfuMediaStreamsRepository sfuMediaStreamsRepository
     ) {
         this.peerConnectionsRepository = peerConnectionsRepository;
         this.modelHolder = new AtomicReference<>(model);
         this.outboundTracksRepository = outboundTracksRepository;
+        this.sfuMediaStreamsRepository = sfuMediaStreamsRepository;
         this.serviceRoomId = ServiceRoomId.make(model.getServiceId(), model.getRoomId());
     }
 
@@ -82,18 +85,34 @@ public class OutboundTrack {
         return model.getAdded();
     }
 
-    public Long getTouched() {
+    public Long getSampleTouched() {
         var model = modelHolder.get();
-        if (!model.hasTouched()) {
+        if (!model.hasSampleTouched()) {
             return null;
         }
-        return model.getTouched();
+        return model.getSampleTouched();
     }
 
-    public void touch(Long timestamp) {
+    public void touchBySample(Long timestamp) {
         var model = modelHolder.get();
         var newModel = Models.OutboundTrack.newBuilder(model)
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
+                .build();
+        this.updateModel(newModel);
+    }
+
+    public Long getServerTouch() {
+        var model = this.modelHolder.get();
+        if (!model.hasServerTouched()) {
+            return null;
+        }
+        return model.getServerTouched();
+    }
+
+    public void touchByServer(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.OutboundTrack.newBuilder(model)
+                .setServerTouched(timestamp)
                 .build();
         this.updateModel(newModel);
     }
@@ -127,6 +146,37 @@ public class OutboundTrack {
             return false;
         }
         return model.getSsrcList().contains(ssrc);
+    }
+
+    public SfuMediaStream getMediaStream() {
+        var model = this.modelHolder.get();
+        if (!model.hasSfuStreamId()) {
+            return null;
+        }
+        var sfuStreamId = model.getSfuStreamId();
+        return this.sfuMediaStreamsRepository.get(sfuStreamId);
+    }
+
+    boolean createMediaStream() {
+        var model = this.modelHolder.get();
+        if (!model.hasSfuStreamId()) {
+            return false;
+        }
+        var sfuMediaStreamModelBuilder = Models.SfuMediaStream.newBuilder()
+                .setServiceId(model.getServiceId())
+                .setSfuStreamId(model.getSfuStreamId())
+                .setCallId(model.getCallId())
+                .setClientId(model.getClientId())
+                .setPeerConnectionId(model.getPeerConnectionId())
+                .setTrackId(model.getTrackId())
+                .setKind(model.getKind())
+                ;
+
+        if (model.hasUserId()) {
+            sfuMediaStreamModelBuilder.setUserId(model.getUserId());
+        }
+        this.sfuMediaStreamsRepository.update(sfuMediaStreamModelBuilder.build());
+        return true;
     }
 
     public void addSSRC(Long ssrc) {

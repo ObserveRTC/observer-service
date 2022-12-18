@@ -44,7 +44,7 @@ class InboundTracksRepositoryTest {
         ));
         Assertions.assertEquals(0, alreadyInsertedCalls.size());
 
-        var call = this.callsRepository.get(serviceRoomId);
+        var call = this.callsRepository.get(callModel.getCallId());
         var clientModels = modelsMapGenerator.getClientModels();
         for (var clientModel : clientModels.values()) {
             call.addClient(
@@ -110,7 +110,7 @@ class InboundTracksRepositoryTest {
             Assertions.assertEquals(inboundTrackModel.getAdded(), inboundTrack.getAdded());
 
             // after insert touched should be equal to joined
-            Assertions.assertEquals(inboundTrackModel.getAdded(), inboundTrack.getTouched());
+            Assertions.assertEquals(inboundTrackModel.getAdded(), inboundTrack.getSampleTouched());
 
             Assertions.assertEquals(inboundTrackModel.getMediaUnitId(), inboundTrack.getMediaUnitId());
 

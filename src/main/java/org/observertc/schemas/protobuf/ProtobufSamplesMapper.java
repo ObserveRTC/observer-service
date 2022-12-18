@@ -136,6 +136,58 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 						dstItem0.extensionStats[extensionStatsIndex++] = dstItem1;
 					}
 				}
+				if (0 < srcItem0.getCustomCallEventsCount()) {
+					dstItem0.customCallEvents = new CustomCallEvent[ srcItem0.getCustomCallEventsCount()];
+					var customCallEventsIndex = 0;
+					for (var srcItem1 : srcItem0.getCustomCallEventsList()) {
+						var dstItem1 = new CustomCallEvent();
+						if (srcItem1.hasName()) {
+							dstItem1.name = srcItem1.getName();
+						}
+						if (srcItem1.hasValue()) {
+							dstItem1.value = srcItem1.getValue();
+						}
+						if (srcItem1.hasPeerConnectionId()) {
+							dstItem1.peerConnectionId = srcItem1.getPeerConnectionId();
+						}
+						if (srcItem1.hasMediaTrackId()) {
+							dstItem1.mediaTrackId = srcItem1.getMediaTrackId();
+						}
+						if (srcItem1.hasMessage()) {
+							dstItem1.message = srcItem1.getMessage();
+						}
+						if (srcItem1.hasAttachments()) {
+							dstItem1.attachments = srcItem1.getAttachments();
+						}
+						if (srcItem1.hasTimestamp()) {
+							dstItem1.timestamp = srcItem1.getTimestamp();
+						}
+						dstItem0.customCallEvents[customCallEventsIndex++] = dstItem1;
+					}
+				}
+				if (0 < srcItem0.getCustomObserverEventsCount()) {
+					dstItem0.customObserverEvents = new CustomObserverEvent[ srcItem0.getCustomObserverEventsCount()];
+					var customObserverEventsIndex = 0;
+					for (var srcItem1 : srcItem0.getCustomObserverEventsList()) {
+						var dstItem1 = new CustomObserverEvent();
+						if (srcItem1.hasName()) {
+							dstItem1.name = srcItem1.getName();
+						}
+						if (srcItem1.hasMediaTrackId()) {
+							dstItem1.mediaTrackId = srcItem1.getMediaTrackId();
+						}
+						if (srcItem1.hasMessage()) {
+							dstItem1.message = srcItem1.getMessage();
+						}
+						if (srcItem1.hasAttachments()) {
+							dstItem1.attachments = srcItem1.getAttachments();
+						}
+						if (srcItem1.hasTimestamp()) {
+							dstItem1.timestamp = srcItem1.getTimestamp();
+						}
+						dstItem0.customObserverEvents[customObserverEventsIndex++] = dstItem1;
+					}
+				}
 				if (0 < srcItem0.getIceServersCount()) {
 					dstItem0.iceServers = srcItem0.getIceServersList().toArray(new String[0]);
 				}
@@ -1058,6 +1110,38 @@ public class ProtobufSamplesMapper implements Function<ProtobufSamples.Samples, 
 				}
 				if (srcItem0.hasMarker()) {
 					dstItem0.marker = srcItem0.getMarker();
+				}
+				if (0 < srcItem0.getCustomSfuEventsCount()) {
+					dstItem0.customSfuEvents = new CustomSfuEvent[ srcItem0.getCustomSfuEventsCount()];
+					var customSfuEventsIndex = 0;
+					for (var srcItem1 : srcItem0.getCustomSfuEventsList()) {
+						var dstItem1 = new CustomSfuEvent();
+						if (srcItem1.hasName()) {
+							dstItem1.name = srcItem1.getName();
+						}
+						if (srcItem1.hasValue()) {
+							dstItem1.value = srcItem1.getValue();
+						}
+						if (srcItem1.hasTransportId()) {
+							dstItem1.transportId = srcItem1.getTransportId();
+						}
+						if (srcItem1.hasSfuStreamId()) {
+							dstItem1.sfuStreamId = srcItem1.getSfuStreamId();
+						}
+						if (srcItem1.hasSfuSinkId()) {
+							dstItem1.sfuSinkId = srcItem1.getSfuSinkId();
+						}
+						if (srcItem1.hasMessage()) {
+							dstItem1.message = srcItem1.getMessage();
+						}
+						if (srcItem1.hasAttachments()) {
+							dstItem1.attachments = srcItem1.getAttachments();
+						}
+						if (srcItem1.hasTimestamp()) {
+							dstItem1.timestamp = srcItem1.getTimestamp();
+						}
+						dstItem0.customSfuEvents[customSfuEventsIndex++] = dstItem1;
+					}
 				}
 				if (0 < srcItem0.getTransportsCount()) {
 					dstItem0.transports = new SfuTransport[ srcItem0.getTransportsCount()];

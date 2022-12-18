@@ -47,7 +47,7 @@ class ClientsRepositoryTest {
         ));
         Assertions.assertEquals(0, alreadyInsertedCalls.size());
 
-        var call = this.callsRepository.get(serviceRoomId);
+        var call = this.callsRepository.get(callModel.getCallId());
         var clientModels = modelsMapGenerator.getClientModels();
         for (var clientModel : clientModels.values()) {
             call.addClient(
@@ -72,7 +72,7 @@ class ClientsRepositoryTest {
 
         for (var client : clients.values()) {
             var clientModel = clientModels.get(client.getClientId());
-            var call = this.callsRepository.get(client.getServiceRoomId());
+            var call = this.callsRepository.get(client.getCallId());
 
             Assertions.assertEquals(client.getCallId(), call.getCallId());
             Assertions.assertTrue(call.hasClient(client.getClientId()));
@@ -85,7 +85,7 @@ class ClientsRepositoryTest {
             Assertions.assertEquals(clientModel.getJoined(), client.getJoined());
 
             // after insert touched should be equal to joined
-            Assertions.assertEquals(clientModel.getJoined(), client.getTouched());
+            Assertions.assertEquals(clientModel.getJoined(), client.getSampleTouched());
 
             Assertions.assertEquals(clientModel.getTimeZoneId(), client.getTimeZoneId());
             Assertions.assertEquals(clientModel.getMediaUnitId(), client.getMediaUnitId());
@@ -105,7 +105,7 @@ class ClientsRepositoryTest {
         var clients = this.clientsRepository.getAll(clientModels.keySet());
 
         for (var client : clients.values()) {
-            var call = this.callsRepository.get(client.getServiceRoomId());
+            var call = this.callsRepository.get(client.getCallId());
 
             Assertions.assertTrue(call.hasClient(client.getClientId()));
             Assertions.assertEquals(call.getServiceRoomId(), client.getServiceRoomId());
@@ -135,7 +135,7 @@ class ClientsRepositoryTest {
             Assertions.assertEquals(client.getClientId(), addedPeerConnection.getClientId());
             Assertions.assertEquals(client.getUserId(), addedPeerConnection.getUserId());
             Assertions.assertEquals(peerConnectionModel.getOpened(), addedPeerConnection.getOpened());
-            Assertions.assertEquals(peerConnectionModel.getOpened(), addedPeerConnection.getTouched());
+            Assertions.assertEquals(peerConnectionModel.getOpened(), addedPeerConnection.getSampleTouched());
 
             Assertions.assertEquals(peerConnectionModel.getMediaUnitId(), addedPeerConnection.getMediaUnitId());
             Assertions.assertEquals(peerConnectionModel.getMarker(), addedPeerConnection.getMarker());

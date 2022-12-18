@@ -7,7 +7,9 @@ import io.micronaut.context.BeanProvider;
 import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.BackgroundTasksExecutor;
 import org.observertc.observer.HamokService;
+import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.Try;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
@@ -18,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -45,7 +48,13 @@ public class PeerConnectionsRepository implements RepositoryStorageMetrics {
     OutboundTracksRepository outboundTracksRepository;
 
     @Inject
-    private ObserverConfig.RepositoryConfig config;
+    private ObserverConfig.HamokConfig hamokConfig;
+
+    @Inject
+    private ObserverConfig observerConfig;
+
+    @Inject
+    private Backups backups;
 
     @Inject
     private HamokService hamokService;
@@ -53,6 +62,8 @@ public class PeerConnectionsRepository implements RepositoryStorageMetrics {
     @Inject
     private ObserverConfig.InternalBuffersConfig bufferConfig;
 
+    @Inject
+    private BackgroundTasksExecutor backgroundTasksExecutor;
 
     @PostConstruct
     void setup() {
@@ -61,7 +72,7 @@ public class PeerConnectionsRepository implements RepositoryStorageMetrics {
                 .setConcurrency(true)
 //                .setExpiration(config.peerConnectionsMaxIdleTime * 1000)
                 .build();
-        this.storage = this.hamokService.getStorageGrid().separatedStorage(baseStorage)
+        var storageBuilder = this.hamokService.getStorageGrid().separatedStorage(baseStorage)
                 .setKeyCodec(SerDeUtils.createStrToByteFunc(), SerDeUtils.createBytesToStr())
                 .setValueCodec(
                         Mapper.create(Models.PeerConnection::toByteArray, logger)::map,
@@ -71,7 +82,28 @@ public class PeerConnectionsRepository implements RepositoryStorageMetrics {
                 .setMaxCollectedStorageTimeInMs(bufferConfig.debouncers.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
                 .setMaxMessageValues(MAX_VALUES)
-                .build();
+                .setThrowingExceptionOnRequestTimeout(!this.hamokConfig.usePartialResponses)
+        ;
+        if (this.observerConfig.repository.useBackups) {
+            storageBuilder.setDistributedBackups(this.backups);
+        }
+
+        this.storage = storageBuilder.build();
+
+        var checkCollision = new AtomicBoolean(false);
+        this.storage.detectedEntryCollisions().subscribe(detectedCollision -> {
+            logger.warn("Detected colliding items in {} for key {}", STORAGE_ID, detectedCollision.key());
+            if (checkCollision.compareAndSet(false, true)) {
+                this.backgroundTasksExecutor.addTask(ChainedTask.<Void>builder()
+                        .withName("Remove collisions for storage: " + STORAGE_ID)
+                        .withLogger(logger)
+                        .addActionStage("Check collision for " + STORAGE_ID, this.storage::checkCollidingEntries)
+                        .setFinalAction(() -> checkCollision.set(false))
+                        .build()
+                );
+            }
+        });
+
         this.fetched = CachedFetches.<String, PeerConnection>builder()
                 .onFetchOne(this::fetchOne)
                 .onFetchAll(this::fetchAll)
@@ -106,6 +138,14 @@ public class PeerConnectionsRepository implements RepositoryStorageMetrics {
         }
         var set = Set.copyOf(peerConnectionIds);
         return this.fetched.getAll(set);
+    }
+
+    public Map<String, PeerConnection> getAllLocallyStored() {
+        var callIds = this.storage.localKeys();
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        return this.fetchAll(callIds);
     }
 
     synchronized void update(Models.PeerConnection peerConnection) {
@@ -180,6 +220,19 @@ public class PeerConnectionsRepository implements RepositoryStorageMetrics {
                 .flatMap(s -> s.stream())
                 .collect(Collectors.toSet());
         this.outboundTracksRepository.fetchRecursively(outboundTrackIds);
+        return result;
+    }
+
+    public Map<String, PeerConnection> fetchRecursivelyUpwards(Collection<String> peerConnectionIds) {
+        if (peerConnectionIds == null || peerConnectionIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        var result = this.getAll(peerConnectionIds);
+        var clientIds = result.values().stream()
+                .map(PeerConnection::getClientId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        this.clientsProvider.get().fetchRecursivelyUpwards(clientIds);
         return result;
     }
 

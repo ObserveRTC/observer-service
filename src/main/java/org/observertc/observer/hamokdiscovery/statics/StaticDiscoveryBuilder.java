@@ -5,12 +5,14 @@ import org.observertc.observer.configbuilders.AbstractBuilder;
 import org.observertc.observer.configbuilders.ConfigConverter;
 import org.observertc.observer.hamokdiscovery.DiscoveryBuilder;
 import org.observertc.observer.hamokdiscovery.DiscoveryBuildersEssentials;
-import org.observertc.observer.hamokdiscovery.RemotePeer;
-import org.observertc.observer.hamokdiscovery.RemotePeerDiscovery;
+import org.observertc.observer.hamokdiscovery.HamokDiscovery;
+import org.observertc.observer.hamokendpoints.HamokConnectionConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.UUID;
 
 @Prototype
 public class StaticDiscoveryBuilder extends AbstractBuilder implements DiscoveryBuilder {
@@ -19,14 +21,21 @@ public class StaticDiscoveryBuilder extends AbstractBuilder implements Discovery
     private DiscoveryBuildersEssentials essentials;
 
     @Override
-    public RemotePeerDiscovery build() {
+    public HamokDiscovery build() {
         var config = this.convertAndValidate(StaticDiscoveryConfig.class);
-        var result = new StaticDiscovery();
+        var result = new StaticDiscovery(
+                this.essentials.hamokEndpointService()
+        );
         for (var entry : config.peers.entrySet()) {
             var key = entry.getKey();
+            var connectionId = UUID.nameUUIDFromBytes(key.getBytes(StandardCharsets.UTF_8));
             var remotePeerConfig = ConfigConverter.convert(StaticDiscoveryConfig.StaticDiscoveryConfigRemotePeer.class, (Map<String, Object>) entry.getValue());
-            var remotePeer = new RemotePeer(remotePeerConfig.host, remotePeerConfig.port);
-            result.add(key, remotePeer);
+            var hamokConnection = new HamokConnectionConfig(
+                    connectionId,
+                    remotePeerConfig.host,
+                    remotePeerConfig.port
+            );
+            result.add(hamokConnection);
         }
         return result;
     }

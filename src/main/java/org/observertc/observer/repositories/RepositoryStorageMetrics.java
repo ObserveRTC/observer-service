@@ -4,5 +4,5 @@ public interface RepositoryStorageMetrics {
 
     String storageId();
 
-   int localSize();
+    int localSize();
 }

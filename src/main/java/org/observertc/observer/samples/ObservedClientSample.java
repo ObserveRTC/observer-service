@@ -64,14 +64,6 @@ public interface ObservedClientSample {
                     return timeZoneId;
                 }
 
-//                @Override
-//                public UUID getCallId() {
-//                    if (Objects.nonNull(callId)) return callId;
-//                    if (Objects.isNull(clientSample.callId)) return null;
-//                    callId = UUID.fromString(clientSample.callId);
-//                    return callId;
-//                }
-
                 @Override
                 public ServiceRoomId getServiceRoomId() {
                     if (Objects.nonNull(serviceRoomId)) return serviceRoomId;

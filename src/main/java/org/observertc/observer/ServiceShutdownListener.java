@@ -34,6 +34,9 @@ public class ServiceShutdownListener implements ApplicationEventListener<Service
 	@Inject
 	ObserverService observerService;
 
+	@Inject
+	BackgroundTasksExecutor backgroundTasksExecutor;
+
 	public ServiceShutdownListener() {
 		
 	}
@@ -45,8 +48,12 @@ public class ServiceShutdownListener implements ApplicationEventListener<Service
 
 	@Override
 	public void onApplicationEvent(ServiceStoppedEvent event) {
-		logger.info("Shutdown started");
+		logger.info("Shutdown started: {}", event);
+		if (this.backgroundTasksExecutor.isStarted()) {
+			this.backgroundTasksExecutor.stop();
+		}
 		observerService.stop();
+
 		logger.info("Shutdown ended");
 	}
 }

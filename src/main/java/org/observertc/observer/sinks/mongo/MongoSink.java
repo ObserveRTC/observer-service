@@ -72,7 +72,7 @@ public class MongoSink extends Sink {
                 mongoClient.close();
             }
         } finally {
-
+            super.close();
         }
     }
 }

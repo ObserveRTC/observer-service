@@ -11,9 +11,14 @@ import org.observertc.observer.utils.ObservedSamplesGenerator;
 
 import java.time.Instant;
 import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 @MicronautTest(environments = "test")
 class CallEntitiesUpdaterTest {
+
+    @Inject
+    RoomsRepository roomsRepository;
 
     @Inject
     CallEntitiesUpdater callEntitiesUpdater;
@@ -44,21 +49,27 @@ class CallEntitiesUpdaterTest {
 
     @Test
     void shouldAddCalls() {
-        var aliceClientSample = aliceObservedSamplesGenerator.generateObservedClientSample();
-        var bobClientSample = bobObservedSamplesGenerator.generateObservedClientSample();
+        var callId = UUID.randomUUID().toString();
+        var aliceClientSample = aliceObservedSamplesGenerator.generateObservedClientSample(callId);
+        var bobClientSample = bobObservedSamplesGenerator.generateObservedClientSample(callId);
         var observedClientSamples = ObservedClientSamples.builder()
-                .addObservedClientSample(aliceClientSample)
-                .addObservedClientSample(bobClientSample)
+                .add(aliceClientSample.getServiceId(), aliceClientSample.getMediaUnitId(), aliceClientSample.getClientSample())
+                .add(bobClientSample.getServiceId(), bobClientSample.getMediaUnitId(), bobClientSample.getClientSample())
                 .build();
 
         this.callEntitiesUpdater.accept(observedClientSamples);
-        var calls = this.callsRepository.getAll(observedClientSamples.getServiceRoomIds());
+        var aliceRoom = this.roomsRepository.get(aliceClientSample.getServiceRoomId());
+        var bobRoom = this.roomsRepository.get(bobClientSample.getServiceRoomId());
+        Assertions.assertNotNull(aliceRoom);
+        Assertions.assertNotNull(bobRoom);
+
+        var calls = this.callsRepository.getAll(Set.of(callId));
         Assertions.assertEquals(1, calls.size());
 
-        var aliceCall = calls.get(aliceClientSample.getServiceRoomId());
+        var aliceCall = calls.get(aliceRoom.getCallId());
         Assertions.assertNotNull(aliceCall);
 
-        var bobCall = calls.get(bobClientSample.getServiceRoomId());
+        var bobCall = calls.get(bobRoom.getCallId());
         Assertions.assertNotNull(bobCall);
 
         Assertions.assertEquals(aliceCall, bobCall);
@@ -117,15 +128,15 @@ class CallEntitiesUpdaterTest {
     void shouldTouchClients() {
         var observedClientSamples = this.generateObservedClientSamples();
         this.callEntitiesUpdater.accept(observedClientSamples);
-        var expectedTouch = this.updateObservedClientSamplesTimestamp(observedClientSamples);
-        this.callEntitiesUpdater.accept(observedClientSamples);
+        var updatedSamples = this.updateObservedClientSamplesTimestamp(observedClientSamples);
+        this.callEntitiesUpdater.accept(updatedSamples.observedClientSamples);
 
         var clientIds = observedClientSamples.getClientIds();
         var clients = this.clientsRepository.getAll(clientIds);
 
         Assertions.assertEquals(clients.size(), clientIds.size());
         for (var client : clients.values()) {
-            Assertions.assertEquals(expectedTouch, client.getTouched());
+            Assertions.assertEquals(updatedSamples.timestamp, client.getSampleTouched());
         }
     }
 
@@ -133,17 +144,17 @@ class CallEntitiesUpdaterTest {
     void shouldTouchPeerConnections() {
         var observedClientSamples = this.generateObservedClientSamples();
         this.callEntitiesUpdater.accept(observedClientSamples);
-        var expectedTouch = this.updateObservedClientSamplesTimestamp(observedClientSamples);
-        this.callEntitiesUpdater.accept(observedClientSamples);
+        var updatedSamples = this.updateObservedClientSamplesTimestamp(observedClientSamples);
+        this.callEntitiesUpdater.accept(updatedSamples.observedClientSamples);
 
-        this.callEntitiesUpdater.accept(observedClientSamples);
+        this.callEntitiesUpdater.accept(updatedSamples.observedClientSamples);
 
         var peerConnectionIds = observedClientSamples.getPeerConnectionIds();
         var peerConnections = this.peerConnectionsRepository.getAll(peerConnectionIds);
 
         Assertions.assertEquals(peerConnections.size(), peerConnectionIds.size());
         for (var peerConnection : peerConnections.values()) {
-            Assertions.assertEquals(expectedTouch, peerConnection.getTouched());
+            Assertions.assertEquals(updatedSamples.timestamp, peerConnection.getSampleTouched());
         }
     }
 
@@ -151,17 +162,17 @@ class CallEntitiesUpdaterTest {
     void shouldTouchInboundTracks() {
         var observedClientSamples = this.generateObservedClientSamples();
         this.callEntitiesUpdater.accept(observedClientSamples);
-        var expectedTouch = this.updateObservedClientSamplesTimestamp(observedClientSamples);
-        this.callEntitiesUpdater.accept(observedClientSamples);
+        var updatedSamples = this.updateObservedClientSamplesTimestamp(observedClientSamples);
+        this.callEntitiesUpdater.accept(updatedSamples.observedClientSamples);
 
-        this.callEntitiesUpdater.accept(observedClientSamples);
+        this.callEntitiesUpdater.accept(updatedSamples.observedClientSamples);
 
         var inboundTrackIds = observedClientSamples.getInboundTrackIds();
         var inboundTracks = this.inboundTracksRepository.getAll(inboundTrackIds);
 
         Assertions.assertEquals(inboundTrackIds.size(), inboundTracks.size());
         for (var inboundTrack : inboundTracks.values()) {
-            Assertions.assertEquals(expectedTouch, inboundTrack.getTouched());
+            Assertions.assertEquals(updatedSamples.timestamp, inboundTrack.getSampleTouched());
         }
     }
 
@@ -169,37 +180,49 @@ class CallEntitiesUpdaterTest {
     void shouldTouchOutboundTracks() {
         var observedClientSamples = this.generateObservedClientSamples();
         this.callEntitiesUpdater.accept(observedClientSamples);
-        var expectedTouch = this.updateObservedClientSamplesTimestamp(observedClientSamples);
-        this.callEntitiesUpdater.accept(observedClientSamples);
+        var updatedSamples = this.updateObservedClientSamplesTimestamp(observedClientSamples);
+        this.callEntitiesUpdater.accept(updatedSamples.observedClientSamples);
 
-        this.callEntitiesUpdater.accept(observedClientSamples);
+        this.callEntitiesUpdater.accept(updatedSamples.observedClientSamples);
 
         var outboundTrackIds = observedClientSamples.getOutboundTrackIds();
         var outboundTracks = this.outboundTracksRepository.getAll(outboundTrackIds);
 
         Assertions.assertEquals(outboundTrackIds.size(), outboundTracks.size());
         for (var outboundTrack : outboundTracks.values()) {
-            Assertions.assertEquals(expectedTouch, outboundTrack.getTouched());
+            Assertions.assertEquals(updatedSamples.timestamp, outboundTrack.getSampleTouched());
         }
     }
 
 
     private ObservedClientSamples generateObservedClientSamples() {
-        var aliceClientSample = aliceObservedSamplesGenerator.generateObservedClientSample();
-        var bobClientSample = bobObservedSamplesGenerator.generateObservedClientSample();
+        var callId = UUID.randomUUID().toString();
+        var aliceClientSample = aliceObservedSamplesGenerator.generateObservedClientSample(callId);
+        var bobClientSample = bobObservedSamplesGenerator.generateObservedClientSample(callId);
         var observedClientSamples = ObservedClientSamples.builder()
-                .addObservedClientSample(aliceClientSample)
-                .addObservedClientSample(bobClientSample)
+                .add(aliceClientSample.getServiceId(), aliceClientSample.getMediaUnitId(), aliceClientSample.getClientSample())
+                .add(bobClientSample.getServiceId(), bobClientSample.getMediaUnitId(), bobClientSample.getClientSample())
                 .build();
         return observedClientSamples;
     }
 
-    private Long updateObservedClientSamplesTimestamp(ObservedClientSamples observedClientSamples) {
+    record UpdateObservedClientSamplesTimestampResult(
+            Long timestamp,
+            ObservedClientSamples observedClientSamples
+    ) {
+
+    }
+
+    private UpdateObservedClientSamplesTimestampResult updateObservedClientSamplesTimestamp(ObservedClientSamples observedClientSamples) {
         var timestamp = Instant.now().toEpochMilli();
         for (var observedClientSample : observedClientSamples) {
             observedClientSample.getClientSample().timestamp = timestamp;
         }
-        return timestamp;
+        var builder = ObservedClientSamples.builderFrom(observedClientSamples);
+        return new UpdateObservedClientSamplesTimestampResult(
+                timestamp,
+                builder.build()
+        );
     }
 
     static<T> int getLength(T[]... arrays) {

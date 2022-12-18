@@ -11,7 +11,6 @@ import jakarta.inject.Singleton;
 import org.observertc.observer.ObserverService;
 import org.reactivestreams.Publisher;
 
-
 // Source: https://blog.mrhaki.com/2018/08/micronaut-mastery-add-custom-health.html
 @Singleton
 @Requires(beans = HealthEndpoint.class)
@@ -41,6 +40,7 @@ public class ReadinessHealthIndicator implements HealthIndicator {
         } else {
             healthStatus = HealthStatus.DOWN;
         }
+//        healthStatus = HealthStatus.UP;
         var result = HealthResult.builder(NAME, healthStatus).build();
         return Publishers.just(result);
     }

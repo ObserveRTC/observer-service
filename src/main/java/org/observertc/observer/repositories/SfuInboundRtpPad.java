@@ -57,6 +57,9 @@ public class SfuInboundRtpPad {
 
     public boolean isInternal() {
         var model = this.modelHolder.get();
+        if (!model.hasInternal()) {
+            return false;
+        }
         return model.getInternal();
     }
 
@@ -65,18 +68,51 @@ public class SfuInboundRtpPad {
         return model.getAdded();
     }
 
-    public Long getTouched() {
+    public void touch(Long sampleTimestamp, Long serverTimestamp) {
         var model = modelHolder.get();
-        if (!model.hasTouched()) {
-            return null;
+        Models.SfuInboundRtpPad.Builder newModel = null;
+        if (sampleTimestamp != null) {
+            newModel = Models.SfuInboundRtpPad.newBuilder(model)
+                    .setSampleTouched(sampleTimestamp);
         }
-        return model.getTouched();
+        if (serverTimestamp != null) {
+            if (newModel == null) newModel = Models.SfuInboundRtpPad.newBuilder(model);
+            newModel.setServerTouched(serverTimestamp);
+        }
+        if (newModel == null) {
+            return;
+        }
+        this.updateModel(newModel.build());
     }
 
-    public void touch(Long timestamp) {
+    public Long getSampleTouched() {
+        var model = modelHolder.get();
+        if (!model.hasSampleTouched()) {
+            return null;
+        }
+        return model.getSampleTouched();
+    }
+
+    public void touchBySample(Long timestamp) {
         var model = modelHolder.get();
         var newModel = Models.SfuInboundRtpPad.newBuilder(model)
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
+                .build();
+        this.updateModel(newModel);
+    }
+
+    public Long getServerTouch() {
+        var model = this.modelHolder.get();
+        if (!model.hasServerTouched()) {
+            return null;
+        }
+        return model.getServerTouched();
+    }
+
+    public void touchByServer(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.SfuInboundRtpPad.newBuilder(model)
+                .setServerTouched(timestamp)
                 .build();
         this.updateModel(newModel);
     }

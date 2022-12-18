@@ -11,12 +11,14 @@ import java.util.Map;
 public class WebsocketCustomCloseReasons {
     private static final int ACCESS_TOKEN_EXPIRED_CODE = 4224;
     private static final int NO_ACCESS_TOKEN_PROVIDED_CODE = 4225;
-    private static final int INVALID_ACCESS_TOKEN_CODE = 4226;
     private static final int INTERNAL_SERVER_ERROR_CODE = 4227;
     private static final int TOO_MANY_WEBSOCKET_FOR_SAME_ACCESS_TOKENS = 4228;
     private static final int WEBSOCKET_IS_DISABLED = 4229;
 
+    private static final int OBSERVER_REMOTE_PEERS_ARE_NOT_READY = 4226;
+
     private static final int INVALID_INPUT = 4230;
+    private static final int INVALID_ACCESS_TOKEN_CODE = 4231;
 
     private final Map<Integer, CloseReason> reasons;
 
@@ -32,6 +34,7 @@ public class WebsocketCustomCloseReasons {
                 .set(INVALID_ACCESS_TOKEN_CODE, "The provided access token is invalid")
                 .set(TOO_MANY_WEBSOCKET_FOR_SAME_ACCESS_TOKENS, "There are too many websocket registered for the same access token")
                 .set(WEBSOCKET_IS_DISABLED, "The websocket is disabled")
+                .set(OBSERVER_REMOTE_PEERS_ARE_NOT_READY, "The service is not ready")
         ;
     }
 
@@ -67,6 +70,11 @@ public class WebsocketCustomCloseReasons {
 
     public CloseReason getWebsocketIsDisabled() {
         var result = this.reasons.get(WEBSOCKET_IS_DISABLED);
+        return result;
+    }
+
+    public CloseReason getObserverRemotePeersNotReady() {
+        var result = this.reasons.get(OBSERVER_REMOTE_PEERS_ARE_NOT_READY);
         return result;
     }
 

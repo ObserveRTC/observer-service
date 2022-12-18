@@ -20,7 +20,6 @@ public class InboundAudioReportsDepot implements Supplier<List<InboundAudioTrack
     private String remoteUserId = null;
     private String remotePeerConnectionId = null;
     private String remoteTrackId = null;
-    private String label = null;
 
     private ObservedClientSample observedClientSample = null;
     private Samples.ClientSample.InboundAudioTrack inboundAudioTrack = null;
@@ -83,6 +82,10 @@ public class InboundAudioReportsDepot implements Supplier<List<InboundAudioTrack
                 return;
             }
             var clientSample = observedClientSample.getClientSample();
+            if (Objects.isNull(clientSample.callId)) {
+                logger.warn("Cannot assemble {} when a callId is null for service {}, mediaUnitId: {}", this.getClass().getSimpleName(), observedClientSample.getServiceId(), observedClientSample.getMediaUnitId());
+                return;
+            }
             var report = InboundAudioTrackReport.newBuilder()
                     /* Report MetaFields */
                     .setServiceId(observedClientSample.getServiceId())
@@ -113,10 +116,6 @@ public class InboundAudioReportsDepot implements Supplier<List<InboundAudioTrack
                     .setTrackId(inboundAudioTrack.trackId)
                     .setSfuStreamId(inboundAudioTrack.sfuStreamId)
                     .setSfuSinkId(inboundAudioTrack.sfuSinkId)
-                    .setRemoteTrackId(this.remoteTrackId)
-                    .setRemoteUserId(this.remoteUserId)
-                    .setRemoteClientId(this.remoteClientId)
-                    .setRemotePeerConnectionId(this.remotePeerConnectionId)
                     .setSampleSeq(clientSample.sampleSeq)
                     .setSsrc(inboundAudioTrack.ssrc)
                     .setPacketsReceived(inboundAudioTrack.packetsReceived)

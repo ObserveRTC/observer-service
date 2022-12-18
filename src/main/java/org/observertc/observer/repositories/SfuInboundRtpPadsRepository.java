@@ -35,10 +35,17 @@ public class SfuInboundRtpPadsRepository implements RepositoryStorageMetrics {
     private HamokService service;
 
     @Inject
-    private ObserverConfig.InternalBuffersConfig bufferConfig;
+    private ObserverConfig observerConfig;
+
+    @Inject
+    private Backups backups;
+
 
     @Inject
     SfuMediaStreamsRepository sfuMediaStreamsRepository;
+
+    @Inject
+    private ObserverConfig.HamokConfig hamokConfig;
 
     private Map<String, Models.SfuInboundRtpPad> updated;
     private Set<String> deleted;
@@ -49,17 +56,25 @@ public class SfuInboundRtpPadsRepository implements RepositoryStorageMetrics {
                 .setConcurrency(true)
                 .setId(STORAGE_ID)
                 .build();
-        this.storage = this.service.getStorageGrid().separatedStorage(baseStorage)
+        var storageBuilder = this.service.getStorageGrid().separatedStorage(baseStorage)
                 .setKeyCodec(SerDeUtils.createStrToByteFunc(), SerDeUtils.createBytesToStr())
                 .setValueCodec(
                         Mapper.create(Models.SfuInboundRtpPad::toByteArray, logger)::map,
                         Mapper.<byte[], Models.SfuInboundRtpPad>create(bytes -> Models.SfuInboundRtpPad.parseFrom(bytes), logger)::map
                 )
-                .setMaxCollectedStorageEvents(bufferConfig.debouncers.maxItems)
-                .setMaxCollectedStorageTimeInMs(bufferConfig.debouncers.maxTimeInMs)
+                .setMaxCollectedStorageEvents(this.observerConfig.buffers.debouncers.maxItems)
+                .setMaxCollectedStorageTimeInMs(this.observerConfig.buffers.debouncers.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
                 .setMaxMessageValues(MAX_VALUES)
-                .build();
+                .setThrowingExceptionOnRequestTimeout(!this.hamokConfig.usePartialResponses)
+                ;
+
+        if (this.observerConfig.repository.useBackups) {
+            storageBuilder.setDistributedBackups(this.backups);
+        }
+
+        this.storage = storageBuilder.build();
+
         this.fetched = CachedFetches.<String, SfuInboundRtpPad>builder()
                 .onFetchOne(this::fetchOne)
                 .onFetchAll(this::fetchAll)
@@ -143,7 +158,28 @@ public class SfuInboundRtpPadsRepository implements RepositoryStorageMetrics {
         return this.fetched.getAll(set);
     }
 
+    public Map<String, SfuInboundRtpPad> getAllLocallyStored() {
+        var callIds = this.storage.localKeys();
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        return this.fetchAll(callIds);
+    }
 
+    public Map<String, SfuInboundRtpPad> fetchRecursively(Set<String> sfuInboundRtpPadIds) {
+        if (sfuInboundRtpPadIds == null || sfuInboundRtpPadIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        var result = this.getAll(sfuInboundRtpPadIds);
+        var sfuStreamIds = result.values().stream()
+                .map(SfuInboundRtpPad::getSfuStreamId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        if (0 < sfuInboundRtpPadIds.size()) {
+            this.sfuMediaStreamsRepository.getAll(sfuStreamIds);
+        }
+        return result;
+    }
 
     private SfuInboundRtpPad fetchOne(String rtpPadId) {
         var model = Try.wrap(() -> this.storage.get(rtpPadId), null);

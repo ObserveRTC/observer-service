@@ -46,7 +46,7 @@ public class ClientLeftReports {
 
     private CallEventReport makeReport(Models.Client clientDTO) {
         try {
-            var timestamp = clientDTO.hasTouched() ? clientDTO.getTouched() : Instant.now().toEpochMilli();
+            var timestamp = clientDTO.hasSampleTouched() ? clientDTO.getSampleTouched() : Instant.now().toEpochMilli();
             ClientAttachment attachment = ClientAttachment.builder()
                     .withTimeZoneId(clientDTO.getTimeZoneId())
                     .build();

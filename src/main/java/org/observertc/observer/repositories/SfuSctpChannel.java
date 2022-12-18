@@ -4,15 +4,15 @@ import org.observertc.schemas.dtos.Models;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class SfuSctpStream {
+public class SfuSctpChannel {
 
-    private final AtomicReference<Models.SfuSctpStream> modelHolder;
-    private final SfuSctpStreamsRepository sfuSctpStreamsRepository;
+    private final AtomicReference<Models.SfuSctpChannel> modelHolder;
+    private final SfuSctpChannelsRepository sfuSctpStreamsRepository;
     private final SfuTransportsRepository sfuTransportsRepository;
 
-    SfuSctpStream(
-            Models.SfuSctpStream model,
-            SfuSctpStreamsRepository sfuSctpStreamsRepository,
+    SfuSctpChannel(
+            Models.SfuSctpChannel model,
+            SfuSctpChannelsRepository sfuSctpStreamsRepository,
             SfuTransportsRepository sfuTransportsRepository
     ) {
         this.modelHolder = new AtomicReference<>(model);
@@ -45,23 +45,61 @@ public class SfuSctpStream {
         return model.getSfuSctpStreamId();
     }
 
+    public String getSfuSctpChannelId() {
+        var model = this.modelHolder.get();
+        return model.getSfuSctpChannelId();
+    }
+
     public Long getOpened() {
         var model = this.modelHolder.get();
         return model.getOpened();
     }
 
-    public Long getTouched() {
+    public Long getSampleTouched() {
         var model = modelHolder.get();
-        if (!model.hasTouched()) {
+        if (!model.hasSampleTouched()) {
             return null;
         }
-        return model.getTouched();
+        return model.getSampleTouched();
     }
 
-    public void touch(Long timestamp) {
+    public void touch(Long sampleTimestamp, Long serverTimestamp) {
         var model = modelHolder.get();
-        var newModel = Models.SfuSctpStream.newBuilder(model)
-                .setTouched(timestamp)
+        Models.SfuSctpChannel.Builder newModel = null;
+        if (sampleTimestamp != null) {
+            newModel = Models.SfuSctpChannel.newBuilder(model)
+                    .setSampleTouched(sampleTimestamp);
+        }
+        if (serverTimestamp != null) {
+            if (newModel == null) newModel = Models.SfuSctpChannel.newBuilder(model);
+            newModel.setServerTouched(serverTimestamp);
+        }
+        if (newModel == null) {
+            return;
+        }
+        this.updateModel(newModel.build());
+    }
+
+    public void touchBySample(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.SfuSctpChannel.newBuilder(model)
+                .setSampleTouched(timestamp)
+                .build();
+        this.updateModel(newModel);
+    }
+
+    public Long getServerTouch() {
+        var model = this.modelHolder.get();
+        if (!model.hasServerTouched()) {
+            return null;
+        }
+        return model.getServerTouched();
+    }
+
+    public void touchByServer(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.SfuSctpChannel.newBuilder(model)
+                .setServerTouched(timestamp)
                 .build();
         this.updateModel(newModel);
     }
@@ -76,7 +114,7 @@ public class SfuSctpStream {
         return model.getMarker();
     }
 
-    public Models.SfuSctpStream getModel() {
+    public Models.SfuSctpChannel getModel() {
         return this.modelHolder.get();
     }
 
@@ -86,7 +124,7 @@ public class SfuSctpStream {
         return model.toString();
     }
 
-    private void updateModel(Models.SfuSctpStream newModel) {
+    private void updateModel(Models.SfuSctpChannel newModel) {
         this.modelHolder.set(newModel);
         this.sfuSctpStreamsRepository.update(newModel);
     }

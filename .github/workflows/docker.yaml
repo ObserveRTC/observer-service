@@ -7,6 +7,9 @@ on:
   push:
     branches:
       - 'master'
+  pull_request:
+    branches:
+      - master
 
 jobs:
   docker:
@@ -34,8 +37,12 @@ jobs:
           path: './src/main/resources/service.properties'
           property: 'version'
 
-      - name: Tag
-        run: echo ${{ steps.observer_properties.outputs.value }}
+      - name: Setup Custom Contexts
+        shell: bash
+        run: |
+          echo "##[set-output name=branch;]$(echo ${GITHUB_REF##*/})"
+          echo "##[set-output name=snapshot_tag;]$(echo ${{ github.head_ref }} | sed 's/[][*]\|[[:space:]]//g')"
+        id: job_context
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -49,8 +56,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
-        id: docker_build
+      - name: Build and push SNAPSHOT
+        id: docker_build_snapshot
+        if: steps.job_context.outputs.branch != 'master'
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: observertc/observer:${{ steps.observer_properties.outputs.value }}-SNAPSHOT.${{ steps.job_context.outputs.snapshot_tag }}
+
+      - name: Build and push RELEASE
+        id: docker_build_release
+        if: steps.job_context.outputs.branch == 'master'
         uses: docker/build-push-action@v2
         with:
           push: true
@@ -58,6 +74,7 @@ jobs:
       
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
+        if: steps.job_context.outputs.branch == 'master'
         with:
           image-ref: 'observertc/observer:${{ steps.observer_properties.outputs.value }}'
           format: 'table'

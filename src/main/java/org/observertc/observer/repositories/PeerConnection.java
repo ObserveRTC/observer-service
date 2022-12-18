@@ -3,6 +3,8 @@ package org.observertc.observer.repositories;
 import org.observertc.observer.configs.MediaKind;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.schemas.dtos.Models;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -11,6 +13,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class PeerConnection {
+
+    private static final Logger logger = LoggerFactory.getLogger(PeerConnection.class);
 
     private final ServiceRoomId serviceRoomId;
     private final ClientsRepository clientsRepository;
@@ -89,20 +93,53 @@ public class PeerConnection {
         return model.getOpened();
     }
 
-    public Long getTouched() {
+    public Long getSampleTouched() {
         var model = modelHolder.get();
-        if (!model.hasTouched()) {
+        if (!model.hasSampleTouched()) {
             return null;
         }
-        return model.getTouched();
+        return model.getSampleTouched();
     }
 
-    public void touch(Long timestamp) {
+    public void touchBySample(Long timestamp) {
         var model = modelHolder.get();
         var newModel = Models.PeerConnection.newBuilder(model)
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
                 .build();
         this.updateModel(newModel);
+    }
+
+    public Long getServerTouch() {
+        var model = this.modelHolder.get();
+        if (!model.hasServerTouched()) {
+            return null;
+        }
+        return model.getServerTouched();
+    }
+
+    public void touchByServer(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.PeerConnection.newBuilder(model)
+                .setServerTouched(timestamp)
+                .build();
+        this.updateModel(newModel);
+    }
+
+    public void touch(Long sampleTimestamp, Long serverTimestamp) {
+        var model = modelHolder.get();
+        Models.PeerConnection.Builder newModel = null;
+        if (sampleTimestamp != null) {
+            newModel = Models.PeerConnection.newBuilder(model)
+                    .setSampleTouched(sampleTimestamp);
+        }
+        if (serverTimestamp != null) {
+            if (newModel == null) newModel = Models.PeerConnection.newBuilder(model);
+            newModel.setServerTouched(serverTimestamp);
+        }
+        if (newModel == null) {
+            return;
+        }
+        this.updateModel(newModel.build());
     }
 
     public String getMediaUnitId() {
@@ -152,7 +189,7 @@ public class PeerConnection {
                 .setTrackId(trackId)
                 .setKind(kind.name())
                 .setAdded(timestamp)
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
                 // marker
                 // userId
@@ -180,11 +217,21 @@ public class PeerConnection {
 
         this.updateModel(newModel);
         this.inboundTracksRepository.update(inboundTrackModel);
-        if (sfuStreamId != null && sfuSinkId != null) {
-            // TODO: add SfuMediaSink here
+        var result = this.inboundTracksRepository.wrapInboundTrack(inboundTrackModel);
 
+        if (sfuStreamId != null && sfuSinkId != null) {
+            // create mediaSink
+            if (!result.createMediaSink()) {
+                logger.warn("Media Sink {} has not been created for track {} in room {}, mediaUnit: {} service: {}",
+                        sfuSinkId,
+                        trackId,
+                        serviceRoomId.roomId,
+                        serviceRoomId.serviceId,
+                        getMediaUnitId()
+                );
+            }
         }
-        return this.inboundTracksRepository.wrapInboundTrack(inboundTrackModel);
+        return result;
     }
 
     public boolean removeInboundTrack(String trackId) {
@@ -244,7 +291,7 @@ public class PeerConnection {
                 .setAdded(timestamp)
                 .setKind(kind.name())
 
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
                 .setMediaUnitId(model.getMediaUnitId())
                 // userId
                 // marker
@@ -269,7 +316,19 @@ public class PeerConnection {
         this.updateModel(newModel);
         this.outboundTracksRepository.update(outboundTrackModel);
 
-        return this.outboundTracksRepository.wrapOutboundAudioTrack(outboundTrackModel);
+        var result = this.outboundTracksRepository.wrapOutboundAudioTrack(outboundTrackModel);
+        if (sfuStreamId != null) {
+            // create mediaSink
+            if (!result.createMediaStream()) {
+                logger.warn("Media Sink {} has not been created for track {} in room {}, mediaUnit: {} service: {}",
+                        trackId,
+                        serviceRoomId.roomId,
+                        serviceRoomId.serviceId,
+                        getMediaUnitId()
+                );
+            }
+        }
+        return result;
     }
 
     public boolean removeOutboundTrack(String trackId) {

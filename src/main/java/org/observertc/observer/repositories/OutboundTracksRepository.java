@@ -7,7 +7,9 @@ import io.micronaut.context.BeanProvider;
 import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.BackgroundTasksExecutor;
 import org.observertc.observer.HamokService;
+import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.common.Try;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
@@ -18,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -39,13 +42,25 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
     BeanProvider<PeerConnectionsRepository> peerConnectionsRepositoryBeanProvider;
 
     @Inject
-    private ObserverConfig.RepositoryConfig config;
+    private ObserverConfig.HamokConfig hamokConfig;
+
+    @Inject
+    private SfuMediaStreamsRepository sfuMediaStreamsRepository;
+
+    @Inject
+    private ObserverConfig observerConfig;
+
+    @Inject
+    private Backups backups;
 
     @Inject
     private HamokService hamokService;
 
     @Inject
     private ObserverConfig.InternalBuffersConfig bufferConfig;
+
+    @Inject
+    private BackgroundTasksExecutor backgroundTasksExecutor;
 
     @PostConstruct
     void setup() {
@@ -54,7 +69,7 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
                 .setConcurrency(true)
 //                .setExpiration(config.mediaTracksMaxIdleTimeInS * 1000)
                 .build();
-        this.storage = this.hamokService.getStorageGrid().separatedStorage(baseStorage)
+        var storageBuilder = this.hamokService.getStorageGrid().separatedStorage(baseStorage)
                 .setKeyCodec(SerDeUtils.createStrToByteFunc(), SerDeUtils.createBytesToStr())
                 .setValueCodec(
                         Mapper.create(Models.OutboundTrack::toByteArray, logger)::map,
@@ -64,7 +79,29 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
                 .setMaxCollectedStorageTimeInMs(bufferConfig.debouncers.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
                 .setMaxMessageValues(MAX_VALUES)
-                .build();
+                .setThrowingExceptionOnRequestTimeout(!this.hamokConfig.usePartialResponses)
+                ;
+
+        if (this.observerConfig.repository.useBackups) {
+            storageBuilder.setDistributedBackups(this.backups);
+        }
+
+        this.storage = storageBuilder.build();
+
+        var checkCollision = new AtomicBoolean(false);
+        this.storage.detectedEntryCollisions().subscribe(detectedCollision -> {
+            logger.warn("Detected colliding items in {} for key {}", STORAGE_ID, detectedCollision.key());
+            if (checkCollision.compareAndSet(false, true)) {
+                this.backgroundTasksExecutor.addTask(ChainedTask.<Void>builder()
+                        .withName("Remove collisions for storage: " + STORAGE_ID)
+                        .withLogger(logger)
+                        .addActionStage("Check collision for " + STORAGE_ID, this.storage::checkCollidingEntries)
+                        .setFinalAction(() -> checkCollision.set(false))
+                        .build()
+                );
+            }
+        });
+
         this.fetched = CachedFetches.<String, OutboundTrack>builder()
                 .onFetchOne(this::fetchOne)
                 .onFetchAll(this::fetchAll)
@@ -97,8 +134,24 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
         return this.fetched.getAll(set);
     }
 
-    public Map<String, OutboundTrack> fetchRecursively(Set<String> inboundTrackIds) {
-        return this.getAll(inboundTrackIds);
+    public Map<String, OutboundTrack> getAllLocallyStored() {
+        var callIds = this.storage.localKeys();
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        return this.fetchAll(callIds);
+    }
+
+    public Map<String, OutboundTrack> fetchRecursively(Set<String> outboundTrackIds) {
+        var result = this.getAll(outboundTrackIds);
+        var sfuStreamIds = result.values().stream()
+                .map(OutboundTrack::getSfuStreamId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        if (0 < sfuStreamIds.size()) {
+            this.sfuMediaStreamsRepository.getAll(sfuStreamIds);
+        }
+        return result;
     }
 
     synchronized void update(Models.OutboundTrack OutboundAudioTrack) {
@@ -117,7 +170,7 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
         }
     }
 
-    synchronized void deleteAll(Set<String> trackIds) {
+    public synchronized void deleteAll(Set<String> trackIds) {
         if (trackIds == null || trackIds.size() < 1) {
             return;
         }
@@ -132,6 +185,14 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
 
     public synchronized void save() {
         if (0 < this.deleted.size()) {
+            var outboundTracks = this.storage.getAll(this.deleted);
+            var sfuStreamIds = outboundTracks.values().stream()
+                    .filter(Models.OutboundTrack::hasSfuStreamId)
+                    .map(Models.OutboundTrack::getSfuStreamId)
+                    .collect(Collectors.toSet());
+            if (0 < sfuStreamIds.size()) {
+                this.sfuMediaStreamsRepository.deleteAll(sfuStreamIds);
+            }
             Try.wrap(() -> this.storage.deleteAll(this.deleted));
             this.deleted.clear();
         }
@@ -139,7 +200,24 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
             Try.wrap(() -> this.storage.setAll(this.updated));
             this.updated.clear();
         }
+        this.sfuMediaStreamsRepository.save();
         this.fetched.clear();
+    }
+
+    public Iterator<OutboundTrack> iterator() {
+        var it = this.storage.iterator();
+        return new Iterator<OutboundTrack>() {
+            @Override
+            public boolean hasNext() {
+                return it.hasNext();
+            }
+
+            @Override
+            public OutboundTrack next() {
+                var entry = it.next();
+                return wrapOutboundAudioTrack(entry.getValue());
+            }
+        };
     }
 
     @Override
@@ -184,7 +262,8 @@ public class OutboundTracksRepository implements RepositoryStorageMetrics {
         var result = new OutboundTrack(
                 this.peerConnectionsRepositoryBeanProvider.get(),
                 model,
-                this
+                this,
+                this.sfuMediaStreamsRepository
         );
         this.fetched.add(result.getTrackId(), result);
         return result;

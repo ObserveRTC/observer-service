@@ -24,6 +24,7 @@ import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
 import jakarta.inject.Inject;
+import org.observertc.observer.HamokService;
 import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.configs.TransportFormatType;
@@ -59,6 +60,11 @@ public class SamplesWebsocketController {
 	@Inject
     SamplesCollector samplesCollector;
 
+	@Inject
+	HamokService hamokService;
+
+	private volatile boolean opened = false;
+
     private final ObserverConfig.SourcesConfig.WebsocketsConfig config;
 
 	public SamplesWebsocketController(
@@ -87,7 +93,18 @@ public class SamplesWebsocketController {
 				session.close(customCloseReasons.getWebsocketIsDisabled());
 				return;
 			}
-			
+			if (!this.opened) {
+				if (0 < this.config.minRemotePeers) {
+					var remoteEndpointIds = this.hamokService.getRemoteEndpointIds();
+					if (remoteEndpointIds == null || remoteEndpointIds.size() < this.config.minRemotePeers) {
+						logger.warn("Refused to accept incoming websocket sessio due to not enough remote peers are ready. activeRemotePeers: {}, minRemotePeers: {}", remoteEndpointIds.size(), this.config.minRemotePeers);
+						session.close(customCloseReasons.getObserverRemotePeersNotReady());
+						return;
+					}
+				}
+				this.opened = true;
+			}
+
 			var requestParameters = session.getRequestParameters();
 			String providedSchemaVersion = requestParameters.get("schemaVersion");
 			String providedFormat = requestParameters.get("format");
@@ -116,7 +133,7 @@ public class SamplesWebsocketController {
 				this.inputs.remove(session.getId());
 				return;
 			}
-			this.exposedMetrics.incrementOpenedWebsockets(serviceId, mediaUnitId);
+			this.exposedMetrics.incrementOpenedWebsockets();
 			logger.info("Session {} is opened, providedSchemaVersion: {}, providedFormat: {}", session.getId(), providedSchemaVersion, providedFormat);
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
@@ -128,8 +145,11 @@ public class SamplesWebsocketController {
 			String serviceId,
 			String mediaUnitId,
 			WebSocketSession session) {
+		if (!this.opened) {
+			return;
+		}
 		try {
-			this.exposedMetrics.incrementClosedWebsockets(serviceId, mediaUnitId);
+			this.exposedMetrics.incrementClosedWebsockets();
 			this.inputs.remove(session.getId());
 			logger.info("Session {} is closed", session.getId());
 		} catch (Throwable t) {
@@ -144,7 +164,7 @@ public class SamplesWebsocketController {
 			byte[] messageBytes,
 			WebSocketSession session) {
 		try {
-			this.exposedMetrics.incrementWebsocketReceivedSamples(serviceId, mediaUnitId);
+			this.exposedMetrics.incrementWebsocketReceivedSamples();
 		} catch (Throwable t) {
 			logger.warn("MeterRegistry just caused an error by counting samples", t);
 		}

@@ -14,14 +14,17 @@ public class InboundTrack {
     private final PeerConnectionsRepository peerConnectionsRepository;
     private final AtomicReference<Models.InboundTrack> modelHolder;
     private final InboundTracksRepository inboundTracksRepository;
+    private final SfuMediaSinksRepository sfuMediaSinksRepository;
 
     InboundTrack(PeerConnectionsRepository peerConnectionsRepository,
                  Models.InboundTrack model,
-                 InboundTracksRepository inboundTracksRepository
+                 InboundTracksRepository inboundTracksRepository,
+                 SfuMediaSinksRepository sfuMediaSinksRepository
     ) {
         this.peerConnectionsRepository = peerConnectionsRepository;
         this.modelHolder = new AtomicReference<>(model);
         this.inboundTracksRepository = inboundTracksRepository;
+        this.sfuMediaSinksRepository = sfuMediaSinksRepository;
         this.serviceRoomId = ServiceRoomId.make(model.getServiceId(), model.getRoomId());
     }
 
@@ -82,18 +85,34 @@ public class InboundTrack {
         return model.getAdded();
     }
 
-    public Long getTouched() {
+    public Long getSampleTouched() {
         var model = modelHolder.get();
-        if (!model.hasTouched()) {
+        if (!model.hasSampleTouched()) {
             return null;
         }
-        return model.getTouched();
+        return model.getSampleTouched();
     }
 
-    public void touch(Long timestamp) {
+    public void touchBySample(Long timestamp) {
         var model = modelHolder.get();
         var newModel = Models.InboundTrack.newBuilder(model)
-                .setTouched(timestamp)
+                .setSampleTouched(timestamp)
+                .build();
+        this.updateModel(newModel);
+    }
+
+    public Long getServerTouch() {
+        var model = this.modelHolder.get();
+        if (!model.hasServerTouched()) {
+            return null;
+        }
+        return model.getServerTouched();
+    }
+
+    public void touchByServer(Long timestamp) {
+        var model = modelHolder.get();
+        var newModel = Models.InboundTrack.newBuilder(model)
+                .setServerTouched(timestamp)
                 .build();
         this.updateModel(newModel);
     }
@@ -122,6 +141,41 @@ public class InboundTrack {
             return null;
         }
         return model.getSfuSinkId();
+    }
+
+    public SfuMediaSink getMediaSink() {
+        var model = this.modelHolder.get();
+        if (!model.hasSfuSinkId()) {
+            return null;
+        }
+        var sfuSinkId = model.getSfuSinkId();
+        return  this.sfuMediaSinksRepository.get(sfuSinkId);
+    }
+
+    boolean createMediaSink() {
+        var model = this.modelHolder.get();
+        if (!model.hasSfuStreamId() || !model.hasSfuSinkId()) {
+            return false;
+        }
+
+        var sfuMediaSinkModelBuilder = Models.SfuMediaSink.newBuilder()
+                .setServiceId(model.getServiceId())
+                .setSfuStreamId(model.getSfuStreamId())
+                .setSfuSinkId(model.getSfuSinkId())
+                .setInternal(false)
+
+                .setCallId(model.getCallId())
+                .setClientId(model.getClientId())
+                .setPeerConnectionId(model.getPeerConnectionId())
+                .setTrackId(model.getTrackId())
+                .setKind(model.getKind())
+                ;
+
+        if (model.hasUserId()) {
+            sfuMediaSinkModelBuilder.setUserId(model.getUserId());
+        }
+        this.sfuMediaSinksRepository.update(sfuMediaSinkModelBuilder.build());
+        return true;
     }
 
     public List<Long> getSSSRCs() {

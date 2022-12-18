@@ -33,7 +33,7 @@ public class HamokStorages {
     SfuOutboundRtpPadsRepository sfuOutboundRtpPadsRepository;
 
     @Inject
-    SfuSctpStreamsRepository sfuSctpStreamsRepository;
+    SfuSctpChannelsRepository sfuSctpStreamsRepository;
 
     public CallsRepository getCallsRepository() {
         return callsRepository;
@@ -71,7 +71,7 @@ public class HamokStorages {
         return sfuOutboundRtpPadsRepository;
     }
 
-    public SfuSctpStreamsRepository getSfuSctpStreamsRepository() {
+    public SfuSctpChannelsRepository getSfuSctpStreamsRepository() {
         return sfuSctpStreamsRepository;
     }
 

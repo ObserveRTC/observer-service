@@ -43,7 +43,7 @@ public class SfuLeftReports {
 
     protected SfuEventReport makeReport(Models.Sfu sfuDTO) {
         try {
-            var timestamp = sfuDTO.hasTouched() ? sfuDTO.getTouched() : Instant.now().toEpochMilli();
+            var timestamp = sfuDTO.hasSampleTouched() ? sfuDTO.getSampleTouched() : Instant.now().toEpochMilli();
             var builder = SfuEventReport.newBuilder()
                     .setName(SfuEventType.SFU_LEFT.name())
                     .setSfuId(sfuDTO.getSfuId())

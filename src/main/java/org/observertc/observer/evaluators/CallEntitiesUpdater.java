@@ -1,30 +1,37 @@
 package org.observertc.observer.evaluators;
 
-import io.micronaut.context.annotation.Prototype;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
+import org.observertc.observer.BackgroundTasksExecutor;
+import org.observertc.observer.ServerTimestamps;
 import org.observertc.observer.common.JsonUtils;
-import org.observertc.observer.common.Try;
+import org.observertc.observer.common.Utils;
 import org.observertc.observer.configs.MediaKind;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.evaluators.eventreports.*;
 import org.observertc.observer.metrics.EvaluatorMetrics;
-import org.observertc.observer.repositories.*;
-import org.observertc.observer.samples.ClientSampleVisitor;
+import org.observertc.observer.repositories.AlreadyCreatedException;
+import org.observertc.observer.repositories.Call;
+import org.observertc.observer.repositories.CallsRepository;
+import org.observertc.observer.repositories.Client;
+import org.observertc.observer.repositories.tasks.CleanCallEntities;
+import org.observertc.observer.repositories.tasks.CommitCallEntities;
 import org.observertc.observer.samples.ObservedClientSamples;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.schemas.dtos.Models;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
-@Prototype
+@Singleton
 public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
     private static final Logger logger = LoggerFactory.getLogger(CallEntitiesUpdater.class);
     private static final String METRIC_COMPONENT_NAME = CallEntitiesUpdater.class.getSimpleName();
@@ -34,18 +41,6 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
 
     @Inject
     CallsRepository callsRepository;
-
-    @Inject
-    ClientsRepository clientsRepository;
-
-    @Inject
-    PeerConnectionsRepository peerConnectionsRepository;
-
-    @Inject
-    InboundTracksRepository inboundTracksRepository;
-
-    @Inject
-    OutboundTracksRepository outboundTracksRepository;
 
     @Inject
     CallStartedReports callStartedReports;
@@ -68,6 +63,44 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
     @Inject
     ObserverConfig.EvaluatorsConfig.CallUpdater config;
 
+    @Inject
+    CallsFetcherInMasterAssigningMode callsFetcherInMasterAssigningMode;
+
+    @Inject
+    CallsFetcherInSlaveAssigningMode callsFetcherInSlaveAssigningMode;
+
+    @Inject
+    ServerTimestamps serverTimestamps;
+
+    @Inject
+    ObserverConfig observerConfig;
+
+    @Inject
+    BackgroundTasksExecutor backgroundTasksExecutor;
+
+    @Inject
+    CleanCallEntities cleanCallEntities;
+
+    @Inject
+    CommitCallEntities commitCallEntities;
+
+    @PostConstruct
+    void setup() {
+        if (!this.config.enabled) {
+            logger.warn("Call Entities Updater is DISABLED, hence no stream analysis can happen");
+        }
+        this.backgroundTasksExecutor.addPeriodicTask(
+                this.getClass().getSimpleName(),
+                this.cleanCallEntities::createTask,
+                60 * 1000
+        );
+    }
+
+    @PreDestroy
+    void teardown() {
+        this.backgroundTasksExecutor.removePeriodicTask(this.getClass().getSimpleName());
+    }
+
     private Subject<ObservedClientSamples> output = PublishSubject.create();
 
     public Observable<ObservedClientSamples> observableClientSamples() {
@@ -78,268 +111,315 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
         if (observedClientSamples == null) {
             return;
         }
-        if (observedClientSamples.isEmpty()) {
+        if (observedClientSamples.isEmpty() || !this.config.enabled) {
             this.output.onNext(observedClientSamples);
             return;
         }
         Instant started = Instant.now();
         try {
+            this.commitCallEntities.lock();
             this.process(observedClientSamples);
         } catch(Exception ex) {
             logger.warn("Exception occurred while processing clientsamples", ex);
         } finally {
+            this.commitCallEntities.unlock();
+            if (!this.commitCallEntities.executeSync()) {
+                logger.warn("Committing failed");
+            }
             this.exposedMetrics.addTaskExecutionTime(METRIC_COMPONENT_NAME, started, Instant.now());
         }
     }
 
     private void process(ObservedClientSamples observedClientSamples) {
-        if (observedClientSamples.isEmpty()) {
-            return;
+        Map<ServiceRoomId, Call> calls;
+        Map<String, Client> existingRemedyClients;
+        Set<String> unregisteredRemedyClientIds;
+        switch (config.callIdAssignMode) {
+            case SLAVE -> {
+                var fetchedCallsForRooms = this.callsFetcherInSlaveAssigningMode.fetchFor(observedClientSamples);
+                calls = fetchedCallsForRooms.actualCalls();
+                existingRemedyClients = fetchedCallsForRooms.existingRemedyClients();
+                unregisteredRemedyClientIds = Utils.firstNotNull(fetchedCallsForRooms.unregisteredRemedyClientIds(), Collections.emptySet());
+            }
+            default -> {
+                var fetchedCallsForRooms = this.callsFetcherInMasterAssigningMode.fetchFor(observedClientSamples);
+                calls = fetchedCallsForRooms.actualCalls();
+                existingRemedyClients = fetchedCallsForRooms.existingRemedyClients();
+                unregisteredRemedyClientIds = Utils.firstNotNull(fetchedCallsForRooms.unregisteredRemedyClientIds(), Collections.emptySet());
+            }
         }
-        Map<ServiceRoomId, Call> calls = this.fetchCalls(observedClientSamples);
         var newClientModels = new LinkedList<Models.Client>();
         var newPeerConnectionModels = new LinkedList<Models.PeerConnection>();
         var newInboundTrackModels = new LinkedList<Models.InboundTrack>();
         var newOutboundTrackModels = new LinkedList<Models.OutboundTrack>();
-//        Map<String, Client> clients = this.fetchExistingClients(observedClientSamples);
-//        Map<String, PeerConnection> peerConnections = this.fetchExistingPeerConnections(observedClientSamples);
-//        Map<String, InboundTrack> inboundTracks = this.fetchExistingInboundTracks(observedClientSamples);
-//        Map<String, OutboundTrack> outboundTracks = this.fetchExistingOutboundTracks(observedClientSamples);
-
-        for (var observedClientSample : observedClientSamples) {
-            var serviceRoomId = observedClientSample.getServiceRoomId();
-            var call = calls.get(serviceRoomId);
-            if (call == null) {
-                logger.warn("Have not inserted call for serviceRoom {}", serviceRoomId);
-                continue;
-            }
-            var clientSample = observedClientSample.getClientSample();
-            var timestamp = clientSample.timestamp;
-            var marker = clientSample.marker;
-            var client = call.getClient(clientSample.clientId);
-            clientSample.callId = call.getCallId();
-            if (client == null) {
-                try {
-                    client = call.addClient(
-                            clientSample.clientId,
-                            clientSample.userId,
-                            observedClientSample.getMediaUnitId(),
-                            observedClientSample.getTimeZoneId(),
-                            timestamp,
-                            marker
+        var serverTimestamp = this.serverTimestamps.instant().toEpochMilli();
+        for (var observedRoom : observedClientSamples.observedRooms()) {
+            Call call = null;
+            for (var observedClient : observedRoom) {
+                var clientId = observedClient.getClientId();
+                if (clientId == null) {
+                    logger.warn("ClientId was not for samples", JsonUtils.objectToString(observedClient.observedClientSamples()));
+                    continue;
+                }
+                var client = existingRemedyClients.get(clientId);
+                if (client != null) {
+                    // it's a remedy client
+                    call = client.getCall();
+                    if (call == null) {
+                        logger.warn("Remedy client {} for service: {}, room: {} referencing to a call {} does not exists.",
+                                client.getClientId(),
+                                client.getServiceId(),
+                                client.getRoomId(),
+                                client.getCallId()
+                        );
+                        continue;
+                    }
+                } else if (unregisteredRemedyClientIds.contains(clientId)){
+                    // this is a new client, but points to a remedy call
+                    var remedyCallId = observedClient.streamObservedClientSamples()
+                            .map(c -> c.getClientSample().callId)
+                            .filter(Objects::nonNull)
+                            .findFirst()
+                            .orElse(null);
+                    logger.info("Client ({}) is not registered and it reports to a remedy call {} does not accept new clients. room: {}, service: {}",
+                            clientId,
+                            remedyCallId,
+                            observedRoom.getServiceRoomId().roomId,
+                            observedRoom.getServiceRoomId().serviceId
                     );
-                    newClientModels.add(client.getModel());
-                } catch (AlreadyCreatedException ex) {
-                    logger.warn("Client {} for call {} in room {} (service: {}) is already created",
-                            clientSample.clientId,
-                            call.getCallId(),
-                            call.getServiceRoomId().roomId,
-                            call.getServiceRoomId().serviceId
-                    );
-                    client = call.getClient(clientSample.clientId);
+                    continue;
+                } else {
+                    // this should belong to a normal call fetched previously
+                    call = calls.get(observedRoom.getServiceRoomId());
+                    if (call == null) {
+                        logger.warn("Cannot find call for service {}, room {}",
+                                observedRoom.getServiceRoomId().serviceId,
+                                observedRoom.getServiceRoomId().roomId
+                        );
+                        continue;
+                    }
+                    client = call.getClient(clientId);
                 }
-            } else {
-                var lastTouch = client.getTouched();
-                if (lastTouch == null || lastTouch < timestamp) {
-                    client.touch(timestamp);
+
+                call.touch(observedRoom.getMaxTimestamp(), serverTimestamp);
+
+                if (client == null) {
+                    try {
+                        client = call.addClient(
+                                observedClient.getClientId(),
+                                observedClient.getUserId(),
+                                observedClient.getMediaUnitId(),
+                                observedClient.getTimeZoneId(),
+                                observedClient.getMinTimestamp(),
+                                observedClient.getMarker()
+                        );
+                        newClientModels.add(client.getModel());
+                    } catch (AlreadyCreatedException ex) {
+                        logger.warn("Client {} for call {} in room {} (service: {}) is already created",
+                                observedClient.getClientId(),
+                                call.getCallId(),
+                                call.getServiceRoomId().roomId,
+                                call.getServiceRoomId().serviceId
+                        );
+                        client = call.getClient(observedClient.getClientId());
+                    }
+                    if (client == null) {
+                        continue;
+                    }
+                }
+                client.touch(observedClient.getMaxTimestamp(), serverTimestamp);
+
+                for (var observedPeerConnection : observedClient.observedPeerConnections()) {
+                    var peerConnection = client.getPeerConnection(observedPeerConnection.getPeerConnectionId());
+                    if (peerConnection == null) {
+                        try {
+                            peerConnection = client.addPeerConnection(
+                                    observedPeerConnection.getPeerConnectionId(),
+                                    observedPeerConnection.getMinTimestamp(),
+                                    observedPeerConnection.getMarker()
+                            );
+                            newPeerConnectionModels.add(peerConnection.getModel());
+                        } catch (AlreadyCreatedException ex) {
+                            logger.warn("PeerConnection {} for call {} in room {} (service: {}) is already created",
+                                    observedPeerConnection.getPeerConnectionId(),
+                                    call.getCallId(),
+                                    call.getServiceRoomId().roomId,
+                                    call.getServiceRoomId().serviceId
+                            );
+                            peerConnection = client.getPeerConnection(observedPeerConnection.getPeerConnectionId());
+                        }
+                        if (peerConnection == null) {
+                            continue;
+                        }
+                    }
+                    peerConnection.touch(observedClient.getMaxTimestamp(), serverTimestamp);
+                    for (var observedInboundAudioTrack : observedPeerConnection.observedInboundAudioTracks()) {
+                        var inboundAudioTrack = peerConnection.getInboundTrack(observedInboundAudioTrack.getTrackId());
+                        if (inboundAudioTrack == null) {
+                            try {
+                                inboundAudioTrack = peerConnection.addInboundTrack(
+                                        observedInboundAudioTrack.getTrackId(),
+                                        observedInboundAudioTrack.getMinTimestamp(),
+                                        observedInboundAudioTrack.getSfuStreamId(),
+                                        observedInboundAudioTrack.getSfuSinkId(),
+                                        MediaKind.AUDIO,
+                                        observedInboundAudioTrack.getSSRC(),
+                                        observedInboundAudioTrack.getMarker()
+                                );
+                                newInboundTrackModels.add(inboundAudioTrack.getModel());
+                            } catch (AlreadyCreatedException ex) {
+                                logger.warn("inboundAudioTrack {} for call {} in room {} (service: {}) is already created",
+                                        observedInboundAudioTrack.getTrackId(),
+                                        call.getCallId(),
+                                        call.getServiceRoomId().roomId,
+                                        call.getServiceRoomId().serviceId
+                                );
+                                inboundAudioTrack = peerConnection.getInboundTrack(observedInboundAudioTrack.getTrackId());
+                            }
+                            if (inboundAudioTrack == null) {
+                                logger.warn("Skip processing inbound audio track observation for trackId: {}", observedInboundAudioTrack.getTrackId());
+                                continue;
+                            }
+                        } else {
+                            var lastTouch = inboundAudioTrack.getSampleTouched();
+                            if (lastTouch == null || lastTouch < observedInboundAudioTrack.getMaxTimestamp()) {
+                                inboundAudioTrack.touchBySample(observedInboundAudioTrack.getMaxTimestamp());
+                            }
+                            if (!inboundAudioTrack.hasSSRC(observedInboundAudioTrack.getSSRC())) {
+                                inboundAudioTrack.addSSRC(observedInboundAudioTrack.getSSRC());
+                            }
+                        }
+                        var serverTouch = inboundAudioTrack.getServerTouch();
+                        if (serverTouch == null || serverTouch <  serverTimestamp) {
+                            inboundAudioTrack.touchByServer(serverTimestamp);
+                        }
+                    }
+
+                    for (var observedInboundVideoTrack : observedPeerConnection.observedInboundVideoTracks()) {
+                        var inboundVideoTrack = peerConnection.getInboundTrack(observedInboundVideoTrack.getTrackId());
+                        if (inboundVideoTrack == null) {
+                            try {
+                                inboundVideoTrack = peerConnection.addInboundTrack(
+                                        observedInboundVideoTrack.getTrackId(),
+                                        observedInboundVideoTrack.getMinTimestamp(),
+                                        observedInboundVideoTrack.getSfuStreamId(),
+                                        observedInboundVideoTrack.getSfuSinkId(),
+                                        MediaKind.VIDEO,
+                                        observedInboundVideoTrack.getSSRC(),
+                                        observedInboundVideoTrack.getMarker()
+                                );
+                                newInboundTrackModels.add(inboundVideoTrack.getModel());
+                            } catch (AlreadyCreatedException ex) {
+                                logger.warn("InboundVideoTrack {} for call {} in room {} (service: {}) is already created",
+                                        observedInboundVideoTrack.getTrackId(),
+                                        call.getCallId(),
+                                        call.getServiceRoomId().roomId,
+                                        call.getServiceRoomId().serviceId
+                                );
+                            }
+                            if (inboundVideoTrack == null) {
+                                logger.warn("Skip processing inbound audio track observation for trackId: {}", observedInboundVideoTrack.getTrackId());
+                                continue;
+                            }
+                        } else {
+                            var lastTouch = inboundVideoTrack.getSampleTouched();
+                            if (lastTouch == null || lastTouch < observedInboundVideoTrack.getMaxTimestamp()) {
+                                inboundVideoTrack.touchBySample(observedInboundVideoTrack.getMaxTimestamp());
+                            }
+                            if (!inboundVideoTrack.hasSSRC(observedInboundVideoTrack.getSSRC())) {
+                                inboundVideoTrack.addSSRC(observedInboundVideoTrack.getSSRC());
+                            }
+                        }
+                        var serverTouch = inboundVideoTrack.getServerTouch();
+                        if (serverTouch == null || serverTouch <  serverTimestamp) {
+                            inboundVideoTrack.touchByServer(serverTimestamp);
+                        }
+                    }
+
+
+                    for (var observedOutboundAudioTrack : observedPeerConnection.observedOutboundAudioTracks()) {
+                        var outboundAudioTrack = peerConnection.getOutboundTrack(observedOutboundAudioTrack.getTrackId());
+                        if (outboundAudioTrack == null) {
+                            try {
+                                outboundAudioTrack = peerConnection.addOutboundTrack(
+                                        observedOutboundAudioTrack.getTrackId(),
+                                        observedOutboundAudioTrack.getMinTimestamp(),
+                                        observedOutboundAudioTrack.getSfuStreamId(),
+                                        MediaKind.AUDIO,
+                                        observedOutboundAudioTrack.getSSRC(),
+                                        observedOutboundAudioTrack.getMarker()
+                                );
+                                newOutboundTrackModels.add(outboundAudioTrack.getModel());
+                            } catch (AlreadyCreatedException ex) {
+                                logger.warn("outboundAudioTrack {} for call {} in room {} (service: {}) is already created",
+                                        observedOutboundAudioTrack.getTrackId(),
+                                        call.getCallId(),
+                                        call.getServiceRoomId().roomId,
+                                        call.getServiceRoomId().serviceId
+                                );
+                                outboundAudioTrack = peerConnection.getOutboundTrack(observedOutboundAudioTrack.getTrackId());
+                            }
+                            if (outboundAudioTrack == null) {
+                                logger.warn("Skip processing outbound audio track observation for trackId: {}", observedOutboundAudioTrack.getTrackId());
+                                continue;
+                            }
+                        } else {
+                            var lastTouch = outboundAudioTrack.getSampleTouched();
+                            if (lastTouch == null || lastTouch < observedOutboundAudioTrack.getMaxTimestamp()) {
+                                outboundAudioTrack.touchBySample(observedOutboundAudioTrack.getMaxTimestamp());
+                            }
+                            if (!outboundAudioTrack.hasSSRC(observedOutboundAudioTrack.getSSRC())) {
+                                outboundAudioTrack.addSSRC(observedOutboundAudioTrack.getSSRC());
+                            }
+                        }
+                        var serverTouch = outboundAudioTrack.getServerTouch();
+                        if (serverTouch == null || serverTouch <  serverTimestamp) {
+                            outboundAudioTrack.touchByServer(serverTimestamp);
+                        }
+                    }
+
+                    for (var observedOutboundVideoTrack : observedPeerConnection.observedOutboundVideoTracks()) {
+                        var outboundVideoTrack = peerConnection.getOutboundTrack(observedOutboundVideoTrack.getTrackId());
+                        if (outboundVideoTrack == null) {
+                            try {
+                                outboundVideoTrack = peerConnection.addOutboundTrack(
+                                        observedOutboundVideoTrack.getTrackId(),
+                                        observedOutboundVideoTrack.getMinTimestamp(),
+                                        observedOutboundVideoTrack.getSfuStreamId(),
+                                        MediaKind.VIDEO,
+                                        observedOutboundVideoTrack.getSSRC(),
+                                        observedOutboundVideoTrack.getMarker()
+                                );
+                                newOutboundTrackModels.add(outboundVideoTrack.getModel());
+                            } catch (AlreadyCreatedException ex) {
+                                logger.warn("OutboundVideoTrack {} for call {} in room {} (service: {}) is already created",
+                                        observedOutboundVideoTrack.getTrackId(),
+                                        call.getCallId(),
+                                        call.getServiceRoomId().roomId,
+                                        call.getServiceRoomId().serviceId
+                                );
+                            }
+                            if (outboundVideoTrack == null) {
+                                logger.warn("Skip processing outbound audio track observation for trackId: {}", observedOutboundVideoTrack.getTrackId());
+                                continue;
+                            }
+                        } else {
+                            var lastTouch = outboundVideoTrack.getSampleTouched();
+                            if (lastTouch == null || lastTouch < observedOutboundVideoTrack.getMaxTimestamp()) {
+                                outboundVideoTrack.touchBySample(observedOutboundVideoTrack.getMaxTimestamp());
+                            }
+                            if (!outboundVideoTrack.hasSSRC(observedOutboundVideoTrack.getSSRC())) {
+                                outboundVideoTrack.addSSRC(observedOutboundVideoTrack.getSSRC());
+                            }
+                        }
+                        var serverTouch = outboundVideoTrack.getServerTouch();
+                        if (serverTouch == null || serverTouch <  serverTimestamp) {
+                            outboundVideoTrack.touchByServer(serverTimestamp);
+                        }
+                    }
                 }
             }
-
-            Client finalClient = client;
-            Function<String, PeerConnection> getPeerConnection = peerConnectionId -> {
-                if (peerConnectionId == null) {
-                    return null;
-                }
-                if (finalClient == null) {
-                    logger.warn("No client we have to retrieve for peer connection. why?");
-                    return null;
-                }
-                var result = finalClient.getPeerConnection(peerConnectionId);
-                if (result == null) {
-                    try {
-                        result = finalClient.addPeerConnection(
-                                peerConnectionId,
-                                timestamp,
-                                marker
-                        );
-                        newPeerConnectionModels.add(result.getModel());
-                    } catch (AlreadyCreatedException ex) {
-                        logger.warn("PeerConnection {} for call {} in room {} (service: {}) is already created",
-                                peerConnectionId,
-                                call.getCallId(),
-                                call.getServiceRoomId().roomId,
-                                call.getServiceRoomId().serviceId
-                        );
-                    }
-
-                } else {
-                    var lastTouch = result.getTouched();
-                    if (lastTouch == null || lastTouch < timestamp) {
-                        result.touch(timestamp);
-                    }
-                    result.touch(timestamp);
-                }
-                return result;
-            };
-            ClientSampleVisitor.streamPeerConnectionTransports(clientSample).forEach(pcTransport -> {
-                var peerConnection = getPeerConnection.apply(pcTransport.peerConnectionId);
-
-            });
-
-            ClientSampleVisitor.streamInboundAudioTracks(clientSample).forEach(track -> {
-                var peerConnection = getPeerConnection.apply(track.peerConnectionId);
-                if (peerConnection == null) {
-                    logger.warn("Peer Connection Id is null for inbound audio track sample {}", JsonUtils.objectToString(track));
-                    return;
-                }
-                var inboundAudioTrack = peerConnection.getInboundTrack(track.trackId);
-                if (inboundAudioTrack == null) {
-                    try {
-                        inboundAudioTrack = peerConnection.addInboundTrack(
-                                track.trackId,
-                                timestamp,
-                                track.sfuStreamId,
-                                track.sfuSinkId,
-                                MediaKind.AUDIO,
-                                track.ssrc,
-                                marker
-                        );
-                        newInboundTrackModels.add(inboundAudioTrack.getModel());
-                    } catch (AlreadyCreatedException ex) {
-                        logger.warn("inboundAudioTrack {} for call {} in room {} (service: {}) is already created",
-                                track.trackId,
-                                call.getCallId(),
-                                call.getServiceRoomId().roomId,
-                                call.getServiceRoomId().serviceId
-                        );
-                    }
-                } else {
-                    var lastTouch = inboundAudioTrack.getTouched();
-                    if (lastTouch == null || lastTouch < timestamp) {
-                        inboundAudioTrack.touch(timestamp);
-                    }
-                    if (!inboundAudioTrack.hasSSRC(track.ssrc)) {
-                        inboundAudioTrack.addSSRC(track.ssrc);
-                    }
-                }
-
-            });
-
-            ClientSampleVisitor.streamInboundVideoTracks(clientSample).forEach(track -> {
-                var peerConnection = getPeerConnection.apply(track.peerConnectionId);
-                if (peerConnection == null) {
-                    logger.warn("Peer Connection Id is null for inbound audio track sample {}", JsonUtils.objectToString(track));
-                    return;
-                }
-                var inboundVideoTrack = peerConnection.getInboundTrack(track.trackId);
-                if (inboundVideoTrack == null) {
-                    try {
-                        inboundVideoTrack = peerConnection.addInboundTrack(
-                                track.trackId,
-                                timestamp,
-                                track.sfuStreamId,
-                                track.sfuSinkId,
-                                MediaKind.VIDEO,
-                                track.ssrc,
-                                marker
-                        );
-                        newInboundTrackModels.add(inboundVideoTrack.getModel());
-                    } catch (AlreadyCreatedException ex) {
-                        logger.warn("inboundVideoTrack {} for call {} in room {} (service: {}) is already created",
-                                track.trackId,
-                                call.getCallId(),
-                                call.getServiceRoomId().roomId,
-                                call.getServiceRoomId().serviceId
-                        );
-                    }
-                } else {
-                    var lastTouch = inboundVideoTrack.getTouched();
-                    if (lastTouch == null || lastTouch < timestamp) {
-                        inboundVideoTrack.touch(timestamp);
-                    }
-                    if (!inboundVideoTrack.hasSSRC(track.ssrc)) {
-                        inboundVideoTrack.addSSRC(track.ssrc);
-                    }
-                }
-            });
-
-            ClientSampleVisitor.streamOutboundAudioTracks(clientSample).forEach(track -> {
-                var peerConnection = getPeerConnection.apply(track.peerConnectionId);
-                if (peerConnection == null) {
-                    logger.warn("Peer Connection Id is null for inbound audio track sample {}", JsonUtils.objectToString(track));
-                    return;
-                }
-                var outboundAudioTrack = peerConnection.getOutboundTrack(track.trackId);
-
-                if (outboundAudioTrack == null) {
-                    try {
-                        outboundAudioTrack = peerConnection.addOutboundTrack(
-                                track.trackId,
-                                timestamp,
-                                track.sfuStreamId,
-                                MediaKind.AUDIO,
-                                track.ssrc,
-                                marker
-                        );
-                        newOutboundTrackModels.add(outboundAudioTrack.getModel());
-                    } catch (AlreadyCreatedException ex) {
-                        logger.warn("outboundAudioTrack {} for call {} in room {} (service: {}) is already created",
-                                track.trackId,
-                                call.getCallId(),
-                                call.getServiceRoomId().roomId,
-                                call.getServiceRoomId().serviceId
-                        );
-                    }
-                } else {
-                    var lastTouch = outboundAudioTrack.getTouched();
-                    if (lastTouch == null || lastTouch < timestamp) {
-                        outboundAudioTrack.touch(timestamp);
-                    }
-                    if (!outboundAudioTrack.hasSSRC(track.ssrc)) {
-                        outboundAudioTrack.addSSRC(track.ssrc);
-                    }
-                }
-            });
-
-            ClientSampleVisitor.streamOutboundVideoTracks(clientSample).forEach(track -> {
-                var peerConnection = getPeerConnection.apply(track.peerConnectionId);
-                if (peerConnection == null) {
-                    logger.warn("Peer Connection Id is null for inbound audio track sample {}", JsonUtils.objectToString(track));
-                    return;
-                }
-                var outboundVideoTrack = peerConnection.getOutboundTrack(track.trackId);
-                if (outboundVideoTrack == null) {
-                    try {
-                        outboundVideoTrack = peerConnection.addOutboundTrack(
-                                track.trackId,
-                                timestamp,
-                                track.sfuStreamId,
-                                MediaKind.VIDEO,
-                                track.ssrc,
-                                marker
-                        );
-                        newOutboundTrackModels.add(outboundVideoTrack.getModel());
-                    } catch (AlreadyCreatedException ex) {
-                        logger.warn("OutboundVideoTrack {} for call {} in room {} (service: {}) is already created",
-                                track.trackId,
-                                call.getCallId(),
-                                call.getServiceRoomId().roomId,
-                                call.getServiceRoomId().serviceId
-                        );
-                    }
-                } else {
-                    var lastTouch = outboundVideoTrack.getTouched();
-                    if (lastTouch == null || lastTouch < timestamp) {
-                        outboundVideoTrack.touch(timestamp);
-                    }
-                    if (!outboundVideoTrack.hasSSRC(track.ssrc)) {
-                        outboundVideoTrack.addSSRC(track.ssrc);
-                    }
-                }
-
-            });
         }
-        this.callsRepository.save();
 
         if (0 < newClientModels.size()) {
             this.clientJoinedReports.accept(newClientModels);
@@ -360,95 +440,7 @@ public class CallEntitiesUpdater implements Consumer<ObservedClientSamples> {
         }
     }
 
-    private Map<ServiceRoomId, Call> fetchCalls(ObservedClientSamples observedClientSamples) {
-        var serviceRoomIds = observedClientSamples.getServiceRoomIds();
-        var existingCalls = this.callsRepository.getAll(serviceRoomIds);
-        var result = new HashMap<ServiceRoomId, Call>();
-        if (existingCalls != null && 0 < existingCalls.size()) {
-            result.putAll(existingCalls);
-        }
-        var visitedServiceRoomIds = new HashSet<ServiceRoomId>();
-        var missingCalls = new HashSet<CallsRepository.CreateCallInfo>();
-        var toRemove = new HashMap<ServiceRoomId, Models.Call>();
-        for (var observedClientSample : observedClientSamples) {
-            var serviceRoomId = observedClientSample.getServiceRoomId();
-            if (visitedServiceRoomIds.contains(serviceRoomId)) {
-                continue;
-            }
-            visitedServiceRoomIds.add(serviceRoomId);
-            var clientSample = observedClientSample.getClientSample();
 
-            var call = result.get(serviceRoomId);
-            if (call == null) {
-                missingCalls.add(new CallsRepository.CreateCallInfo(
-                        serviceRoomId,
-                        clientSample.marker,
-                        clientSample.callId,
-                        clientSample.timestamp
-                ));
-                continue;
-            }
-            if (this.config.callIdAssignMode == null || ObserverConfig.EvaluatorsConfig.CallUpdater.CallIdAssignMode.MASTER.equals(this.config.callIdAssignMode)) {
-                result.put(call.getServiceRoomId(), call);
-                continue;
-            }
-            if (clientSample.callId == null) {
-                logger.warn("Observer callIdAssignMode is in slave mode, but callId for room {} in samples did not provided. The observer ignores it and stick with the current callId {}", serviceRoomId, call.getCallId());
-                continue;
-            }
-            if (clientSample.callId.equalsIgnoreCase(call.getCallId())) {
-                // all good, this is the call we are in
-                continue;
-            }
-            logger.info("Call \"{}\" must be removed in service {}, room: {}, because a new call with id \"{}\" is received", call.getCallId(), serviceRoomId.serviceId, serviceRoomId.roomId, clientSample.callId);
-            toRemove.put(serviceRoomId, call.getModel());
-            missingCalls.add(new CallsRepository.CreateCallInfo(
-                    serviceRoomId,
-                    clientSample.marker,
-                    clientSample.callId,
-                    clientSample.timestamp
-            ));
-            result.remove(serviceRoomId);
-        }
-        if (missingCalls.size() < 1) {
-            this.callsRepository.fetchRecursively(result.keySet());
-            return result;
-        }
 
-        if (0 < toRemove.size()) {
-            var executed = Try.create(() -> {
-                this.callsRepository.removeAll(toRemove.keySet());
-                this.callsRepository.save();
-            }).onException(ex -> {
-                logger.error("Cannot remove calls {} due to exception occurred", JsonUtils.objectToString(toRemove), ex);
-            }).run();
-            if (executed) {
-                this.callEndedReports.accept(toRemove.values());
-            }
-            toRemove.clear();
-        }
 
-        var alreadyInserted = Try.<Map<ServiceRoomId, Call>>wrap(() ->
-                this.callsRepository.insertAll(missingCalls),
-                Collections.emptyMap()
-        );
-        var newExistingCalls = Try.<Map<ServiceRoomId, Call>>wrap(() ->
-                this.callsRepository.fetchRecursively(serviceRoomIds),
-                Collections.emptyMap()
-        );
-        result.putAll(newExistingCalls);
-        var newModels = new LinkedList<Models.Call>();
-        for (var callInfo : missingCalls) {
-            var serviceRoomId = callInfo.serviceRoomId();
-            if (alreadyInserted.containsKey(serviceRoomId)) {
-                continue;
-            }
-            var call = result.get(serviceRoomId);
-            newModels.add(call.getModel());
-        }
-        if (0 < newModels.size()) {
-            this.callStartedReports.accept(newModels);
-        }
-        return result;
-    }
 }

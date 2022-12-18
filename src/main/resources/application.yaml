@@ -47,29 +47,35 @@ observer:
     useServerTimestamp: false
     rest:
       enabled: true
+
     websocket:
+      minRemotePeers: 0
       enabled: true
 
   repository:
-    mediaTracksMaxIdleTimeInS: 300
-    clientMaxIdleTimeInS: 300
-    sfuMaxIdleTimeInS: 60
-    sfuTransportMaxIdleTimeInS: 600
-    sfuRtpPadMaxIdleTimeInS: 600
-    peerConnectionsMaxIdleTime: 300
-    evictExpiredEntriesPeriodInMs: 300000
-    evictExpiredEntriesThresholdOffsetInMs: 10000
+    useBackups: false
+    callMaxIdleTimeInS: 300
+    clientsMaxIdle: 300
+    peerConnectionsMaxIdle: 300
+    inboundTracksMaxIdle: 300
+    outboundTracksMaxIdle: 300
+
+    sfuMaxIdleTimeInS: 300
+    sfuTransportMaxIdleTimeInS: 300
+    sfuInboundRtpPadMaxIdleTimeInS: 300
+    sfuOutboundRtpPadMaxIdleTimeInS: 300
+    sfuSctpChannelMaxIdleTimeInS: 300
 
   buffers:
     samplesCollector:
-      maxItems: 10000
-      maxTimeInMs: 10000
+      maxItems: 100
+      maxTimeInMs: 1000
     debouncers:
       maxItems: 10000
       maxTimeInMs: 1000
     reportsCollector:
-      maxItems: 10000
-      maxTimeInMs: 10000
+      maxItems: 5000
+      maxTimeInMs: 2000
 
   security:
     printConfigs: True
@@ -91,17 +97,19 @@ observer:
       enabled: true
     repositoryMetrics:
       enabled: true
-      exposePeriodInMins: 5
+    clientSamplesMetricConfig:
+      enabled: true
 
 
   evaluators:
     clientSamplesAnalyser:
-      dropUnmatchedReports: False
+      dropUnmatchedReports: false
     sfuSamplesAnalyser:
-      dropUnmatchedInternalInboundReports: False
-      dropUnmatchedInboundReports: False
-      dropUnmatchedOutboundReports: False
+      dropUnmatchedInternalInboundReports: false
+      dropUnmatchedInboundReports: false
+      dropUnmatchedOutboundReports: false
     callUpdater:
+      enabled: true
       callIdAssignMode: master
     obfuscator:
       enabled: false
@@ -112,14 +120,17 @@ observer:
   # setting this to {} by default gives you hard time to debug why your custom sinks from other config files not working :(
   #  sinks: {}
   hamok:
+#    discovery: {}
+#    endpoint: {}
+
     storageGrid:
       raftMaxLogEntriesRetentionTimeInMinutes: 5
       heartbeatInMs: 150
-      followerMaxIdleInMs: 30000
-      peerMaxIdleInMs: 50000
+      followerMaxIdleInMs: 10000
+      peerMaxIdleInMs: 10000
       sendingHelloTimeoutInMs: 1500
       applicationCommitIndexSyncTimeoutInMs: 60_000
-      requestTimeoutInMs: 90000
+      requestTimeoutInMs: 3000
     memberNamesPool:
       - "Lisa"
       - "Bart"

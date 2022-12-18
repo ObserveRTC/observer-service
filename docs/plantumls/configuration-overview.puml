@@ -16,7 +16,7 @@ package "Configuration" #transparent {
     	[Sources]
         [Evaluators]
         [Repository]
-        [Hazelcast]
+        [Hamok]
         [Sinks]
         [Buffers]
     }
@@ -32,12 +32,12 @@ clients -r-> [Sources]
 [Sources] -r-> collector_1
 collector_1 -r-> [Evaluators]
 [Evaluators] <-d-> [Repository]
-[Repository] <-d-> [Hazelcast]
+[Repository] <-d-> [Hamok]
 [Evaluators] -r-> collector_2
 collector_2 -r-> [Sinks]
 [Sinks] -r-> reports
 
-[Hazelcast] -[hidden]-> [Buffers]
+[Hamok] -[hidden]-> [Buffers]
 [Buffers] -u-> collector_1
 [Buffers] -u-> collector_2
 

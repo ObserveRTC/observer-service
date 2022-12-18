@@ -68,6 +68,10 @@ public class CallMetaReportsDepot implements Supplier<List<CallMetaReport>> {
                 return;
             }
             var clientSample = observedClientSample.getClientSample();
+            if (Objects.isNull(clientSample.callId)) {
+                logger.warn("Cannot assemble {} when a callId is null for service {}, mediaUnitId: {}", this.getClass().getSimpleName(), observedClientSample.getServiceId(), observedClientSample.getMediaUnitId());
+                return;
+            }
             var sampleTimestamp = Objects.nonNull(this.sampleTimestamp) ? this.sampleTimestamp : clientSample.timestamp;
             var report = CallMetaReport.newBuilder()
                     .setType(this.metaType.name())

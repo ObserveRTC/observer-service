@@ -51,6 +51,10 @@ public class ObservableCollector<T> {
 
     }
 
+    public int size() {
+        return this.queue.size();
+    }
+
     /**
      * Add a batch of items to the inner queue at once.
      *

@@ -3,8 +3,10 @@ package org.observertc.observer.evaluators.eventreports;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.observertc.observer.events.CallEventType;
+import org.observertc.observer.metrics.ReportMetrics;
 import org.observertc.schemas.dtos.Models;
 import org.observertc.schemas.reports.CallEventReport;
 import org.slf4j.Logger;
@@ -18,6 +20,9 @@ import java.util.stream.Collectors;
 
 @Singleton
 public class CallEndedReports {
+
+    @Inject
+    ReportMetrics reportMetrics;
 
     private static final Logger logger = LoggerFactory.getLogger(CallEndedReports.class);
 
@@ -38,13 +43,34 @@ public class CallEndedReports {
         }
     }
 
+    private void exposeMetrics(Models.Call callModel) {
+        try {
+            if (callModel.hasStarted() && callModel.hasSampleTouched()) {
+                Long durationInMs = callModel.getServerTouched() - callModel.getStarted();
+                if (0 < durationInMs) {
+                    long durationInMin = durationInMs / (60 * 1000);
+                    this.reportMetrics.addCallDurationInMinutes(durationInMin);
+                }
+            }
+            int numberOfParticipants = callModel.getClientIdsCount();
+            if (0 < numberOfParticipants) {
+                this.reportMetrics.addNumberOfParticipants(numberOfParticipants);
+            }
+        } catch(Exception ex) {
+            logger.warn("Exception occurred while exposing metrics from call ended event");
+        }
+    }
+
     private CallEventReport makeReport(Models.Call callModel) {
         Long timestamp;
-        if (0 < callModel.getClientLogsCount()) {
-            timestamp = callModel.getClientLogsList().stream().map(Models.Call.ClientLog::getTimestamp).max(Long::compare).get();
+        if (callModel.hasSampleTouched()) {
+            timestamp = callModel.getServerTouched();
         } else {
             timestamp = Instant.now().toEpochMilli();
         }
+
+        this.exposeMetrics(callModel);
+
         try {
             String message = String.format("Call (%s) is ended", callModel.getCallId());
             var result = CallEventReport.newBuilder()

@@ -7,7 +7,10 @@ import io.micronaut.context.BeanProvider;
 import io.reactivex.rxjava3.core.Observable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.BackgroundTasksExecutor;
 import org.observertc.observer.HamokService;
+import org.observertc.observer.common.ChainedTask;
+import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.common.Try;
 import org.observertc.observer.configs.ObserverConfig;
 import org.observertc.observer.mappings.Mapper;
@@ -18,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -25,7 +29,7 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
 
     private static final Logger logger = LoggerFactory.getLogger(InboundTracksRepository.class);
 
-    private static final String STORAGE_ID = "observertc-inbound-video-tracks";
+    private static final String STORAGE_ID = "observertc-inbound-tracks";
     private static final int MAX_KEYS = 1000;
     private static final int MAX_VALUES = 100;
 
@@ -39,13 +43,25 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
     BeanProvider<PeerConnectionsRepository> peerConnectionsRepositoryBeanProvider;
 
     @Inject
-    private ObserverConfig.RepositoryConfig config;
+    private ObserverConfig.HamokConfig hamokConfig;
+
+    @Inject
+    private SfuMediaSinksRepository sfuMediaSinksRepository;
+
+    @Inject
+    private ObserverConfig observerConfig;
+
+    @Inject
+    private Backups backups;
 
     @Inject
     private HamokService hamokService;
 
     @Inject
     private ObserverConfig.InternalBuffersConfig bufferConfig;
+
+    @Inject
+    private BackgroundTasksExecutor backgroundTasksExecutor;
 
     @PostConstruct
     void setup() {
@@ -54,7 +70,7 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
                 .setConcurrency(true)
 //                .setExpiration(config.mediaTracksMaxIdleTimeInS * 1000)
                 .build();
-        this.storage = this.hamokService.getStorageGrid().separatedStorage(baseStorage)
+        var storageBuilder = this.hamokService.getStorageGrid().separatedStorage(baseStorage)
                 .setKeyCodec(SerDeUtils.createStrToByteFunc(), SerDeUtils.createBytesToStr())
                 .setValueCodec(
                         Mapper.create(Models.InboundTrack::toByteArray, logger)::map,
@@ -64,13 +80,58 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
                 .setMaxCollectedStorageTimeInMs(bufferConfig.debouncers.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
                 .setMaxMessageValues(MAX_VALUES)
-                .build();
+                .setThrowingExceptionOnRequestTimeout(!this.hamokConfig.usePartialResponses)
+                ;
+
+        if (this.observerConfig.repository.useBackups) {
+            storageBuilder.setDistributedBackups(this.backups);
+        }
+
+        this.storage = storageBuilder.build();
+
+        var checkCollision = new AtomicBoolean(false);
+        this.storage.detectedEntryCollisions().subscribe(detectedCollision -> {
+            if (checkCollision.compareAndSet(false, true)) {
+                logger.warn("Detected colliding items in {} for key {}", STORAGE_ID, detectedCollision.key());
+//                this.dump("Before colliding check");
+                this.backgroundTasksExecutor.addTask(ChainedTask.<Void>builder()
+                        .withName("Remove collisions for storage: " + STORAGE_ID)
+                        .withLogger(logger)
+                        .addActionStage("Check collision for " + STORAGE_ID, this.storage::checkCollidingEntries)
+                        .setFinalAction(() -> {
+//                            this.dump("After collision checked");
+                            checkCollision.set(false);
+                        })
+                        .build()
+                );
+            }
+        });
+
         this.fetched = CachedFetches.<String, InboundTrack>builder()
                 .onFetchOne(this::fetchOne)
                 .onFetchAll(this::fetchAll)
                 .build();
         this.updated = new HashMap<>();
         this.deleted = new HashSet<>();
+    }
+
+    public void dump(String context) {
+        var localKeys = this.storage.localKeys();
+        logger.info("Dumped storage: {}, context: {}, local part: {}", STORAGE_ID, context, JsonUtils.objectToString(
+                this.storage.getAll(localKeys).values().stream().map(model -> String.format("%s::%s", model.getRoomId(), model.getTrackId())).collect(Collectors.toList())
+        ));
+        var remoteKeys = this.storage.keys().stream().filter(key -> !localKeys.contains(key)).collect(Collectors.toSet());
+        logger.info("Dumped storage: {}, context: {}, remote part: {}", STORAGE_ID, context, JsonUtils.objectToString(
+                this.storage.getAll(remoteKeys).values().stream().map(model -> String.format("%s::%s", model.getRoomId(), model.getTrackId())).collect(Collectors.toList())
+        ));
+    }
+
+    public Map<String, InboundTrack> getAllLocallyStored() {
+        var callIds = this.storage.localKeys();
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        return this.fetchAll(callIds);
     }
 
     Observable<List<ModifiedStorageEntry<String, Models.InboundTrack>>> observableDeletedEntries() {
@@ -98,6 +159,14 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
     }
 
     public Map<String, InboundTrack> fetchRecursively(Set<String> inboundTrackIds) {
+        var result = this.getAll(inboundTrackIds);
+        var sfuSinkIds = result.values().stream()
+                .map(InboundTrack::getSfuSinkId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        if (0 < sfuSinkIds.size()) {
+            this.sfuMediaSinksRepository.getAll(sfuSinkIds);
+        }
         return this.getAll(inboundTrackIds);
     }
 
@@ -117,7 +186,7 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
         }
     }
 
-    synchronized void deleteAll(Set<String> trackIds) {
+    public synchronized void deleteAll(Set<String> trackIds) {
         if (trackIds == null || trackIds.size() < 1) {
             return;
         }
@@ -132,6 +201,14 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
 
     public synchronized void save() {
         if (0 < this.deleted.size()) {
+            var inboundTracks = this.storage.getAll(this.deleted);
+            var sfuSinkIds = inboundTracks.values().stream()
+                    .filter(Models.InboundTrack::hasSfuSinkId)
+                    .map(Models.InboundTrack::getSfuSinkId)
+                    .collect(Collectors.toSet());
+            if (0 < sfuSinkIds.size()) {
+                this.sfuMediaSinksRepository.deleteAll(sfuSinkIds);
+            }
             Try.wrap(() -> this.storage.deleteAll(this.deleted));
             this.deleted.clear();
         }
@@ -139,6 +216,7 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
             Try.wrap(() -> this.storage.setAll(this.updated));
             this.updated.clear();
         }
+        this.sfuMediaSinksRepository.save();
         this.fetched.clear();
     }
 
@@ -156,7 +234,8 @@ public class InboundTracksRepository  implements RepositoryStorageMetrics {
         var result =  new InboundTrack(
                 this.peerConnectionsRepositoryBeanProvider.get(),
                 model,
-                this
+                this,
+                this.sfuMediaSinksRepository
         );
         this.fetched.add(result.getTrackId(), result);
         return result;

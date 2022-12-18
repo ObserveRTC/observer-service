@@ -5,18 +5,17 @@ import jakarta.inject.Inject;
 import org.junit.jupiter.api.*;
 import org.observertc.observer.samples.ServiceRoomId;
 import org.observertc.observer.utils.ModelsMapGenerator;
+import org.observertc.schemas.dtos.Models;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @MicronautTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class CallsRepositoryTest {
+class ObservedCallsRepositoryTest {
 
     @Inject
     CallsRepository callsRepository;
@@ -25,12 +24,13 @@ class CallsRepositoryTest {
     ClientsRepository clientsRepository;
 
     private ModelsMapGenerator modelsMapGenerator = new ModelsMapGenerator().generateP2pCase();
+    private Models.Call callModel;
 
     @Test
     @Order(1)
     @DisplayName("When a new call is inserted it is not inserted before")
     void test_1() {
-        var callModel = modelsMapGenerator.getCallModel();
+        this.callModel = modelsMapGenerator.getCallModel();
         var serviceRoomId = ServiceRoomId.make(callModel.getServiceId(), callModel.getRoomId());
         var alreadyInsertedCalls = this.callsRepository.insertAll(List.of(
                 new CallsRepository.CreateCallInfo(
@@ -47,14 +47,13 @@ class CallsRepositoryTest {
     @Order(2)
     @DisplayName("When the same call is inserted it returns the inserted one and not insert the provided one")
     void test_2() {
-        var callModel = modelsMapGenerator.getCallModel();
         var serviceRoomId = ServiceRoomId.make(callModel.getServiceId(), callModel.getRoomId());
         var marker = Instant.now().toEpochMilli() % 2 == 0 ? UUID.randomUUID().toString() : null;
         var alreadyInsertedCalls = this.callsRepository.insertAll(List.of(
                 new CallsRepository.CreateCallInfo(
                         serviceRoomId,
                         marker,
-                        UUID.randomUUID().toString(),
+                        callModel.getCallId(),
                         callModel.getStarted()
                 )
         ));
@@ -67,7 +66,7 @@ class CallsRepositoryTest {
     void test_3() {
         var callModel = modelsMapGenerator.getCallModel();
         var serviceRoomId = ServiceRoomId.make(callModel.getServiceId(), callModel.getRoomId());
-        var call = this.callsRepository.get(serviceRoomId);
+        var call = this.callsRepository.get(callModel.getCallId());
 
         Assertions.assertEquals(call.getServiceRoomId(), serviceRoomId);
         Assertions.assertEquals(call.getCallId(), callModel.getCallId());
@@ -88,7 +87,7 @@ class CallsRepositoryTest {
         var callModel = modelsMapGenerator.getCallModel();
         var clientModels = modelsMapGenerator.getClientModels();
         var serviceRoomId = ServiceRoomId.make(callModel.getServiceId(), callModel.getRoomId());
-        var call = this.callsRepository.get(serviceRoomId);
+        var call = this.callsRepository.get(callModel.getCallId());
 
         for (var clientModel : clientModels.values()) {
             call.addClient(
@@ -110,7 +109,7 @@ class CallsRepositoryTest {
         var callModel = modelsMapGenerator.getCallModel();
         var clientModels = modelsMapGenerator.getClientModels();
         var serviceRoomId = ServiceRoomId.make(callModel.getServiceId(), callModel.getRoomId());
-        var call = this.callsRepository.get(serviceRoomId);
+        var call = this.callsRepository.get(callModel.getCallId());
 
         for (var clientModel : clientModels.values()) {
             Assertions.assertThrows(AlreadyCreatedException.class, () -> {
@@ -133,7 +132,7 @@ class CallsRepositoryTest {
         var callModel = modelsMapGenerator.getCallModel();
         var clientModels = modelsMapGenerator.getClientModels();
         var serviceRoomId = ServiceRoomId.make(callModel.getServiceId(), callModel.getRoomId());
-        var clients = this.callsRepository.get(serviceRoomId).getClients();
+        var clients = this.callsRepository.get(callModel.getCallId()).getClients();
 
         for (var clientModel : clientModels.values()) {
             var client = clients.get(clientModel.getClientId());
@@ -148,7 +147,7 @@ class CallsRepositoryTest {
         var callModel = modelsMapGenerator.getCallModel();
         var clientModels = modelsMapGenerator.getClientModels();
         var serviceRoomId = ServiceRoomId.make(callModel.getServiceId(), callModel.getRoomId());
-        var call = this.callsRepository.get(serviceRoomId);
+        var call = this.callsRepository.get(callModel.getCallId());
 
         for (var clientModel : clientModels.values()) {
             Assertions.assertTrue(call.hasClient(clientModel.getClientId()));
@@ -169,30 +168,13 @@ class CallsRepositoryTest {
     }
 
     @Test
-    @Order(9)
-    @DisplayName("Clients are found in callModel clientLogs")
-    void test_9() {
-        var clientModels = modelsMapGenerator.getClientModels();
-        var serviceRoomId = ServiceRoomId.make(modelsMapGenerator.getCallModel().getServiceId(), modelsMapGenerator.getCallModel().getRoomId());
-        var call = this.callsRepository.get(serviceRoomId);
-        var clientLogs = call.getModel().getClientLogsList().stream().collect(Collectors.toMap(
-                clientLog -> clientLog.getClientId(),
-                Function.identity()
-        ));
-        for (var clientModel : clientModels.values()) {
-            var clientLog = clientLogs.get(clientModel.getClientId());
-            Assertions.assertEquals(clientLog.getEvent(), Call.CLIENT_JOINED_EVENT_NAME);
-        }
-    }
-
-    @Test
     @Order(10)
     @DisplayName("Clients can be deleted through the call")
     void test_10() {
         var callModel = modelsMapGenerator.getCallModel();
         var clientModels = modelsMapGenerator.getClientModels();
         var serviceRoomId = ServiceRoomId.make(callModel.getServiceId(), callModel.getRoomId());
-        var call = this.callsRepository.get(serviceRoomId);
+        var call = this.callsRepository.get(callModel.getCallId());
 
         for (var clientModel : clientModels.values()) {
             var removed = call.removeClient(clientModel.getClientId());
@@ -202,23 +184,6 @@ class CallsRepositoryTest {
             Assertions.assertFalse(removedAgain);
         }
         this.callsRepository.save();
-    }
-
-    @Test
-    @Order(11)
-    @DisplayName("Removed clients are logged as detached in logs")
-    void test_11() {
-        var clientModels = modelsMapGenerator.getClientModels();
-        var serviceRoomId = ServiceRoomId.make(modelsMapGenerator.getCallModel().getServiceId(), modelsMapGenerator.getCallModel().getRoomId());
-        var call = this.callsRepository.get(serviceRoomId);
-        var clientLogs = call.getModel().getClientLogsList().stream().collect(Collectors.toMap(
-                clientLog -> clientLog.getClientId(),
-                Function.identity()
-        ));
-        for (var clientModel : clientModels.values()) {
-            var clientLog = clientLogs.get(clientModel.getClientId());
-            Assertions.assertEquals(clientLog.getEvent(), Call.CLIENT_DETACHED_EVENT_NAME);
-        }
     }
 
     @Test
@@ -235,11 +200,9 @@ class CallsRepositoryTest {
     @Order(13)
     @DisplayName("Remove cannot be done twice")
     void test_13() {
-        var callModel = modelsMapGenerator.getCallModel();
-        var serviceRoomId = ServiceRoomId.make(callModel.getServiceId(), callModel.getRoomId());
-        var removedCalls_1 = this.callsRepository.removeAll(Set.of(serviceRoomId));
-        var removedCalls_2 = this.callsRepository.removeAll(Set.of(serviceRoomId));
-        Assertions.assertTrue(removedCalls_1.contains(serviceRoomId));
+        var removedCalls_1 = this.callsRepository.removeAll(Set.of(callModel.getCallId()));
+        var removedCalls_2 = this.callsRepository.removeAll(Set.of(callModel.getCallId()));
+        Assertions.assertTrue(removedCalls_1.contains(callModel.getCallId()));
         Assertions.assertEquals(1, removedCalls_1.size());
         Assertions.assertEquals(0, removedCalls_2.size());
     }
@@ -250,8 +213,8 @@ class CallsRepositoryTest {
     void test_14() {
         var callModel = modelsMapGenerator.getCallModel();
         var serviceRoomId = ServiceRoomId.make(callModel.getServiceId(), callModel.getRoomId());
-        var call = this.callsRepository.get(serviceRoomId);
-        var calls = this.callsRepository.getAll(Set.of(serviceRoomId));
+        var call = this.callsRepository.get(callModel.getCallId());
+        var calls = this.callsRepository.getAll(Set.of(callModel.getCallId()));
         Assertions.assertNull(call);
         Assertions.assertEquals(0, calls.size());
     }

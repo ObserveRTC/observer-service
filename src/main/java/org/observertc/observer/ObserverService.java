@@ -1,9 +1,13 @@
 package org.observertc.observer;
 
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.observertc.observer.common.ChainedTask;
 import org.observertc.observer.evaluators.*;
+import org.observertc.observer.metrics.HamokMetrics;
 import org.observertc.observer.metrics.ReportMetrics;
+import org.observertc.observer.metrics.RepositoryMetrics;
 import org.observertc.observer.sinks.ReportSinks;
 import org.observertc.observer.sinks.ReportsCollector;
 import org.observertc.observer.sources.SampleSources;
@@ -56,6 +60,15 @@ public class ObserverService {
     @Inject
     ReportSinks reportSinks;
 
+    @Inject
+    RepositoryMetrics repositoryMetrics;
+
+    @Inject
+    HamokMetrics hamokMetrics;
+
+    @Inject
+    BackgroundTasksExecutor backgroundTasksExecutor;
+
     @PostConstruct
     void setup() {
         this.samplesCollector
@@ -88,6 +101,7 @@ public class ObserverService {
 
         // funneled reports
         this.reportsCollector.getObservableReports()
+                .observeOn(Schedulers.io())
                 .subscribe(this.reportSinks);
 
         if (this.reportMetrics.isEnabled()) {
@@ -107,6 +121,25 @@ public class ObserverService {
             return;
         }
         this.run = true;
+        if (!this.backgroundTasksExecutor.isStarted()) {
+            this.backgroundTasksExecutor.start();
+            this.backgroundTasksExecutor.addPeriodicTask(
+                    "Repository Metric Exposure",
+                    () -> ChainedTask.<Void>builder()
+                            .withName("Exposing Repository Metric")
+                            .addActionStage("Exposing metrics", repositoryMetrics::update)
+                            .build(),
+                    30 * 1000
+            );
+            this.backgroundTasksExecutor.addPeriodicTask(
+                    "Hamok Metric Exposure",
+                    () -> ChainedTask.<Void>builder()
+                            .withName("Exposing Hamok Metric")
+                            .addActionStage("Exposing metrics", hamokMetrics::update)
+                            .build(),
+                    30 * 1000
+            );
+        }
         logger.info("Started");
     }
 
@@ -116,6 +149,9 @@ public class ObserverService {
             return;
         }
         this.run = false;
+        if (this.backgroundTasksExecutor.isStarted()) {
+            this.backgroundTasksExecutor.stop();
+        }
         logger.info("Stopped");
     }
 

@@ -21,20 +21,33 @@ public class WebsocketEndpointBuilder extends AbstractBuilder implements Endpoin
     @Override
     public HamokEndpoint build() {
         var config = this.convertAndValidate(WebsocketEndpointConfig.class);
-        var discoveryBuilderService = this.essentials.discoveryBuilderService();
-        var discovery = discoveryBuilderService.build(config.discovery);
-        if (discovery == null) {
-            logger.warn("No discovery is built, endpoint cannot be built");
-            return null;
-        }
         String serverHost;
         try {
-            serverHost = Utils.firstNotNull(config.serverHost, InetAddress.getLocalHost().getHostName());
+            serverHost = Utils.firstNotNull(config.serverHost,
+                    InetAddress.getLocalHost().getCanonicalHostName(),
+                    InetAddress.getLocalHost().getHostName()
+            );
         } catch (UnknownHostException e) {
             logger.warn("Error occurred while retrieving localhost name. the default will be used, which is localhost", e);
             serverHost = "localhost";
         }
-        return new WebsocketEndpoint(discovery, serverHost, config.serverPort);
+        var result = new WebsocketEndpoint(
+                this.essentials.hamokDiscoveryService(),
+                this.essentials.refreshRemoteEndpointIdsCallback(),
+                serverHost,
+                config.serverPort,
+                config.maxMessageSize
+        );
+
+        var refreshRemoteEndpointIdsCallback = this.essentials.refreshRemoteEndpointIdsCallback();
+        if (refreshRemoteEndpointIdsCallback != null) {
+            result.stateChangedEvent().subscribe(event -> {
+                refreshRemoteEndpointIdsCallback.run();
+            });
+        } else {
+            logger.warn("Missing refreshRemoteEndpointIdsCallback from builder essentials, will not add remote endpoints!");
+        }
+        return result;
     }
 
 

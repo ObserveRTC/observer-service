@@ -37,9 +37,11 @@ class CallEntitiesUpdaterInSlaveModeTest {
 
         var expectedOldCallId = UUID.randomUUID().toString();
         var observedAliceSample = aliceObservedSamplesGenerator.generateObservedClientSample(expectedOldCallId);
-        var observedAliceSamples = ObservedClientSamples.builder().addObservedClientSample(observedAliceSample).build();
+        var observedAliceSamples = ObservedClientSamples.builder().add(
+                        observedAliceSample.getServiceId(), observedAliceSample.getMediaUnitId(), observedAliceSample.getClientSample())
+                .build();
         this.callEntitiesUpdater.accept(observedAliceSamples);
-        var aliceCall = this.callsRepository.get(observedAliceSample.getServiceRoomId());
+        var aliceCall = this.callsRepository.get(expectedOldCallId);
 
         Assertions.assertEquals(expectedOldCallId, aliceCall.getCallId());
 
@@ -49,9 +51,11 @@ class CallEntitiesUpdaterInSlaveModeTest {
 
         var expectedNewCallId = UUID.randomUUID().toString();
         var observedBobSample = bobObservedSamplesGenerator.generateObservedClientSample(expectedNewCallId);
-        var observedBobSamples = ObservedClientSamples.builder().addObservedClientSample(observedBobSample).build();
+        var observedBobSamples = ObservedClientSamples.builder().
+            add(observedBobSample.getServiceId(), observedBobSample.getMediaUnitId(), observedBobSample.getClientSample())
+                .build();
         this.callEntitiesUpdater.accept(observedBobSamples);
-        var bobCall = this.callsRepository.get(observedAliceSample.getServiceRoomId());
+        var bobCall = this.callsRepository.get(expectedNewCallId);
 
         Assertions.assertEquals(expectedNewCallId, bobCall.getCallId());
 

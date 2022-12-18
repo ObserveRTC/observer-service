@@ -35,13 +35,20 @@ public class SfuMediaSinksRepository implements RepositoryStorageMetrics {
     private HamokService service;
 
     @Inject
-    private ObserverConfig.InternalBuffersConfig bufferConfig;
+    private ObserverConfig observerConfig;
 
     @Inject
-    BeanProvider<SfuTransportsRepository> sfuTransportsRepositoryBeanProvider;
+    private Backups backups;
+
+
+    @Inject
+    private BeanProvider<SfuMediaStreamsRepository> sfuMediaStreamsRepositoryBeanProvider;
 
     @Inject
     private BeanProvider<SfuOutboundRtpPadsRepository> sfuOutboundRtpPadsRepositoryBeanProvider;
+
+    @Inject
+    private ObserverConfig.HamokConfig hamokConfig;
 
     private Map<String, Models.SfuMediaSink> updated;
     private Set<String> deleted;
@@ -53,17 +60,25 @@ public class SfuMediaSinksRepository implements RepositoryStorageMetrics {
                 .setConcurrency(true)
                 .setId(STORAGE_ID)
                 .build();
-        this.storage = this.service.getStorageGrid().separatedStorage(baseStorage)
+        var storageBuilder = this.service.getStorageGrid().separatedStorage(baseStorage)
                 .setKeyCodec(SerDeUtils.createStrToByteFunc(), SerDeUtils.createBytesToStr())
                 .setValueCodec(
                         Mapper.create(Models.SfuMediaSink::toByteArray, logger)::map,
                         Mapper.<byte[], Models.SfuMediaSink>create(bytes -> Models.SfuMediaSink.parseFrom(bytes), logger)::map
                 )
-                .setMaxCollectedStorageEvents(bufferConfig.debouncers.maxItems)
-                .setMaxCollectedStorageTimeInMs(bufferConfig.debouncers.maxTimeInMs)
+                .setMaxCollectedStorageEvents(this.observerConfig.buffers.debouncers.maxItems)
+                .setMaxCollectedStorageTimeInMs(this.observerConfig.buffers.debouncers.maxTimeInMs)
                 .setMaxMessageKeys(MAX_KEYS)
                 .setMaxMessageValues(MAX_VALUES)
-                .build();
+                .setThrowingExceptionOnRequestTimeout(!this.hamokConfig.usePartialResponses)
+                ;
+
+        if (this.observerConfig.repository.useBackups) {
+            storageBuilder.setDistributedBackups(this.backups);
+        }
+
+        this.storage = storageBuilder.build();
+
         this.fetched = CachedFetches.<String, SfuMediaSink>builder()
                 .onFetchOne(this::fetchOne)
                 .onFetchAll(this::fetchAll)
@@ -147,12 +162,20 @@ public class SfuMediaSinksRepository implements RepositoryStorageMetrics {
         return this.fetched.getAll(set);
     }
 
+    public Map<String, SfuMediaSink> getAllLocallyStored() {
+        var callIds = this.storage.localKeys();
+        if (callIds == null || callIds.size() < 1) {
+            return Collections.emptyMap();
+        }
+        return this.fetchAll(callIds);
+    }
+
     private SfuMediaSink fetchOne(String sfuMediaSinkId) {
         var model = Try.wrap(() -> this.storage.get(sfuMediaSinkId), null);
         if (model == null) {
             return null;
         }
-        return this.wrapSfuSink(model);
+        return this.wrap(model);
     }
 
     private Map<String, SfuMediaSink> fetchAll(Set<String> sfuMediaSinkIds) {
@@ -165,7 +188,7 @@ public class SfuMediaSinksRepository implements RepositoryStorageMetrics {
                 Map.Entry::getKey,
                 entry -> {
                     var model = entry.getValue();
-                    return this.wrapSfuSink(model);
+                    return this.wrap(model);
                 }
         ));
     }
@@ -174,11 +197,11 @@ public class SfuMediaSinksRepository implements RepositoryStorageMetrics {
         this.storage.checkCollidingEntries();
     }
 
-    SfuMediaSink wrapSfuSink(Models.SfuMediaSink model) {
+    SfuMediaSink wrap(Models.SfuMediaSink model) {
         var result = new SfuMediaSink(
                 model,
                 this,
-                this.sfuTransportsRepositoryBeanProvider.get(),
+                this.sfuMediaStreamsRepositoryBeanProvider.get(),
                 this.sfuOutboundRtpPadsRepositoryBeanProvider.get()
         );
         this.fetched.add(result.getSfuSinkId(), result);

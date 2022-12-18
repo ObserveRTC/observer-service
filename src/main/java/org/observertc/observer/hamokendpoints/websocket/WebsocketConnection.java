@@ -6,19 +6,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.enums.Opcode;
 import org.java_websocket.enums.ReadyState;
 import org.java_websocket.handshake.ServerHandshake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
+import java.nio.ByteBuffer;
+import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+@Deprecated
 public class WebsocketConnection {
 
     private static final Logger logger = LoggerFactory.getLogger(WebsocketConnection.class);
@@ -32,35 +39,105 @@ public class WebsocketConnection {
 
     public record EndpointStateChange(
             EndpointState state,
-            UUID endpointId
+            UUID endpointId,
+            UUID connectionId
     ){
 
     }
 
     private final AtomicReference<Disposable> connecting = new AtomicReference<>(null);
     private final AtomicReference<WebSocketClient> client = new AtomicReference<>(null);
-    private final Subject<RemoteIdentifiers> remoteEndpointIdsSubject = PublishSubject.create();
     private final Subject<EndpointStateChange> endpointStateChangedSubject = PublishSubject.create();
+    private final Subject<byte[]> messages = PublishSubject.create();
+    private AtomicInteger backoffTimeInMs = new AtomicInteger(5000);
+    private AtomicReference<CompletableFuture<Void>> pendingOnOpen = new AtomicReference<>(null);
+
     private volatile boolean disposed = false;
     private volatile boolean opened = false;
-    private volatile boolean joined = false;
+//    private volatile boolean joined = false;
 
-    private RemoteIdentifiers remoteIdentifiers = null;
+    //    private AtomicReference<EndpointState> stateHolder = new AtomicReference<>(EndpointState.DETACHED);
+    private AtomicReference<RemoteIdentifiers> remoteIdentifiersHolder = new AtomicReference<>(null);
 
     private final ConnectionBuffer buffer;
+    private final UUID connectionId;
     private final String serverUri;
     private final ObjectMapper mapper;
     private final Scheduler scheduler;
+    private final int maxMessageSize;
 
-    public WebsocketConnection(ConnectionBuffer buffer, String serverUri, ObjectMapper mapper, Scheduler scheduler) {
+    public WebsocketConnection(
+            UUID connectionId,
+            ConnectionBuffer buffer,
+            String serverUri,
+            ObjectMapper mapper,
+            Scheduler scheduler,
+            int maxMessageSize
+    ) {
+        this.connectionId = connectionId;
         this.buffer = buffer;
         this.serverUri = serverUri;
         this.mapper = mapper;
         this.scheduler = scheduler;
+        this.maxMessageSize = maxMessageSize;
+        this.messages.observeOn(Schedulers.io())
+                .subscribe(message -> {
+                    var client = this.client.get();
+                    if (client == null || client.getReadyState() != ReadyState.OPEN) {
+                        this.buffer.add(message);
+                        return;
+                    }
+                    for (boolean messageSent = false; this.buffer.isEmpty() == false || messageSent == false; ) {
+                        byte[] data;
+                        if (this.buffer.isEmpty()) {
+                            data = message;
+                            messageSent = true;
+                        } else {
+                            data = this.buffer.poll();
+                        }
+
+                        if (this.maxMessageSize <= 0) {
+                            client.send(data);
+                            continue;
+                        }
+
+                        ByteBuffer byteBuffer = ByteBuffer.wrap(data);
+                        for (int position = this.maxMessageSize; ; position += this.maxMessageSize) {
+                            if (position < byteBuffer.capacity()) {
+                                byteBuffer.limit(position);
+                                client.sendFragmentedFrame(Opcode.BINARY, byteBuffer, false);
+                                continue;
+                            }
+                            byteBuffer.limit(byteBuffer.capacity());
+                            client.sendFragmentedFrame(Opcode.BINARY, byteBuffer, true);
+                            break;
+                        }
+                    }
+                });
     }
 
     public String getServerUri() {
         return this.serverUri;
+    }
+
+    public boolean isOpened() {
+        return this.opened;
+    }
+
+    public boolean isJoined() {
+        return this.disposed == false && this.opened == true && this.remoteIdentifiersHolder.get() != null;
+    }
+
+    public UUID getConnectionId() {
+        return this.connectionId;
+    }
+
+    public UUID getRemoteEndpointId() {
+        var remoteIdentifiers = this.remoteIdentifiersHolder.get();
+        if (remoteIdentifiers == null) {
+            return null;
+        }
+        return remoteIdentifiers.endpointId;
     }
 
     public void open() {
@@ -87,91 +164,127 @@ public class WebsocketConnection {
         }
     }
 
-    public RemoteIdentifiers getRemoteIdentifiers() {
-        return remoteIdentifiers;
-    }
+//    public RemoteIdentifiers getRemoteIdentifiers() {
+//        return remoteIdentifiers;
+//    }
 
     public void close() {
         if (this.disposed) {
             logger.warn("Attempted to close a connection to {} twice", this.serverUri);
+            return;
         }
         this.disposed = true;
         var client = this.client.getAndSet(null);
         if (client == null) {
             return;
         }
-        client.close();
+        client.close(CLOSE_WITHOUT_RECONNECT_CODE);
     }
 
-    public void send(String message) {
+    public boolean reconnect() {
+        if (this.disposed) {
+            logger.warn("Attempted to reconnect an already disposed connection");
+            return false;
+        }
         var client = this.client.get();
-        if (client == null || client.getReadyState() != ReadyState.OPEN) {
-            this.buffer.add(message);
-            return;
+        if (client == null) {
+            return false;
         }
-        while (this.buffer.isEmpty() == false) {
-            client.send(this.buffer.poll());
+        var pendingOnOpen = new CompletableFuture<Void>();
+        if (!this.pendingOnOpen.compareAndSet(null, pendingOnOpen)) {
+            pendingOnOpen = this.pendingOnOpen.get();
         }
-        client.send(message);
+        client.close();
+        try {
+            pendingOnOpen.get(30000, TimeUnit.MILLISECONDS);
+            return true;
+        } catch (Throwable t) {
+            logger.warn("Reconnect failed to {}, connectionId: {}", this.serverUri, this.connectionId, t);
+            client = this.client.get();
+            if (client != null) {
+                client.close(CLOSE_WITHOUT_RECONNECT_CODE);
+            }
+            return false;
+        } finally {
+            this.pendingOnOpen.set(null);
+        }
     }
 
-    public Observable<RemoteIdentifiers> remoteIdentifiers() {
-        return this.remoteEndpointIdsSubject;
+    public void send(byte[] message) {
+        this.messages.onNext(message);
     }
+
+//    public Observable<RemoteIdentifiers> remoteIdentifiers() {
+//        return this.remoteEndpointIdsSubject;
+//    }
 
     public Observable<EndpointStateChange> endpointStateChanged() {
         return this.endpointStateChangedSubject;
     }
+
 
     private WebSocketClient createClient() {
         return new WebSocketClient(URI.create(this.serverUri)) {
             @Override
             public void onOpen(ServerHandshake handshakedata) {
                 logger.info("Connected to {}, address is {}", this.uri, this.getRemoteSocketAddress());
-                if (!joined && remoteIdentifiers != null) {
-                    // join!
-                    joined = true;
-                    endpointStateChangedSubject.onNext(new EndpointStateChange(
-                            EndpointState.JOINED,
-                            remoteIdentifiers.endpointId
-                    ));
+                var pending = pendingOnOpen.get();
+                if (pending != null) {
+                    pending.complete(null);
                 }
             }
 
             @Override
             public void onMessage(String data) {
+                if (remoteIdentifiersHolder.get() != null) {
+                    var currentRemoteEndpointId = remoteIdentifiersHolder.get();
+                    logger.warn("Received unexpected data on server {}. Current remote endpoint id {}, remote server uri: {}, received data: {}",
+                            serverUri,
+                            currentRemoteEndpointId.endpointId,
+                            currentRemoteEndpointId.serverUri,
+                            data
+                    );
+                    return;
+                }
                 try {
-                    var remoteIdentifierWasNull = remoteIdentifiers == null;
-                    var remoteIdentifiersHolder = mapper.readValue(data, RemoteIdentifiers.class);
-                    if (remoteIdentifiersHolder.endpointId != null && remoteIdentifiersHolder.serverUri != null) {
-                        remoteIdentifiers = remoteIdentifiersHolder;
-                        remoteEndpointIdsSubject.onNext(remoteIdentifiersHolder);
-                        if (!joined && remoteIdentifierWasNull) {
-                            // join!
-                            joined = true;
-                            endpointStateChangedSubject.onNext(new EndpointStateChange(
-                                    EndpointState.JOINED,
-                                    remoteIdentifiers.endpointId
-                            ));
-                        }
+                    var remoteIdentifiers = mapper.readValue(data, RemoteIdentifiers.class);
+                    if (!remoteIdentifiersHolder.compareAndSet(null, remoteIdentifiers)) {
+                        logger.warn("Already set remote identifier on server {}. Current remote endpoint id {}, received remote endpoint id: {}",
+                                serverUri,
+                                remoteIdentifiersHolder.get(),
+                                remoteIdentifiers
+                        );
+                        return;
                     }
-
+                    logger.info("Remote identifiers received, endpoint is joined. {}", remoteIdentifiersHolder.get());
+                    endpointStateChangedSubject.onNext(new EndpointStateChange(
+                            EndpointState.JOINED,
+                            remoteIdentifiers.endpointId,
+                            connectionId
+                    ));
+                    backoffTimeInMs.set(5000);
                 } catch (JsonProcessingException e) {
-                    logger.warn("Error in received message", e);
+                    logger.warn("Error in received message {}", data, e);
+                    return;
+                } catch (Exception ex) {
+                    logger.warn("Error occurred while executing operations for received message {}", data, ex);
                     return;
                 }
             }
 
+
             @Override
             public void onClose(int code, String reason, boolean remote) {
-                logger.info("Connection to {} is closed with code: {}, reason: {}, byremote: {}", uri, code, reason, remote);
-                if (joined && remoteIdentifiers != null) {
-                    // detach
-                    joined = false;
+                var removedRemoteIdentifiers = remoteIdentifiersHolder.getAndSet(null);
+                if (removedRemoteIdentifiers != null) {
+                    logger.info("Connection to {} is closed with code: {}, reason: {}, byremote: {}. Remote endpoint id: {}", uri, code, reason, remote, removedRemoteIdentifiers.endpointId);
                     endpointStateChangedSubject.onNext(new EndpointStateChange(
                             EndpointState.DETACHED,
-                            remoteIdentifiers.endpointId
+                            removedRemoteIdentifiers.endpointId,
+                            connectionId
                     ));
+                } else {
+                    logger.info("Connection to {} is closed with code: {}, reason: {}, byremote: {}. No remote endpoint id is registered", uri, code, reason, remote);
                 }
                 if (disposed || code == CLOSE_WITHOUT_RECONNECT_CODE) {
                     // goodbye
@@ -185,10 +298,13 @@ public class WebsocketConnection {
                 if (!opened) {
                     return;
                 }
+                var newBackoffTimeInMs = Math.min(15 * 3600 * 1000, backoffTimeInMs.get() * 2 + new Random().nextInt(100, 2000));
+                backoffTimeInMs.set(newBackoffTimeInMs);
+                logger.info("Retrying to connect to {} backoff time in ms {}", uri, backoffTimeInMs.get());
                 var process = scheduler.scheduleDirect(() -> {
                     connecting.set(null);
                     tryConnect(newClient);
-                }, 5000, TimeUnit.MILLISECONDS);
+                }, backoffTimeInMs.get(), TimeUnit.MILLISECONDS);
                 if (!connecting.compareAndSet(null, process)) {
                     process.dispose();
                 }

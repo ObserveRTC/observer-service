@@ -73,6 +73,13 @@ public class ObserverConfig {
 		public static class FlawMetricsConfig {
 			public boolean enabled;
 		}
+
+		public ClientSamplesMetricConfig clientSamples;
+
+		@ConfigurationProperties("clientSamplesMetricConfig")
+		public static class ClientSamplesMetricConfig {
+			public boolean enabled;
+		}
 	}
 
 	// Security Configurations
@@ -118,7 +125,7 @@ public class ObserverConfig {
 
 		@ConfigurationProperties("websocket")
 		public static class WebsocketsConfig extends SourceConfig {
-
+			public int minRemotePeers = -1;
 		}
 	}
 
@@ -128,14 +135,22 @@ public class ObserverConfig {
 	@ConfigurationProperties("repository")
 	public static class RepositoryConfig {
 
-		@Min(3)
-		public int mediaTracksMaxIdleTimeInS;
+		public boolean useBackups = false;
 
 		@Min(3)
-		public int peerConnectionsMaxIdleTime;
+		public int callMaxIdleTimeInS;
 
 		@Min(3)
-		public int clientMaxIdleTimeInS;
+		public int clientsMaxIdle;
+
+		@Min(3)
+		public int peerConnectionsMaxIdle;
+
+		@Min(3)
+		public int inboundTracksMaxIdle;
+
+		@Min(3)
+		public int outboundTracksMaxIdle;
 
 		@Min(3)
 		public int sfuMaxIdleTimeInS;
@@ -144,14 +159,16 @@ public class ObserverConfig {
 		public int sfuTransportMaxIdleTimeInS;
 
 		@Min(3)
-		public int sfuRtpPadMaxIdleTimeInS;
+		public int sfuInboundRtpPadMaxIdleTimeInS;
 
-		@Min(-1)
-		public long evictExpiredEntriesPeriodInMs;
+		@Min(3)
+		public int sfuOutboundRtpPadMaxIdleTimeInS;
 
-		@Min(-1)
-		public long evictExpiredEntriesThresholdOffsetInMs = 0;
-	}
+		@Min(3)
+		public int sfuSctpChannelMaxIdleTimeInS;
+
+
+    }
 
 	// Evaluators Config
 	public EvaluatorsConfig evaluators;
@@ -159,9 +176,17 @@ public class ObserverConfig {
 	@ConfigurationProperties("evaluators")
 	public static class EvaluatorsConfig {
 
+		public ObserverReports observerReports= new ObserverReports();
+
+		@ConfigurationProperties(("observerReports"))
+		public static class ObserverReports {
+			public boolean createCallSummaryReports = true;
+		}
+
 		public Obfuscator obfuscator = new Obfuscator();
 
-		@ConfigurationProperties(("obfuscator"))
+
+        @ConfigurationProperties(("obfuscator"))
 		public static class Obfuscator {
 			public boolean enabled = false;
 			public ObfuscationType iceAddresses = ObfuscationType.ANONYMIZATION;
@@ -173,6 +198,7 @@ public class ObserverConfig {
 
 		@ConfigurationProperties(("callUpdater"))
 		public static class CallUpdater {
+			public boolean enabled = true;
 			public enum CallIdAssignMode {
 				MASTER,
 				SLAVE
@@ -185,12 +211,14 @@ public class ObserverConfig {
 		@ConfigurationProperties(("clientSamplesAnalyser"))
 		public static class ClientSamplesAnalyserConfig {
 			public boolean dropUnmatchedReports = false;
+			public boolean matchTracks = true;
 		}
 
 		public SfuSamplesAnalyserConfig sfuSamplesAnalyser = new SfuSamplesAnalyserConfig();
 
 		@ConfigurationProperties(("sfuSamplesAnalyser"))
 		public static class SfuSamplesAnalyserConfig {
+			public boolean matchRtpPads = true;
 			public boolean dropUnmatchedInternalInboundReports = false;
 			public boolean dropUnmatchedInboundReports = false;
 			public boolean dropUnmatchedOutboundReports = false;
@@ -215,14 +243,16 @@ public class ObserverConfig {
 
 		@ConfigurationProperties("samplesCollector")
 		public static class SamplesBufferCollectorConfig extends CollectorConfig {
-
+			public int overloadThreshold = -1;
+			public int maxConsecutiveOverloaded = 3;
 		}
 
 		public ReportsCollectorConfig reportsCollector = new ReportsCollectorConfig();
 
 		@ConfigurationProperties("reportsCollector")
 		public static class ReportsCollectorConfig extends CollectorConfig {
-
+			public int overloadThreshold = -1;
+			public int maxConsecutiveOverloaded = 3;
 		}
 	}
 
@@ -245,11 +275,13 @@ public class ObserverConfig {
 	@ConfigurationProperties("hamok")
 	public static class HamokConfig {
 		public List<String> memberNamesPool = new LinkedList<>();
+		public Map<String, Object> discovery;
 		public Map<String, Object> endpoint;
-
+		public boolean usePartialResponses = true;
 		public StorageGridConfig storageGrid = new StorageGridConfig();
+		public int firstMinRemotePeers = 1;
 
-		@ConfigurationProperties(("storageGrid"))
+        @ConfigurationProperties(("storageGrid"))
 		public static class StorageGridConfig {
 			public int raftMaxLogEntriesRetentionTimeInMinutes = 30;
 			public int heartbeatInMs = 50;

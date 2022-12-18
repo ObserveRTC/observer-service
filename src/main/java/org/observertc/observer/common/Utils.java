@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -33,6 +34,24 @@ public final class Utils {
             if (Objects.nonNull(result)) return result;
         }
         return null;
+    }
+
+    public static Long getMax(Supplier<Long> supplier_1, Supplier<Long> supplier_2) {
+        var value_1 = supplier_1.get();
+        var value_2 = supplier_2.get();
+        if (value_1 == null && value_2 == null) return null;
+        if (value_1 == null) return value_2;
+        if (value_2 == null) return value_1;
+        return Math.max(value_1, value_2);
+    }
+
+    public static Long getMin(Supplier<Long> supplier_1, Supplier<Long> supplier_2) {
+        var value_1 = supplier_1.get();
+        var value_2 = supplier_2.get();
+        if (value_1 == null && value_2 == null) return null;
+        if (value_1 == null) return value_2;
+        if (value_2 == null) return value_1;
+        return Math.min(value_1, value_2);
     }
 
 
@@ -109,6 +128,17 @@ public final class Utils {
         };
     }
 
+    public static String getStackTrace() {
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        if (stackTrace == null) {
+            return null;
+        }
+        return Arrays.asList(Thread.currentThread().getStackTrace()).stream()
+                .map(StackTraceElement::toString)
+                .filter(str -> str.contains("observertc"))
+                .collect(Collectors.joining("\n"));
+    }
+
     /**
      * Check if a a value is non null. Returns true if it is NOT null.
      * if it is null it gets the stacktrace and log as warning any related code line.
@@ -119,16 +149,12 @@ public final class Utils {
         if (Objects.nonNull(subject)) {
             return true;
         }
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        var stackTrace = getStackTrace();
         if (stackTrace == null) {
             logger.warn("Null value is detected where it does not supposed to be.");
             return false;
         }
-        var stackTrackStr = Arrays.asList(Thread.currentThread().getStackTrace()).stream()
-                .map(StackTraceElement::toString)
-                .filter(str -> str.contains("observertc"))
-                .collect(Collectors.joining("\n"));
-        logger.warn("Null value is detected where it does not supposed to be. {}", stackTrackStr);
+        logger.warn("Null value is detected where it does not supposed to be. {}", stackTrace);
         return false;
     }
 
@@ -144,5 +170,21 @@ public final class Utils {
             }
         }
         return buffer.toString();
+    }
+
+    public static<T> Iterator<T> wrapWithIterator(T value) {
+        return new Iterator<T>() {
+            private volatile boolean hasNext = true;
+            @Override
+            public boolean hasNext() {
+                return hasNext;
+            }
+
+            @Override
+            public T next() {
+                hasNext = false;
+                return value;
+            }
+        };
     }
 }

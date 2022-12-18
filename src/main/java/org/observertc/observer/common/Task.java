@@ -1,6 +1,7 @@
 package org.observertc.observer.common;
 
 public interface Task<T> extends AutoCloseable {
+
     Task<T> execute();
     boolean succeeded();
     T getResult();

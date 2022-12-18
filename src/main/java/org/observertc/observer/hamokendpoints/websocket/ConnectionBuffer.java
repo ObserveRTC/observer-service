@@ -5,7 +5,7 @@ public interface ConnectionBuffer {
     static ConnectionBuffer discardingBuffer() {
         return new ConnectionBuffer() {
             @Override
-            public void add(String message) {
+            public void add(byte[] message) {
                 return;
             }
 
@@ -15,13 +15,13 @@ public interface ConnectionBuffer {
             }
 
             @Override
-            public String poll() {
+            public byte[] poll() {
                 return null;
             }
         };
     }
 
-    void add(String message);
+    void add(byte[] message);
     boolean isEmpty();
-    String poll();
+    byte[] poll();
 }

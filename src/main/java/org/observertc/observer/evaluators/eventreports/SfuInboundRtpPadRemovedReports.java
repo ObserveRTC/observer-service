@@ -46,7 +46,7 @@ public class SfuInboundRtpPadRemovedReports {
 
     private SfuEventReport makeReport(Models.SfuInboundRtpPad sfuInboundRtpPadModel) {
         try {
-            var timestamp = sfuInboundRtpPadModel.hasTouched() ? sfuInboundRtpPadModel.getTouched() : Instant.now().toEpochMilli();
+            var timestamp = sfuInboundRtpPadModel.hasSampleTouched() ? sfuInboundRtpPadModel.getSampleTouched() : Instant.now().toEpochMilli();
             var streamDirection = StreamDirection.INBOUND;
             var attachment = RtpPadAttachment.builder()
                     .withStreamDirection(streamDirection)

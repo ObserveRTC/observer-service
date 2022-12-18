@@ -27,7 +27,7 @@ public class SfuSctpStreamAddedReports {
 
     }
 
-    public void accept(List<Models.SfuSctpStream> sctpStreamModels) {
+    public void accept(List<Models.SfuSctpChannel> sctpStreamModels) {
         if (Objects.isNull(sctpStreamModels) || sctpStreamModels.size() < 1) {
             return;
         }
@@ -40,7 +40,7 @@ public class SfuSctpStreamAddedReports {
         }
     }
 
-    private SfuEventReport makeReport(Models.SfuSctpStream sctpStreamModel) {
+    private SfuEventReport makeReport(Models.SfuSctpChannel sctpStreamModel) {
         try {
             var builder = SfuEventReport.newBuilder()
                     .setName(SfuEventType.SFU_SCTP_STREAM_ADDED.name())
