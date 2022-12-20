@@ -802,9 +802,9 @@ crucial and an instance cannot / should not run out of memory.
 
 Observer versions and compatible [schema](https://github.com/ObserveRTC/schemas) versions
 
-| schemas → <br/>observer ↓ | 2.0.y              |   |   |   |
-|---------------------------|--------------------|---|---|---|
-| 1.0.x                     | :white_check_mark: |   |   |   |
+| schemas → <br/>observer ↓ | 2.1.y              | 2.2.y              |   |   |
+|---------------------------|--------------------|--------------------|---|---|
+| 1.0.x                     | :white_check_mark: | :white_check_mark: |   |   |
 
 
 ## Getting involved
