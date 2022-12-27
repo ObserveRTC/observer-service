@@ -20,11 +20,12 @@ public class SampleSources {
 
     @PostConstruct
     void init() {
-        logger.info("Initialized, supported schema versions \n{}", String.join("\n", SamplesVersionVisitor.getSupportedVersions()));
+        logger.info("Supported schema versions: {}",
+                SchemaVersion.getSupportedVersionsList());
     }
 
     @PreDestroy
     void teardown() {
-        logger.info("Deinitialized");
+
     }
 }

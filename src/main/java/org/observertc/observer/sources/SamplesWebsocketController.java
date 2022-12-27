@@ -122,7 +122,7 @@ public class SamplesWebsocketController {
 					if (session.isOpen()) {
 						var reason = this.customCloseReasons.getInvalidInput(ex.getMessage());
 						session.close(reason);
-						logger.warn("Session {} is closed reason: {}, code: {}", session.getId(), reason.getReason(), reason.getCode());
+						logger.warn("Session {} thrown exception reason: {}, code: {}", session.getId(), reason.getReason(), reason.getCode());
 						this.inputs.remove(session.getId());
 					}
 				});
@@ -132,7 +132,7 @@ public class SamplesWebsocketController {
 				var closeReason = this.customCloseReasons.getInvalidInput(ex.getMessage());
 				session.close(closeReason);
 				this.inputs.remove(session.getId());
-				logger.warn("Session {} is closed reason: {}, code: {}", session.getId(), closeReason.getReason(), closeReason.getCode());
+				logger.warn("Error occurred while creating acceptor for session {}, providedSchemaVersion: {}, providedFormat: {}. Message: {}", session.getId(), providedSchemaVersion, providedFormat, ex.getMessage());
 				return;
 			}
 			this.exposedMetrics.incrementOpenedWebsockets();

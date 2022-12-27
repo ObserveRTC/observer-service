@@ -16,9 +16,17 @@ interface Acceptor {
 
     Acceptor onError(Consumer<Throwable> listener);
 
-    static Acceptor create(Logger logger, String mediaUnitId, String serviceId, String schemaVersion, TransportFormatType format, Consumer<ReceivedSamples> forward) {
+    static Acceptor create(
+            Logger logger,
+            String mediaUnitId,
+            String serviceId,
+            String schemaVersion,
+            TransportFormatType format,
+            Consumer<ReceivedSamples> forward
+    ) {
         Objects.requireNonNull(forward, "Forward consumer must be provided to build an Acceptor");
         Objects.requireNonNull(format, "Format must be provided");
+//        SchemaVersion version = SchemaVersion.parse(schemaVersion);
         SamplesDecoder decoder = SamplesDecoder.builder(logger)
                 .withFormatType(format)
                 .withVersion(schemaVersion)

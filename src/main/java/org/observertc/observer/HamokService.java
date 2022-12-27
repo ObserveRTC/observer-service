@@ -197,7 +197,7 @@ public class HamokService  implements InfoSource {
                 }
                 endpoint.stateChanged().subscribe();
             } else {
-                logger.warn("Endpoint for hamok has not been built, the server cannot share its internal data with other instances in the grid");
+                logger.warn("Endpoint for hamok has not been built, the server cannot share its internal state with other instances in the grid");
             }
         } else if (!endpoint.isRunning()){
             endpoint.start();

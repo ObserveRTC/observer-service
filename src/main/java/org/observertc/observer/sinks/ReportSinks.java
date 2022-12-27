@@ -105,7 +105,7 @@ public class ReportSinks implements Consumer<List<Report>> {
     private void fetchSinksConfig() {
         Map<String, Object> configs = this.observerConfig.sinks;
         if (Objects.isNull(configs)) {
-            logger.warn("No Sinks has been configured");
+            logger.warn("No Sink has been configured");
             return;
         }
         configs.forEach((sinkId, sinkConfig) -> {
