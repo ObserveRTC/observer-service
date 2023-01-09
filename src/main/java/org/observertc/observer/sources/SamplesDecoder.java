@@ -32,7 +32,7 @@ class SamplesDecoder implements Decoder<byte[], Samples> {
 
     public static final class Builder {
         private TransportFormatType format;
-        private String version;
+        private SchemaVersion version;
         private Mapper<byte[], Samples> decoder = null;
         private final Logger logger;
         public Builder(Logger logger) {
@@ -40,10 +40,13 @@ class SamplesDecoder implements Decoder<byte[], Samples> {
         }
 
         public Builder withVersion(String version) {
-            if (!SamplesVersionVisitor.isVersionValid(version)) {
-                throw new RuntimeException("Not valid or not supported schema version: " + version);
+            this.version = SchemaVersion.parse(version);
+            if (!this.isSupportedSchemaVersion()) {
+                throw new RuntimeException("Not valid or not supported schema version: "
+                        + this.version.toString()
+                        + ". Supported versions: "
+                        + SchemaVersion.getSupportedVersionsList());
             }
-            this.version = version;
             return this;
         }
 
@@ -72,61 +75,64 @@ class SamplesDecoder implements Decoder<byte[], Samples> {
             return result;
         }
 
+        private boolean isSupportedSchemaVersion() {
+            if (this.version == null) return false;
+            return SchemaVersion.getSupportedVersions().stream().anyMatch(supportedVersion -> supportedVersion.equals(this.version));
+        }
+
 
         private Function<byte[], Samples> createProtobufDecoder() {
-            var result = SamplesVersionVisitor.<Function<byte[], Samples>>createSupplierVisitor(
-                    () -> { // latest
-                        var samplerMapper = new ProtobufSamplesMapper();
-                        return message -> {
-                            var protobufSamples = ProtobufSamples.Samples.parseFrom(message);
-                            var samples = samplerMapper.apply(protobufSamples);
-                            return samples;
-                        };
-                    },
-                    () -> { // v2.1.0
-                        var samplerMapper = new org.observertc.schemas.v210.protobuf.ProtobufSamplesMapper();
-                        return message -> {
-                            var protobufSamples = org.observertc.schemas.v210.protobuf.ProtobufSamples.Samples.parseFrom(message);
-                            var samples = samplerMapper.apply(protobufSamples);
-                            return samples;
-                        };
-                    },
-                    () -> { // not recognized
-                        throw new RuntimeException("Not recognized version" + this.version);
-                    }
-            ).apply(null, this.version);
+            Function<byte[], Samples> result = bytes -> {
+                throw new RuntimeException("Not recognized version" + this.version);
+            };
+            if (this.version.getConceptVersion() == 2) {
+                if (this.version.getSamplesVersion() == 2) { // 2.2.x
+                    var samplerMapper = new ProtobufSamplesMapper();
+                    result = message -> {
+                        var protobufSamples = ProtobufSamples.Samples.parseFrom(message);
+                        var samples = samplerMapper.apply(protobufSamples);
+                        return samples;
+                    };
+                } else if (this.version.getSamplesVersion() == 1) { // 2.1.x
+                    var samplerMapper = new org.observertc.schemas.v210.protobuf.ProtobufSamplesMapper();
+                    result = message -> {
+                        var protobufSamples = org.observertc.schemas.v210.protobuf.ProtobufSamples.Samples.parseFrom(message);
+                        var samples = samplerMapper.apply(protobufSamples);
+                        return samples;
+                    };
+                }
+            }
             return result;
         }
 
         private Function<byte[], Samples> createJsonDecoder() {
-            var result = SamplesVersionVisitor.<Function<byte[], Samples>>createSupplierVisitor(
-                    () -> { // latest
-                        var decoder = JsonMapper.<Samples>createBytesToObjectMapper(Samples.class);
-                        return message -> {
-                            var samples = decoder.map(message);
-                            if (samples == null) {
-                                throw new RuntimeException("Failed to decode Samples");
-                            }
-                            return samples;
-                        };
-                    },
-                    () -> { // v2.1.0
-                        var decoder = JsonMapper.<org.observertc.schemas.v210.samples.Samples>createBytesToObjectMapper(org.observertc.schemas.v210.samples.Samples.class);
-                        Mapper<org.observertc.schemas.v210.samples.Samples, Samples> samplesVersionAligner;
-                        var from210LatestConverter = new Fromv210ToLatestConverter();
-                        return message -> {
-                            var samplesV210 = decoder.map(message);
-                            if (samplesV210 == null) {
-                                throw new RuntimeException("Failed to decode Samples");
-                            }
-                            var samples = from210LatestConverter.apply(samplesV210);
-                            return samples;
-                        };
-                    },
-                    () -> {
-                        throw new RuntimeException("Not recognized version" + this.version);
-                    }
-            ).apply(null, this.version);
+            Function<byte[], Samples> result = bytes -> {
+                throw new RuntimeException("Not recognized version" + this.version);
+            };
+            if (this.version.getConceptVersion() == 2) {
+                if (this.version.getSamplesVersion() == 2) { // 2.2.x
+                    var decoder = JsonMapper.<Samples>createBytesToObjectMapper(Samples.class);
+                    result = message -> {
+                        var samples = decoder.map(message);
+                        if (samples == null) {
+                            throw new RuntimeException("Failed to decode Samples");
+                        }
+                        return samples;
+                    };
+                } else if (this.version.getSamplesVersion() == 1) { // 2.1.x
+                    var decoder = JsonMapper.<org.observertc.schemas.v210.samples.Samples>createBytesToObjectMapper(org.observertc.schemas.v210.samples.Samples.class);
+                    Mapper<org.observertc.schemas.v210.samples.Samples, Samples> samplesVersionAligner;
+                    var from210LatestConverter = new Fromv210ToLatestConverter();
+                    result = message -> {
+                        var samplesV210 = decoder.map(message);
+                        if (samplesV210 == null) {
+                            throw new RuntimeException("Failed to decode Samples");
+                        }
+                        var samples = from210LatestConverter.apply(samplesV210);
+                        return samples;
+                    };
+                }
+            }
             return result;
         }
     }

@@ -5,7 +5,7 @@ plugins {
     id "org.sonarqube" version "3.3"
 }
 
-version = "1.0.0"
+version = "1.0.1"
 group = "org.observertc.observer"
 
 repositories {
