@@ -19,6 +19,7 @@ package org.observertc.observer;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.runtime.Micronaut;
+import org.observertc.observer.common.JsonUtils;
 import org.observertc.observer.common.Sleeper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,7 +78,9 @@ public class Application {
         try {
             var inputStream = new FileInputStream(path);
             Yaml yaml = new Yaml();
-            return yaml.load(inputStream);
+            Map<String, Object> result = yaml.load(inputStream);
+            logger.info("Custom configuration is loaded", JsonUtils.objectToString(result));
+            return result;
         } catch (Exception ex) {
             logger.warn("Exception occurred while reading {} for {} ", path, OBSERVER_CONFIG_FILE, ex);
             return Collections.EMPTY_MAP;
